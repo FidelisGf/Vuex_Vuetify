@@ -1,6 +1,11 @@
 <template>
     <v-container fluid grid-list-md>
-        <v-row  >
+        <v-row>
+           <v-col cols="12">
+             <SearchBar></SearchBar>
+           </v-col>
+        </v-row>
+        <v-row >
             <v-col v-for="product in products" :key="product.id">
                 <v-card
                 :loading="loading"
@@ -47,28 +52,27 @@
 </template>
 
 <script>
+import SearchBar from '@/components/SearchBar.vue';
 export default {
     data: () => ({
-      loading: false,
-      selection: 1,
-      products : [
-        {id: 1, title: 'Sabonete', desc: 'Sabonete muito bom', valor: 10.00 },
-        {id: 2, title: 'Detergente', desc: 'Detergente super famoso', valor: 4.00},
-        {id: 3, title: 'Amaciante', desc: 'Amaciante Colorido', valor: 12.00},
-        {id: 4, title: 'Kiboa', desc: 'Resolve Tudo', valor: 12.00},
-        {id: 5, title: 'Shampoo Header', desc: 'Shampoo Header and Shower, o melhor para o banho', valor: 12.00},
-        {id: 6, title: 'Amaciante', desc: 'Sabão em Pó Omu, o melhor para você', valor: 22.00},
-        
-      ]
+        loading: false,
+        selection: 1,
+        products: [
+            { id: 1, title: "Sabonete", desc: "Sabonete muito bom", valor: 10 },
+            { id: 2, title: "Detergente", desc: "Detergente super famoso", valor: 4 },
+            { id: 3, title: "Amaciante", desc: "Amaciante Colorido", valor: 12 },
+            { id: 4, title: "Kiboa", desc: "Resolve Tudo", valor: 12 },
+            { id: 5, title: "Shampoo Header", desc: "Shampoo Header and Shower, o melhor para o banho", valor: 12 },
+            { id: 6, title: "Amaciante", desc: "Sabão em Pó Omu, o melhor para você", valor: 22 },
+        ]
     }),
-
     methods: {
-      reserve () {
-        this.loading = true
-
-        setTimeout(() => (this.loading = false), 2000)
-      },
+        reserve() {
+            this.loading = true;
+            setTimeout(() => (this.loading = false), 2000);
+        },
     },
+    components: { SearchBar }
 }
 </script>
 
