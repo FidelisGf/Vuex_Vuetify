@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <SideBar></SideBar>
+    <SideBarMega></SideBarMega>
     <v-main>
       <router-view/>
     </v-main>
@@ -8,7 +8,8 @@
 </template>
 
 <script>
-import SideBar from './components/SideBar.vue';
+// import SideBar from './components/SideBar.vue';
+import SideBarMega from './components/SideBarMega.vue';
 /* eslint-disable */
 
 
@@ -29,6 +30,6 @@ export default {
             return this.$vuetify.breakpoint.mdAndDown;
         }
     },
-    components: { SideBar }
+    components: {SideBarMega }
 };
 </script>

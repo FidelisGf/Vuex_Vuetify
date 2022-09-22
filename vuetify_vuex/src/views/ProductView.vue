@@ -8,7 +8,7 @@
         <v-row >
             <v-col v-for="product in products" :key="product.id">
                 <v-card
-                :loading="loading"
+                
                 class="mx-auto my-5"
                 max-width="274"
               >
@@ -53,9 +53,9 @@
 
 <script>
 import SearchBar from '@/components/SearchBar.vue';
+
 export default {
     data: () => ({
-        loading: false,
         selection: 1,
         products: [
             { id: 1, title: "Sabonete", desc: "Sabonete muito bom", valor: 10 },
@@ -66,12 +66,7 @@ export default {
             { id: 6, title: "Amaciante", desc: "Sabão em Pó Omu, o melhor para você", valor: 22 },
         ]
     }),
-    methods: {
-        reserve() {
-            this.loading = true;
-            setTimeout(() => (this.loading = false), 2000);
-        },
-    },
+  
     components: { SearchBar }
 }
 </script>
