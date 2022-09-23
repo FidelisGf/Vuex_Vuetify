@@ -20,18 +20,7 @@
                                  <p>Inscrição Estadual : 120000385</p>
                                  <p>Numero de Filiais : 6</p>
                     </v-card-text> -->
-                    <v-card-text>
-                        <v-list
-                            nav
-                            color="white"
-                        >
-                            <v-list-item @click="$router.push('/pedidos')" link >
-                                <v-card >
-                                    <v-card-title>Pedidos</v-card-title>
-                                </v-card>
-                            </v-list-item>
-                         </v-list>
-                </v-card-text>
+                    
               </v-card>
             </v-col>
         </v-row>

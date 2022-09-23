@@ -31,7 +31,7 @@
             nav
             dense
           >
-            <v-list-item @click="$router.push('/pedidos')" link >
+            <v-list-item @click="$router.push('/products')" link >
                 <v-list-item-icon>
                   <v-icon>mdi-baguette</v-icon>
                 </v-list-item-icon>
