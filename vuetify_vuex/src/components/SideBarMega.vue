@@ -18,11 +18,11 @@
                     <v-card-title class="ml-13">Pedidos</v-card-title>
                     <v-list>
                         <v-list-item class="d-flex justify-end mt-n11">
-                            <v-icon large color="blue" left>
+                            <v-icon large color="blue" class="mt-n2" left>
                                 mdi-basket
                             </v-icon>
                             <v-card-subtitle >acompanhe seus pedidos, veja as notas fiscais...</v-card-subtitle>
-                            <v-icon large color="blue" left>
+                            <v-icon large color="blue" class="mt-n2" left>
                                 mdi-chevron-right
                             </v-icon>
                         </v-list-item>
@@ -35,11 +35,11 @@
                     <v-card-title class="ml-13">Cadastro</v-card-title>
                     <v-list>
                         <v-list-item class="d-flex justify-end mt-n11">
-                            <v-icon large color="blue" left>
+                            <v-icon large color="blue"  class="mt-n2" left>
                                 mdi-account-plus
                             </v-icon>
                             <v-card-subtitle >acompanhe seus pedidos, veja as notas fiscais...</v-card-subtitle>
-                            <v-icon large color="blue" left>
+                            <v-icon large color="blue"  class="mt-n2" left>
                                 mdi-chevron-right
                             </v-icon>
                         </v-list-item>
