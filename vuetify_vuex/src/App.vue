@@ -1,7 +1,7 @@
 <template>
-  <v-app>
+  <v-app >
     <SideBarMega></SideBarMega>
-    <v-main>
+    <v-main class="info">
       <router-view/>
     </v-main>
   </v-app>

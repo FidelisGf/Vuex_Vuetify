@@ -1,5 +1,5 @@
 <template>
-    <v-container fluid grid-list-md >
+    <v-container >
         <v-row dense >
             <v-col cols="12">
                 <v-card
@@ -14,17 +14,17 @@
                     Ultimos Pedidos
                     </v-card-title>
                     <v-card-subtitle class="black--text">Seus Ultimos Pedidos Realizados Estão listados abaixo</v-card-subtitle>
-                        <v-row v-for="(pedido,index) in pedidos" :key="index">
+                        <v-row v-for="(pedido,index) in pedidos" :key="index" class="mb-1">
                             <v-col >
                                 <v-card  class="rounded-lg rounded-bl-0" color="#ffffff" elevation="3" height="auto" width="auto" >
-                                    <v-card-title class="black--text">Pedido {{pedido.id}}</v-card-title>
+                                    <v-card-title class="black--text">Pedido # {{pedido.id}}</v-card-title>
                                     <v-row>
-                                        <v-col cols="11" xl="10" md="10" lg="10"  sm="10"  class="mt-n5 ml-3">
+                                        <v-col cols="9" xl="10" md="10" lg="10"  sm="10"  class="mt-n5 ml-3">
                                             <v-card-subtitle span v-if="pedido.situacao == 'Entregue'" class="light-green--text font-weight-black"> 
                                              <v-icon color="light-green" large left>mdi-package-variant-closed-check</v-icon> {{pedido.situacao}}
                                             </v-card-subtitle>
                                             <v-card-subtitle span v-if="pedido.situacao == 'Encaminhado'" class=" blue--text font-weight-black" > 
-                                              <v-icon large color="blue" left>mdi-truck-fast-outline</v-icon> Pedido encaminhado ao destino
+                                              <v-icon large color="blue" left>mdi-truck-fast-outline</v-icon> Pedido em transporte
                                             </v-card-subtitle>
                                             <v-card-subtitle span v-if="pedido.situacao == 'Pagamento pendente'" class="red--text font-weight-medium"> 
                                               <v-icon large color="red" left>mdi-currency-usd-off</v-icon> {{pedido.situacao}} !
@@ -36,11 +36,10 @@
                                                 <v-icon dark large color="blue" span v-if="active" left>mdi-chevron-down</v-icon>
                                                 <v-icon dark large color="blue" span v-if="!active">mdi-chevron-up</v-icon>
                                             </v-btn>
-                                        </v-col>
-                                        
+                                        </v-col>   
                                     </v-row>
-                                    <v-divider color="black" class="mt-n5"></v-divider>
                                     <div v-if="active">
+                                        <v-divider color="black" ></v-divider>
                                         <v-row class="mt-1" v-for="(produto,index) in pedidos[index].produtos" :key="index">
                                             <v-col cols="2" xl="1" md="1" lg="1"  sm="2">
                                                 <v-img
@@ -62,7 +61,6 @@
                                                 <p class="font-weight-black black--text">Valor Total do Pedido : R$ {{pedido.valorTotal}}</p>
                                             </v-col>
                                         </v-row>
-                                        
                                     </div>   
                                 </v-card>
                             </v-col>
@@ -73,7 +71,6 @@
         </v-row>
     </v-container>
 </template>
-
 <script>
 export default {
     data(){

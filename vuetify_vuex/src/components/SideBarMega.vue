@@ -1,6 +1,7 @@
 <template>
     <div  v-if="!['login'].includes($route.name)">
-        <v-navigation-drawer 
+        <!--Dekstop Version -->
+        <v-navigation-drawer v-if="!$vuetify.breakpoint.smAndDown"
         :app="$vuetify.breakpoint.mdAndUp"
         :fixed="$vuetify.breakpoint.mdAndUp"
         :mini-variant.sync="mini"
@@ -10,46 +11,109 @@
         :width="340"
         >  
         <v-list
-            nav
-            
+            nav  
           >
-            <v-list-item @click="$router.push('/pedidos')" link >
-                <v-card class="d-flex-column  rounded-xl" :width="320">
-                    <v-card-title class="ml-13">Pedidos</v-card-title>
-                    <v-list>
-                        <v-list-item class="d-flex justify-end mt-n11">
-                            <v-icon large color="blue" class="mt-n2" left>
-                                mdi-basket
-                            </v-icon>
-                            <v-card-subtitle >acompanhe seus pedidos, veja as notas fiscais...</v-card-subtitle>
-                            <v-icon large color="blue" class="mt-n2" left>
-                                mdi-chevron-right
-                            </v-icon>
-                        </v-list-item>
-                    </v-list>
+          <v-row class="mt-2" >
+            <v-col >
+              <v-list-item @click="$router.push('/pedidos')" class="d-flex-row justify-center" link>
+                <v-card class="rounded-xl" >
+                    <v-card-title>Pedidos</v-card-title>
+                    <v-row >
+                      <v-col cols="1" class="mt-n4 ml-3">
+                        <v-icon large color="blue" left>
+                          mdi-basket
+                        </v-icon>
+                      </v-col>
+                      <v-col cols="9" class="mt-n3 ml-5">
+                        <p>Consulte seus pedidos aqui</p>
+                      </v-col>
+                      <v-col cols="1" class="mt-n4 ml-n12">
+                        <v-icon large color="blue" right>
+                          mdi-chevron-right
+                        </v-icon>
+                      </v-col>
+                    </v-row> 
                 </v-card>
-                
-            </v-list-item>
-            <v-list-item @click="$router.push('/products')" link >
-                <v-card class="d-flex-column  rounded-xl" :width="320">
-                    <v-card-title class="ml-13">Cadastro</v-card-title>
-                    <v-list>
-                        <v-list-item class="d-flex justify-end mt-n11">
-                            <v-icon large color="blue"  class="mt-n2" left>
-                                mdi-account-plus
-                            </v-icon>
-                            <v-card-subtitle >acompanhe seus pedidos, veja as notas fiscais...</v-card-subtitle>
-                            <v-icon large color="blue"  class="mt-n2" left>
-                                mdi-chevron-right
-                            </v-icon>
-                        </v-list-item>
-                    </v-list>
-                </v-card>
-                
-            </v-list-item>
-            
+              </v-list-item> 
+            </v-col>
+            </v-row>
+            <v-row >
+              <v-col >
+                <v-list-item @click="$router.push('/products')"  class="d-flex-row justify-center" link>
+                  <v-card class="rounded-xl">
+                      <v-card-title>Cadastro</v-card-title>
+                      <v-row >
+                        <v-col cols="1" class="mt-n4 ml-3">
+                          <v-icon large color="blue" left>
+                            mdi-account-plus
+                          </v-icon>
+                        </v-col>
+                        <v-col cols="9" class="mt-n3 ml-5">
+                          <p>Complete seu cadastro aqui</p>
+                        </v-col>
+                        <v-col cols="1" class="mt-n4 ml-n12">
+                          <v-icon large color="blue" right>
+                            mdi-chevron-right
+                          </v-icon>
+                        </v-col>
+                      </v-row> 
+                  </v-card>
+                </v-list-item> 
+              </v-col>
+            </v-row>
         </v-list>
-    </v-navigation-drawer>
+      </v-navigation-drawer>
+    <!-- Middle Version -->
+    <v-container v-if="$vuetify.breakpoint.smAndDown" class="info">
+        <v-row >
+          <v-col >
+            <v-list-item @click="$router.push('/pedidos')" class="d-flex-row justify-center" link>
+              <v-card class="rounded-xl" style="width:100vh;">
+                  <v-card-title>Pedidos</v-card-title>
+                  <v-row >
+                    <v-col cols="1" class="mt-n4 ml-3">
+                      <v-icon large color="blue" left>
+                        mdi-basket
+                      </v-icon>
+                    </v-col>
+                    <v-col cols="9" class="mt-n3 ml-5">
+                      <p>Consulte seus pedidos aqui</p>
+                    </v-col>
+                    <v-col cols="1" class="mt-n4 ml-n12">
+                      <v-icon large color="blue" right>
+                        mdi-chevron-down
+                      </v-icon>
+                    </v-col>
+                  </v-row> 
+              </v-card>
+            </v-list-item> 
+          </v-col>
+        </v-row>
+        <v-row >
+          <v-col >
+            <v-list-item @click="$router.push('/products')" class="d-flex-row justify-center" link>
+              <v-card class="rounded-xl" style="width:100vh;">
+                  <v-card-title>Cadastro</v-card-title>
+                  <v-row >
+                    <v-col cols="1" class="mt-n4 ml-3">
+                      <v-icon large color="blue" left>
+                        mdi-account-plus
+                      </v-icon>
+                    </v-col>
+                    <v-col cols="9" class="mt-n3 ml-5">
+                      <p>Complete seu cadastro aqui</p>
+                    </v-col>
+                    <v-col cols="1" class="mt-n4 ml-n12">
+                      <v-icon large color="blue" right>
+                        mdi-chevron-down
+                      </v-icon>
+                    </v-col>
+                  </v-row> 
+              </v-card>
+            </v-list-item> 
+          </v-col>
+        </v-row>
+    </v-container>
     </div>
 </template>
 
