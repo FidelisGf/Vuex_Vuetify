@@ -11,24 +11,24 @@
         :width="340"
         >  
         <v-list
-            nav  
+            nav 
           >
           <v-row class="mt-2" >
             <v-col >
-              <v-list-item @click="$router.push('/pedidos')" class="d-flex-row justify-center" link>
-                <v-card class="rounded-xl" >
-                    <v-card-title>Pedidos</v-card-title>
-                    <v-row >
-                      <v-col cols="1" class="mt-n4 ml-3">
-                        <v-icon large color="blue" left>
-                          mdi-basket
+              <v-list-item @click="$router.push('/pedidos')" class="d-flex-row justify-center"  link>
+                <v-card class="rounded-xl" elevation="6">
+                    <v-card-title class="mt-n2 ml-2">Pedidos</v-card-title>
+                    <v-row  style="margin-top: 1px">
+                      <v-col cols="1" class="mt-n5 ml-3">
+                        <v-icon large color="teal lighten-1" left>
+                          mdi-package-variant-closed
                         </v-icon>
                       </v-col>
                       <v-col cols="9" class="mt-n3 ml-5">
                         <p>Consulte seus pedidos aqui</p>
                       </v-col>
-                      <v-col cols="1" class="mt-n4 ml-n12">
-                        <v-icon large color="blue" right>
+                      <v-col cols="1" class="mt-n5 ml-n12">
+                        <v-icon large color="teal lighten-1" right>
                           mdi-chevron-right
                         </v-icon>
                       </v-col>
@@ -40,19 +40,19 @@
             <v-row >
               <v-col >
                 <v-list-item @click="$router.push('/products')"  class="d-flex-row justify-center" link>
-                  <v-card class="rounded-xl">
-                      <v-card-title>Cadastro</v-card-title>
-                      <v-row >
-                        <v-col cols="1" class="mt-n4 ml-3">
-                          <v-icon large color="blue" left>
+                  <v-card class="rounded-xl" elevation="6">
+                      <v-card-title class="ml-2">Cadastro</v-card-title>
+                      <v-row style="margin-top: 1px">
+                        <v-col cols="1" class="mt-n5 ml-3">
+                          <v-icon large color="teal lighten-1" left>
                             mdi-account-plus
                           </v-icon>
                         </v-col>
                         <v-col cols="9" class="mt-n3 ml-5">
                           <p>Complete seu cadastro aqui</p>
                         </v-col>
-                        <v-col cols="1" class="mt-n4 ml-n12">
-                          <v-icon large color="blue" right>
+                        <v-col cols="1" class="mt-n5 ml-n12">
+                          <v-icon large color="teal lighten-1" right>
                             mdi-chevron-right
                           </v-icon>
                         </v-col>
@@ -68,19 +68,19 @@
         <v-row >
           <v-col >
             <v-list-item @click="$router.push('/pedidos')" class="d-flex-row justify-center" link>
-              <v-card class="rounded-xl" style="width:100vh;">
+              <v-card class="rounded-xl" style="width:100vh;" elevation="5">
                   <v-card-title>Pedidos</v-card-title>
                   <v-row >
                     <v-col cols="1" class="mt-n4 ml-3">
-                      <v-icon large color="blue" left>
-                        mdi-basket
+                      <v-icon large color="teal lighten-1" left>
+                        mdi-package-variant-closed
                       </v-icon>
                     </v-col>
                     <v-col cols="9" class="mt-n3 ml-5">
                       <p>Consulte seus pedidos aqui</p>
                     </v-col>
                     <v-col cols="1" class="mt-n4 ml-n12">
-                      <v-icon large color="blue" right>
+                      <v-icon large color="teal lighten-1" right>
                         mdi-chevron-down
                       </v-icon>
                     </v-col>
@@ -92,11 +92,11 @@
         <v-row >
           <v-col >
             <v-list-item @click="$router.push('/products')" class="d-flex-row justify-center" link>
-              <v-card class="rounded-xl" style="width:100vh;">
+              <v-card class="rounded-xl" style="width:100vh; " elevation="5" >
                   <v-card-title>Cadastro</v-card-title>
                   <v-row >
                     <v-col cols="1" class="mt-n4 ml-3">
-                      <v-icon large color="blue" left>
+                      <v-icon large color="teal lighten-1" left>
                         mdi-account-plus
                       </v-icon>
                     </v-col>
@@ -104,7 +104,7 @@
                       <p>Complete seu cadastro aqui</p>
                     </v-col>
                     <v-col cols="1" class="mt-n4 ml-n12">
-                      <v-icon large color="blue" right>
+                      <v-icon large color="teal lighten-1" right>
                         mdi-chevron-down
                       </v-icon>
                     </v-col>
@@ -123,18 +123,6 @@ export default {
   data(){
     return {
       dialog: false,
-    }
-  },
-    computed:{
-      mini(){
-        switch (this.$vuetify.breakpoint.name) {
-          case 'xs': return true
-          case 'sm': return true
-          case 'md': return false
-          case 'lg': return false
-          case 'xl': return false
-        }
-      return this.$vuetify.breakpoint.mdAndDown;
     }
   },
   methods:{
