@@ -3,7 +3,7 @@
         <v-row dense >
             <v-col cols="12">
                 <v-card
-                color="#e9e4e4"
+                color="#f2f2f2"
                 dark
                 dense
                 class="elevation-4"
@@ -16,11 +16,11 @@
                     <v-card-subtitle class="black--text">Seus Ultimos Pedidos Realizados Estão listados abaixo</v-card-subtitle>
                         <v-row v-for="(pedido,index) in pedidos" :key="index">
                             <v-col >
-                                <v-card  class="rounded-lg rounded-bl-0" color="#e9e2e2" elevation="3" height="auto" width="auto" :style="'border: 1px solid black;'">
+                                <v-card  class="rounded-lg rounded-bl-0" color="#ffffff" elevation="3" height="auto" width="auto" >
                                     <v-card-title class="black--text">Pedido {{pedido.id}}</v-card-title>
                                     <v-row>
-                                        <v-col cols="10" xl="10" md="10" lg="10"  sm="10"  class="mt-n5">
-                                            <v-card-subtitle span v-if="pedido.situacao == 'Entregue'" class="light-green--text font-weight-medium"> 
+                                        <v-col cols="11" xl="10" md="10" lg="10"  sm="10"  class="mt-n5 ml-3">
+                                            <v-card-subtitle span v-if="pedido.situacao == 'Entregue'" class="light-green--text font-weight-black"> 
                                              <v-icon color="light-green" large left>mdi-package-variant-closed-check</v-icon> {{pedido.situacao}}
                                             </v-card-subtitle>
                                             <v-card-subtitle span v-if="pedido.situacao == 'Encaminhado'" class=" blue--text font-weight-black" > 
@@ -37,26 +37,32 @@
                                                 <v-icon dark large color="blue" span v-if="!active">mdi-chevron-up</v-icon>
                                             </v-btn>
                                         </v-col>
+                                        
                                     </v-row>
                                     <v-divider color="black" class="mt-n5"></v-divider>
                                     <div v-if="active">
-                                        <v-row v-for="(produto,index) in pedidos[index].produtos" :key="index">
+                                        <v-row class="mt-1" v-for="(produto,index) in pedidos[index].produtos" :key="index">
                                             <v-col cols="2" xl="1" md="1" lg="1"  sm="2">
                                                 <v-img
                                                     height="50"
                                                     width="50"
                                                     :src="produto.src"
-                                                    class="ml-6 mt-2"
+                                                    class="ml-6 mt-3"
                                                 ></v-img>
                                             </v-col>
                                             <v-col class="ml-2" cols="6"  xl="3" md="3" lg="3"  sm="4"  >
-                                                <p class="mt-3 item-name black--text">{{produto.nome}}</p>
+                                                <p class="mt-3 item-name black--text font-weight-medium">{{produto.nome}}</p>
                                                 <p class="mt-n4 item-name black--text">Valor Unitário : R$ {{produto.valor}}</p>
                                                 <p class="mt-n4 mt-md-n3 mt-lg-n3 mt-xl-n3 item-name black--text" >Quantidade : {{produto.quantidade}}</p>
                                                 <v-divider color="black"></v-divider>
                                             </v-col>
                                         </v-row>
-                                        <p class="mt-3 ml-7 font-weight-black black--text">Valor Total do Pedido : R$ {{pedido.valorTotal}}</p>
+                                        <v-row>
+                                            <v-col class="d-flex justify-end" cols="11">
+                                                <p class="font-weight-black black--text">Valor Total do Pedido : R$ {{pedido.valorTotal}}</p>
+                                            </v-col>
+                                        </v-row>
+                                        
                                     </div>   
                                 </v-card>
                             </v-col>
@@ -109,7 +115,7 @@ export default {
         }
     },
     created(){
-        console.log(this.ativos);
+       
     }
 
 }
@@ -117,6 +123,6 @@ export default {
 
 <style  scoped>
     .item-name{
-        font-size: 13px;
+        font-size: 14px;
     }
 </style>
