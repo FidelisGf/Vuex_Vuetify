@@ -32,7 +32,7 @@
                                         </v-col>
                                         <v-spacer></v-spacer>
                                         <v-col class="mt-n2">
-                                            <v-btn class="btn" flat icon color="transparent" @click="activeButton">
+                                            <v-btn class="btn"  icon color="transparent" @click="activeButton">
                                                 <v-icon dark large color="blue" span v-if="active" left>mdi-chevron-down</v-icon>
                                                 <v-icon dark large color="blue" span v-if="!active">mdi-chevron-up</v-icon>
                                             </v-btn>

@@ -1,10 +1,9 @@
 <template>
-    <div  v-if="!['login'].includes($route.name)">
+    <div>
         <!--Dekstop Version -->
         <v-navigation-drawer v-if="!$vuetify.breakpoint.smAndDown"
         :app="$vuetify.breakpoint.mdAndUp"
         :fixed="$vuetify.breakpoint.mdAndUp"
-        :mini-variant.sync="mini"
         color="#f2f2f2"
         :scroll-toolbar-off-screen="$vuetify.breakpoint.smAndDown"
         permanent

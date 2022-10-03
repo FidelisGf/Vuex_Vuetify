@@ -2,52 +2,66 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-
+import Guard from "../middleware/middleware"
+import Check from "../middleware/userMiddleware"
 Vue.use(VueRouter)
-
-
 
 const routes = [
   {
-    path: '/home',
+    path: '/',
     name: 'home',
-    
-    component: HomeView
+    beforeEnter: Guard.auth,
+    component: HomeView,
+    children: [
+      {
+        path: '/pedidos',
+        name: 'pedidos',
+        beforeEnter: Check.checkIfUserHasEmpresa,
+        component: () => import(/* webpackChunkName: "about" */ '../views/PedidoView.vue')
+      },
+      {
+        path: '/products',
+        name: 'products',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        beforeEnter: Guard.auth,
+        component: () => import(/* webpackChunkName: "about" */ '../views/ProductView.vue')
+      },
+      {
+        path: '/empresa',
+        name: 'empresa',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        beforeEnter: Guard.auth,
+        component: () => import(/* webpackChunkName: "about" */ '../views/EmpresaView.vue')
+      },
+      {
+        path: '/about',
+        name: 'about',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+      }
+    ]
   },
   {
-    path: '/',
+    path: '/register',
+    name: 'register',
+    component: () => import(/* webpackChunkName: "about" */ '../views/RegisterView.vue')
+  },
+  {
+    path: '/login',
     name: 'login',
+    
     component: () => import(/* webpackChunkName: "about" */ '../views/LoginView.vue')
   },
-  {
-    path: '/pedidos',
-    name: 'pedidos',
-    component: () => import(/* webpackChunkName: "about" */ '../views/PedidoView.vue')
-  },
-  {
-    path: '/products',
-    name: 'products',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/ProductView.vue')
-  },
-  {
-    path: '/empresa',
-    name: 'empresa',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/EmpresaView.vue')
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
+ 
+ 
+ 
+  
 ]
 
 const router = new VueRouter({
@@ -55,24 +69,4 @@ const router = new VueRouter({
 })
 
   
-
-// router.beforeEach(async (to, from, next) => {
-//     //const token = localStorage.getItem('token')
-//     try{
-//       const res = await axios.get("/auth/validateTkn")
-//       if(res.data == 1){
-//         // if (token || to.name === 'login') {
-//         //   next()
-//         // }
-//         console.log(res);
-//         next();
-//       }else if(res.data == 'Invalido'){
-//         alert('Você precisa estar logado para isso !')
-//         next({name: 'login'})
-//       }
-//     }catch(error){
-//       //console.log(error)
-//     }
-//   }
-// );
 export default router

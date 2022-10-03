@@ -13,21 +13,22 @@
                              <v-text-field
                                v-model="username"
                                name="username"
-                               label="Usuario"
                                type="text"
                                placeholder="Usuario"
                                required
                             ></v-text-field>
-                            
+       
                              <v-text-field
                                v-model="password"
                                name="password"
-                               label="Senha"
                                type="password"
                                placeholder="Senha"
                                required
                             ></v-text-field>
                             <v-btn type="submit" class="mt-4" color="primary" value="log in">Login</v-btn>
+                            <router-link to="/register">
+                              <v-btn type="submit" class="mt-4 ml-4" color="primary" value="log in">Registrar-se</v-btn>
+                            </router-link> 
                        </form>
                       </v-card-text>
                    </v-card>
@@ -57,7 +58,7 @@
         if(res.status == 200){
           localStorage.setItem('token', res.data.access_token)
           this.$store.dispatch('setUser', this.username)
-          this.$router.push('/home')
+          this.$router.push('/')
         }else{
           alert("Dados Invalidos")
         }
@@ -70,7 +71,6 @@
    },
    created(){
       localStorage.clear();
-      this.logout()
    }
  };
  </script>

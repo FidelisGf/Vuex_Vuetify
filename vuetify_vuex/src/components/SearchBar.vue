@@ -5,10 +5,6 @@
     >
       <v-toolbar-title>Pesquisa</v-toolbar-title>
       <v-autocomplete
-        v-model="select"
-        :loading="loading"
-        :items="items"
-        :search-input.sync="search"
         cache-items
         class="mx-4"
         flat

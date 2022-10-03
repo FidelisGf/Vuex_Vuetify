@@ -10,7 +10,7 @@
                 <v-card
                 
                 class="mx-auto my-5"
-                max-width="274"
+                max-width="270"
               >
                 <v-img
                   height="250"
@@ -56,7 +56,6 @@ import SearchBar from '@/components/SearchBar.vue';
 
 export default {
     data: () => ({
-        selection: 1,
         products: [
             { id: 1, title: "Sabonete", desc: "Sabonete muito bom", valor: 10 },
             { id: 2, title: "Detergente", desc: "Detergente super famoso", valor: 4 },
@@ -66,7 +65,6 @@ export default {
             { id: 6, title: "Amaciante", desc: "Sabão em Pó Omu, o melhor para você", valor: 22 },
         ]
     }),
-  
     components: { SearchBar }
 }
 </script>
