@@ -4,20 +4,20 @@ export default{
     /* eslint-disable */
     async auth(to, from, next){
         axios.defaults.headers.common['Authorization'] = 'Bearer' + localStorage.getItem('token');
-
         try{
             const res = await axios.get("/auth/validateTkn")
             console.log(res.status);
             if(res.status === 200){
-                next();
-            
-            }
-           
+                const res = await axios.get("/checaEmpUser");
+                console.log(res);
+                if(res.data == 1){
+                    console.log('Ok');
+                    next();
+                }
+            }    
         }catch(e){
             alert('Voce precisa estar logado !')
             next({name: 'login'})
         }
-        
-        
     }
 }
