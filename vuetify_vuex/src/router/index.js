@@ -3,7 +3,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import Guard from "../middleware/middleware2"
-
 Vue.use(VueRouter)
 
 const routes = [
@@ -37,8 +36,16 @@ const routes = [
         // which is lazy-loaded when the route is visited.
         beforeEnter: Guard.auth,
         component: () => import(/* webpackChunkName: "about" */ '../views/EmpresaView.vue')
-      },
-     
+      }, 
+      {
+        path: '/estoque',
+        name: 'estoque',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        beforeEnter: Guard.auth,
+        component: () => import(/* webpackChunkName: "about" */ '../views/EmpresaView.vue')
+      },     
       {
         path: '/about',
         name: 'about',
