@@ -42,7 +42,6 @@
  
  <script>
 
-
  export default {
    
    data() {
@@ -58,6 +57,7 @@
         if(res.status == 200){
           localStorage.setItem('token', res.data.access_token)
           this.$store.dispatch('setUser', this.username)
+
           this.$router.push('/')
         }else{
           alert("Dados Invalidos")

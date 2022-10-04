@@ -19,8 +19,7 @@
                                  <p>Endereço da Empresa : Foz do Iguaçu, Rua Aguas Marinhas 1637, Ouro Verde</p>
                                  <p>Inscrição Estadual : 120000385</p>
                                  <p>Numero de Filiais : 6</p>
-                    </v-card-text>
-                    
+                    </v-card-text>   
                     <v-card-actions class="ml-3">
                     <v-btn color="#3e3e3c">
                         Editar Empresa

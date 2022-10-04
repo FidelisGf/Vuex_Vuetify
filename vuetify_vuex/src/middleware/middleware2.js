@@ -6,7 +6,12 @@ export default{
         try{
             const res = await axios.get("/auth/validateTkn")
             if(res.status === 200){
-               next();
+                const res = await axios.get("/checaEmpUser");
+                console.log(res);
+                if(res.data == 1){
+                    console.log('Ok');
+                    next();
+                }
             }    
         }catch(e){
             alert('Voce precisa estar logado !')
