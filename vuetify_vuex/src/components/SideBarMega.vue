@@ -14,7 +14,7 @@
           >
           <v-row class="mt-2" >
             <v-col >
-              <v-list-item @click="$router.push('/pedidos')" class="d-flex-row justify-center"  link>
+              <v-list-item @click="$router.push('/estoque')" class="d-flex-row justify-center"  link>
                 <v-card class="rounded-xl" elevation="6">
                     <v-card-title class="mt-n2 ml-2">Estoque</v-card-title>
                     <v-row  style="margin-top: 1px">

@@ -7,9 +7,7 @@ export default{
             const res = await axios.get("/auth/validateTkn")
             if(res.status === 200){
                 const res = await axios.get("/checaEmpUser")
-                console.log(res);
                 if(res.data == 1){
-                    console.log('Ok')
                     next();
                 }else if(res.data != 1){
                     alert('Vincule uma empresa a sua conta !');

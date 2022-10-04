@@ -7,6 +7,13 @@ export default new Vuex.Store({
   state: {
     user: {
       username: ''
+    },
+    product: {
+      NOME : '',
+      DESC : '',
+      CATEGORIA : '',
+      VALOR : 0,
+      quantia_inicial : 0,
     }
   },
   getters: {
@@ -14,6 +21,9 @@ export default new Vuex.Store({
   mutations: {
     saveUser(state, payload){
       state.user.username = payload
+    },
+    saveProduct(state, payload){
+      state.product = payload
     }
   },
   actions: {
