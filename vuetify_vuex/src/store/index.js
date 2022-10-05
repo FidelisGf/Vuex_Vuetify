@@ -14,6 +14,9 @@ export default new Vuex.Store({
       CATEGORIA : '',
       VALOR : 0,
       quantia_inicial : 0,
+    },
+    category {
+      NOME : '',
     }
   },
   getters: {

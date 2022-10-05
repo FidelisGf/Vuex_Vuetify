@@ -1,29 +1,7 @@
 <template>
-
-    <v-container fluid grid-list-md>
-        
-        <v-row dense>
-            <v-col cols="12">
-                <ProductModal :miniatura="false">
-                    
-                </ProductModal>
-            </v-col>
-        </v-row>
-        <v-row >
-            <v-col cols="12">
-                <v-data-table
-                    :headers="headers"
-                    :items="products"
-                    :items-per-page="5"
-                    class="elevation-1"
-                >
-                </v-data-table>
-            </v-col>
-        </v-row>
-    </v-container>                   
+    <ProductModal :miniatura="false"></ProductModal>               
 </template>
 <script>
-import productService from '@/service/productService'
 import ProductModal from '@/components/ModalComponents/ProductModal.vue'
 export default {
     data() {
@@ -49,17 +27,6 @@ export default {
             VALOR: 0,
             ID_CATEGORIA: 0,
         };
-    },
-    methods: {
-        getProdutos() {
-            productService.getProdutos().then((response) => {
-                console.log(response);
-                this.products = response.data.data;
-            });
-        },
-    },
-    async created() {
-        this.getProdutos();
     },
     components: { ProductModal }
 }

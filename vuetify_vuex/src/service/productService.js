@@ -6,5 +6,8 @@ export default{
     },
     postProduto(payload){
         return axios.post("/products", payload);
+    },
+    findAllProductByCategory($id){
+        return axios.get("/allByCategory/" + $id);
     }
 }
