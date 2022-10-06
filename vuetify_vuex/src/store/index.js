@@ -1,3 +1,4 @@
+
 import Vue from 'vue'
 import Vuex from 'vuex'
 
@@ -10,16 +11,20 @@ export default new Vuex.Store({
     },
     product: {
       NOME : '',
-      DESC : '',
-      CATEGORIA : '',
+      DESC : '',  
       VALOR : 0,
       quantia_inicial : 0,
+      category: {
+        ID_CATEGORIA : null,
+        NOME : ''
+      },
     },
-    category {
-      NOME : '',
-    }
+    Categorias : []
   },
   getters: {
+    listCategorias(state){
+        return state.Categorias
+    }
   },
   mutations: {
     saveUser(state, payload){
@@ -27,13 +32,23 @@ export default new Vuex.Store({
     },
     saveProduct(state, payload){
       state.product = payload
+    },
+    beginListCategoria(state, payload){
+      payload.forEach(element => {
+        state.Categorias.push(element)
+      });
+    },
+    saveListCategoria(state, payload){
+      state.Categorias.push(payload)
     }
   },
   actions: {
     setUser(context, payload){
       context.commit('saveUser', payload)
       console.log(payload);
-      
+    },
+    saveListCategoria(context, payload){
+      context.commit('saveListCategoria', payload)
     }
   },
   modules: {

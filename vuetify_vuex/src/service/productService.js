@@ -1,13 +1,19 @@
 import axios from "axios";
-
+/* eslint-disable */
 export default{
-    getProdutos(){
-        return axios.get("/products");
+    getProdutos(page){
+        return axios.get("/products?page=" + page)
     },
     postProduto(payload){
-        return axios.post("/products", payload);
+        return axios.post("/products", payload)
     },
-    findAllProductByCategory($id){
-        return axios.get("/allByCategory/" + $id);
+    findAllProductByCategory($id, page){
+        return axios.get("/allByCategory/" + $id  + "?page=" + page)
+    },
+    findProdutoById($id){
+        return axios.get("/products/" + $id)
+    },
+    editProduct(payload, $id){
+        return axios.put("/products/" + $id, payload)
     }
 }

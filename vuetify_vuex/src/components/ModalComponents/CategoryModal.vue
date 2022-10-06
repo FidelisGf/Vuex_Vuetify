@@ -14,7 +14,7 @@
                 v-on="on"
                 icon 
                 >
-                <v-icon dark large color="blue">mdi-plus-circle-outline</v-icon>
+                <v-icon dark color="teal lighten-1">mdi-plus-circle-outline</v-icon>
                 </v-btn>
             </template>
             <v-card>
@@ -25,15 +25,14 @@
                     <v-container>
                         <v-row>
                             <v-col
-                                cols="12"
-                                
+                                cols="12"         
                             >
                                 <v-text-field
                                 label="Nome da Categoria"
                                 required
                                 v-model="NOME"
                                 counter="60"
-                                color="orange"
+                                color="teal lighten-1"
                                 ></v-text-field>
                             </v-col>
                         </v-row>    
@@ -42,16 +41,16 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                         <v-btn
-                        color="blue darken-1"
-                        text
-                        @click="dialog = false"
+                            color="teal lighten-1"
+                            text
+                            @click="dialog = false"
                         >
                         Fechar
                         </v-btn>
                         <v-btn
-                            color="blue darken-1"
+                            color="teal lighten-1"
                             text
-                            @click="postCategoria"
+                            @click="postCategory"
                         >
                         Salvar
                         </v-btn>
@@ -65,14 +64,27 @@
 </template>
 
 <script>
+import categoryService from '@/service/categoryService'
 export default {
    props:{
         miniatura : Boolean
    },
    data(){
     return{
-        dialog : false
+        dialog : false,
+        NOME : '',
     }
+   },
+   methods:{
+        postCategory(){
+            let payload = {NOME : this.NOME}
+            categoryService.postCategory(payload).then((res) => {
+                alert('Categoria criada com sucesso ! ')
+                console.log(res.data);
+                this.$store.commit('saveListCategoria', res.data)
+                console.log(this.$store.state.Categorias)
+            })
+        }
    }
 }
 </script>
