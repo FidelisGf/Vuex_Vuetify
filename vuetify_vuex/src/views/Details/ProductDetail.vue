@@ -15,6 +15,8 @@
                                  <p>Valor : {{data.VALOR}}</p>
                                  <p>Categoria do produto  : {{data.category.NOME}}</p>
                                  <p>Quantidade em estoque : {{quantidade.QUANTIDADE}}</p>
+                                 <p>Data de criação do Item : {{data.CREATED_AT}}</p>
+                                 <p v-if="data.UPDATED_AT != data.CREATED_AT">Data de atulização do Item : {{data.UPDATED_AT}}</p>
                     </v-card-text>   
                     <v-card-actions class="ml-3">
                         <v-btn color="#3e3e3c">

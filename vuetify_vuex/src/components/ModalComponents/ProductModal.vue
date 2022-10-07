@@ -91,7 +91,7 @@
                             > 
                             
                                 <v-select
-                                    :items="categorias"
+                                    :items="$store.getters.listCategorias"
                                     label="Categoria"
                                     v-model="Categoria"
                                     color="teal lighten-1"
@@ -136,7 +136,7 @@
     <v-row >
         <v-col cols="12" sm="6" class="d-flex justify-start">
             <v-select
-                :items="categorias"
+                :items="$store.getters.listCategorias"
                 label="Filtre por uma categoria..."
                 v-model="Categoria"
                 color="teal lighten-1"
@@ -164,12 +164,11 @@
         </v-col>
         <v-col cols="12">
             <v-data-table
-            
                 :search="search"
                 :custom-filter="filterOnlyCapsText"
                 :loading="loading"
                 :headers="headers"
-                :items="products"
+                :items="$store.getters.listProducts"
                 :items-per-page="5"
                 hide-default-footer
                 class="elevation-2"
@@ -187,7 +186,7 @@
                     <v-icon small color="red lighten-1" @click="deleteProduct(item)">mdi-delete</v-icon>
                 </template>
                 <template v-slot:[`item.info`]="{ item }">
-                    <v-icon  @click="infoProduct(item.ID_PRODUTO)">mdi-alpha-i-circle</v-icon>
+                    <v-icon color="blue darken-4"  @click="infoProduct(item.ID_PRODUTO)">mdi-alpha-i-circle</v-icon>
                 </template>
             </v-data-table>
             <v-pagination
@@ -196,7 +195,7 @@
                 :length="pagination.total"
                 @input="onPageChange">  
             </v-pagination>  
-           
+            <DeleteProduct></DeleteProduct>
         </v-col>      
     </v-row>
 </v-container>
@@ -206,6 +205,7 @@ import router from '@/router';
 import categoryService from '@/service/categoryService'
 import productService from '@/service/productService'
 import CategoryModal from './CategoryModal.vue'
+import DeleteProduct from './Delete/DeleteProduct.vue';
 export default {
     props: {
         miniatura: Boolean
@@ -214,7 +214,6 @@ export default {
         return {
             dialog: false,
             data: [],
-            categorias: [],
             Categoria: null,
             NOME: "",
             ID_PRODUTO: "",
@@ -256,28 +255,29 @@ export default {
     methods: {
         getCategorias() {
             categoryService.getCategory().then((res) => {
-                this.categorias = res.data.data;
+                this.$store.commit('clearListCategoria')
                 this.$store.commit('beginListCategoria', res.data.data)
             });
         }, 
         deleteProduct(item){
             console.log(item);
-            this.excludeMode = true;
+            var payload = {ID_PRODUTO : item.ID_PRODUTO ,NOME: item.NOME, VALOR: item.VALOR, DESC: item.DESC, category: item.Categoria}
+            this.$store.commit("saveProduct", payload)
+            this.$store.commit('activeDeleteProduct')
         },
         infoProduct(idProduto){
             router.push({ path: `/products/detail/${idProduto}` }) 
         },
         postProduto() {
             var payload = { NOME: this.NOME, VALOR: this.VALOR, DESC: this.DESC, quantidade_inicial: this.quantidade_inicial, ID_CATEGORIA: this.Categoria.ID_CATEGORIA };
-            var payload2 = { NOME: this.NOME, VALOR: this.VALOR, DESC: this.DESC, category: this.Categoria}
+            //var payload2 = {NOME: this.NOME, VALOR: this.VALOR, DESC: this.DESC, category: this.Categoria}
             productService.postProduto(payload).then((res) => {
+                var payload2 = {NOME: this.NOME, ID_PRODUTO: res.data.ID_PRODUTO, VALOR: this.VALOR, DESC: this.DESC, category: this.Categoria}
                 if (res.status == 200) {
+                    console.log(res);
                     alert("Produto salvo com sucesso");
-                    console.log(this.Categoria);
-                    this.$store.commit("saveProduct", payload2)
-                    console.log(this.$store.state.product.category)
-                    this.products.push(this.$store.state.product)
-                    // this.Categoria = ""
+                    this.Categoria = null
+                    this.$store.commit('saveListProduct', payload2)
                     this.dialog = false
                 }
             });
@@ -309,9 +309,10 @@ export default {
         },
         getProdutos() {
             this.loading = true
+            this.$store.commit('clearListProduct')
             productService.getProdutos(this.pagination.current).then((response) => {
                 this.loading = false
-                this.products = response.data.data;
+                this.$store.commit('beginListProduct', response.data.data)
                 this.pagination.current = response.data.current_page;
                 this.tempCurrent = response.data.current_page;
                 this.pagination.total = response.data.last_page;   
@@ -333,6 +334,7 @@ export default {
                 value.toString().toLocaleUpperCase().indexOf(search) !== -1;
         },
         findAllProductByCategory() {
+            this.$store.commit('clearListProduct')
             console.log(this.tempCurrent);
             if(this.tempCurrent != 1){
                 this.pagination.current = 1
@@ -349,7 +351,7 @@ export default {
                 this.loading = false
                 productService.findAllProductByCategory(this.Categoria.ID_CATEGORIA, this.pagination.current).then((res) => {
                     this.loading = false
-                    this.products = res.data.data;
+                    this.$store.commit('beginListProduct', res.data.data)
                     this.pagination.current = res.data.current_page;
                     this.pagination.total = res.data.last_page;
                 });
@@ -368,8 +370,7 @@ export default {
         
         console.log(this.$store.state.Categorias)
     },
-    // this.$store.dispatch('setUser', this.username)
-    components: { CategoryModal }
+    components: { CategoryModal, DeleteProduct }
 }
 </script>
 

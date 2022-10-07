@@ -15,5 +15,8 @@ export default{
     },
     editProduct(payload, $id){
         return axios.put("/products/" + $id, payload)
+    },
+    deleteProduct($id){
+        return axios.delete("/products/"+$id)
     }
 }

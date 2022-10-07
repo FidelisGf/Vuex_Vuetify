@@ -10,6 +10,7 @@ export default new Vuex.Store({
       username: ''
     },
     product: {
+      ID_PRODUTO : '',
       NOME : '',
       DESC : '',  
       VALOR : 0,
@@ -19,11 +20,22 @@ export default new Vuex.Store({
         NOME : ''
       },
     },
-    Categorias : []
+    Categorias : [],
+    Products : [],
+    deleteProduct : false
   },
   getters: {
     listCategorias(state){
-        return state.Categorias
+      return state.Categorias
+    },
+    listProducts(state){
+      return state.Products
+    },
+    deleteProduct(state){
+      return state.deleteProduct
+    },
+    getProduct(state){
+      return state.product
     }
   },
   mutations: {
@@ -34,13 +46,32 @@ export default new Vuex.Store({
       state.product = payload
     },
     beginListCategoria(state, payload){
-      payload.forEach(element => {
-        state.Categorias.push(element)
-      });
+       state.Categorias = payload
+    },
+    beginListProduct(state, payload){
+       state.Products = payload
+    },
+    clearListCategoria(state){
+        state.Categorias.length = 0
+    },
+    clearListProduct(state){
+      state.Products.length = 0
     },
     saveListCategoria(state, payload){
       state.Categorias.push(payload)
-    }
+    },
+    saveListProduct(state, payload){
+      state.Products.push(payload)
+    },
+    deleteInListProduct(state, payload){
+      state.Products =  state.Products.filter(item => item.ID_PRODUTO !== payload)
+    },
+    activeDeleteProduct(state){
+      state.deleteProduct = true
+    },
+    desativateDeleteProduct(state){
+      state.deleteProduct = false
+    },
   },
   actions: {
     setUser(context, payload){
