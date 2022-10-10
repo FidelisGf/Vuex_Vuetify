@@ -38,17 +38,17 @@
             </v-row>
             <v-row >
               <v-col >
-                <v-list-item @click="$router.push('/products')"  class="d-flex-row justify-center" link>
+                <v-list-item @click="$router.push('/relatorio')"  class="d-flex-row justify-center" link>
                   <v-card class="rounded-xl" elevation="6">
-                      <v-card-title class="ml-2">Cadastro</v-card-title>
+                      <v-card-title class="ml-2">Relatorios Produtos</v-card-title>
                       <v-row style="margin-top: 1px">
                         <v-col cols="1" class="mt-n5 ml-3">
                           <v-icon large color="teal lighten-1" left>
-                            mdi-account-plus
+                            mdi-file-check-outline
                           </v-icon>
                         </v-col>
                         <v-col cols="9" class="mt-n3 ml-5">
-                          <p>Complete seu cadastro aqui</p>
+                          <p>Acesso à relatorios diversos</p>
                         </v-col>
                         <v-col cols="1" class="mt-n5 ml-n12">
                           <v-icon large color="teal lighten-1" right>
@@ -90,7 +90,7 @@
     <v-container v-if="$vuetify.breakpoint.smAndDown" class="info">
         <v-row >
           <v-col >
-            <v-list-item @click="$router.push('/pedidos')" class="d-flex-row justify-center" link>
+            <v-list-item @click="$router.push('/estoque')" class="d-flex-row justify-center" link>
               <v-card class="rounded-xl" style="width:100vh;" elevation="5">
                   <v-card-title>Pedidos</v-card-title>
                   <v-row >
@@ -114,7 +114,7 @@
         </v-row>
         <v-row >
           <v-col >
-            <v-list-item @click="$router.push('/products')" class="d-flex-row justify-center" link>
+            <v-list-item @click="$router.push('/relatorio')" class="d-flex-row justify-center" link>
               <v-card class="rounded-xl" style="width:100vh; " elevation="5" >
                   <v-card-title>Cadastro</v-card-title>
                   <v-row >

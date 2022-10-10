@@ -18,5 +18,8 @@ export default{
     },
     deleteProduct($id){
         return axios.delete("/products/"+$id)
+    },
+    filters(filtro){
+        return axios.post("/filterBy", filtro);
     }
 }

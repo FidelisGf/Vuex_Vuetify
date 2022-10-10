@@ -54,6 +54,15 @@ const routes = [
         // which is lazy-loaded when the route is visited.
         beforeEnter: Guard.auth,
         component: () => import(/* webpackChunkName: "about" */ '../views/EstoqueView.vue')
+      },  
+      {
+        path: '/relatorio',
+        name: 'relatorio',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        beforeEnter: Guard.auth,
+        component: () => import(/* webpackChunkName: "about" */ '../views/RelatoriosView.vue')
       },     
       {
         path: '/about',
@@ -62,6 +71,14 @@ const routes = [
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
         component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+      },
+      {
+        path: '/senhas',
+        name: 'senhas',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () => import(/* webpackChunkName: "about" */ '../views/OtherProject/SenhasView.vue')
       }
     ]
   },

@@ -2,6 +2,8 @@
     <v-container fluid grid-list-md>
     <v-row>
         <v-col cols="12">
+           
+           
             <v-dialog
                 v-model="dialog"
                 persistent
@@ -12,6 +14,7 @@
                     color="teal lighten-1"
                     dark
                     block
+                    
                     @click="cleanProduct"
                     v-bind="attrs"
                     v-on="on"
@@ -19,6 +22,7 @@
                     Novo Produto
                     </v-btn>
                 </template>
+              
                 <v-card>
                 <v-card-title>
                     <span v-if="!editMode" class="text-h5">Cadastar novo produto</span>
@@ -161,6 +165,18 @@
                 >
                 Limpar  
             </v-btn>
+           
+        </v-col>
+        <v-spacer></v-spacer>
+        <v-col>
+            <v-btn
+            color="cyan lighten-1"
+            class="mt-3"
+            dark
+            @click="activeAdicionarEstoque"
+            >
+                Adicionar quantidade no estoque 
+            </v-btn>
         </v-col>
         <v-col cols="12">
             <v-data-table
@@ -169,7 +185,7 @@
                 :loading="loading"
                 :headers="headers"
                 :items="$store.getters.listProducts"
-                :items-per-page="5"
+                :items-per-page="6"
                 hide-default-footer
                 class="elevation-2"
             >
@@ -196,7 +212,11 @@
                 @input="onPageChange">  
             </v-pagination>  
             <DeleteProduct></DeleteProduct>
+            <EstoqueModal></EstoqueModal>
         </v-col>      
+    </v-row>
+    <v-row>
+        
     </v-row>
 </v-container>
 </template>
@@ -206,6 +226,7 @@ import categoryService from '@/service/categoryService'
 import productService from '@/service/productService'
 import CategoryModal from './CategoryModal.vue'
 import DeleteProduct from './Delete/DeleteProduct.vue';
+import EstoqueModal from './EstoqueModal.vue';
 export default {
     props: {
         miniatura: Boolean
@@ -264,6 +285,9 @@ export default {
             var payload = {ID_PRODUTO : item.ID_PRODUTO ,NOME: item.NOME, VALOR: item.VALOR, DESC: item.DESC, category: item.Categoria}
             this.$store.commit("saveProduct", payload)
             this.$store.commit('activeDeleteProduct')
+        },
+        activeAdicionarEstoque(){
+            this.$store.commit('activeAdicionaEstoque')
         },
         infoProduct(idProduto){
             router.push({ path: `/products/detail/${idProduto}` }) 
@@ -370,7 +394,7 @@ export default {
         
         console.log(this.$store.state.Categorias)
     },
-    components: { CategoryModal, DeleteProduct }
+    components: { CategoryModal, DeleteProduct, EstoqueModal }
 }
 </script>
 

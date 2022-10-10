@@ -22,7 +22,8 @@ export default new Vuex.Store({
     },
     Categorias : [],
     Products : [],
-    deleteProduct : false
+    deleteProduct : false,
+    adicionaEstoque: false,
   },
   getters: {
     listCategorias(state){
@@ -36,6 +37,9 @@ export default new Vuex.Store({
     },
     getProduct(state){
       return state.product
+    },
+    getAdicionaEstoque(state){
+      return state.adicionaEstoque
     }
   },
   mutations: {
@@ -72,6 +76,12 @@ export default new Vuex.Store({
     desativateDeleteProduct(state){
       state.deleteProduct = false
     },
+    activeAdicionaEstoque(state){
+      state.adicionaEstoque = true
+    },
+    desativateAdicionaEstoque(state){
+      state.adicionaEstoque = false
+    }
   },
   actions: {
     setUser(context, payload){
