@@ -1,7 +1,7 @@
 import axios from "axios";
 /* eslint-disable */
 export default{
-    getProdutos(page){
+    get(page){
         return axios.get("/products?page=" + page)
     },
     postProduto(payload){
@@ -19,7 +19,7 @@ export default{
     deleteProduct($id){
         return axios.delete("/products/"+$id)
     },
-    filters(filtro){
-        return axios.post("/filterBy", filtro);
+    filters(opcao, page){
+        return axios.get("/filterBy?page=" + page, { params: { opcao: opcao} });
     }
 }

@@ -42,12 +42,10 @@
             
                   <div>{{product.desc}}</div>
                 </v-card-text>
-            
                 <v-divider class="mx-4"></v-divider>
               </v-card>
             </v-col>
         </v-row>
-       
     </v-container>
 </template>
 

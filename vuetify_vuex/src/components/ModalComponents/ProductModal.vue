@@ -138,7 +138,7 @@
         </v-col>
     </v-row>
     <v-row >
-        <v-col cols="12" sm="6" class="d-flex justify-start">
+        <v-col cols="12" sm="8" class="d-flex justify-start">
             <v-select
                 :items="$store.getters.listCategorias"
                 label="Filtre por uma categoria..."
@@ -170,12 +170,14 @@
         <v-spacer></v-spacer>
         <v-col>
             <v-btn
-            color="cyan lighten-1"
+            color="teal lighten-3"
             class="mt-3"
             dark
+            text
             @click="activeAdicionarEstoque"
             >
-                Adicionar quantidade no estoque 
+            <v-icon dark color="teal lighten-1" left>mdi-plus-circle-outline</v-icon>
+            Estoque
             </v-btn>
         </v-col>
         <v-col cols="12">

@@ -3,20 +3,20 @@
         <v-row>
             <v-col cols="12"> 
                 <v-dialog
-                    v-model="$store.getters.getRelatorio"
+                    v-model="$store.getters.getRelatorioEstoque"
                     persistent
                     max-width="600px"
                 > 
                     <v-card>
                     <v-card-title>
-                        <span  class="text-h5">{{this.$store.getters.getFiltro}}</span>
+                        <span  class="text-h5">{{this.$store.getters.getFiltroEstoque}}</span>
                     </v-card-title>
                     <v-card-text>
                         <v-row>
                             <v-col cols="12">
                                 <v-data-table
                                     :headers="headers"
-                                    :items="$store.getters.listProducts"
+                                    :items="lista"
                                     :items-per-page="6"
                                     hide-default-footer
                                     
@@ -48,9 +48,8 @@
         </v-row>
     </v-container>
 </template>
-
 <script>
-import productService from '@/service/productService'
+import estoqueService from '@/service/estoqueService'
 export default {
   props:{
     nomeRelatorio : String
@@ -61,6 +60,7 @@ export default {
                 current: 1,
                 total: 0
         },
+        lista : []
     }
   },
   computed: {
@@ -69,32 +69,31 @@ export default {
                 {
                     text: "Produto",
                     align: "start",
-                    value: "NOME",
+                    value: "product[0].NOME",
                 },
-                { text: "Descrição", value: "DESC" },
-                { text: "Valor", value: "VALOR" },
-                { text: "Categoria", value: "category.NOME" },
+                { text: "Descrição", value: "product[0].DESC" },
+                { text: "Valor", value: "product[0].VALOR" },
+                { text: "Quantidade", value: "QUANTIDADE" },
             ];
          },
     },
   methods:{
         closeRelatorio(){
-            this.$store.commit('desativeRelatorio')      
-
-            this.$store.commit('deleteFiltro')
+            this.$store.commit('desativeRelatorioEstoque')      
+            this.$store.commit('deleteFiltroEstoque')
         },
         getRelatorio(){
-            let filtro = this.$store.getters.getFiltro 
-            productService.filters(filtro, this.pagination.current).then((response) => {
-                this.$store.commit('beginListProduct', response.data.data)
-                this.pagination.current = response.data.current_page;
-                this.pagination.total = response.data.last_page;   
+            let filtro = this.$store.getters.getFiltroEstoque
+            estoqueService.filter(this.pagination.current, filtro).then((response) => {
+                this.lista = response.data.data
+                console.log(this.lista)
+                this.pagination.current = response.data.current_page
+                this.pagination.total = response.data.last_page 
             })
         },
         onPageChange() {
             this.getRelatorio();
         },
-
   },
   created(){
     this.getRelatorio()

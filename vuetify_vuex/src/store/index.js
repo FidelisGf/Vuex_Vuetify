@@ -1,7 +1,6 @@
 
 import Vue from 'vue'
 import Vuex from 'vuex'
-
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -9,6 +8,8 @@ export default new Vuex.Store({
     user: {
       username: ''
     },
+    current_page: 1,
+    total_page: 0,
     product: {
       ID_PRODUTO : '',
       NOME : '',
@@ -22,12 +23,36 @@ export default new Vuex.Store({
     },
     Categorias : [],
     Products : [],
+    header : [],
     deleteProduct : false,
     adicionaEstoque: false,
+    filtro_selecionado : '',
+    filtro_estoque: '',
+    showRelatorioEstoque : false,
+    showRelatorio : false,
+    showListaRapidaProdutos : false,
   },
   getters: {
     listCategorias(state){
       return state.Categorias
+    },
+    getCurrentPage(state){
+      return state.current_page
+    },
+    getTotalPage(state){
+      return state.total_page
+    },
+    getHeader(state){
+      return state.header
+    },
+    getListRapidaProdutos(state){
+      return state.showListaRapidaProdutos
+    },
+    getFiltro(state){
+      return state.filtro_selecionado
+    },
+    getFiltroEstoque(state){
+      return state.filtro_estoque
     },
     listProducts(state){
       return state.Products
@@ -38,11 +63,56 @@ export default new Vuex.Store({
     getProduct(state){
       return state.product
     },
+    getRelatorio(state){
+      return state.showRelatorio
+    },
+    getRelatorioEstoque(state){
+      return state.showRelatorioEstoque
+    },
     getAdicionaEstoque(state){
       return state.adicionaEstoque
     }
   },
   mutations: {
+    saveFiltroEstoque(state, payload){
+      state.filtro_estoque = payload
+    },
+    setCurrentPage(state, payload){
+      state.current_page = payload 
+    },
+    setTotalPage(state, payload){
+      state.total_page = payload
+    },
+    setHeader(state,payload){
+      state.header = payload
+    },
+    deleteFiltroEstoque(state){
+      state.filtro_estoque = ''
+    },
+    saveFiltro(state, payload){
+      state.filtro_selecionado = payload
+    },
+    deleteFiltro(state){
+      state.filtro_selecionado = ''
+    },
+    activeRelatorioEstoque(state){
+      state.showRelatorioEstoque = true
+    },
+    desativeRelatorioEstoque(state){
+      state.showRelatorioEstoque = false
+    },
+    activeListaRapidaProdutos(state){
+      state.showListaRapidaProdutos = true
+    },
+    desativeListaRapidaProdutos(state){
+      state.showListaRapidaProdutos = false
+    },
+    activeRelatorio(state){
+      state.showRelatorio = true
+    },
+    desativeRelatorio(state){
+      state.showRelatorio = false
+    },
     saveUser(state, payload){
       state.user.username = payload
     },
@@ -81,7 +151,10 @@ export default new Vuex.Store({
     },
     desativateAdicionaEstoque(state){
       state.adicionaEstoque = false
-    }
+    },
+    // onPageChange(state, payload){
+      
+    // }
   },
   actions: {
     setUser(context, payload){
@@ -90,7 +163,9 @@ export default new Vuex.Store({
     },
     saveListCategoria(context, payload){
       context.commit('saveListCategoria', payload)
-    }
+    },
+    
+   
   },
   modules: {
   }

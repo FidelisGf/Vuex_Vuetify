@@ -6,6 +6,9 @@ export default{
     },
     adicionarQuantidade(payload){
         return axios.post("/addEstoque", payload)
+    },
+    filter(page, opcao){
+        return axios.get("/filterEstoque?page=" + page, { params: { opcao: opcao} });
     }
   
 }
