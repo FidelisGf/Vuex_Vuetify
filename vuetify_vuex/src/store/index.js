@@ -33,10 +33,19 @@ export default new Vuex.Store({
     showRelatorio : false,
     showListaRapidaProdutos : false,
     itemGenerico : null,
+    pedidos: [],
+    showListaPedidos : false,
+
   },
   getters: {
+    ListaPedidos(state){
+      return state.showListaPedidos
+    },
     listCategorias(state){
       return state.Categorias
+    },
+    getPedidos(state){
+      return state.pedidos
     },
     getGenerico(state){
       return state.itemGenerico
@@ -84,6 +93,20 @@ export default new Vuex.Store({
   mutations: {
     saveGenerico(state, payload){
       state.itemGenerico = payload
+    },
+    savePedidos(state, payload){
+      const exist = state.pedidos.find(o => o.id == payload.id)
+      if(exist){
+        exist.quantidade += payload.quantidade
+      }else{
+        state.pedidos.push(payload)
+      }
+    },
+    activeListaPedidos(state){
+      state.showListaPedidos = true
+    },
+    disableListaPedidos(state){
+      state.showListaPedidos = false
     },
     activeEdit(state){
       state.edit = true
@@ -172,9 +195,6 @@ export default new Vuex.Store({
     desativateAdicionaEstoque(state){
       state.adicionaEstoque = false
     },
-    // onPageChange(state, payload){
-      
-    // }
   },
   actions: {
     setUser(context, payload){

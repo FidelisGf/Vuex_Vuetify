@@ -152,8 +152,7 @@ export default {
                 search != null &&
                 typeof value === "string" &&
                 value.toString().toLocaleUpperCase().indexOf(search) !== -1;
-        },
-        
+        },  
         findAllByCategory() {
       
             console.log(this.tempCurrent);
