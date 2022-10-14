@@ -12,13 +12,67 @@
                     hide-default-footer       
                     class="elevation-2"
                 >
+                <template v-slot:[`item.actions`]="{ item }" >
+                    <v-icon small color="teal lighten-1" class="mr-2" @click="editItem(item, route)">mdi-pencil</v-icon>
+                    <v-icon small color="red lighten-1" @click="deleteItem(item)">mdi-delete</v-icon>
+                    
+                </template>
+                <template v-slot:[`item.info`]="{ item }">
+                    <v-icon color="blue darken-4"  @click="infoProduct(item.ID_PRODUTO)">mdi-alpha-i-circle</v-icon>
+                </template>
                 <template v-slot:top>
-                    <v-text-field
-                    v-model="search"
-                    color="teal lighten-1"
-                    label="Search (APENAS COM CAPS)"
-                    class="mx-4"
-                    ></v-text-field>
+                    <div class="d-flex align-center">
+                        <v-text-field 
+                            
+                            v-model="search"
+                            color="teal lighten-1"
+                            label="Search (APENAS COM CAPS)"
+                            class="mx-5 w-25"
+                        >   
+                        </v-text-field>
+                        <v-select v-if="route == 'products'"
+                            :items="$store.getters.listCategorias"
+                            label="Filtre por uma categoria..."
+                            v-model="Categoria"
+                            color="teal lighten-1"
+                            item-text="NOME" 
+                            class="mx-5 w-25"
+                            return-object
+                        >
+                        </v-select>
+                    </div>
+                    <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                                v-bind="attrs"
+                                v-on="on"
+                                color="primary"
+                                dark
+                                text
+                                @click="findAllByCategory"
+                                class="ml-2 mt-n1"
+                            >
+                               Aplicar
+                            </v-btn>
+                        </template>
+                        <span>Buscar pelos filtros acima</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                                v-bind="attrs"
+                                v-on="on"
+                                color="primary"
+                                dark
+                                text
+                                @click="cleanCategoryFilter"
+                                class="ml-4 mt-n1"
+                            >
+                               Limpar
+                            </v-btn>
+                        </template>
+                        <span>Limpa os Filtros</span>
+                    </v-tooltip>
                 </template>
             </v-data-table>
             <v-pagination
@@ -27,6 +81,8 @@
                 :length="totalPage"
                 @input="onPageChange">  
             </v-pagination> 
+            <DeleteGeneric v-if="$store.getters.delete" :route="route"></DeleteGeneric>
+            <EditProduct v-if="$store.getters.edit"></EditProduct>
             </v-col>
         </v-row>
    </v-container>
@@ -34,36 +90,60 @@
 
 <script>
 import axios from 'axios'
-
+import DeleteGeneric from './ModalComponents/Delete/DeleteGeneric.vue'
+import EditProduct from './ModalComponents/Edit/EditProduct.vue'
+import productService from '@/service/productService'
 
 export default {
-    props:{
-        route : String,
-       
+    props: {
+        route: String,
     },
-    data(){
-        return{
-            current_page : 1,
-            totalPage : 0,
+    data() {
+        return {
+            current_page: 1,
+            totalPage: 0,
+            tempCurrent : 1,
             loading: true,
             search: "",
-        }
+            rota : '',
+            tempCategory : '',
+            filtroCategory : false,
+            delete : false,
+            Categoria : ''
+
+        };
     },
-    methods:{
-        getLista(route){
-            this.loading = true
-            this.$store.commit('clearListProduct')
-            axios.get("http://127.0.0.1:8000/api/" + route +"?page=" + this.current_page).then((response) => {
-                this.$store.commit('beginListProduct', response.data.data)
-                this.loading = false
+    methods: {
+        getLista(route) {
+            this.loading = true;
+            this.$store.commit("clearListProduct");
+            axios.get("http://127.0.0.1:8000/api/" + route + "?page=" + this.current_page).then((response) => {
+                this.$store.commit("beginListProduct", response.data.data)
+                this.loading = false;
                 this.current_page = response.data.current_page
-                this.totalPage =  response.data.last_page
-            })
+                this.tempCurrent = this.current_page
+                this.totalPage = response.data.last_page
+            });
         },
-        onPageChange(){
-            this.getLista(this.route);
+        deleteItem(item) {
+            this.$store.commit("saveGenerico", item)
+            this.$store.commit("activeDelete")
         },
-        clearPages(){
+        editItem(item, route){
+            this.$store.commit("saveGenerico", item)
+            if(route == 'products'){
+                this.$store.commit("activeEdit")
+            }
+        },
+        onPageChange() {
+            if(this.filtroCategory){
+                this.findAllByCategory()
+            }else{
+                this.getLista(this.route);
+            }
+            
+        },
+        clearPages() {
             this.current_page = 1;
             this.totalPage = 0;
         },
@@ -73,12 +153,43 @@ export default {
                 typeof value === "string" &&
                 value.toString().toLocaleUpperCase().indexOf(search) !== -1;
         },
+        
+        findAllByCategory() {
+      
+            console.log(this.tempCurrent);
+            if(this.tempCurrent != 1){
+                this.current_page = 1
+                this.tempCurrent = 1;
+                console.log(this.current_page)
+            }
+            if(this.tempCategory != this.Categoria.ID_CATEGORIA){
+                this.current_page = 1;
+            }
+            this.tempCategory = this.Categoria.ID_CATEGORIA
+            this.loading = true
+            this.filtroCategory = true;
+            if (this.Categoria != "") {
+                this.loading = false
+                productService.findAllProductByCategory(this.Categoria.ID_CATEGORIA, this.current_page).then((res) => {
+                    this.loading = false
+                    this.$store.commit('beginListProduct', res.data.data)
+                    this.current_page = res.data.current_page;
+                    this.totalPage = res.data.last_page;
+                });
+            }
+        },
+        cleanCategoryFilter() {
+            this.current_page = 1
+            this.filtroCategory = false;
+            this.Categoria = ""
+            this.getLista(this.route)
+        }
     },
-    created(){
-        this.clearPages()
+    created() {
+        this.clearPages();
         this.getLista(this.route);
-        console.log(this.current_page)
-    }
+    },
+    components: { DeleteGeneric, EditProduct }
 }
 </script>
 

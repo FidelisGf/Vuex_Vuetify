@@ -3,9 +3,10 @@
         <v-row>
             <v-col cols="12"> 
                 <v-dialog
+                    @keydown.escape="fechar"
                     v-model="$store.getters.getListRapidaProdutos"
                     persistent
-                    max-width="600px"
+                    max-width="760px"
                 > 
                     <v-card>
                     <v-card-title>
@@ -22,6 +23,7 @@
                                 color="teal lighten-1"
                                 text
                                 @click="fechar"
+                                
                             >
                             Fechar
                             </v-btn>
@@ -66,6 +68,7 @@ export default {
                 { text: "Descrição", value: "DESC" },
                 { text: "Valor", value: "VALOR" },
                 { text: "Categoria", value: "category.NOME" },
+               
             ];
         },
     },

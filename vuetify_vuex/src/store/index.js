@@ -24,17 +24,22 @@ export default new Vuex.Store({
     Categorias : [],
     Products : [],
     header : [],
-    deleteProduct : false,
+    delete : false,
+    edit : false,
     adicionaEstoque: false,
     filtro_selecionado : '',
     filtro_estoque: '',
     showRelatorioEstoque : false,
     showRelatorio : false,
     showListaRapidaProdutos : false,
+    itemGenerico : null,
   },
   getters: {
     listCategorias(state){
       return state.Categorias
+    },
+    getGenerico(state){
+      return state.itemGenerico
     },
     getCurrentPage(state){
       return state.current_page
@@ -57,8 +62,11 @@ export default new Vuex.Store({
     listProducts(state){
       return state.Products
     },
-    deleteProduct(state){
-      return state.deleteProduct
+    delete(state){
+      return state.delete
+    },
+    edit(state){
+      return state.edit
     },
     getProduct(state){
       return state.product
@@ -74,6 +82,15 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    saveGenerico(state, payload){
+      state.itemGenerico = payload
+    },
+    activeEdit(state){
+      state.edit = true
+    },
+    disableEdit(state){
+      state.edit = false
+    },
     saveFiltroEstoque(state, payload){
       state.filtro_estoque = payload
     },
@@ -82,6 +99,9 @@ export default new Vuex.Store({
     },
     setTotalPage(state, payload){
       state.total_page = payload
+    },
+    incrementCurrentPage(state){
+      state.current_page += 1
     },
     setHeader(state,payload){
       state.header = payload
@@ -140,11 +160,11 @@ export default new Vuex.Store({
     deleteInListProduct(state, payload){
       state.Products =  state.Products.filter(item => item.ID_PRODUTO !== payload)
     },
-    activeDeleteProduct(state){
-      state.deleteProduct = true
+    activeDelete(state){
+      state.delete = true
     },
-    desativateDeleteProduct(state){
-      state.deleteProduct = false
+    desativateDelete(state){
+      state.delete = false
     },
     activeAdicionaEstoque(state){
       state.adicionaEstoque = true

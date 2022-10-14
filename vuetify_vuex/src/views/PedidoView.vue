@@ -19,7 +19,7 @@
                                         v-on="on"
                                     ></v-text-field>
                                 </template>
-                                <span>Tecle f2 para abrir a lista</span>
+                                <span>Tecle f2 para ver os disponiveis</span>
                               </v-tooltip>
                                 <v-text-field
                                 class="ml-3 w-25"
@@ -37,6 +37,7 @@
                                         v-bind="attrs"
                                         v-on="on"
                                         color="primary"
+                                        class="ml-3"
                                         dark
                                         icon 
                                     >
@@ -44,6 +45,21 @@
                                     </v-btn>
                                 </template>
                                 <span>Adicionar a lista</span>
+                              </v-tooltip>
+                              <v-tooltip bottom>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        color="teal"
+                                        class="ml-3"
+                                        dark
+                                        icon 
+                                    >
+                                        <v-icon aria-hidden="false" dark color="teal lighten-1">mdi-cart</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Ver a lista do pedido</span>
                               </v-tooltip>
                         </v-col>
                         <v-col cols="12" sm="6" class="d-flex justify-center ml-0 ml-md-6 ml-sm-6 ml-lg-6">

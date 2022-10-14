@@ -20,15 +20,6 @@ const routes = [
         component: () => import(/* webpackChunkName: "about" */ '../views/PedidoView.vue')
       },
       {
-        path: '/products',
-        name: 'products',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        beforeEnter: Guard.auth,
-        component: () => import(/* webpackChunkName: "about" */ '../views/ProductView.vue')
-      },
-      {
         path: '/products/detail/:id',
         name: 'products-detail',
         // route level code-splitting
@@ -64,14 +55,6 @@ const routes = [
         beforeEnter: Guard.auth,
         component: () => import(/* webpackChunkName: "about" */ '../views/RelatoriosView.vue')
       },     
-      {
-        path: '/about',
-        name: 'about',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-      },
     ]
   },
   {
