@@ -14,7 +14,7 @@
                     </v-card-title>
                     <v-card-text>
                         <v-row>
-                           <ListaGenerica :route="'products'"></ListaGenerica>
+                           <ListaGenerica :route="'estoques'"></ListaGenerica>
                         </v-row>
                     </v-card-text>
                     <v-card-actions>
@@ -54,23 +54,22 @@ export default {
         }
     },
     computed: {
-        headers() {
+         headers() {
             return [
                 {
                     text: "Codigo",
                     align: "start",
-                    value: "ID_PRODUTO",
+                    value: "product[0].ID_PRODUTO",
                 },
                 {
                     text: "Produto",
-                    value: "NOME",
+                    value: "product[0].NOME",
                 },
-                { text: "Descrição", value: "DESC" },
-                { text: "Valor", value: "VALOR" },
-                { text: "Categoria", value: "category.NOME" },
-               
+                { text: "Descrição", value: "product[0].DESC" },
+                { text: "Valor", value: "product[0].VALOR" },
+                { text: "Quantidade", value: "QUANTIDADE" },
             ];
-        },
+         },
     },
     created() {
         this.getLista();

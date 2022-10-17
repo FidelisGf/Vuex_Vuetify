@@ -110,7 +110,7 @@
                             ></v-text-field>
                             <v-text-field
                                 class="ml-3"
-                                v-model="valor_total"
+                                v-model="$store.getters.getValorTotal"
                                 small
                                 label="Valor Total"
                                 outlined
@@ -123,10 +123,22 @@
                                 :items="situacoes"
                                 label="Situação desse pedido"
                                 dense
+                                v-model="escolhaSituacao"
                                 outlined
                             ></v-select>
                         </v-col>
                         <ListaRapidaProduto></ListaRapidaProduto>
+                        <v-col cols="6" class="d-flex ml-4 mt-n4">
+                            <v-btn
+                            class="ma-2"
+                            block
+                            outlined
+                            @click="gerarVenda"
+                            color="teal darken-3"
+                          >
+                            Gerar Venda
+                          </v-btn>
+                        </v-col>
                     </v-row>
                 </v-card>
             </v-col>
@@ -137,6 +149,7 @@
 import ListaRapidaProduto from '@/components/ModalComponents/ListaRapidaProduto.vue';
 import PedidosModal from '@/components/ModalComponents/PedidosModal.vue';
 import productService from '@/service/productService'
+import pedidoService from '@/service/pedidoService'
 export default {
     data() {
         return {
@@ -146,6 +159,7 @@ export default {
             valor_total: 0,
             dinheiroPago: 0,
             situacoes: ["Pago", "Pagamento pendente"],
+            escolhaSituacao : '',
             produto: {
                 id: null,
                 valor: null,
@@ -164,8 +178,9 @@ export default {
         listaPedidos(){
             this.$store.commit("activeListaPedidos")
         },
-        somaItens(produto){
-           this.valor_total += produto.quantidade * produto.valor  
+        somaItens(valor){
+           this.valor_total += valor * this.produto.quantidade
+           this.$store.commit("saveValorTotal", this.valor_total)
         },
         addLista(){
             if(this.produto.quantidade == 0 || this.produto.id == null){
@@ -174,7 +189,7 @@ export default {
            productService.findProdutoById(this.produto.id).then((res)=>{
                 if(res.status == 200){
                     let payload = {id : res.data.ID_PRODUTO, nome : res.data.NOME, valor : res.data.VALOR, quantidade : this.produto.quantidade}
-                    this.somaItens(this.produto)
+                    this.somaItens(res.data.VALOR)
                     this.$store.commit("savePedidos", payload)    
                 }else{
                     alert('Falha ao adicionar Item, verifique os campos')
@@ -187,16 +202,31 @@ export default {
             this.produto.valor = null
             this.produto.nome = null
             this.produto.quantidade = 1
+            this.dinheiroPago = 0
+        },
+        gerarVenda(){
+            if(this.escolhaSituacao == "Pago"){
+                this.escolhaSituacao = 'T'
+            }else{
+                this.escolhaSituacao = 'F'
+            }
+            let payload = {METODO_PAGAMENTO : this.escolhaPagamento, produtos : this.$store.getters.getPedidos, valor_total : this.$store.getters.getValorTotal, aprovado : this.escolhaSituacao}
+            pedidoService.save(payload).then((res)=>{
+                console.log(res)
+                this.$store.commit("limpaPedido")
+                this.$store.commit("limparValorTotal")
+                this.clear()
+            })
         }
     },
     computed: {
         troco: function () {
-            let resultado = this.valor_total - this.dinheiroPago;
+            let resultado = this.$store.getters.getValorTotal - this.dinheiroPago;
             if (resultado > 0) {
                 return "Falta : " + resultado;
             }
             else {
-                return this.valor_total - this.dinheiroPago;
+                return resultado;
             }
         }
     },

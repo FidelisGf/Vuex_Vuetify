@@ -8,7 +8,10 @@ export default{
         return axios.post("/addEstoque", payload)
     },
     filter(page, opcao){
-        return axios.get("/filterEstoque?page=" + page, { params: { opcao: opcao} });
+        return axios.get("/filterEstoque?page=" + page, { params: { opcao: opcao} })
+    },
+    get(page){
+        return axios.get("/estoques?page=" + page)
     }
   
 }

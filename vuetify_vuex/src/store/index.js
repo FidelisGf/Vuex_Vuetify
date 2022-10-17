@@ -34,12 +34,16 @@ export default new Vuex.Store({
     showListaRapidaProdutos : false,
     itemGenerico : null,
     pedidos: [],
+    valor_Total_Pedidos : 0,
     showListaPedidos : false,
 
   },
   getters: {
     ListaPedidos(state){
       return state.showListaPedidos
+    },
+    getValorTotal(state){
+      return state.valor_Total_Pedidos
     },
     listCategorias(state){
       return state.Categorias
@@ -94,12 +98,30 @@ export default new Vuex.Store({
     saveGenerico(state, payload){
       state.itemGenerico = payload
     },
+    saveValorTotal(state,payload){
+      state.valor_Total_Pedidos = payload
+    },
     savePedidos(state, payload){
       const exist = state.pedidos.find(o => o.id == payload.id)
       if(exist){
-        exist.quantidade += payload.quantidade
+        exist.quantidade += parseInt(payload.quantidade)
       }else{
         state.pedidos.push(payload)
+      }
+    },
+    removePedido(state, payload){
+      state.pedidos = state.pedidos.filter(o => o.id !== payload.id)
+    },
+    limpaPedido(state){
+      state.pedidos = null
+    },
+    limparValorTotal(state){
+      state.valor_Total_Pedidos = 0
+    },
+    removeQntdPedido(state, payload){
+      const exist = state.pedidos.find(o => o.id == payload)
+      if(exist){
+        exist.quantidade = parseInt(payload.quantidade)
       }
     },
     activeListaPedidos(state){
