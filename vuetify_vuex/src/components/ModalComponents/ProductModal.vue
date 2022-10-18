@@ -195,12 +195,8 @@ export default {
     },
    
     methods: {
-       
         activeAdicionarEstoque(){
             this.$store.commit('activeAdicionaEstoque')
-        },
-        infoProduct(idProduto){
-            router.push({ path: `/products/detail/${idProduto}` }) 
         },
         postProduto() {
             var payload = { NOME: this.NOME, VALOR: this.VALOR, DESC: this.DESC, quantidade_inicial: this.quantidade_inicial, ID_CATEGORIA: this.Categoria.ID_CATEGORIA };
@@ -221,8 +217,7 @@ export default {
             this.VALOR = null
             this.DESC = null
             this.Categoria = null
-        },
-        
+        },     
     },
     created() {
         this.$store.commit("setHeader", this.headers)
