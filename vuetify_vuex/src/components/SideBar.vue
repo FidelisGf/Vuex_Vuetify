@@ -31,11 +31,11 @@
             nav
             dense
           >
-            <v-list-item @click="$router.push('/products')" link >
+            <v-list-item @click="$router.push('/pedidos')" link >
                 <v-list-item-icon>
-                  <v-icon>mdi-baguette</v-icon>
+                  <v-icon>mdi-cash-register</v-icon>
                 </v-list-item-icon>
-                <v-list-item-title>Meus Produtos</v-list-item-title>
+                <v-list-item-title>Registrar Venda</v-list-item-title>
             </v-list-item>
             <v-list-item @click="$router.push('/empresa')" link>
               <v-list-item-icon>
@@ -43,31 +43,19 @@
               </v-list-item-icon>
               <v-list-item-title>Minha Empresa</v-list-item-title>
             </v-list-item>
-            <v-list-item  link>
-              <v-list-item-icon>
-                <v-icon>mdi-star</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>Minhas Categorias</v-list-item-title>
-            </v-list-item>
-            <v-list-item link>
+            <v-list-item link @click="$router.push('/estoque')">
               <v-list-item-icon>
                 <v-icon>mdi-archive</v-icon>
-              </v-list-item-icon>
+              </v-list-item-icon >
               <v-list-item-title>Gestão do Estoque</v-list-item-title>
             </v-list-item>
-            <v-list-item link>
+            <v-list-item link @click="$router.push('/relatorio')">
               <v-list-item-icon>
                 <v-icon>mdi-printer</v-icon>
               </v-list-item-icon>
-              <v-list-item-title>Relatorio de Vendas</v-list-item-title>
+              <v-list-item-title>Relatorios Diversos</v-list-item-title>
             </v-list-item>
-            <v-list-item link>
-              <v-list-item-icon>
-                <v-icon>mdi-account</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>Usuarios do Sistema</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="$router.push('/')" link>
+            <v-list-item @click="$router.push('/login')" link>
               <v-list-item-icon>
                 <v-icon>mdi-arrow-left</v-icon>
               </v-list-item-icon>

@@ -1,6 +1,6 @@
 <template>
   <v-app>
-      <SideBarMega/>
+      <SideBar/>
     <v-main >
       <v-container fluid>
         <router-view></router-view>
@@ -12,14 +12,14 @@
 <script>
   /* eslint-disable */
   import HelloWorld from '../components/HelloWorld'
-import SideBarMega from '@/components/SideBarMega.vue';
+import SideBar from '@/components/SideBar.vue';
 
   export default {
     name: 'Home',
 
     components: {
     HelloWorld,
-    SideBarMega
+    SideBar
 },
   }
 </script>

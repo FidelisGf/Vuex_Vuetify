@@ -13,23 +13,7 @@
                     </v-card-title>
                     <v-card-text>
                         <v-row>
-                            <v-col cols="12">
-                                <v-data-table
-                                    :headers="headers"
-                                    :items="lista"
-                                    :items-per-page="6"
-                                    hide-default-footer
-                                    
-                                    class="elevation-2"
-                                >
-                                </v-data-table>
-                                <v-pagination
-                                    color="teal lighten-1"
-                                    v-model="pagination.current"
-                                    :length="pagination.total"
-                                    @input="onPageChange">  
-                                </v-pagination> 
-                            </v-col>     
+                            <ListaGenerica :route="'estoques'" :opcao="this.$store.getters.getFiltroEstoque"></ListaGenerica>
                         </v-row>
                     </v-card-text>
                     <v-card-actions>
@@ -49,55 +33,62 @@
     </v-container>
 </template>
 <script>
-import estoqueService from '@/service/estoqueService'
+import ListaGenerica from '../ListaGenerica.vue';
 export default {
-  props:{
-    nomeRelatorio : String
-  },
-  data(){
-    return{ 
-        pagination: {
+    props: {
+        nomeRelatorio: String
+    },
+    data() {
+        return {
+            pagination: {
                 current: 1,
                 total: 0
-        },
-        lista : []
-    }
-  },
-  computed: {
-        headers() {
-            return [
-                {
-                    text: "Produto",
-                    align: "start",
-                    value: "product[0].NOME",
-                },
-                { text: "Descrição", value: "product[0].DESC" },
-                { text: "Valor", value: "product[0].VALOR" },
-                { text: "Quantidade", value: "QUANTIDADE" },
-            ];
-         },
+            },
+            lista: []
+        };
     },
-  methods:{
-        closeRelatorio(){
-            this.$store.commit('desativeRelatorioEstoque')      
-            this.$store.commit('deleteFiltroEstoque')
+    computed: {
+        headers() {
+            if(this.$store.getters.getFiltroEstoque != 'Produtos com mais saidas'){
+                return [
+                    {
+                        text: "Produto",
+                        align: "start",
+                        value: "product[0].NOME",
+                    },
+                    { text: "Descrição", value: "product[0].DESC" },
+                    { text: "Valor", value: "product[0].VALOR" },
+                    { text: "Quantidade", value: "QUANTIDADE" },
+                ];
+            }else{
+                return [
+                    {
+                        text: "Produto",
+                        align: "start",
+                        value: "product[0].NOME",
+                    },
+                    { text: "Descrição", value: "product[0].DESC" },
+                    { text: "Valor", value: "product[0].VALOR" },
+                    { text: "Quantidade", value: "QUANTIDADE" },
+                    { text: "Saidas", value: "SAIDAS" },
+                ];
+            }
+          
         },
-        getRelatorio(){
-            let filtro = this.$store.getters.getFiltroEstoque
-            estoqueService.filter(this.pagination.current, filtro).then((response) => {
-                this.lista = response.data.data
-                console.log(this.lista)
-                this.pagination.current = response.data.current_page
-                this.pagination.total = response.data.last_page 
-            })
+    },
+    methods: {
+        closeRelatorio() {
+            this.$store.commit("desativeRelatorioEstoque");
+            this.$store.commit("deleteFiltroEstoque");
         },
-        onPageChange() {
-            this.getRelatorio();
+        getLista() {
+            this.$store.commit("setHeader", this.headers)
         },
-  },
-  created(){
-    this.getRelatorio()
-  }
+    },
+    created() {
+        this.getLista()
+    },
+    components: { ListaGenerica }
 }
 </script>
 

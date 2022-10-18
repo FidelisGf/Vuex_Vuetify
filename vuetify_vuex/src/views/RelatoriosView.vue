@@ -66,7 +66,7 @@ export default {
             relatorioEscolhaLista : null,
             relatorioEscolha: null,
             relatorioProductList : ["Produtos mais caros", "Produtos mais baratos"],
-            relatorioEstoqueList : ["Produtos com mais estoque", "Produtos com pouco estoque"],
+            relatorioEstoqueList : ["Produtos com mais estoque", "Produtos com pouco estoque", "Produtos com mais saidas"],
             number_per_pages: null,
             activeRelatorio: false,
         };

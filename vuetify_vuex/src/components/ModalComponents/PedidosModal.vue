@@ -4,6 +4,7 @@
             v-model="$store.getters.ListaPedidos"
             persistent
             max-width="650"
+            @keydown.escape="disableList"
         >
         <v-card>
         <v-card-title class="text-h5">
@@ -15,10 +16,26 @@
                     <v-list-item-content >
                         
                       <v-list-item-title >
-                        <b>Nome do Produto : </b>{{item.nome}}    
-                        <b>Valor : R$ </b>{{ item.valor}}     
-                        <b> Quantidade :</b> {{item.quantidade}}  
-                        <v-icon color="red darken-4" small class="mt-n1" @click="ativaManipulaQuantidade(item)">mdi-close</v-icon> 
+                        <v-card>
+                            <v-divider></v-divider>
+                            <v-card-title>
+                               <p>
+                                <b class="ml-n1">Nome do Produto : </b >{{ item.nome}}
+                                <v-icon color="red darken-4"  class="ml-1 mt-n1" @click="ativaManipulaQuantidade(item)">mdi-close</v-icon>
+                               </p>      
+                            </v-card-title>
+                            <v-card-subtitle class="mt-n5">
+                                <p>
+                                    <b>Valor : R$ </b>{{ item.valor}}     
+                                    <b> Quantidade :</b> {{item.quantidade}} 
+                                </p>
+                            </v-card-subtitle>
+                            <v-card-text class="mt-n6">
+                                <p>Sub total desse Item : R$ {{item.valor * item.quantidade}}</p>
+                            </v-card-text>
+                            <v-divider class="mt-n3"></v-divider>
+                        </v-card>
+                       
                         </v-list-item-title>
                    
                         <v-dialog v-if="manipulaQuantidade"

@@ -151,7 +151,6 @@
 </v-container>
 </template>
 <script>
-import router from '@/router';
 import productService from '@/service/productService'
 import CategoryModal from './CategoryModal.vue'
 import EstoqueModal from './EstoqueModal.vue';
