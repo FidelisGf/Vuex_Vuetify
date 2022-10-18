@@ -14,16 +14,14 @@
                 >
                 <template v-slot:[`item.actions`]="{ item }" >
                     <v-icon small color="teal lighten-1" class="mr-2" @click="editItem(item, route)">mdi-pencil</v-icon>
-                    <v-icon small color="red lighten-1" @click="deleteItem(item)">mdi-delete</v-icon>
-                    
+                    <v-icon small color="red lighten-1" @click="deleteItem(item)">mdi-delete</v-icon>          
                 </template>
                 <template v-slot:[`item.info`]="{ item }">
-                    <v-icon color="blue darken-4"  @click="infoProduct(item.ID_PRODUTO)">mdi-alpha-i-circle</v-icon>
+                    <v-icon color="blue darken-4"  @click="info(item.ID_PRODUTO)">mdi-alpha-i-circle</v-icon>
                 </template>
                 <template v-slot:top>
                     <div class="d-flex align-center">
                         <v-text-field 
-                            
                             v-model="search"
                             color="teal lighten-1"
                             label="Search (APENAS COM CAPS)"
@@ -93,10 +91,12 @@ import axios from 'axios'
 import DeleteGeneric from './ModalComponents/Delete/DeleteGeneric.vue'
 import EditProduct from './ModalComponents/Edit/EditProduct.vue'
 import productService from '@/service/productService'
+import router from '@/router'
 
 export default {
     props: {
         route: String,
+        opcao : String,
     },
     data() {
         return {
@@ -117,7 +117,7 @@ export default {
         getLista(route) {
             this.loading = true;
             this.$store.commit("clearListProduct");
-            axios.get("http://127.0.0.1:8000/api/" + route + "?page=" + this.current_page).then((response) => {
+            axios.get("http://127.0.0.1:8000/api/" + route + "?page=" + this.current_page, { params: { opcao: this.opcao} }).then((response) => {
                 this.$store.commit("beginListProduct", response.data.data)
                 this.loading = false;
                 this.current_page = response.data.current_page
@@ -142,6 +142,9 @@ export default {
                 this.getLista(this.route);
             }
             
+        },
+        info(id){
+            router.push({ path: `/${this.route}/detail/${id}`}) 
         },
         clearPages() {
             this.current_page = 1;
@@ -185,6 +188,7 @@ export default {
         }
     },
     created() {
+       
         this.clearPages();
         this.getLista(this.route);
     },

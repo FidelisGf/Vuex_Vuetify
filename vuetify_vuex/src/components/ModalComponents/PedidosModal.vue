@@ -10,61 +10,64 @@
             Lista de Produtos da Venda
         </v-card-title>
         <v-card-text>
-            <v-list-item>
-                <v-list-item-content >
-                  <v-list-item-title v-for="item in this.$store.getters.getPedidos" :key="item.id"> 
-                    <b>Nome do Produto : </b>{{item.nome}}     <b>Valor : R$ </b>{{ item.valor}}     
-                    <b> Quantidade :</b> {{item.quantidade}} 
-                    <v-icon color="red darken-4" small class="mt-n1" @click="ativaManipulaQuantidade">mdi-close</v-icon>
-                    <v-dialog
-                        v-model="manipulaQuantidade"
-                        persistent 
-                        max-width="550"
-
-                    >
-                     <v-card>
-                        <v-card-title>
-                            Manipule a quantidade do Item #{{item.nome}}
-                        </v-card-title>
-                        <v-card-text>
-                            <v-row>
-                                <v-col sm="6">
-                                    <label class="ml-3">Quantidade do Produto</label>
-                                    <v-text-field
-                                    class="ml-3 w-25"
-                                    outlined
-                                    dense 
-                                    required
-                                    v-model="item.quantidade"
-                                    single-line
-                                    type="number"
-                                    ></v-text-field>
-                                </v-col>
-                            </v-row>
-                            <small>Caso a quantidade chegue a 0, o item será removido da lista</small>
-                        </v-card-text>
-                        <v-card-actions class="d-flex justify-end">
-                            <v-btn
-                                color="red darken-1"
-                                text
-                                @click="disableManipulaQuantidade"
-                            >
-                                Fechar
-                            </v-btn>
-                            <v-btn
-                                color="green darken-1"
-                                text
-                                @click="removeFromList(item)"
-                            >
-                                Salvar
-                            </v-btn>
-                        </v-card-actions>
-                     </v-card>   
-                    </v-dialog>
-                    <v-divider></v-divider>
-                 </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
+            <v-list>
+                <v-list-item  v-for="item in this.$store.getters.getPedidos" :key="item.id">
+                    <v-list-item-content >
+                        
+                      <v-list-item-title >
+                        <b>Nome do Produto : </b>{{item.nome}}    
+                        <b>Valor : R$ </b>{{ item.valor}}     
+                        <b> Quantidade :</b> {{item.quantidade}}  
+                        <v-icon color="red darken-4" small class="mt-n1" @click="ativaManipulaQuantidade(item)">mdi-close</v-icon> 
+                        </v-list-item-title>
+                   
+                        <v-dialog v-if="manipulaQuantidade"
+                            v-model="manipulaQuantidade"
+                            persistent 
+                            max-width="550"
+                        >
+                         <v-card>
+                            <v-card-title>
+                                Manipule a quantidade do Item #{{temp.nome}}
+                            </v-card-title>
+                            <v-card-text>
+                                <v-row>
+                                    <v-col sm="6">
+                                        <label class="ml-3">Quantidade do Produto</label>
+                                        <v-text-field
+                                        class="ml-3 w-25"
+                                        outlined
+                                        dense 
+                                        required
+                                        v-model="temp.quantidade"
+                                        single-line
+                                        type="number"
+                                        ></v-text-field>
+                                    </v-col>
+                                </v-row>
+                                <small>Caso a quantidade chegue a 0, o item será removido da lista</small>
+                            </v-card-text>
+                            <v-card-actions class="d-flex justify-end">
+                                <v-btn
+                                    color="red darken-1"
+                                    text
+                                    @click="disableManipulaQuantidade"
+                                >
+                                    Fechar
+                                </v-btn>
+                                <v-btn
+                                    color="green darken-1"
+                                    text
+                                    @click="removeFromList(temp)"
+                                >
+                                    Salvar
+                                </v-btn>
+                            </v-card-actions>
+                         </v-card>   
+                        </v-dialog>
+                    </v-list-item-content>
+                  </v-list-item>
+            </v-list>
             <small>Esses itens estão presentes nessa venda</small>
         </v-card-text>
         <v-card-actions>
@@ -87,14 +90,25 @@ export default {
         return{
             manipulaQuantidade : false,
             valorTotal : 0,
+            temp : {
+                id: null,
+                valor: null,
+                nome: null,
+                quantidade: null,
+            },
         }
     },
     methods:{
         disableList(){
             this.$store.commit("disableListaPedidos");
         },
-        ativaManipulaQuantidade(){
+        ativaManipulaQuantidade(item){
             this.manipulaQuantidade = true
+            this.temp.id = item.id
+            this.temp.nome = item.nome
+            this.temp.quantidade = item.quantidade
+            this.temp.valor = item.valor
+            console.log(this.temp)
         },
         disableManipulaQuantidade(){
             this.manipulaQuantidade = false

@@ -180,10 +180,10 @@ export default {
     computed: {
         headers() {
             return [
+                { text: "Cod", value: "ID_PRODUTO",},
                 { text: "Detalhes", value: "info", sortable: false },
                 {
                     text: "Produto",
-                    align: "start",
                     value: "NOME",
                 },
                 { text: "Descrição", value: "DESC" },

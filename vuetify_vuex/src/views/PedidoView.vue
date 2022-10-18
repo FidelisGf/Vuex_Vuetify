@@ -4,10 +4,14 @@
             <v-col cols="12">
                 <v-card>
                     <v-card-title>Registrar uma Venda</v-card-title>
-                    <v-card-subtitle>Favor informar todos os campos necessários</v-card-subtitle>
+                    <v-card-subtitle >Favor informar todos os campos necessários</v-card-subtitle>
+                    <v-card-subtitle v-if="sucesso"><v-alert  type="success" v-model="sucesso" dismissible dense shaped
+                        outlined class="mt-n5">Produto adicionado a lista com sucesso !</v-alert></v-card-subtitle>
+                    <v-card-subtitle v-if="fail && sucesso == false"><v-alert type="error" v-model="fail" dismissible dense shaped
+                        outlined class="mt-n5">Algo de errado ocorreu, verifique se o produto existe !</v-alert></v-card-subtitle>
                     <v-row dense>
-                        <v-col cols="12" sm="6" class="d-flex justify-center ml-0 ml-md-6 ml-sm-6 ml-lg-6" >
-                         
+                        <v-col cols="12" sm="6"  >
+                            <form @submit.prevent="addLista" class="d-flex justify-center ml-0 ml-md-6 ml-sm-6 ml-lg-6">
                                 <v-tooltip top>
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-text-field
@@ -16,6 +20,7 @@
                                             outlined
                                             dense 
                                             required
+
                                             single-line
                                             @keydown.f2="buscaLista"
                                             type="number"
@@ -46,7 +51,8 @@
                                             color="primary"
                                             class="ml-3"
                                             dark
-                                            @click="addLista"
+                                            rules="required|min:1"
+                                            type="submit"
                                             icon 
                                         >
                                             <v-icon aria-label="Adicionar a lista" aria-hidden="false" dark color="teal lighten-1">mdi-plus-circle-outline</v-icon>
@@ -55,6 +61,7 @@
                                     <span>Adicionar a lista</span>
                                   </v-tooltip>
                                   <v-tooltip bottom>
+                                    
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-btn
                                             v-bind="attrs"
@@ -71,7 +78,7 @@
                                     </template>
                                     <span>Ver a lista do pedido</span>
                                   </v-tooltip>
-                          
+                            </form>
                         </v-col>
                         <v-col cols="12" sm="6" class="d-flex justify-center ml-0 ml-md-6 ml-sm-6 ml-lg-6">
                             <v-select
@@ -167,15 +174,20 @@ export default {
                 quantidade: 1,
             },
             pedidos: [],
+            fail : false,
+            sucesso : false,
 
         };
     },
     methods: {
         buscaLista() {
-            console.log("Entrou")
+            this.fail = false
+            this.sucesso = false
             this.$store.commit("activeListaRapidaProdutos")
         },
         listaPedidos(){
+            this.fail = false
+            this.sucesso = false
             this.$store.commit("activeListaPedidos")
         },
         somaItens(valor){
@@ -188,13 +200,18 @@ export default {
             }
            productService.findProdutoById(this.produto.id).then((res)=>{
                 if(res.status == 200){
+                    this.fail = false
                     let payload = {id : res.data.ID_PRODUTO, nome : res.data.NOME, valor : res.data.VALOR, quantidade : this.produto.quantidade}
                     this.somaItens(res.data.VALOR)
-                    this.$store.commit("savePedidos", payload)    
-                }else{
-                    alert('Falha ao adicionar Item, verifique os campos')
+                    this.$store.commit("savePedidos", payload) 
+                    this.sucesso = true  
+                    this.hideSucess()
+                    return 
                 }
+                
             })
+            this.fail = true
+           
             //this.clear()    
         },
         clear(){
@@ -205,6 +222,7 @@ export default {
             this.dinheiroPago = 0
         },
         gerarVenda(){
+            this.fail = false
             if(this.escolhaSituacao == "Pago"){
                 this.escolhaSituacao = 'T'
             }else{
@@ -212,11 +230,34 @@ export default {
             }
             let payload = {METODO_PAGAMENTO : this.escolhaPagamento, produtos : this.$store.getters.getPedidos, valor_total : this.$store.getters.getValorTotal, aprovado : this.escolhaSituacao}
             pedidoService.save(payload).then((res)=>{
-                console.log(res)
-                this.$store.commit("limpaPedido")
-                this.$store.commit("limparValorTotal")
-                this.clear()
+                if(res.status == 200){
+                    this.$store.commit("limpaPedido")
+                    this.$store.commit("limparValorTotal")
+                    this.sucesso = false
+                    this.clear()
+                }else{
+                    this.fail = true
+                }
+               
             })
+        },
+        hideSucess : function (){
+        
+            if(this.sucesso){
+                let interval = setInterval(() => {
+                    this.sucesso = false; this.clearIntervalo(interval);
+                    }, 2000)
+                setInterval(interval);
+            }
+            
+        },
+
+        clearIntervalo : function (interaval){
+            clearInterval(interaval)
+        },
+
+        mounted : function(){
+           
         }
     },
     computed: {
@@ -228,7 +269,7 @@ export default {
             else {
                 return resultado;
             }
-        }
+        },
     },
     created() {
         

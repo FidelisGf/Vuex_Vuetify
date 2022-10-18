@@ -5,7 +5,8 @@
                 <v-dialog
                     v-model="$store.getters.getRelatorio"
                     persistent
-                    max-width="600px"
+                    max-width="620px"
+                    @keydown.escape="closeRelatorio"
                 > 
                     <v-card>
                     <v-card-title>
@@ -13,23 +14,7 @@
                     </v-card-title>
                     <v-card-text>
                         <v-row>
-                            <v-col cols="12">
-                                <v-data-table
-                                    :headers="headers"
-                                    :items="$store.getters.listProducts"
-                                    :items-per-page="6"
-                                    hide-default-footer
-                                    
-                                    class="elevation-2"
-                                >
-                                </v-data-table>
-                                <v-pagination
-                                    color="teal lighten-1"
-                                    v-model="pagination.current"
-                                    :length="pagination.total"
-                                    @input="onPageChange">  
-                                </v-pagination> 
-                            </v-col>     
+                            <ListaGenerica :route="'products'" :opcao="this.$store.getters.getFiltro"></ListaGenerica>
                         </v-row>
                     </v-card-text>
                     <v-card-actions>
@@ -38,6 +23,7 @@
                                 color="teal lighten-1"
                                 text
                                 @click="closeRelatorio"
+                                class="mt-n5"
                             >
                             Fechar
                             </v-btn>
@@ -50,20 +36,18 @@
 </template>
 
 <script>
-import productService from '@/service/productService'
+import ListaGenerica from '../ListaGenerica.vue';
 export default {
-  props:{
-    nomeRelatorio : String
-  },
-  data(){
-    return{ 
-        pagination: {
-                current: 1,
-                total: 0
-        },
-    }
-  },
-  computed: {
+    props: {
+        nomeRelatorio: String
+    },
+    data() {
+        return {
+            nome : '',
+            tmp : false,
+        };
+    },
+    computed: {
         headers() {
             return [
                 {
@@ -75,31 +59,24 @@ export default {
                 { text: "Valor", value: "VALOR" },
                 { text: "Categoria", value: "category.NOME" },
             ];
-         },
+        },
     },
-  methods:{
-        closeRelatorio(){
-            this.$store.commit('desativeRelatorio')      
-
-            this.$store.commit('deleteFiltro')
+    methods: {
+        closeRelatorio() {
+            this.$store.commit("desativeRelatorio");
+            this.$store.commit("deleteFiltro");
         },
-        getRelatorio(){
-            let filtro = this.$store.getters.getFiltro 
-            productService.filters(filtro, this.pagination.current).then((response) => {
-                this.$store.commit('beginListProduct', response.data.data)
-                this.pagination.current = response.data.current_page;
-                this.pagination.total = response.data.last_page;   
-            })
+        getLista() {
+            console.log(this.nomeRelatorio)
+            this.$store.commit("setHeader", this.headers)
         },
-        onPageChange() {
-            this.getRelatorio();
-        },
-
-  },
-  created(){
-    this.getRelatorio()
-  }
-}
+    },
+    created() {
+       
+        this.getLista()
+    },
+    components: { ListaGenerica }
+}   
 </script>
 
 <style lang="scss" scoped>

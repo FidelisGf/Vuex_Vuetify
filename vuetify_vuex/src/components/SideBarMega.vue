@@ -4,7 +4,7 @@
         <v-navigation-drawer v-if="!$vuetify.breakpoint.smAndDown"
         :app="$vuetify.breakpoint.mdAndUp"
         :fixed="$vuetify.breakpoint.mdAndUp"
-        color="#f2f2f2"
+        color="cyan lighten-5"
         :scroll-toolbar-off-screen="$vuetify.breakpoint.smAndDown"
         permanent
         :width="340"

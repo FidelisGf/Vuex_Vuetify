@@ -11,15 +11,23 @@
             </v-card-title>
             <v-card-text>
                 <p>A quantidade inserida será somada com a quantidade existente do produto.</p>
-                <v-select
-                    :items="$store.getters.listProducts"
-                    label="Escolha um Produto"
-                    v-model="Produto"
-                    color="teal lighten-1"
-                    item-text="NOME" 
-                    return-object
-                >
-                </v-select>
+                <v-tooltip top>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                            v-model="id"
+                            label="Digite o Codigo do produto"
+                            outlined
+                            dense 
+                            required
+                            single-line
+                            type="number"
+                            min="0"
+                            v-bind="attrs"
+                            v-on="on"
+                        ></v-text-field>
+                    </template>
+                    <span>Caso não saiba, consulte na lista</span>
+                </v-tooltip>
                 <v-text-field
                     v-model="quantidade"
                     label="Quantidade"
@@ -55,27 +63,31 @@
 <script>
 import estoqueService from '@/service/estoqueService'
 export default {
-    data(){
-        return{
-            Produto : null,
-            quantidade : null,
-        }
+    data() {
+        return {
+            Produto: null,
+            id: null,
+            quantidade: null,
+        };
     },
-    methods:{
-        closeAdicionaEstoque(){
-            this.$store.commit('desativateAdicionaEstoque')
+    methods: {
+        closeAdicionaEstoque() {
+            this.$store.commit("desativateAdicionaEstoque");
         },
-        adicionarQuantidade(){
-            let payload = {product_id : this.Produto.ID_PRODUTO, quantidade : this.quantidade}
-            estoqueService.adicionarQuantidade(payload).then((res) =>{
-                console.log(res)
-                if(res.status == 200){
-                    alert("Quantidade Adicionada com sucesso !")
-                    this.$store.commit('desativateAdicionaEstoque')
+        adicionarQuantidade() {
+            let payload = { product_id: this.id, quantidade: this.quantidade };
+            estoqueService.adicionarQuantidade(payload).then((res) => {
+                console.log(res);
+                if (res.status == 200) {
+                    alert("Quantidade Adicionada com sucesso !");
+                    this.$store.commit("desativateAdicionaEstoque");
                 }
-            })
+            });
         },
-    }
+        buscaLista() {
+            this.$store.commit("activeListaRapidaProdutos");
+        },
+    },
 }
 </script>
 
