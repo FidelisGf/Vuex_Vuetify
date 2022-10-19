@@ -113,7 +113,7 @@ export default new Vuex.Store({
       state.pedidos = state.pedidos.filter(o => o.id !== payload.id)
     },
     limpaPedido(state){
-      state.pedidos = null
+      state.pedidos = []
     },
     limparValorTotal(state){
       state.valor_Total_Pedidos = 0

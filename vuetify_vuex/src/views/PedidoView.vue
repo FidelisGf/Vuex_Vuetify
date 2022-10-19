@@ -22,7 +22,6 @@
                                             outlined
                                             dense 
                                             required
-
                                             single-line
                                             @keydown.f2="buscaLista"
                                             type="number"

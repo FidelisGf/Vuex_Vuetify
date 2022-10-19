@@ -12,10 +12,11 @@
                     <v-card-title>
                         <span  class="text-h5">{{this.$store.getters.getFiltro}}</span>
                     </v-card-title>
+                    <v-card-subtitle class="text-h6"><p>De : {{starterDate}}  até : {{endDate}}</p></v-card-subtitle>
                     <v-card-text>
                         <v-row>
                             <ListaGenerica v-if="!pedidos" :route="'products'" :opcao="this.$store.getters.getFiltro"></ListaGenerica>
-                            <ListaGenerica v-if="pedidos" :route="'pedidos'" :opcao="this.$store.getters.getFiltro" :end-date="starterDate" :starter-date="endDate"></ListaGenerica>
+                            <ListaGenerica v-if="pedidos" :route="'pedidos'" :opcao="this.$store.getters.getFiltro" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
                         </v-row>
                     </v-card-text>
                     <v-card-actions>
@@ -91,8 +92,6 @@ export default {
         },
     },
     created() {
-        console.log(this.starterDate)
-        console.log(this.endDate)
         this.getLista()
     },
     components: { ListaGenerica }

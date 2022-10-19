@@ -19,6 +19,10 @@
                 <template v-slot:[`item.info`]="{ item }">
                     <v-icon color="blue darken-4"  @click="info(item.ID_PRODUTO)">mdi-alpha-i-circle</v-icon>
                 </template>
+                <template v-slot:[`item.APROVADO`]="{ item }">
+                    <span v-if="item.APROVADO == 'T'">APROVADO</span>
+                    <span color="red" v-if="item.APROVADO == 'F'">PENDENTE</span>
+                </template>
                 <template v-slot:top>
                     <div class="d-flex align-center">
                         <v-text-field 
@@ -119,11 +123,12 @@ export default {
     },
     methods: {
         getLista(route) {
+            this.dtStart = this.starterDate
+            this.dtFinal = this.endDate
+            console.log(this.dtStart)
             this.loading = true;
             this.$store.commit("clearListProduct");
-            if(this.starterDate != undefined && this.endDate != undefined){
-                this.dtStart = this.formatData(this.starterDate)
-                this.dtFinal = this.formatData(this.endDate)
+            if(this.dtStart != undefined && this.dtFinal != undefined){
                 axios.get("http://127.0.0.1:8000/api/" + route + "?page=" + this.current_page, { params: { opcao: this.opcao, start : this.dtStart, end : this.dtFinal} }).then((response) => {
                     this.$store.commit("beginListProduct", response.data.data)
                     this.loading = false;
@@ -141,10 +146,7 @@ export default {
                 });
             }  
         },
-        formatData(data){
-            const [year, month, day] = data.split('-')
-            return `${day}.${month}.${year}`
-        },
+       
         deleteItem(item) {
             this.$store.commit("saveGenerico", item)
             this.$store.commit("activeDelete")
@@ -208,7 +210,7 @@ export default {
         }
     },
     created() {
-       
+        console.log(this.starterDate)
         this.clearPages();
         this.getLista(this.route);
     },
