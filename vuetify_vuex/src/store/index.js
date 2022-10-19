@@ -202,6 +202,10 @@ export default new Vuex.Store({
     saveListProduct(state, payload){
       state.Products.push(payload)
     },
+    editListProduct(state, payload){
+      state.Products =  state.Products.filter(item => item.ID_PRODUTO !== payload.ID_PRODUTO)
+      state.Products.push(payload)
+    },
     deleteInListProduct(state, payload){
       state.Products =  state.Products.filter(item => item.ID_PRODUTO !== payload)
     },

@@ -134,8 +134,10 @@ export default {
         },
         editProduct() {
             var payload = {ID_PRODUTO : this.ID_PRODUTO, NOME: this.NOME, VALOR: this.VALOR, DESC: this.DESC, ID_CATEGORIA: this.Categoria.ID_CATEGORIA}
+            var payload2 = {ID_PRODUTO : this.ID_PRODUTO, NOME: this.NOME, VALOR: this.VALOR, DESC: this.DESC, category: this.Categoria }
             productService.editProduct(payload, this.ID_PRODUTO).then((res) => {
                 if (res.status == 200) {
+                    this.$store.commit("editListProduct", payload2)
                     alert("Produto Editado com suceso !");
                 }
             });
