@@ -14,7 +14,8 @@
                     </v-card-title>
                     <v-card-text>
                         <v-row>
-                            <ListaGenerica :route="'products'" :opcao="this.$store.getters.getFiltro"></ListaGenerica>
+                            <ListaGenerica v-if="!pedidos" :route="'products'" :opcao="this.$store.getters.getFiltro"></ListaGenerica>
+                            <ListaGenerica v-if="pedidos" :route="'pedidos'" :opcao="this.$store.getters.getFiltro" :end-date="starterDate" :starter-date="endDate"></ListaGenerica>
                         </v-row>
                     </v-card-text>
                     <v-card-actions>
@@ -39,40 +40,59 @@
 import ListaGenerica from '../ListaGenerica.vue';
 export default {
     props: {
-        nomeRelatorio: String
+        nomeRelatorio: String,
+        starterDate : String,
+        endDate : String,
     },
     data() {
         return {
             nome : '',
             tmp : false,
+            pedidos : false,
         };
     },
     computed: {
         headers() {
-            return [
-                {
-                    text: "Produto",
-                    align: "start",
-                    value: "NOME",
-                },
-                { text: "Descrição", value: "DESC" },
-                { text: "Valor", value: "VALOR" },
-                { text: "Categoria", value: "category.NOME" },
-            ];
+            if(this.$store.getters.getFiltro == 'Pedidos realizados entre duas datas'){
+                return [
+                    {
+                        text: "CODIGO",
+                        align: "start",
+                        value: "ID",
+                    },
+                    { text: "METODO PAGAMENTO", value: "METODO_PAGAMENTO" },
+                    { text: "VALOR TOTAL", value: "VALOR_TOTAL" },
+                    { text: "PAGAMENTO", value: "APROVADO" },
+                ];
+            }else{
+                return [
+                    {
+                        text: "Produto",
+                        align: "start",
+                        value: "NOME",
+                    },
+                    { text: "Descrição", value: "DESC" },
+                    { text: "Valor", value: "VALOR" },
+                    { text: "Categoria", value: "category.NOME" },
+                ];
+            }
         },
     },
     methods: {
         closeRelatorio() {
-            this.$store.commit("desativeRelatorio");
-            this.$store.commit("deleteFiltro");
+            this.$store.commit("desativeRelatorio")
+            this.$store.commit("deleteFiltro")
         },
         getLista() {
-            console.log(this.nomeRelatorio)
+            if(this.$store.getters.getFiltro == 'Pedidos realizados entre duas datas'){
+                this.pedidos = true
+            }
             this.$store.commit("setHeader", this.headers)
         },
     },
     created() {
-       
+        console.log(this.starterDate)
+        console.log(this.endDate)
         this.getLista()
     },
     components: { ListaGenerica }

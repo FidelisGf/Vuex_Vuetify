@@ -9,6 +9,8 @@
                         outlined class="mt-n5">Produto adicionado a lista com sucesso !</v-alert></v-card-subtitle>
                     <v-card-subtitle v-if="fail && sucesso == false"><v-alert type="error" v-model="fail" dismissible dense shaped
                         outlined class="mt-n5">Algo de errado ocorreu, verifique se o produto existe !</v-alert></v-card-subtitle>
+                    <v-card-subtitle v-if="registro"><v-alert type="success" v-model="registro" dismissible dense shaped
+                        outlined class="mt-n5">Pedido Registrado com sucesso !</v-alert></v-card-subtitle>
                     <v-row dense>
                         <v-col cols="12" sm="6"  >
                             <form @submit.prevent="addLista" class="d-flex justify-center ml-0 ml-md-6 ml-sm-6 ml-lg-6">
@@ -176,7 +178,7 @@ export default {
             pedidos: [],
             fail : false,
             sucesso : false,
-
+            registro : false,
         };
     },
     methods: {
@@ -191,7 +193,7 @@ export default {
             this.$store.commit("activeListaPedidos")
         },
         somaItens(valor){
-           this.valor_total += valor * this.produto.quantidade
+           this.valor_total += parseFloat(valor * this.produto.quantidade)
            this.$store.commit("saveValorTotal", this.valor_total)
         },
         addLista(){
@@ -209,17 +211,13 @@ export default {
                     return 
                 }
                 
-            })
-            this.fail = true
-           
-            //this.clear()    
+            }) 
         },
         clear(){
             this.produto.id = null
             this.produto.valor = null
             this.produto.nome = null
             this.produto.quantidade = 1
-            this.dinheiroPago = 0
         },
         gerarVenda(){
             this.fail = false
@@ -228,32 +226,39 @@ export default {
             }else{
                 this.escolhaSituacao = 'F'
             }
-            let payload = {METODO_PAGAMENTO : this.escolhaPagamento, produtos : this.$store.getters.getPedidos, valor_total : this.$store.getters.getValorTotal, aprovado : this.escolhaSituacao}
+            let payload = {METODO_PAGAMENTO : this.escolhaPagamento, produtos : this.$store.getters.getPedidos, aprovado : this.escolhaSituacao}
             pedidoService.save(payload).then((res)=>{
-                if(res.status == 200){
+                if(res.status == 201){
                     this.$store.commit("limpaPedido")
                     this.$store.commit("limparValorTotal")
-                    this.sucesso = false
+                    this.registro = true
                     this.clear()
-                }else{
+                    this.clearPayment()
+                }else if(res.status != 201){
                     this.fail = true
                 }
-               
             })
         },
         hideSucess : function (){
-        
             if(this.sucesso){
                 let interval = setInterval(() => {
                     this.sucesso = false; this.clearIntervalo(interval);
                     }, 2000)
                 setInterval(interval);
+                this.clear()
             }
             
         },
 
         clearIntervalo : function (interaval){
             clearInterval(interaval)
+        },
+
+
+        clearPayment(){
+            this.dinheiroPago = 0
+            this.troco = 0
+            this.escolhaPagamento = ""
         },
 
         mounted : function(){

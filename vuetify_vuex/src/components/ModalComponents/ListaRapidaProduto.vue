@@ -14,7 +14,7 @@
                     </v-card-title>
                     <v-card-text>
                         <v-row>
-                           <ListaGenerica :route="'estoques'"></ListaGenerica>
+                           <ListaGenerica :route="'estoques'" :opcao="'Disponivel para venda'"></ListaGenerica>
                         </v-row>
                     </v-card-text>
                     <v-card-actions>
@@ -23,7 +23,6 @@
                                 color="teal lighten-1"
                                 text
                                 @click="fechar"
-                                
                             >
                             Fechar
                             </v-btn>

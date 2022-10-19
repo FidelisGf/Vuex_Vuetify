@@ -97,6 +97,8 @@ export default {
     props: {
         route: String,
         opcao : String,
+        starterDate : String,
+        endDate : String,
     },
     data() {
         return {
@@ -109,7 +111,9 @@ export default {
             tempCategory : '',
             filtroCategory : false,
             delete : false,
-            Categoria : ''
+            Categoria : '',
+            dtStart : '',
+            dtFinal : '',
 
         };
     },
@@ -117,13 +121,29 @@ export default {
         getLista(route) {
             this.loading = true;
             this.$store.commit("clearListProduct");
-            axios.get("http://127.0.0.1:8000/api/" + route + "?page=" + this.current_page, { params: { opcao: this.opcao} }).then((response) => {
-                this.$store.commit("beginListProduct", response.data.data)
-                this.loading = false;
-                this.current_page = response.data.current_page
-                this.tempCurrent = this.current_page
-                this.totalPage = response.data.last_page
-            });
+            if(this.starterDate != undefined && this.endDate != undefined){
+                this.dtStart = this.formatData(this.starterDate)
+                this.dtFinal = this.formatData(this.endDate)
+                axios.get("http://127.0.0.1:8000/api/" + route + "?page=" + this.current_page, { params: { opcao: this.opcao, start : this.dtStart, end : this.dtFinal} }).then((response) => {
+                    this.$store.commit("beginListProduct", response.data.data)
+                    this.loading = false;
+                    this.current_page = response.data.current_page
+                    this.tempCurrent = this.current_page
+                    this.totalPage = response.data.last_page
+                });
+            }else{
+                axios.get("http://127.0.0.1:8000/api/" + route + "?page=" + this.current_page, { params: { opcao: this.opcao} }).then((response) => {
+                    this.$store.commit("beginListProduct", response.data.data)
+                    this.loading = false;
+                    this.current_page = response.data.current_page
+                    this.tempCurrent = this.current_page
+                    this.totalPage = response.data.last_page
+                });
+            }  
+        },
+        formatData(data){
+            const [year, month, day] = data.split('-')
+            return `${day}.${month}.${year}`
         },
         deleteItem(item) {
             this.$store.commit("saveGenerico", item)

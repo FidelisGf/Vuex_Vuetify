@@ -33,14 +33,75 @@
                             v-model="relatorioEscolha"
                             color="teal accent-3"
                             outlined  
+                        > 
+                        </v-select> 
+                        <v-select v-if="relatorioEscolhaLista == 'Relatorios de Pedidos'"
+                            :items="relatorioPedidoList"
+                            label="Tipo de relatorio para os pedidos"
+                            v-model="relatorioEscolha"
+                            color="teal accent-3"
+                            outlined  
                         >  
-                    </v-select>
+                        </v-select>
+                       
                     
          
             </v-col>
 
-            <RespostaRelatorio :nome-relatorio="relatorioEscolha" v-if="$store.getters.getRelatorio"></RespostaRelatorio>
+            <RespostaRelatorio :nome-relatorio="relatorioEscolha" :starter-date="start" :end-date="end" v-if="$store.getters.getRelatorio"></RespostaRelatorio>
             <RespostaRelatorioEstoque :nome-relatorio="relatorioEscolha" v-if="$store.getters.getRelatorioEstoque"></RespostaRelatorioEstoque>
+        </v-row>
+        <v-row>
+            <v-col>
+                <v-menu v-if="relatorioEscolha == 'Pedidos realizados entre duas datas'"
+                ref="menu"
+                :close-on-content-click="false"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+                >
+                <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                    v-model="start"
+                    label="Data Inicial"
+                    prepend-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                ></v-text-field>
+                </template>
+                <v-date-picker
+                    v-model="start"
+                    :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
+                    min="1950-01-01"
+                ></v-date-picker>
+            </v-menu>
+            </v-col>
+            <v-col>
+                <v-menu v-if="relatorioEscolha == 'Pedidos realizados entre duas datas'"
+                    ref="menu"
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                    >
+                    <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                        v-model="end"
+                        label="Data Final"
+                        prepend-icon="mdi-calendar"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                    ></v-text-field>
+                    </template>
+                    <v-date-picker
+                        v-model="end"
+                        :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
+                        min="1950-01-01"
+                    ></v-date-picker>
+                </v-menu>
+            </v-col>
         </v-row>
         <v-row>
             <v-col>
@@ -62,13 +123,16 @@ import RespostaRelatorioEstoque from '../components/ModalComponents/RespostaRela
 export default {
     data() {
         return {
-            relatoriosList: ["Relatorios de Produtos", "Relatorios do Estoque"],
+            relatoriosList: ["Relatorios de Produtos", "Relatorios do Estoque", "Relatorios de Pedidos"],
             relatorioEscolhaLista : null,
             relatorioEscolha: null,
             relatorioProductList : ["Produtos mais caros", "Produtos mais baratos"],
             relatorioEstoqueList : ["Produtos com mais estoque", "Produtos com pouco estoque", "Produtos com mais saidas"],
+            relatorioPedidoList : ["Pedidos realizados entre duas datas"],
             number_per_pages: null,
             activeRelatorio: false,
+            start : null,
+            end : null,
         };
     },
     methods: {
@@ -78,12 +142,16 @@ export default {
             let opcao = this.relatorioEscolha
             if(this.relatorioEscolhaLista == 'Relatorios de Produtos'){
                 this.$store.commit("saveFiltro", opcao);
-                this.$store.commit("activeRelatorio");
-                
+                this.$store.commit("activeRelatorio");  
             }
-            else{
+            else if (this.relatorioEscolhaLista == 'Relatorios do Estoque'){
                 this.$store.commit("saveFiltroEstoque", opcao);
                 this.$store.commit("activeRelatorioEstoque");
+            }else{
+                console.log (typeof this.start)
+                console.log (typeof this.end)
+                this.$store.commit("saveFiltro", opcao);
+                this.$store.commit("activeRelatorio");  
             }
             this.relatorioEscolha = ''
         }
