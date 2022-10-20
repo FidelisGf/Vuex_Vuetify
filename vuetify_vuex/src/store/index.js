@@ -119,9 +119,9 @@ export default new Vuex.Store({
       state.valor_Total_Pedidos = 0
     },
     removeQntdPedido(state, payload){
-      const exist = state.pedidos.find(o => o.id == payload)
+      const exist = state.pedidos.find(o => o.id == payload.id)
       if(exist){
-        exist.quantidade = parseInt(payload.quantidade)
+        exist.quantidade = payload.quantidade
       }
     },
     activeListaPedidos(state){

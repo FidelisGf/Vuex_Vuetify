@@ -9,21 +9,23 @@
                             :items="relatoriosList"
                             label="Escolha um Relatorio"
                             v-model="relatorioEscolhaLista"
-                            color="teal accent-3"
-                            outlined  
+                            outlined 
+                            dark
+                            color="orange darken-1"
                             v-bind="attrs"
                             v-on="on"     
                             >  
                         </v-select>
                     </template>
-                    <span>Selecione uma modalidade de Relatorio</span>
+                    <span >Selecione uma modalidade de Relatorio</span>
                   </v-tooltip>
                    
                         <v-select v-if="relatorioEscolhaLista == 'Relatorios do Estoque'"
                             :items="relatorioEstoqueList"
                             label="Tipo de relatorio para o estoque"
                             v-model="relatorioEscolha"
-                            color="teal accent-3"
+                            color="orange darken-1"
+                            dark
                             outlined  
                         >  
                         </v-select>
@@ -31,7 +33,8 @@
                             :items="relatorioProductList"
                             label="Tipo de relatorio para os produtos"
                             v-model="relatorioEscolha"
-                            color="teal accent-3"
+                            color="orange darken-1"
+                            dark
                             outlined  
                         > 
                         </v-select> 
@@ -39,7 +42,17 @@
                             :items="relatorioPedidoList"
                             label="Tipo de relatorio para os pedidos"
                             v-model="relatorioEscolha"
-                            color="teal accent-3"
+                            color="orange darken-1"
+                            dark
+                            outlined  
+                        >  
+                        </v-select>
+                        <v-select v-if="relatorioEscolhaLista == 'Relatorio de Vendas'"
+                            :items="relatorioVendaList"
+                            label="Tipo de relatorio para os pedidos"
+                            v-model="relatorioEscolha"
+                            color="orange darken-1"
+                            dark
                             outlined  
                         >  
                         </v-select>
@@ -48,8 +61,8 @@
             <RespostaRelatorioEstoque :nome-relatorio="relatorioEscolha" v-if="$store.getters.getRelatorioEstoque"></RespostaRelatorioEstoque>
         </v-row>
         <v-row>
-            <v-col>
-                <v-menu v-if="relatorioEscolha == 'Pedidos realizados entre duas datas'"
+            <v-col v-if="hasDateInput">
+                <v-menu 
                 ref="menu"
                 :close-on-content-click="false"
                 transition="scale-transition"
@@ -62,11 +75,14 @@
                     label="Data Inicial"
                     prepend-icon="mdi-calendar"
                     readonly
+                    dark
+                    color="orange darken-1"
                     v-bind="attrs"
                     v-on="on"
                 ></v-text-field>
                 </template>
                 <v-date-picker
+                    color="orange darken-1"
                     v-model="start"
                     :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
                     min="1950-01-01"
@@ -84,6 +100,8 @@
                     <template v-slot:activator="{ on, attrs }">
                     <v-text-field
                         v-model="end"
+                        color="orange darken-1"
+                        dark
                         label="Data Final"
                         prepend-icon="mdi-calendar"
                         readonly
@@ -92,6 +110,7 @@
                     ></v-text-field>
                     </template>
                     <v-date-picker
+                        color="orange darken-1"
                         v-model="end"
                         :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
                         min="1950-01-01"
@@ -116,11 +135,14 @@
                     label="Hora Inicial"
                     prepend-icon="mdi-clock-time-four-outline"
                     readonly
+                    dark
+                    color="orange darken-1"
                     v-bind="attrs"
                     v-on="on"
                     ></v-text-field>
                 </template>
                 <v-time-picker
+                    color="orange darken-1"
                     v-if="modHrIni"
                     v-model="tmpIni"
                     format="24hr"
@@ -129,7 +151,7 @@
                     <v-spacer></v-spacer>
                     <v-btn
                     text
-                    color="primary"
+                    color="teal accent-3"
                     @click="fechaHoraInicial"
                     >
                     Cancel
@@ -137,7 +159,7 @@
                     <v-btn
                     text
                     @click="saveHoraIni"
-                    color="primary"
+                    color="teal accent-3"
                     >
                     OK
                 </v-btn>
@@ -156,6 +178,8 @@
             >
                 <template v-slot:activator="{ on, attrs }">
                     <v-text-field
+                    color="orange darken-1"
+                    dark
                     v-model="tmpFina"
                     label="Hora Final"
                     prepend-icon="mdi-clock-time-four-outline"
@@ -165,6 +189,7 @@
                     ></v-text-field>
                 </template>
                 <v-time-picker
+                    color="orange darken-1"
                     v-if="modHrFin"
                     v-model="tmpFina"
                     format="24hr"
@@ -173,7 +198,7 @@
                     <v-spacer></v-spacer>
                         <v-btn
                         text
-                        color="primary"
+                        color="teal accent-3"
                         @click="fechaHoraFinal"
                         >
                         Cancel
@@ -181,7 +206,7 @@
                         <v-btn
                         text
                         @click="saveHoraFinal"
-                        color="primary"
+                        color="teal accent-3"
                         >
                         OK
                         </v-btn>
@@ -191,11 +216,11 @@
         </v-row>
         <v-row>
             <v-col>
-                <v-btn color="teal lighten-4" class="btns" @click="makeRelatorio">
+                <v-btn color="green accent-1" class="btns" @click="makeRelatorio">
                     Gerar
                     
                 </v-btn>
-                <v-btn color="cyan lighten-4" class=" btns ml-3">
+                <v-btn color="lime lighten-4" class=" btns ml-3">
                     Limpar
                 </v-btn>
             </v-col>
@@ -209,12 +234,13 @@ import RespostaRelatorioEstoque from '../components/ModalComponents/RespostaRela
 export default {
     data() {
         return {
-            relatoriosList: ["Relatorios de Produtos", "Relatorios do Estoque", "Relatorios de Pedidos"],
+            relatoriosList: ["Relatorios de Produtos", "Relatorios do Estoque", "Relatorios de Pedidos", "Relatorio de Vendas"],
             relatorioEscolhaLista : null, // Escolha de uma das listas
             relatorioEscolha: null, // Escolha de uma opção dentro de uma lista
             relatorioProductList : ["Produtos mais caros", "Produtos mais baratos"],
             relatorioEstoqueList : ["Produtos com mais estoque", "Produtos com pouco estoque", "Produtos com mais saidas"],
             relatorioPedidoList : ["Pedidos realizados entre duas datas"],
+            relatorioVendaList : ["Vendas por periodo de dias"],
             number_per_pages: null,
             activeRelatorio: false,
             end : null, // dataFinal (dia,mes,ano)
@@ -228,8 +254,9 @@ export default {
             timeHrEndChoose : false, //Habilita a seleção de data Final
         };
     },
-    computed:{
-        filledStart: function() {
+    computed:{                                   //todas computed nessa view servem para retornar nos v-if
+        filledStart: function() {  //verifica se a data inicial foi inserida
+
             let flag = false
             if(this.start != null){
                flag = true
@@ -237,7 +264,7 @@ export default {
             } 
             return flag
         },
-        filledEnd: function(){
+        filledEnd: function(){  //verifica se a data final foi inserida 
             let flag = false
             if(this.end != null){
                 flag = true
@@ -245,6 +272,14 @@ export default {
             }
             return flag
         },  
+        hasDateInput: function(){ //verifica se o relátorio vai possuir input de datas 
+            let flag = false   
+            if(this.relatorioEscolha == 'Pedidos realizados entre duas datas' || this.relatorioEscolha == 'Vendas por periodo de dias'){
+                flag = true
+                return flag
+            }
+            return flag
+        }
     },
     watch: {
         start: function(val) {
@@ -372,4 +407,5 @@ export default {
     .btns{
         width: 20%;
     }
+
 </style>

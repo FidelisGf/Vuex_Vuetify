@@ -1,21 +1,24 @@
 <template>
-    <div  v-if="!['login'].includes($route.name)">
+    <div style="black"  v-if="!['login'].includes($route.name)">
         <v-navigation-drawer v-if="!$vuetify.breakpoint.smAndDown"
         :app="$vuetify.breakpoint.mdAndUp"
         :fixed="$vuetify.breakpoint.mdAndUp"
-        color="#f2f2f2"
+        absolute
+        dark
+        class="black"
         :scroll-toolbar-off-screen="$vuetify.breakpoint.smAndDown"
         permanent
+        style="height: 110vh;"
         >  
         <v-list>
           <v-list-item class="px-5">
             <v-list-item-content>
-              <v-list-item-subtitle>Admin</v-list-item-subtitle>
+              <v-list-item-subtitle >Admin</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-list-item class="px-2">
             <v-list-item-avatar>
-              <v-img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"></v-img>
+              <v-icon>mdi-account</v-icon>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title class="text-h8">
@@ -28,9 +31,12 @@
         <v-divider></v-divider>
         <v-list
             nav
-            dense
+            
           >
-            <v-list-item @click="$router.push('/pedidos')" link >
+          <v-list-item-group
+          active-class="bg-active"
+            >
+              <v-list-item @click="$router.push('/pedidos')" link >
                 <v-list-item-icon>
                   <v-icon>mdi-cash-register</v-icon>
                 </v-list-item-icon>
@@ -60,6 +66,8 @@
               </v-list-item-icon>
               <v-list-item-title>Sair</v-list-item-title>
             </v-list-item>
+          </v-list-item-group>
+         
         </v-list>
     </v-navigation-drawer>
       <v-toolbar dense app dark color="grey darken-0" class="hidden-md-and-up">
@@ -102,7 +110,7 @@
                     <v-list-item-icon>
                       <v-icon>mdi-baguette</v-icon>
                     </v-list-item-icon>
-                    <v-list-item-title>Meus Produtos</v-list-item-title>
+                    <v-list-item-title color="teal lighten-1">Meus Produtos</v-list-item-title>
                 </v-list-item>
                 <v-list-item @click="$router.push('/empresa')" @click.native="dialog = false" link >
                   <v-list-item-icon>
@@ -191,5 +199,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.bg-active {
+  background-color: #4CAF50;
+  color : white !important;
+}
 </style>

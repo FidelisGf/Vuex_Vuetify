@@ -7,13 +7,24 @@
             @keydown.escape="disableList"
         >
         <v-card>
-        <v-card-title class="text-h5">
+        <v-card-actions>
+                <v-btn
+                    color="red darken-1"
+                    text
+                    @click="disableList"
+                    icon
+                    >
+                    <v-icon color="red darken-4">mdi-close</v-icon>
+                </v-btn>
+                </v-card-actions>    
+        <v-card-title class="text-h5 font-weight-bold">
             Lista de Produtos da Venda
         </v-card-title>
+        <v-card-subtitle class="mt-1 ml-3"><p>Valor total : <b>R$ {{this.$store.getters.getValorTotal}}</b> </p></v-card-subtitle>
         <v-card-text>
             <v-list>
                 <v-list-item  v-for="item in this.$store.getters.getPedidos" :key="item.id">
-                    <v-list-item-content >
+                    <v-list-item-content class="mt-n8" >
                         
                       <v-list-item-title >
                         <v-card>
@@ -87,15 +98,7 @@
             </v-list>
             <small>Esses itens estão presentes nessa venda</small>
         </v-card-text>
-        <v-card-actions>
-            <v-btn
-                color="red darken-1"
-                text
-                @click="disableList"
-                >
-                Fechar
-            </v-btn>
-            </v-card-actions>
+       
             </v-card>
         </v-dialog>
     </div>
@@ -125,7 +128,6 @@ export default {
             this.temp.nome = item.nome
             this.temp.quantidade = item.quantidade
             this.temp.valor = item.valor
-            console.log(this.temp)
         },
         disableManipulaQuantidade(){
             this.manipulaQuantidade = false
@@ -142,8 +144,13 @@ export default {
             }else{
                 let oldValor = this.$store.getters.getValorTotal
                 let newValor = item.quantidade * item.valor
-                this.$store.commit("saveValorTotal", oldValor - newValor)
+                if(oldValor < newValor){
+                    this.$store.commit("saveValorTotal", oldValor + newValor)
+                }else if(oldValor > newValor){
+                    this.$store.commit("saveValorTotal", oldValor - newValor)
+                }   
                 this.$store.commit("removeQntdPedido", item)
+                console.log(this.$store.getters.getPedidos)
                 this.disableManipulaQuantidade()
             }
         }

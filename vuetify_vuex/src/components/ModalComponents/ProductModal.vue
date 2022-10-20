@@ -2,8 +2,16 @@
     <v-container fluid grid-list-md>
     <v-row>
         <v-col cols="12">
-           
-           
+            <v-btn
+                color="teal accent-3"
+                class="mt-1 ml-1  font-weight-medium"
+                dark
+                text
+                @click="activeAdicionarEstoque"
+            >
+            <v-icon  dark color="teal accent-3" left>mdi-plus-circle-outline</v-icon>
+                Estoque
+            </v-btn>
             <v-dialog
                 v-model="dialog"
                 persistent
@@ -11,15 +19,16 @@
             >
                 <template v-if="!miniatura" v-slot:activator="{ on, attrs }">
                     <v-btn
-                    color="teal lighten-1"
+                    color="teal accent-3"
+                    class="mt-1 ml-1 font-weight-medium"
                     dark
-                    block
-                    
+                    text
                     @click="cleanProduct"
                     v-bind="attrs"
                     v-on="on"
                     >
-                    Novo Produto
+                    <v-icon  dark color="teal accent-3" left>mdi-plus-circle-outline</v-icon>
+                        Novo Produto
                     </v-btn>
                 </template>
               
@@ -129,18 +138,6 @@
         </v-col>
     </v-row>
     <v-row >
-        <v-col>
-            <v-btn
-            color="teal lighten-3"
-            class="mt-3 ml-1"
-            dark
-            text
-            @click="activeAdicionarEstoque"
-            >
-            <v-icon  dark color="teal lighten-1" left>mdi-plus-circle-outline</v-icon>
-                Estoque
-            </v-btn>
-        </v-col>
         <v-col cols="12">
            <ListaGenerica :route="'products'"></ListaGenerica>
         </v-col>      

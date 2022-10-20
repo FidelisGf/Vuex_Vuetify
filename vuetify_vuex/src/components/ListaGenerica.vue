@@ -8,9 +8,9 @@
                     :loading="loading"
                     :headers="$store.getters.getHeader"
                     :items="$store.getters.listProducts"
-                    :items-per-page="6"
+                    :items-per-page="per_page"
                     hide-default-footer       
-                    class="elevation-2"
+                    class="elevation-2 mt-n5"
                 >
                 <template v-slot:[`item.actions`]="{ item }" >
                     <v-icon small color="teal lighten-1" class="mr-2" @click="editItem(item, route)">mdi-pencil</v-icon>
@@ -22,6 +22,11 @@
                 <template v-slot:[`item.APROVADO`]="{ item }">
                     <span v-if="item.APROVADO == 'T'">APROVADO</span>
                     <span color="red" v-if="item.APROVADO == 'F'">PENDENTE</span>
+                </template>
+                <template v-slot:[`item.PRODUTOS`]="{ item }">
+                    <span v-for="prod in item.PRODUTOS" :key="prod.id">
+                    <p>{{prod.nome}} : {{prod.quantidade}}</p>    
+                    </span>
                 </template>
                 <template v-slot:top>
                     <div class="d-flex align-center">
@@ -112,6 +117,7 @@ export default {
             loading: true,
             search: "",
             rota : '',
+            per_page : 0,
             tempCategory : '',
             filtroCategory : false,
             delete : false,
@@ -130,7 +136,9 @@ export default {
             this.$store.commit("clearListProduct");
             if(this.dtStart != undefined && this.dtFinal != undefined){
                 axios.get("http://127.0.0.1:8000/api/" + route + "?page=" + this.current_page, { params: { opcao: this.opcao, start : this.dtStart, end : this.dtFinal} }).then((response) => {
+                    
                     this.$store.commit("beginListProduct", response.data.data)
+                    this.per_page = response.data.per_page
                     this.loading = false;
                     this.current_page = response.data.current_page
                     this.tempCurrent = this.current_page
@@ -138,7 +146,9 @@ export default {
                 });
             }else{
                 axios.get("http://127.0.0.1:8000/api/" + route + "?page=" + this.current_page, { params: { opcao: this.opcao} }).then((response) => {
+                    console.log(response)
                     this.$store.commit("beginListProduct", response.data.data)
+                    this.per_page = response.data.per_page
                     this.loading = false;
                     this.current_page = response.data.current_page
                     this.tempCurrent = this.current_page
