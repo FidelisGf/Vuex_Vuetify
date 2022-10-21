@@ -9,7 +9,6 @@
                 <v-btn
                 color="primary"
                 dark
-                
                 v-bind="attrs"
                 v-on="on"
                 icon 
@@ -55,16 +54,13 @@
                         Salvar
                         </v-btn>
                 </v-card-actions>
-            </v-card>
-               
-                
-                    
+            </v-card>       
         </v-dialog>   
     </div>
 </template>
 
 <script>
-import categoryService from '@/service/categoryService'
+import {mapActions} from 'vuex'
 export default {
    props:{
         miniatura : Boolean
@@ -76,14 +72,10 @@ export default {
     }
    },
    methods:{
+        ...mapActions('categoryMod', ['saveListCategoria']),
         postCategory(){
             let payload = {NOME : this.NOME}
-            categoryService.postCategory(payload).then((res) => {
-                alert('Categoria criada com sucesso ! ')
-                console.log(res.data);
-                this.$store.commit('saveListCategoria', res.data)
-                console.log(this.$store.state.Categorias)
-            })
+            this.saveListCategoria(payload)
         }
    }
 }

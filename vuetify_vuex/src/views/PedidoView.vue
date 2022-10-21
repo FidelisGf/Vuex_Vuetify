@@ -78,7 +78,7 @@
                                         >
                                             <v-icon aria-hidden="false" dark color="teal lighten-1">mdi-cart</v-icon>
                                         </v-btn>
-                                        <PedidosModal v-if="$store.getters.ListaPedidos"></PedidosModal>
+                                        <PedidosModal v-if="active"></PedidosModal>
                                     </template>
                                     <span>Ver a lista do pedido</span>
                                   </v-tooltip>
@@ -123,7 +123,7 @@
                             ></v-text-field>
                             <v-text-field
                                 class="ml-3"
-                                v-model="$store.getters.getValorTotal"
+                                v-model="ValorTotal"
                                 small
                                 label="Valor Total"
                                 outlined
@@ -165,15 +165,13 @@
 <script>
 import ListaRapidaProduto from '@/components/ModalComponents/ListaRapidaProduto.vue';
 import PedidosModal from '@/components/ModalComponents/PedidosModal.vue';
-import productService from '@/service/productService'
-import pedidoService from '@/service/pedidoService'
+import {mapMutations, mapGetters, mapActions} from 'vuex'
 export default {
     data() {
         return {
             items: ["Foo", "Bar", "Fizz", "Buzz"],
             MetodosPagamento: ["Dinheiro", "Cartao/Debito", "Cartao/Credito", "Pix"],
             escolhaPagamento: "",
-            valor_total: 0,
             loading : false,
             dinheiroPago: 0,
             situacoes: ["Pago", "Pagamento pendente"],
@@ -184,43 +182,51 @@ export default {
                 nome: null,
                 quantidade: 1,
             },
-            pedidos: [],
             fail : false,
             sucesso : false,
             registro : false,
         };
     },
+    computed: {
+        ...mapGetters({active : 'pedidoMod/ListaPedidos', pedidos : 'pedidoMod/getPedidos', ValorTotal : 'pedidoMod/getValorTotal', listaRapida : 'getListRapidaProdutos'}),
+        troco: function () {
+            let resultado = this.ValorTotal - this.dinheiroPago;
+            if (resultado > 0) {
+                return "Falta : " + resultado;
+            }
+            else {
+                return resultado;
+            }
+        },
+    },
     methods: {
+        ...mapMutations('pedidoMod', ['disableListaPedidos', 'saveValorTotal', 'activeListaPedidos', 'activeListaRapidaProdutos']),
+        ...mapActions('pedidoMod', ['findProduto', 'geraVenda']),
         buscaLista() {
+            console.log('Entrei')
             this.fail = false
             this.sucesso = false
-            this.$store.commit("activeListaRapidaProdutos")
+            this.activeListaRapidaProdutos()
         },
         listaPedidos(){
             this.fail = false
             this.sucesso = false
-            this.$store.commit("activeListaPedidos")
+            this.activeListaPedidos()
         },
         somaItens(valor){
            this.valor_total += parseFloat(valor * this.produto.quantidade)
-           this.$store.commit("saveValorTotal", this.valor_total)
+           this.saveValorTotal(this.valor_total)
         },
         addLista(){
             if(this.produto.quantidade == 0 || this.produto.id == null){
                 return alert('Quantidade não pode ser zero e nem o produto pode ser vazio !')
             }
-           productService.findProdutoById(this.produto.id).then((res)=>{
-                if(res.status == 200){
-                    this.fail = false
-                    let payload = {id : res.data.ID_PRODUTO, nome : res.data.NOME, valor : res.data.VALOR, quantidade : this.produto.quantidade}
-                    this.somaItens(res.data.VALOR)
-                    this.$store.commit("savePedidos", payload) 
-                    this.sucesso = true  
-                    this.hideSucess()
-                    return 
-                }
-                
-            }) 
+            let payload = {quantidade : this.produto.quantidade, id : this.produto.id}
+            let getProd = this.findProduto(payload)
+            if(getProd){
+                this.sucesso = true  
+                this.hideSucess()
+            }
         },
         clear(){
             this.produto.id = null
@@ -236,19 +242,16 @@ export default {
             }else{
                 this.escolhaSituacao = 'F'
             }
-            let payload = {METODO_PAGAMENTO : this.escolhaPagamento, produtos : this.$store.getters.getPedidos, aprovado : this.escolhaSituacao}
-            pedidoService.save(payload).then((res)=>{
-                if(res.status == 200){
-                    this.$store.commit("limpaPedido")
-                    this.$store.commit("limparValorTotal")
-                    this.registro = true
-                    this.clear()
-                    this.clearPayment()
-                }else if(res.status != 201){
-                    this.fail = true
-                }
-            })
-            this.loading = false
+            let payload = {METODO_PAGAMENTO : this.escolhaPagamento, produtos : this.pedidos, aprovado : this.escolhaSituacao}
+            let gerarVenda = this.geraVenda(payload)
+            if(gerarVenda){
+                this.registro = true
+                this.clear()
+                this.clearPayment()
+                this.loading = false
+            }else{
+                this.fail = true
+            }       
         },
         hideSucess : function (){
             if(this.sucesso){
@@ -268,7 +271,6 @@ export default {
 
         clearPayment(){
             this.dinheiroPago = 0
-            this.troco = 0
             this.escolhaPagamento = ""
         },
 
@@ -276,17 +278,7 @@ export default {
            
         }
     },
-    computed: {
-        troco: function () {
-            let resultado = this.$store.getters.getValorTotal - this.dinheiroPago;
-            if (resultado > 0) {
-                return "Falta : " + resultado;
-            }
-            else {
-                return resultado;
-            }
-        },
-    },
+   
     created() {
         
     },

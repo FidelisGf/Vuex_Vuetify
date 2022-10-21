@@ -14,10 +14,13 @@
                     </v-card-title>
                     <v-card-subtitle class="mt-2 ml-2 text-h8" ><p>De : {{starterDate}}  até : {{endDate}}</p></v-card-subtitle>
                     <v-card-text>
-                        <v-row>
+                        <v-row v-if="!this.$store.getters.getNotTableFiltro">
                             <ListaGenerica v-if="!pedidos && !vendas" :route="'products'" :opcao="this.$store.getters.getFiltro"></ListaGenerica>
                             <ListaGenerica v-if="pedidos" :route="'pedidos'" :opcao="this.$store.getters.getFiltro" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
                             <ListaGenerica v-if="vendas" :route="'vendas'" :opcao="this.$store.getters.getFiltro" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
+                        </v-row>
+                        <v-row v-if="this.$store.getters.getNotTableFiltro">
+                            <RelatorioEscrito v-if="this.$store.getters.getNotTableFiltro" :route="'vendas'" :opcao="this.$store.getters.getFiltro" :end-date="endDate" :starter-date="starterDate"></RelatorioEscrito>
                         </v-row>
                     </v-card-text>
                     <v-card-actions>
@@ -40,6 +43,7 @@
 
 <script>
 import ListaGenerica from '../ListaGenerica.vue';
+import RelatorioEscrito from '../RelatorioEscrito.vue';
 export default {
     props: {
         nomeRelatorio: String,
@@ -107,14 +111,21 @@ export default {
                 this.vendas = true
             }else if(this.$store.getters.getFiltro == 'Pedidos realizados entre duas datas'){
                 this.pedidos = true
+            }else{
+                this.$store.commit("setNotTableFiltro");
             }
         }
     },
     created() {
+        this.$store.commit("disableNotTableFiltro");
         this.checkRelatorio()
-        this.getLista()
+        console.log(this.$store.getters.getNotTableFiltro)
+        if(!this.$store.getters.getNotTableFiltro){
+            this.getLista()
+        }
+        
     },
-    components: { ListaGenerica }
+    components: { ListaGenerica, RelatorioEscrito }
 }   
 </script>
 

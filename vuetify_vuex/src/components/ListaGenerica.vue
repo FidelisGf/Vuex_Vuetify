@@ -38,7 +38,7 @@
                         >   
                         </v-text-field>
                         <v-select v-if="route == 'products'"
-                            :items="$store.getters.listCategorias"
+                            :items="listCategorias"
                             label="Filtre por uma categoria..."
                             v-model="Categoria"
                             color="teal lighten-1"
@@ -101,7 +101,7 @@ import DeleteGeneric from './ModalComponents/Delete/DeleteGeneric.vue'
 import EditProduct from './ModalComponents/Edit/EditProduct.vue'
 import productService from '@/service/productService'
 import router from '@/router'
-
+import { mapGetters } from 'vuex';
 export default {
     props: {
         route: String,
@@ -219,6 +219,9 @@ export default {
             this.getLista(this.route)
         }
     },
+    computed:{
+        ...mapGetters({listCategorias : 'categoryMod/listCategorias'})
+    },  
     created() {
         console.log(this.starterDate)
         this.clearPages();

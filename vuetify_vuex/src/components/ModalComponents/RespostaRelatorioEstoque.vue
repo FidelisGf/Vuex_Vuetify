@@ -3,17 +3,17 @@
         <v-row>
             <v-col cols="12"> 
                 <v-dialog
-                    v-model="$store.getters.getRelatorioEstoque"
+                    v-model="active"
                     persistent
                     max-width="600px"
                 > 
                     <v-card>
                     <v-card-title>
-                        <span  class="text-h5">{{this.$store.getters.getFiltroEstoque}}</span>
+                        <span  class="text-h5">{{filtro}}</span>
                     </v-card-title>
                     <v-card-text>
                         <v-row>
-                            <ListaGenerica :route="'estoques'" :opcao="this.$store.getters.getFiltroEstoque"></ListaGenerica>
+                            <ListaGenerica :route="'estoques'" :opcao="filtro"></ListaGenerica>
                         </v-row>
                     </v-card-text>
                     <v-card-actions>
@@ -34,6 +34,7 @@
 </template>
 <script>
 import ListaGenerica from '../ListaGenerica.vue';
+import {mapGetters, mapMutations} from 'vuex'
 export default {
     props: {
         nomeRelatorio: String
@@ -48,8 +49,9 @@ export default {
         };
     },
     computed: {
+        ...mapGetters({filtro : 'estoqueMod/getFiltroEstoque', active : 'estoqueMod/getRelatorioEstoque'}),
         headers() {
-            if(this.$store.getters.getFiltroEstoque != 'Produtos com mais saidas'){
+            if(this.filtro != 'Produtos com mais saidas'){
                 return [
                     {
                         text: "Produto",
@@ -77,9 +79,9 @@ export default {
         },
     },
     methods: {
+        ...mapMutations('estoqueMod', ['desativeRelatorioEstoque']),
         closeRelatorio() {
-            this.$store.commit("desativeRelatorioEstoque");
-            this.$store.commit("deleteFiltroEstoque");
+            this.desativeRelatorioEstoque()
         },
         getLista() {
             this.$store.commit("setHeader", this.headers)

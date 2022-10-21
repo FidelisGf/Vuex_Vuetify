@@ -58,7 +58,7 @@
                         </v-select>
             </v-col>
             <RespostaRelatorio :nome-relatorio="relatorioEscolha" :starter-date="startData" :end-date="endData" v-if="$store.getters.getRelatorio"></RespostaRelatorio>
-            <RespostaRelatorioEstoque :nome-relatorio="relatorioEscolha" v-if="$store.getters.getRelatorioEstoque"></RespostaRelatorioEstoque>
+            <RespostaRelatorioEstoque :nome-relatorio="relatorioEscolha" v-if="active"></RespostaRelatorioEstoque>
         </v-row>
         <v-row>
             <v-col v-if="hasDateInput">
@@ -228,9 +228,10 @@
     </v-container>
 </template>
 <script>
+
 import RespostaRelatorio from '@/components/ModalComponents/RespostaRelatorio.vue';
 import RespostaRelatorioEstoque from '../components/ModalComponents/RespostaRelatorioEstoque.vue';
-
+import {mapMutations, mapGetters} from 'vuex'
 export default {
     data() {
         return {
@@ -240,7 +241,7 @@ export default {
             relatorioProductList : ["Produtos mais caros", "Produtos mais baratos"],
             relatorioEstoqueList : ["Produtos com mais estoque", "Produtos com pouco estoque", "Produtos com mais saidas"],
             relatorioPedidoList : ["Pedidos realizados entre duas datas"],
-            relatorioVendaList : ["Vendas por periodo de dias"],
+            relatorioVendaList : ["Vendas por periodo de dias", "Vendas por Tipo de Pagamento"],
             number_per_pages: null,
             activeRelatorio: false,
             end : null, // dataFinal (dia,mes,ano)
@@ -254,9 +255,10 @@ export default {
             timeHrEndChoose : false, //Habilita a seleção de data Final
         };
     },
-    computed:{                                   //todas computed nessa view servem para retornar nos v-if
+    computed:{
+        ...mapGetters({active : 'estoqueMod/getRelatorioEstoque'}),                                  
+          //todas computed nessa view servem para retornar nos v-if
         filledStart: function() {  //verifica se a data inicial foi inserida
-
             let flag = false
             if(this.start != null){
                flag = true
@@ -274,14 +276,16 @@ export default {
         },  
         hasDateInput: function(){ //verifica se o relátorio vai possuir input de datas 
             let flag = false   
-            if(this.relatorioEscolha == 'Pedidos realizados entre duas datas' || this.relatorioEscolha == 'Vendas por periodo de dias'){
+            
+            if(this.relatorioEscolha == 'Pedidos realizados entre duas datas' 
+            || this.relatorioEscolha == 'Vendas por periodo de dias' || this.relatorioEscolha == 'Vendas por Tipo de Pagamento'){
                 flag = true
                 return flag
             }
             return flag
         }
     },
-    watch: {
+    watch: { // monitora as variaveis de dt, para que caso mudem elas sejam atulizadas antes do botão gerar ser clicado
         start: function(val) {
           if (val) {
              this.refactorStartData()
@@ -296,31 +300,35 @@ export default {
       }
     },
     methods: {
+        ...mapMutations('estoqueMod', ['saveFiltroEstoque','activeRelatorioEstoque']),
         makeRelatorio() {
+            
             let validado = this.validaDados()
             if(!validado){
                 alert('Preencha todos os campos necessários')
             }else{
-                this.$store.commit('deleteFiltro')
-                this.$store.commit('deleteFiltroEstoque')
                 let opcao = this.relatorioEscolha
                 if(this.relatorioEscolhaLista == 'Relatorios de Produtos'){
                     this.$store.commit("saveFiltro", opcao)
                     this.$store.commit("activeRelatorio")
                 }
                 else if (this.relatorioEscolhaLista == 'Relatorios do Estoque'){
-                    this.$store.commit("saveFiltroEstoque", opcao)
-                    this.$store.commit("activeRelatorioEstoque")
-                }else{
+                    this.saveFiltroEstoque(opcao)
+                    this.activeRelatorioEstoque()
+                }else if(this.relatorioEscolha == 'Pedidos realizados entre duas datas' || this.relatorioEscolha == 'Vendas por periodo de dias' 
+                || this.relatorioEscolha == 'Vendas por Tipo de Pagamento'){
                     let comparaDatas = this.compareDates()
                     if(comparaDatas){
+                      
                         this.$store.commit("saveFiltro", opcao);
                         this.$store.commit("activeRelatorio");  
                         this.clear()
                     }else{
                         alert('Data Inicial maior que data Final')
                     }
-                    
+                }else{
+                    this.$store.commit("saveFiltro", opcao);
+                    this.$store.commit("activeRelatorio");  
                 }
             }
         },
@@ -362,6 +370,7 @@ export default {
             this.start = null,
             this.end = null,
             this.timeHrEndChoose = false
+            this.$store.commit("disableNotTableFiltro");
         },
         compareDates(){
             let inicio = this.makeValibleData(this.start, this.tmpIni)

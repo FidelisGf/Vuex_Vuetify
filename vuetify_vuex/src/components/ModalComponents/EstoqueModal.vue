@@ -1,7 +1,7 @@
 <template>
     <div>
             <v-dialog
-                v-model="$store.getters.getAdicionaEstoque"
+                v-model="active"
                 persistent
                 max-width="550"
             >
@@ -61,7 +61,8 @@
 </template>
 
 <script>
-import estoqueService from '@/service/estoqueService'
+
+import {mapGetters, mapActions, mapMutations} from 'vuex'
 export default {
     data() {
         return {
@@ -71,23 +72,22 @@ export default {
         };
     },
     methods: {
+        ...mapActions('estoqueMod', ['saveQuantidade']),
+        ...mapMutations('estoqueMod', ['desativateAdicionaEstoque']),
         closeAdicionaEstoque() {
-            this.$store.commit("desativateAdicionaEstoque");
+            this.desativateAdicionaEstoque()
         },
         adicionarQuantidade() {
             let payload = { product_id: this.id, quantidade: this.quantidade };
-            estoqueService.adicionarQuantidade(payload).then((res) => {
-                console.log(res);
-                if (res.status == 200) {
-                    alert("Quantidade Adicionada com sucesso !");
-                    this.$store.commit("desativateAdicionaEstoque");
-                }
-            });
+            this.saveQuantidade(payload)
         },
         buscaLista() {
             this.$store.commit("activeListaRapidaProdutos");
         },
     },
+    computed:{
+        ...mapGetters({active : 'estoqueMod/getAdicionaEstoque'}),  
+    }
 }
 </script>
 

@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-dialog
-            v-model="$store.getters.ListaPedidos"
+            v-model="active"
             persistent
             max-width="650"
             @keydown.escape="disableList"
@@ -20,10 +20,10 @@
         <v-card-title class="text-h5 font-weight-bold">
             Lista de Produtos da Venda
         </v-card-title>
-        <v-card-subtitle class="mt-1 ml-3"><p>Valor total : <b>R$ {{this.$store.getters.getValorTotal}}</b> </p></v-card-subtitle>
+        <v-card-subtitle class="mt-1 ml-3"><p>Valor total : <b>R$ {{vlTotal}}</b> </p></v-card-subtitle>
         <v-card-text>
             <v-list>
-                <v-list-item  v-for="item in this.$store.getters.getPedidos" :key="item.id">
+                <v-list-item  v-for="item in pedidos" :key="item.id">
                     <v-list-item-content class="mt-n8" >
                         
                       <v-list-item-title >
@@ -105,6 +105,7 @@
 </template>
 
 <script>
+import {mapMutations, mapGetters} from 'vuex'
 export default {
     data(){
         return{
@@ -118,9 +119,14 @@ export default {
             },
         }
     },
+    computed:{
+        ...mapGetters({active : 'pedidoMod/ListaPedidos', pedidos : 'pedidoMod/getPedidos'
+     , vlTotal : 'pedidoMod/getValorTotal'})
+    },
     methods:{
+        ...mapMutations('pedidoMod', ['disableListaPedidos', 'saveValorTotal', 'removeQntdPedido', 'removePedido']),
         disableList(){
-            this.$store.commit("disableListaPedidos");
+            this.disableListaPedidos()
         },
         ativaManipulaQuantidade(item){
             this.manipulaQuantidade = true
@@ -134,23 +140,22 @@ export default {
         },
         removeFromList(item){
             if(parseInt(item.quantidade) <= 0){
-                this.$store.commit("removePedido", item)
-                let pedidos = this.$store.getters.getPedidos
+                this.removePedido(item)
+                let pedidos = this.pedidos
                 pedidos.forEach(element => {
                    this.valorTotal += element.quantidade * element.valor
                 });
-                this.$store.commit("saveValorTotal", this.valorTotal)
+                this.saveValorTotal(this.valorTotal)
                 this.disableManipulaQuantidade()
             }else{
-                let oldValor = this.$store.getters.getValorTotal
+                let oldValor = this.valorTotal
                 let newValor = item.quantidade * item.valor
                 if(oldValor < newValor){
-                    this.$store.commit("saveValorTotal", oldValor + newValor)
+                    this.saveValorTotal(parseFloat(this.valorTotal + newValor))
                 }else if(oldValor > newValor){
-                    this.$store.commit("saveValorTotal", oldValor - newValor)
+                    this.saveValorTotal(parseFloat(this.valorTotal + newValor))
                 }   
-                this.$store.commit("removeQntdPedido", item)
-                console.log(this.$store.getters.getPedidos)
+                this.removeQntdPedido(item)
                 this.disableManipulaQuantidade()
             }
         }

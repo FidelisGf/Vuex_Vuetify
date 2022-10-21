@@ -1,6 +1,7 @@
 <template>
     <v-container fluid grid-list-md>
     <v-row>
+        {{this.$store.state.categoryMod.Teste}}
         <v-col cols="12">
             <v-btn
                 color="teal accent-3"
@@ -103,7 +104,7 @@
                             > 
                             
                                 <v-select
-                                    :items="$store.getters.listCategorias"
+                                    :items="listCategorias"
                                     label="Categoria"
                                     v-model="Categoria"
                                     color="teal lighten-1"
@@ -143,7 +144,7 @@
         </v-col>      
     </v-row>
     <v-row>
-        <EstoqueModal v-if="$store.getters.getAdicionaEstoque"></EstoqueModal>
+        <EstoqueModal v-if="activeEstoque"></EstoqueModal>
     </v-row>
 </v-container>
 </template>
@@ -152,6 +153,7 @@ import productService from '@/service/productService'
 import CategoryModal from './CategoryModal.vue'
 import EstoqueModal from './EstoqueModal.vue';
 import ListaGenerica from '../ListaGenerica.vue';
+import { mapGetters, mapMutations } from 'vuex';
 export default {
     props: {
         miniatura: Boolean
@@ -174,6 +176,7 @@ export default {
         };
     },
     computed: {
+        ...mapGetters({listCategorias : 'categoryMod/listCategorias', activeEstoque : 'estoqueMod/getAdicionaEstoque'}),
         headers() {
             return [
                 { text: "Cod", value: "ID_PRODUTO",},
@@ -188,11 +191,13 @@ export default {
                 { text: "Actions", value: "actions", sortable: false },
             ];
         }
+       
     },
    
     methods: {
+        ...mapMutations('estoqueMod', ['activeAdicionaEstoque']),
         activeAdicionarEstoque(){
-            this.$store.commit('activeAdicionaEstoque')
+            this.activeAdicionaEstoque()
         },
         postProduto() {
             var payload = { NOME: this.NOME, VALOR: this.VALOR, DESC: this.DESC, quantidade_inicial: this.quantidade_inicial, ID_CATEGORIA: this.Categoria.ID_CATEGORIA };
@@ -213,9 +218,13 @@ export default {
             this.VALOR = null
             this.DESC = null
             this.Categoria = null
-        },     
+        }, 
+        teste(){
+            this.$store.commit('categoryMod/saveTest')
+        }    
     },
     created() {
+        this.teste()
         this.$store.commit("setHeader", this.headers)
 
     },

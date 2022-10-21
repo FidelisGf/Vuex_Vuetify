@@ -4,7 +4,7 @@
             <v-col cols="12"> 
                 <v-dialog
                     @keydown.escape="fechar"
-                    v-model="$store.getters.getListRapidaProdutos"
+                    v-model="active"
                     persistent
                     max-width="760px"
                 > 
@@ -35,6 +35,7 @@
 </template>
 <script>
 import ListaGenerica from '../ListaGenerica.vue'
+import {mapGetters, mapMutations} from 'vuex'
 export default {
     data() {
         return {
@@ -45,14 +46,16 @@ export default {
         };
     },
     methods: {
+        ...mapMutations('pedidoMod', ['desativeListaRapidaProdutos']),
         getLista() {
             this.$store.commit("setHeader", this.headers)
         },
         fechar() {
-            this.$store.commit("desativeListaRapidaProdutos");
+            this.desativeListaRapidaProdutos()
         }
     },
     computed: {
+            ...mapGetters({active : 'pedidoMod/getListRapidaProdutos'}),
          headers() {
             return [
                 {

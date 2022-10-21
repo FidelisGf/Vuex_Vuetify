@@ -1,0 +1,91 @@
+<template>
+    <v-container>
+        <v-row>
+            <v-col>
+                <v-card>
+                        <v-card-title>
+                            Tipo de Pagamentos 
+                        </v-card-title>
+                        <v-card-text>
+                            <v-list>
+                                <v-list-item >
+                                    <v-list-item-content>
+                                        <v-list-item-title class="ml-2">
+                                            <p class="text-h5"><b>Recebimento Total : R$ {{total}}</b></p>
+                                        </v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                                <v-list-item >
+                                    <v-list-item-content>
+                                        <v-list-item-title class="ml-2">
+                                            <p><b>Pagamento Por PIX : R$ {{pix}}</b></p>
+                                        </v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                                <v-list-item >
+                                    <v-list-item-content>
+                                        <v-list-item-title class="ml-2">
+                                            <p><b>Pagamento Por Cartao : R$ {{cartao}}</b></p>
+                                        </v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                                <v-list-item >
+                                    <v-list-item-content>
+                                        <v-list-item-title class="ml-2">
+                                            <p><b>Pagamento Por Dinheiro: R$ {{dinheiro}}</b></p>
+                                        </v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-list>
+                        </v-card-text>
+                </v-card>      
+            </v-col>
+        </v-row>
+    </v-container>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+    props:{
+        route: String,
+        opcao : String,
+        starterDate : String,
+        endDate : String,
+    },
+    data(){
+        return{
+            pix : null,
+            dinheiro : null,
+            cartao : null,
+            total : null,
+            dtStart : '',
+            dtFinal : '',
+        }
+    },
+    methods:{
+        
+        getDados(route){
+            this.dtStart = this.starterDate
+            this.dtFinal = this.endDate
+            axios.get("http://127.0.0.1:8000/api/" + route, 
+            { params: { opcao: this.opcao, start : this.dtStart, end : this.dtFinal} }).then((response) => {
+                if(this.route  == 'vendas'){
+                    this.dinheiro = response.data[0]
+                    this.cartao = response.data[1]
+                    this.pix = response.data[2]
+                    this.total = response.data[3]
+                }
+            })
+        }
+    },
+    created(){
+        this.getDados(this.route)
+    }
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>
