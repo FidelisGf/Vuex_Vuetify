@@ -7,7 +7,7 @@
                     :custom-filter="filterOnlyCapsText"
                     :loading="loading"
                     :headers="$store.getters.getHeader"
-                    :items="$store.getters.listProducts"
+                    :items="listaProdutos"
                     :items-per-page="per_page"
                     hide-default-footer       
                     class="elevation-2 mt-n5"
@@ -101,7 +101,7 @@ import DeleteGeneric from './ModalComponents/Delete/DeleteGeneric.vue'
 import EditProduct from './ModalComponents/Edit/EditProduct.vue'
 import productService from '@/service/productService'
 import router from '@/router'
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 export default {
     props: {
         route: String,
@@ -128,16 +128,16 @@ export default {
         };
     },
     methods: {
+        ...mapMutations('produtoMod', ['saveProduct', 'beginListProduct', 'saveListProduct', 'editListProduct', 'clearListProduct']),
         getLista(route) {
             this.dtStart = this.starterDate
             this.dtFinal = this.endDate
-            console.log(this.dtStart)
             this.loading = true;
-            this.$store.commit("clearListProduct");
+            this.clearListProduct()
             if(this.dtStart != undefined && this.dtFinal != undefined){
                 axios.get("http://127.0.0.1:8000/api/" + route + "?page=" + this.current_page, { params: { opcao: this.opcao, start : this.dtStart, end : this.dtFinal} }).then((response) => {
                     
-                    this.$store.commit("beginListProduct", response.data.data)
+                    this.beginListProduct(response.data.data)
                     this.per_page = response.data.per_page
                     this.loading = false;
                     this.current_page = response.data.current_page
@@ -146,8 +146,7 @@ export default {
                 });
             }else{
                 axios.get("http://127.0.0.1:8000/api/" + route + "?page=" + this.current_page, { params: { opcao: this.opcao} }).then((response) => {
-                    console.log(response)
-                    this.$store.commit("beginListProduct", response.data.data)
+                    this.beginListProduct(response.data.data)
                     this.per_page = response.data.per_page
                     this.loading = false;
                     this.current_page = response.data.current_page
@@ -190,11 +189,9 @@ export default {
         },  
         findAllByCategory() {
       
-            console.log(this.tempCurrent);
             if(this.tempCurrent != 1){
                 this.current_page = 1
                 this.tempCurrent = 1;
-                console.log(this.current_page)
             }
             if(this.tempCategory != this.Categoria.ID_CATEGORIA){
                 this.current_page = 1;
@@ -206,7 +203,7 @@ export default {
                 this.loading = false
                 productService.findAllProductByCategory(this.Categoria.ID_CATEGORIA, this.current_page).then((res) => {
                     this.loading = false
-                    this.$store.commit('beginListProduct', res.data.data)
+                    this.beginListProduct(res.data.data)
                     this.current_page = res.data.current_page;
                     this.totalPage = res.data.last_page;
                 });
@@ -220,10 +217,9 @@ export default {
         }
     },
     computed:{
-        ...mapGetters({listCategorias : 'categoryMod/listCategorias'})
+        ...mapGetters({listCategorias : 'categoryMod/listCategorias', listaProdutos : 'produtoMod/listProducts'})
     },  
     created() {
-        console.log(this.starterDate)
         this.clearPages();
         this.getLista(this.route);
     },

@@ -12,8 +12,9 @@
                     <v-card-title>
                         <span  class="text-h5">{{this.$store.getters.getFiltro}}</span>
                     </v-card-title>
-                    <v-card-subtitle class="mt-2 ml-2 text-h8" ><p>De : {{starterDate}}  até : {{endDate}}</p></v-card-subtitle>
+                    <v-card-subtitle v-if="entreDatas" class="mt-2 ml-2 text-h8" ><p>De : {{starterDate}}  até : {{endDate}}</p></v-card-subtitle>
                     <v-card-text>
+                        {{this.$store.getters.getNotTableFiltro}}
                         <v-row v-if="!this.$store.getters.getNotTableFiltro">
                             <ListaGenerica v-if="!pedidos && !vendas" :route="'products'" :opcao="this.$store.getters.getFiltro"></ListaGenerica>
                             <ListaGenerica v-if="pedidos" :route="'pedidos'" :opcao="this.$store.getters.getFiltro" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
@@ -56,6 +57,7 @@ export default {
             tmp : false,
             pedidos : false,
             vendas : false,
+            entreDatas : false,
 
         };
     },
@@ -109,9 +111,11 @@ export default {
         checkRelatorio(){
             if(this.$store.getters.getFiltro == 'Vendas por periodo de dias'){
                 this.vendas = true
+                this.entreDatas = true
             }else if(this.$store.getters.getFiltro == 'Pedidos realizados entre duas datas'){
                 this.pedidos = true
-            }else{
+                this.entreDatas = true
+            }else if(this.$store.getters.getFiltro == 'Vendas por Tipo de Pagamento'){
                 this.$store.commit("setNotTableFiltro");
             }
         }

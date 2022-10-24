@@ -7,11 +7,15 @@ export default{
         valor_Total_Pedidos : 0,
         showListaPedidos : false,
         showListaRapidaProdutos : false,
+        cod : null,
 
     },
     getters: {
         ListaPedidos(state){
             return state.showListaPedidos
+        },
+        getCodigo(state){
+            return state.cod
         },
         getValorTotal(state){
             return state.valor_Total_Pedidos
@@ -32,6 +36,9 @@ export default{
         },
         saveValorTotal(state,payload){
             state.valor_Total_Pedidos = parseFloat(payload)
+        },
+        saveCod(state ,payload){
+            state.cod = payload
         },
         savePedidos(state, payload){
             const exist = state.pedidos.find(o => o.id == payload.id)
@@ -86,6 +93,7 @@ export default{
                     this.fail = false
                     let payload2 = {id : res.data.ID_PRODUTO, nome : res.data.NOME, valor : res.data.VALOR, quantidade : payload.quantidade}
                     context.commit('somaItens', res.data.VALOR)
+                    context.commit('saveCod', res.data.ID)
                     context.commit("savePedidos", payload2) 
                     console.log(payload)
                     return true

@@ -1,7 +1,6 @@
 <template>
     <v-container fluid grid-list-md>
     <v-row>
-        {{this.$store.state.categoryMod.Teste}}
         <v-col cols="12">
             <v-btn
                 color="teal accent-3"
@@ -153,7 +152,7 @@ import productService from '@/service/productService'
 import CategoryModal from './CategoryModal.vue'
 import EstoqueModal from './EstoqueModal.vue';
 import ListaGenerica from '../ListaGenerica.vue';
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapMutations ,mapActions } from 'vuex';
 export default {
     props: {
         miniatura: Boolean
@@ -195,6 +194,7 @@ export default {
     },
    
     methods: {
+        ...mapActions('produtoMod', ['saveList']),
         ...mapMutations('estoqueMod', ['activeAdicionaEstoque']),
         activeAdicionarEstoque(){
             this.activeAdicionaEstoque()
@@ -207,7 +207,7 @@ export default {
                     console.log(res);
                     alert("Produto salvo com sucesso");
                     this.Categoria = null
-                    this.$store.commit('saveListProduct', payload2)
+                    this.saveList(payload2)
                     this.dialog = false
                 }
             });
@@ -219,12 +219,8 @@ export default {
             this.DESC = null
             this.Categoria = null
         }, 
-        teste(){
-            this.$store.commit('categoryMod/saveTest')
-        }    
     },
     created() {
-        this.teste()
         this.$store.commit("setHeader", this.headers)
 
     },

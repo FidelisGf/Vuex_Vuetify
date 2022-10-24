@@ -4,30 +4,22 @@ import Vuex from 'vuex'
 import categoryMod from './Categoria/categoryMod'
 import estoqueMod from './Estoque/estoqueMod'
 import pedidoMod from './Pedido/pedidoMod'
+import produtoMod from './Produtos/produtoMod'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
     categoryMod,
     estoqueMod,
-    pedidoMod
+    pedidoMod,
+    produtoMod
   },
   state: {
     user: {
       username: ''
     },
-    product: {
-      ID_PRODUTO : '',
-      NOME : '',
-      DESC : '',  
-      VALOR : 0,
-      quantia_inicial : 0,
-      category: {
-        ID_CATEGORIA : null,
-        NOME : ''
-      },
-    },
-    Products : [],
+   
+  
     header : [],
     delete : false,
     edit : false,
@@ -49,18 +41,14 @@ export default new Vuex.Store({
     getFiltro(state){
       return state.filtro_selecionado
     },
-    listProducts(state){
-      return state.Products
-    },
+   
     delete(state){
       return state.delete
     },
     edit(state){
       return state.edit
     },
-    getProduct(state){
-      return state.product
-    },
+   
     getRelatorio(state){
       return state.showRelatorio
     },
@@ -107,25 +95,6 @@ export default new Vuex.Store({
     },
     saveUser(state, payload){
       state.user.username = payload
-    },
-    saveProduct(state, payload){
-      state.product = payload
-    },
-    beginListProduct(state, payload){
-       state.Products = payload
-    },
-    clearListProduct(state){
-      state.Products.length = 0
-    },
-    saveListProduct(state, payload){
-      state.Products.push(payload)
-    },
-    editListProduct(state, payload){
-      state.Products =  state.Products.filter(item => item.ID_PRODUTO !== payload.ID_PRODUTO)
-      state.Products.push(payload)
-    },
-    deleteInListProduct(state, payload){
-      state.Products =  state.Products.filter(item => item.ID_PRODUTO !== payload)
     },
     activeDelete(state){
       state.delete = true

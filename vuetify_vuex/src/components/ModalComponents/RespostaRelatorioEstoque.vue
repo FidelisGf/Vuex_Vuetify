@@ -11,7 +11,7 @@
                     <v-card-title>
                         <span  class="text-h5">{{filtro}}</span>
                     </v-card-title>
-                    <v-card-text>
+                    <v-card-text class="mt-5">
                         <v-row>
                             <ListaGenerica :route="'estoques'" :opcao="filtro"></ListaGenerica>
                         </v-row>

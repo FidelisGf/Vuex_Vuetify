@@ -302,7 +302,7 @@ export default {
     methods: {
         ...mapMutations('estoqueMod', ['saveFiltroEstoque','activeRelatorioEstoque']),
         makeRelatorio() {
-            
+            this.$store.commit("disableNotTableFiltro")
             let validado = this.validaDados()
             if(!validado){
                 alert('Preencha todos os campos necessários')
@@ -317,9 +317,9 @@ export default {
                     this.activeRelatorioEstoque()
                 }else if(this.relatorioEscolha == 'Pedidos realizados entre duas datas' || this.relatorioEscolha == 'Vendas por periodo de dias' 
                 || this.relatorioEscolha == 'Vendas por Tipo de Pagamento'){
+                   
                     let comparaDatas = this.compareDates()
                     if(comparaDatas){
-                      
                         this.$store.commit("saveFiltro", opcao);
                         this.$store.commit("activeRelatorio");  
                         this.clear()

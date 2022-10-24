@@ -4,7 +4,26 @@
             <v-col cols="12">
                 <v-card 
                      elevation="21">
-                    <v-card-title class="text-h5 font-weight-bold">Registrar uma Venda</v-card-title>
+                    <v-card-title class="text-h5 font-weight-bold">
+                        Registrar uma Venda
+                        <v-tooltip bottom>      
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    color="purple lighten-1"
+                                    class="ml-3"
+                                    dark
+                                    icon
+                                    @click="listaPedidos" 
+                                >
+                                    <v-icon aria-hidden="false" dark color="teal lighten-1">mdi-magnify</v-icon>
+                                </v-btn>
+                                <PedidosModal v-if="active"></PedidosModal>
+                            </template>
+                            <span>Carregar um Pedido</span>
+                          </v-tooltip>
+                    </v-card-title>
                     <v-card-subtitle class="font-weight-medium" >Favor informar todos os campos necessários</v-card-subtitle>
                     <v-card-subtitle v-if="sucesso"><v-alert  type="success" v-model="sucesso" dismissible dense shaped
                         outlined class="mt-n5">Produto adicionado a lista com sucesso !</v-alert></v-card-subtitle>
@@ -165,6 +184,8 @@
 <script>
 import ListaRapidaProduto from '@/components/ModalComponents/ListaRapidaProduto.vue';
 import PedidosModal from '@/components/ModalComponents/PedidosModal.vue';
+import jsPdf from 'jspdf'
+import autoTable from 'jspdf-autotable'
 import {mapMutations, mapGetters, mapActions} from 'vuex'
 export default {
     data() {
@@ -188,7 +209,7 @@ export default {
         };
     },
     computed: {
-        ...mapGetters({active : 'pedidoMod/ListaPedidos', pedidos : 'pedidoMod/getPedidos', ValorTotal : 'pedidoMod/getValorTotal', listaRapida : 'getListRapidaProdutos'}),
+        ...mapGetters({active : 'pedidoMod/ListaPedidos', pedidos : 'pedidoMod/getPedidos', ValorTotal : 'pedidoMod/getValorTotal', listaRapida : 'getListRapidaProdutos', cod : 'pedidoMod/getCodigo'}),
         troco: function () {
             let resultado = this.ValorTotal - this.dinheiroPago;
             if (resultado > 0) {
@@ -252,6 +273,36 @@ export default {
             }else{
                 this.fail = true
             }       
+        },
+        down(){ // fazer uma variavel chamada Pedido Atual dentro de pedidoMod, essa variavel vai ter
+            //uma mutation que recebe um payload, esse payload será o resultado da resposta quando cadastramos um pedido,
+            // faça a montagem do objeto Pedido_Atual e depois use um getter para pega-lo no front , utilizando ele nos 
+            //campos necessários 
+            let Nome_Empresa = 'Anabel Personalizados'
+            let pdf = new jsPdf()
+            let values = this.pedidos.map( (elemento) => Object.values(elemento)); //poderiamos utlizar o pedido porem, esse em questão é somente um resumo dos produtos dentro do mesmo, sem forma de pagamento e etc
+            pdf.setFontSize(26);0
+            let id = 0
+            pdf.text(Nome_Empresa + ' Pedido #' + ' ' +  id, 10, 20)
+            pdf.text('-------------------------------------------------------------------', 2, 26)
+            pdf.setFontSize(12);
+            pdf.text('Codigo do Pedido :  ' + this.cod, 15, 35)
+            pdf.text('Forma de Pagamento : Dinheiro', 80, 35)
+            pdf.text('Valor Total : R$ 45', 160,35)
+            pdf.text('Produtos do Pedido : ', 15, 50)
+            pdf.setFontSize(10);
+            autoTable(pdf,
+            {
+                startY: 60,
+                cellWidth: 'auto',
+                headStyles: {fillColor: [128,128,128]},
+                styles: { fillColor: [211, 211, 211] },
+                theme : 'striped',
+                margin: { top: 10 },
+                head: [['ID', 'NOME', 'VALOR', 'QUANTIDADE']],
+                body: values,
+            })  
+            pdf.save('orcamento.pdf'); 
         },
         hideSucess : function (){
             if(this.sucesso){

@@ -20,6 +20,12 @@ const routes = [
         component: () => import(/* webpackChunkName: "about" */ '../views/PedidoView.vue')
       },
       {
+        path: '/teste',
+        name: 'teste',
+        beforeEnter: Guard.auth,
+        component: () => import(/* webpackChunkName: "about" */ '../views/TesteView.vue')
+      },
+      {
         path: '/products/detail/:id',
         name: 'products-detail',
         // route level code-splitting
