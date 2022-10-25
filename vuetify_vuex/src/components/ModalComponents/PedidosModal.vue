@@ -6,22 +6,23 @@
             max-width="650"
             @keydown.escape="disableList"
         >
-        <v-card>
-        <v-card-actions>
-                <v-btn
-                    color="red darken-1"
-                    text
-                    @click="disableList"
-                    icon
-                    >
-                    <v-icon color="red darken-4">mdi-close</v-icon>
-                </v-btn>
+        
+            <v-card>
+                <v-card-actions>
+                    <v-btn
+                        color="red darken-1"
+                        text
+                        @click="disableList"
+                        icon
+                        >
+                        <v-icon color="red darken-4">mdi-close</v-icon>
+                    </v-btn>
                 </v-card-actions>    
-        <v-card-title class="text-h5 font-weight-bold">
-            Lista de Produtos da Venda
-        </v-card-title>
-        <v-card-subtitle class="mt-1 ml-3"><p>Valor total : <b>R$ {{vlTotal}}</b> </p></v-card-subtitle>
-        <v-card-text>
+                <v-card-title  class="text-h5 font-weight-bold">
+                    Lista de Produtos da Venda
+                </v-card-title>
+                <v-card-subtitle class="mt-1 ml-3"><p>Valor total : <b>R$ {{vlTotal}}</b> </p></v-card-subtitle>
+                <v-card-text>
             <v-list>
                 <v-list-item  v-for="item in pedidos" :key="item.id">
                     <v-list-item-content class="mt-n8" >
@@ -107,6 +108,9 @@
 <script>
 import {mapMutations, mapGetters} from 'vuex'
 export default {
+    props:{
+        search : Boolean,
+    },
     data(){
         return{
             manipulaQuantidade : false,

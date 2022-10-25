@@ -14,12 +14,54 @@
                                     color="purple lighten-1"
                                     class="ml-3"
                                     dark
-                                    icon
-                                    @click="listaPedidos" 
+                                    @click="findBy = true"
+                                    icon 
                                 >
                                     <v-icon aria-hidden="false" dark color="teal lighten-1">mdi-magnify</v-icon>
                                 </v-btn>
-                                <PedidosModal v-if="active"></PedidosModal>
+                                    <v-dialog
+                                            v-model="findBy"
+                                            persistent
+                                            max-width="650"
+                                            @keydown.escape="findBy = false"
+                                        >
+                                        <v-card>
+                                            <v-card-actions>
+                                                <v-btn
+                                                    color="red darken-1"
+                                                    text
+                                                    @click="findBy = false"
+                                                    icon
+                                                    >
+                                                    <v-icon color="red darken-4">mdi-close</v-icon>
+                                                </v-btn>
+                                            </v-card-actions>    
+                                            <v-card-title  class="text-h6 font-weight-bold mt-n4">
+                                                Digite o Codigo do Pedido 
+                                            </v-card-title>
+                                            <v-card-text class="mt-n2">
+                                                <v-text-field
+                                                    v-model="id"
+                                                    label="Codigo..."
+                                                    outlined
+                                                    clearable
+                                                    dense 
+                                                    required
+                                                    type="number"
+                                                    min="0"
+                                                ></v-text-field>
+                                            </v-card-text>
+                                            <v-card-actions class="d-flex justify-end mt-n8">
+                                                <v-btn
+                                                    color="green darken-1"
+                                                    text
+                                                    @click="findPedidoById"
+                                                    >
+                                                    Buscar
+                                                </v-btn>
+                                            </v-card-actions>   
+                                        </v-card> 
+                                    </v-dialog>    
                             </template>
                             <span>Carregar um Pedido</span>
                           </v-tooltip>
@@ -31,6 +73,8 @@
                         outlined class="mt-n5">Algo de errado ocorreu, verifique se o produto existe !</v-alert></v-card-subtitle>
                     <v-card-subtitle v-if="registro"><v-alert type="success" v-model="registro" dismissible dense shaped
                         outlined class="mt-n5">Pedido Registrado com sucesso !</v-alert></v-card-subtitle>
+                    <v-card-subtitle v-if="sucessFind"><v-alert type="success" v-model="sucessFind" dismissible dense shaped
+                        outlined class="mt-n5">Pedido carregado com sucesso !</v-alert></v-card-subtitle>
                     <v-row dense class="mt-1">
                         <v-col cols="12" sm="6">
                             <form @submit.prevent="addLista" class="d-flex justify-center ml-2 ml-md-6 ml-sm-6 ml-lg-6">
@@ -204,12 +248,17 @@ export default {
                 quantidade: 1,
             },
             fail : false,
+            id : null,
             sucesso : false,
+            findBy : false,
             registro : false,
+            sucessFind : false,
+            editMode : false,
         };
     },
     computed: {
-        ...mapGetters({active : 'pedidoMod/ListaPedidos', pedidos : 'pedidoMod/getPedidos', ValorTotal : 'pedidoMod/getValorTotal', listaRapida : 'getListRapidaProdutos', cod : 'pedidoMod/getCodigo'}),
+        ...mapGetters({active : 'pedidoMod/ListaPedidos', pedidos : 'pedidoMod/getPedidos', ValorTotal : 'pedidoMod/getValorTotal', listaRapida : 'getListRapidaProdutos'
+        , cod : 'pedidoMod/getCodigo', pedidoAtual : 'pedidoMod/getPedidoAtual'}),
         troco: function () {
             let resultado = this.ValorTotal - this.dinheiroPago;
             if (resultado > 0) {
@@ -221,13 +270,35 @@ export default {
         },
     },
     methods: {
-        ...mapMutations('pedidoMod', ['disableListaPedidos', 'saveValorTotal', 'activeListaPedidos', 'activeListaRapidaProdutos']),
-        ...mapActions('pedidoMod', ['findProduto', 'geraVenda']),
+        ...mapMutations('pedidoMod', ['disableListaPedidos', 'saveValorTotal', 'activeListaPedidos', 'activeListaRapidaProdutos', 'limpaPedido']),
+        ...mapActions('pedidoMod', ['findProduto', 'geraVenda', 'findPedido' , 'editarPedido']),
         buscaLista() {
             console.log('Entrei')
             this.fail = false
             this.sucesso = false
             this.activeListaRapidaProdutos()
+        },
+       async findPedidoById(){
+           let pedido = await this.findPedido(this.id)
+           this.escolhaPagamento = pedido.METODO_PAGAMENTO
+           this.escolhaSituacao = pedido.APROVADO == 'T' ? 'Pago' : 'Pendente'
+           this.findBy = false
+           this.sucessFind = true
+           this.editMode = true
+        },
+       async  editPedido(){
+            if(this.escolhaSituacao == "Pago"){
+                this.escolhaSituacao = 'T'
+            }else{
+                this.escolhaSituacao = 'F'
+            }
+            let payload = {ID : this.id, METODO_PAGAMENTO : this.escolhaPagamento, PRODUTOS : this.pedidos, APROVADO : this.escolhaSituacao}
+            let edit = await this.editarPedido(payload)
+            if(edit){
+                this.editMode = false
+                console.log(this.pedido)
+                this.down(this.pedidoAtual)
+            }
         },
         listaPedidos(){
             this.fail = false
@@ -255,41 +326,47 @@ export default {
             this.produto.nome = null
             this.produto.quantidade = 1
         },
-        gerarVenda(){
-            this.loading = true
-            this.fail = false
-            if(this.escolhaSituacao == "Pago"){
-                this.escolhaSituacao = 'T'
+        async gerarVenda(){
+            if(this.editMode){
+                return this.editPedido()
             }else{
-                this.escolhaSituacao = 'F'
+                this.loading = true
+                this.fail = false
+                if(this.escolhaSituacao == "Pago"){
+                    this.escolhaSituacao = 'T'
+                }else{
+                    this.escolhaSituacao = 'F'
+                }
+                let payload = {METODO_PAGAMENTO : this.escolhaPagamento, produtos : this.pedidos, aprovado : this.escolhaSituacao}
+                 let gerarVenda = await this.geraVenda(payload)
+                if(gerarVenda){
+                    this.down(this.pedidoAtual)
+                    this.registro = true
+                    this.clear()
+                    this.clearPayment()
+                    this.loading = false
+                    this.limpaPedido()
+                }else{
+                    this.fail = true
+                }       
             }
-            let payload = {METODO_PAGAMENTO : this.escolhaPagamento, produtos : this.pedidos, aprovado : this.escolhaSituacao}
-            let gerarVenda = this.geraVenda(payload)
-            if(gerarVenda){
-                this.registro = true
-                this.clear()
-                this.clearPayment()
-                this.loading = false
-            }else{
-                this.fail = true
-            }       
+          
         },
-        down(){ // fazer uma variavel chamada Pedido Atual dentro de pedidoMod, essa variavel vai ter
-            //uma mutation que recebe um payload, esse payload será o resultado da resposta quando cadastramos um pedido,
-            // faça a montagem do objeto Pedido_Atual e depois use um getter para pega-lo no front , utilizando ele nos 
-            //campos necessários 
+        down(pedido){ 
             let Nome_Empresa = 'Anabel Personalizados'
             let pdf = new jsPdf()
-            let values = this.pedidos.map( (elemento) => Object.values(elemento)); //poderiamos utlizar o pedido porem, esse em questão é somente um resumo dos produtos dentro do mesmo, sem forma de pagamento e etc
+            let produtos = this.pedidos
+            console.log(pedido)
+            let values = produtos.map( (elemento) => Object.values(elemento)); //poderiamos utlizar o pedido porem, esse em questão é somente um resumo dos produtos dentro do mesmo, sem forma de pagamento e etc
             pdf.setFontSize(26);0
-            let id = 0
-            pdf.text(Nome_Empresa + ' Pedido #' + ' ' +  id, 10, 20)
+            pdf.text(Nome_Empresa + ' Pedido #' + ' ' +  pedido.codigo , 10, 20)
             pdf.text('-------------------------------------------------------------------', 2, 26)
-            pdf.setFontSize(12);
-            pdf.text('Codigo do Pedido :  ' + this.cod, 15, 35)
-            pdf.text('Forma de Pagamento : Dinheiro', 80, 35)
-            pdf.text('Valor Total : R$ 45', 160,35)
-            pdf.text('Produtos do Pedido : ', 15, 50)
+            pdf.setFontSize(10);
+            pdf.text('Codigo do Pedido :  ' + pedido.codigo, 15, 35)
+            pdf.text('Forma de Pagamento :  ' + pedido.metodo_pagamento, 80, 35)
+            pdf.text('Valor Total :  R$' + pedido.valor_total, 160,35)
+            pdf.text('Estado do Pagamento : ' + pedido.aprovado, 15,45)
+            pdf.text('Produtos do Pedido : ', 15, 55)
             pdf.setFontSize(10);
             autoTable(pdf,
             {
@@ -302,7 +379,7 @@ export default {
                 head: [['ID', 'NOME', 'VALOR', 'QUANTIDADE']],
                 body: values,
             })  
-            pdf.save('orcamento.pdf'); 
+            pdf.save('pedido_' + pedido.codigo + '.pdf'); 
         },
         hideSucess : function (){
             if(this.sucesso){
@@ -318,7 +395,6 @@ export default {
         clearIntervalo : function (interaval){
             clearInterval(interaval)
         },
-
 
         clearPayment(){
             this.dinheiroPago = 0
