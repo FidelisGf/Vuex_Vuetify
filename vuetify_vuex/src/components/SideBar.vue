@@ -22,7 +22,7 @@
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title class="text-h8">
-                {{$store.state.user.username}}
+                {{user}}
               </v-list-item-title>
               
             </v-list-item-content>
@@ -71,7 +71,7 @@
         </v-list>
     </v-navigation-drawer>
       <v-toolbar dense app dark color="grey darken-0" class="hidden-md-and-up">
-        <v-toolbar-title class="text-h10">Admin : {{$store.state.user.username}}</v-toolbar-title>
+        <v-toolbar-title class="text-h10">Admin : {{name}}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-app-bar-nav-icon @click.native="dialog = true"></v-app-bar-nav-icon>
         <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
@@ -95,7 +95,7 @@
                   </v-list-item-avatar>
                   <v-list-item-content>
                     <v-list-item-title class="text-h8">
-                      {{$store.state.user.username}}
+                      {{name}}
                     </v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
@@ -158,14 +158,18 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 /* eslint-disable */
 export default {
   data(){
     return {
       dialog: false,
+      one : false,
+      user : null,
     }
   },
     computed:{
+      ...mapGetters({name : 'userMod/getUser' }),
       mini(){
         switch (this.$vuetify.breakpoint.name) {
           case 'xs': return true
@@ -178,23 +182,13 @@ export default {
     }
   },
   methods:{
-    async profile(){
-        const response = await this.$http.post('/auth/profile')
-        if(this.userLeng == 0){
-          this.$store.dispatch('setUser', response.data.NAME)
-        }    
-    }, 
-    
+     
   },
-  async created(){
-    this.profile();
+  created(){
+    
+    this.user = localStorage.getItem('user')
   },
 
-  computed:{
-    userLeng(state){
-      return Object.keys(this.$store.state.user.username);
-    }
-  }
 }
 </script>
 

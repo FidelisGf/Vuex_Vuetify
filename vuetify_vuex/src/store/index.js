@@ -5,6 +5,7 @@ import categoryMod from './Categoria/categoryMod'
 import estoqueMod from './Estoque/estoqueMod'
 import pedidoMod from './Pedido/pedidoMod'
 import produtoMod from './Produtos/produtoMod'
+import userMod from './User/userMod'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -12,12 +13,11 @@ export default new Vuex.Store({
     categoryMod,
     estoqueMod,
     pedidoMod,
-    produtoMod
+    produtoMod,
+    userMod
   },
   state: {
-    user: {
-      username: ''
-    },
+   
    
   
     header : [],
@@ -93,9 +93,6 @@ export default new Vuex.Store({
     desativeRelatorio(state){
       state.showRelatorio = false
     },
-    saveUser(state, payload){
-      state.user.username = payload
-    },
     activeDelete(state){
       state.delete = true
     },
@@ -105,9 +102,6 @@ export default new Vuex.Store({
     
   },
   actions: {
-    setUser(context, payload){
-      context.commit('saveUser', payload)
-      console.log(payload);
-    },
+   
   },
 })

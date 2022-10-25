@@ -4,7 +4,7 @@ export default{
     namespaced: true,
     state: {
         pedidos: [],
-        valor_Total_Pedidos : 0,
+        valor_Total_Pedidos : null,
         showListaPedidos : false,
         showListaRapidaProdutos : false,
         cod : null,
@@ -51,6 +51,7 @@ export default{
             state.showListaRapidaProdutos = false
         },
         saveValorTotal(state,payload){
+            
             state.valor_Total_Pedidos = parseFloat(payload)
         },
         saveCod(state ,payload){
@@ -109,52 +110,69 @@ export default{
        async editarPedido(context , payload){
             let edit = false
             context.commit("limpaPedido")
-            await pedidoService.edit(payload.ID, payload).then((res)=>{
-                console.log(res.data)
-                context.commit("setPedidoAtual", res.data)
-                context.commit("setListaPedidos", res.data.PRODUTOS)
-                context.commit("saveValorTotal", res.data.VALOR_TOTAL)
-                edit = true
-            })
-            return edit
+             await pedidoService.edit(payload.ID, payload).then((res)=>{
+                    if(res.status ===  200){
+                        console.log(res.data)
+                        context.commit("setPedidoAtual", res.data)
+                        context.commit("setListaPedidos", res.data.PRODUTOS)
+                        context.commit("saveValorTotal", res.data.VALOR_TOTAL)
+                        edit = true
+                    }
+                    return edit
+                })
+             
+            
         },
-        findProduto(context ,payload){
-           let getProduto =  productService.findProdutoById(payload.id).then((res)=>{
-                if(res.status == 200){
-                    this.fail = false
-                    let payload2 = {id : res.data.ID_PRODUTO, nome : res.data.NOME, valor : res.data.VALOR, quantidade : payload.quantidade}
-                    context.commit('somaItens', res.data.VALOR)
-                    context.commit('saveCod', res.data.ID)
-                    context.commit("savePedidos", payload2) 
-                    console.log(payload)
-                    return true
-                }else{
-                    return false
-                }
-            }) 
-            return getProduto
+        async findProduto(context ,payload){
+            let getProduto = false
+            try {
+                getProduto = await productService.findProdutoById(payload.id).then((res)=>{
+                    if(res.status == 200){
+                        this.fail = false
+                        let payload2 = {id : res.data.ID_PRODUTO, nome : res.data.NOME, valor : res.data.VALOR, quantidade : payload.quantidade}
+                        context.commit('somaItens', parseFloat(res.data.VALOR * payload.quantidade))
+                        context.commit('saveCod', res.data.ID)
+                        context.commit("savePedidos", payload2) 
+                        console.log(payload)
+                        return true
+                    }
+                }) 
+                return getProduto
+            } catch (error) {
+                alert('Falha ao encontrar o produto por esse codigo !')
+                return getProduto
+            }
+          
         },
         async geraVenda(context, payload){
-          let gera = await pedidoService.save(payload).then((res)=>{
-                if(res.status == 201){
-                    console.log(res.data)
-                    context.commit("setPedidoAtual", res.data)
-                    context.commit("limparValorTotal")
-                    return true
-                }else if(res.status != 200){
-                   return false
-                }
-            })
-            return gera
+            let gera = false
+            try {
+                gera = await pedidoService.save(payload).then((res)=>{
+                    if(res.status == 201){
+                        console.log(res.data)
+                        context.commit("setPedidoAtual", res.data)
+                        context.commit("limparValorTotal")
+                        return true
+                    }
+                })
+                return gera
+            } catch (error) {
+
+                alert('Falha ao Gerar Venda')
+                return gera
+            }
+        
         },
-        async  findPedido(context, payload){
+        async findPedido(context, payload){
             let pedido = null
             context.commit("limpaPedido")
             context.commit("limparValorTotal")
-           await pedidoService.findById(payload).then((res)=>{
-                context.commit("setListaPedidos", res.data.PRODUTOS)
-                context.commit("saveValorTotal", res.data.VALOR_TOTAL)
-                pedido = res.data
+                await pedidoService.findById(payload).then((res)=>{
+                    if(res.status == 200){
+                        context.commit("setListaPedidos", res.data.PRODUTOS)
+                        context.commit("saveValorTotal", parseFloat(res.data.VALOR_TOTAL))
+                        pedido = res.data
+                }
             })
             return pedido
         }

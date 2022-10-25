@@ -6,7 +6,6 @@
             max-width="650"
             @keydown.escape="disableList"
         >
-        
             <v-card>
                 <v-card-actions>
                     <v-btn
@@ -146,20 +145,19 @@ export default {
             if(parseInt(item.quantidade) <= 0){
                 this.removePedido(item)
                 let pedidos = this.pedidos
+                this.valorTotal = 0
                 pedidos.forEach(element => {
-                   this.valorTotal += element.quantidade * element.valor
+                   this.valorTotal += parseFloat(element.quantidade * element.valor)
                 });
-                this.saveValorTotal(this.valorTotal)
+                this.saveValorTotal(parseFloat( this.valorTotal ))
                 this.disableManipulaQuantidade()
             }else{
-                let oldValor = this.valorTotal
-                let newValor = item.quantidade * item.valor
-                if(oldValor < newValor){
-                    this.saveValorTotal(parseFloat(this.valorTotal + newValor))
-                }else if(oldValor > newValor){
-                    this.saveValorTotal(parseFloat(this.valorTotal + newValor))
-                }   
                 this.removeQntdPedido(item)
+                this.valorTotal = 0
+                this.pedidos.forEach(element => {
+                   this.valorTotal += parseFloat(element.quantidade * element.valor)
+                });
+                this.saveValorTotal(parseFloat( this.valorTotal ))
                 this.disableManipulaQuantidade()
             }
         }

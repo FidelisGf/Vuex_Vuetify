@@ -234,7 +234,6 @@ import {mapMutations, mapGetters, mapActions} from 'vuex'
 export default {
     data() {
         return {
-            items: ["Foo", "Bar", "Fizz", "Buzz"],
             MetodosPagamento: ["Dinheiro", "Cartao/Debito", "Cartao/Credito", "Pix"],
             escolhaPagamento: "",
             loading : false,
@@ -258,7 +257,7 @@ export default {
     },
     computed: {
         ...mapGetters({active : 'pedidoMod/ListaPedidos', pedidos : 'pedidoMod/getPedidos', ValorTotal : 'pedidoMod/getValorTotal', listaRapida : 'getListRapidaProdutos'
-        , cod : 'pedidoMod/getCodigo', pedidoAtual : 'pedidoMod/getPedidoAtual'}),
+        , cod : 'pedidoMod/getCodigo', pedidoAtual : 'pedidoMod/getPedidoAtual', empresaUser : 'userMod/getEmpresa'}),
         troco: function () {
             let resultado = this.ValorTotal - this.dinheiroPago;
             if (resultado > 0) {
@@ -270,35 +269,39 @@ export default {
         },
     },
     methods: {
-        ...mapMutations('pedidoMod', ['disableListaPedidos', 'saveValorTotal', 'activeListaPedidos', 'activeListaRapidaProdutos', 'limpaPedido']),
+        ...mapMutations('pedidoMod', ['disableListaPedidos', 'saveValorTotal', 'activeListaPedidos', 'activeListaRapidaProdutos', 'limpaPedido', 'limparValorTotal']),
         ...mapActions('pedidoMod', ['findProduto', 'geraVenda', 'findPedido' , 'editarPedido']),
+        ...mapActions('userMod', ['getEmpresaFromUser']),
         buscaLista() {
-            console.log('Entrei')
             this.fail = false
             this.sucesso = false
             this.activeListaRapidaProdutos()
         },
        async findPedidoById(){
            let pedido = await this.findPedido(this.id)
-           this.escolhaPagamento = pedido.METODO_PAGAMENTO
-           this.escolhaSituacao = pedido.APROVADO == 'T' ? 'Pago' : 'Pendente'
-           this.findBy = false
-           this.sucessFind = true
-           this.editMode = true
+            this.escolhaPagamento = pedido.METODO_PAGAMENTO
+            this.escolhaSituacao = pedido.APROVADO == "T" ? "Pago" : "Pagamento pendente"
+            this.sucessFind = true
+            this.editMode = true
+            this.findBy = false
         },
        async  editPedido(){
+            this.loading = true
             if(this.escolhaSituacao == "Pago"){
                 this.escolhaSituacao = 'T'
             }else{
                 this.escolhaSituacao = 'F'
             }
             let payload = {ID : this.id, METODO_PAGAMENTO : this.escolhaPagamento, PRODUTOS : this.pedidos, APROVADO : this.escolhaSituacao}
-            let edit = await this.editarPedido(payload)
-            if(edit){
-                this.editMode = false
-                console.log(this.pedido)
-                this.down(this.pedidoAtual)
-            }
+            await this.editarPedido(payload)
+            this.editMode = false
+            console.log(this.pedido)
+            this.down(this.pedidoAtual)
+            this.clear()
+            this.clearPayment()
+            this.limpaPedido()
+            this.limparValorTotal()
+            this.loading = false
         },
         listaPedidos(){
             this.fail = false
@@ -309,15 +312,17 @@ export default {
            this.valor_total += parseFloat(valor * this.produto.quantidade)
            this.saveValorTotal(this.valor_total)
         },
-        addLista(){
+        async addLista(){
             if(this.produto.quantidade == 0 || this.produto.id == null){
                 return alert('Quantidade não pode ser zero e nem o produto pode ser vazio !')
             }
             let payload = {quantidade : this.produto.quantidade, id : this.produto.id}
-            let getProd = this.findProduto(payload)
+            let getProd = await this.findProduto(payload)
             if(getProd){
                 this.sucesso = true  
                 this.hideSucess()
+            }else{
+                this.fail = true
             }
         },
         clear(){
@@ -350,17 +355,22 @@ export default {
                     this.fail = true
                 }       
             }
-          
         },
-        down(pedido){ 
-            let Nome_Empresa = 'Anabel Personalizados'
+       async down(pedido){ 
+            this.getEmpresaFromUser()
+            let Nome_Empresa = this.empresaUser.NOME
             let pdf = new jsPdf()
             let produtos = this.pedidos
             console.log(pedido)
-            let values = produtos.map( (elemento) => Object.values(elemento)); //poderiamos utlizar o pedido porem, esse em questão é somente um resumo dos produtos dentro do mesmo, sem forma de pagamento e etc
-            pdf.setFontSize(26);0
-            pdf.text(Nome_Empresa + ' Pedido #' + ' ' +  pedido.codigo , 10, 20)
-            pdf.text('-------------------------------------------------------------------', 2, 26)
+            let values = produtos.map( (elemento) => Object.values(elemento));
+            pdf.setFontSize(26)
+            pdf.text(Nome_Empresa + ' pedido N#' + ' ' +  pedido.codigo , 15, 15)
+            pdf.setFontSize(10)
+            pdf.text('CNPJ :  ' + this.empresaUser.CNPJ, 15, 22)
+            pdf.text('ENDEREÇO : '  + this.empresaUser.ENDERECO, 70, 22)
+            pdf.text('EMAIL : ' + this.empresaUser.EMAIL, 140, 22)
+            pdf.setFontSize(26)
+            pdf.text('-------------------------------------------------------------------', 2, 28)
             pdf.setFontSize(10);
             pdf.text('Codigo do Pedido :  ' + pedido.codigo, 15, 35)
             pdf.text('Forma de Pagamento :  ' + pedido.metodo_pagamento, 80, 35)
@@ -376,7 +386,7 @@ export default {
                 styles: { fillColor: [211, 211, 211] },
                 theme : 'striped',
                 margin: { top: 10 },
-                head: [['ID', 'NOME', 'VALOR', 'QUANTIDADE']],
+                head: [['CODIGO', 'NOME', 'VALOR', 'QUANTIDADE']],
                 body: values,
             })  
             pdf.save('pedido_' + pedido.codigo + '.pdf'); 
@@ -388,8 +398,7 @@ export default {
                     }, 2000)
                 setInterval(interval);
                 this.clear()
-            }
-            
+            }      
         },
 
         clearIntervalo : function (interaval){
@@ -400,10 +409,6 @@ export default {
             this.dinheiroPago = 0
             this.escolhaPagamento = ""
         },
-
-        mounted : function(){
-           
-        }
     },
    
     created() {
