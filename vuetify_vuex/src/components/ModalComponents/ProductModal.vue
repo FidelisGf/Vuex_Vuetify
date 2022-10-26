@@ -148,7 +148,6 @@
 </v-container>
 </template>
 <script>
-import productService from '@/service/productService'
 import CategoryModal from './CategoryModal.vue'
 import EstoqueModal from './EstoqueModal.vue';
 import ListaGenerica from '../ListaGenerica.vue';
@@ -194,23 +193,16 @@ export default {
     },
    
     methods: {
-        ...mapActions('produtoMod', ['saveList']),
+        ...mapActions('produtoMod', ['saveList', 'post']),
         ...mapMutations('estoqueMod', ['activeAdicionaEstoque']),
         activeAdicionarEstoque(){
             this.activeAdicionaEstoque()
         },
         postProduto() {
             var payload = { NOME: this.NOME, VALOR: this.VALOR, DESC: this.DESC, quantidade_inicial: this.quantidade_inicial, ID_CATEGORIA: this.Categoria.ID_CATEGORIA };
-            productService.postProduto(payload).then((res) => {
-                var payload2 = {NOME: this.NOME, ID_PRODUTO: res.data.ID_PRODUTO, VALOR: this.VALOR, DESC: this.DESC, category: this.Categoria}
-                if (res.status == 200) {
-                    console.log(res);
-                    alert("Produto salvo com sucesso");
-                    this.Categoria = null
-                    this.saveList(payload2)
-                    this.dialog = false
-                }
-            });
+            this.post(payload)
+            this.Categoria = null
+            this.dialog = false
         },
         cleanProduct(){
             this.ID_PRODUTO = null

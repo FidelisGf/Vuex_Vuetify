@@ -61,6 +61,15 @@ const routes = [
         beforeEnter: Guard.auth,
         component: () => import(/* webpackChunkName: "about" */ '../views/RelatoriosView.vue')
       },     
+      {
+        path: '/despesas',
+        name: 'despesas',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        beforeEnter: Guard.auth,
+        component: () => import(/* webpackChunkName: "about" */ '../views/DespesaView.vue')
+      },     
     ]
   },
   {

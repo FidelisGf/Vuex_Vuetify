@@ -60,6 +60,12 @@
               </v-list-item-icon>
               <v-list-item-title>Relatorios Diversos</v-list-item-title>
             </v-list-item>
+            <v-list-item @click="$router.push('/despesas')" link>
+              <v-list-item-icon>
+                <v-icon>mdi-currency-usd-off</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>Despesas</v-list-item-title>
+            </v-list-item>
             <v-list-item @click="$router.push('/login')" link>
               <v-list-item-icon>
                 <v-icon>mdi-arrow-left</v-icon>

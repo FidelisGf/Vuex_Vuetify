@@ -1,3 +1,4 @@
+import productService from "@/service/productService"
 export default{
     namespaced: true,
     state: {
@@ -53,6 +54,22 @@ export default{
         },
         saveList(context, payload){
             context.commit('saveListProduct', payload)
+        },
+        post(context, payload){
+            try {
+                productService.postProduto(payload).then((res) => {
+                
+                    if (res.status == 200) {
+                        console.log(res);
+                        payload.ID_PRODUTO = res.data.ID_PRODUTO
+                        alert("Produto salvo com sucesso");
+                        context.saveList(payload)  
+                    }
+                });
+            } catch (error) {
+                alert('Falha ao cadastrar esse produto !')
+            }
+            
         }
 
     }  

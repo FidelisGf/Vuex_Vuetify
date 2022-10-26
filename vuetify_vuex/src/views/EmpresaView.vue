@@ -7,32 +7,19 @@
                 dark
                 class="elevation-5"
                 >
-                    <v-card-title class="ml-2 text-h4 black--text d-flex justify-center">
+                    <v-card-title class="ml-2 text-h4 black--text ">
                     {{data.NOME}}
                     </v-card-title>
                     <v-card-text class="ml-3 black--text">
-                        <p class=" d-flex justify-center">CNPJ : {{data.CNPJ}}</p>
+                        <p >CNPJ : {{data.CNPJ}}</p>
                    
-                        <p class=" d-flex justify-center">Email : {{data.EMAIL}}}</p>
+                        <p >Email : {{data.EMAIL}}}</p>
                             
-                        <p class=" d-flex justify-center">Nome Fantasia : {{data.NOME_FANTASIA}}</p>
-                        <p class="d-flex justify-center">Endereço da Empresa : {{data.ENDERECO}}</p>
-                            
-                        
-                                
-
-                                
-                                 
-                        <p class="d-flex justify-center">Inscrição Estadual : {{data.INC_ESTADUAL}}</p>
+                        <p >Nome Fantasia : {{data.NOME_FANTASIA}}</p>
+                        <p>Endereço da Empresa : {{data.ENDERECO}}</p>
+                             
+                        <p>Inscrição Estadual : {{data.INC_ESTADUAL}}</p>
                     </v-card-text>   
-                    <v-card-actions class="ml-3 d-flex justify-center">
-                        <v-btn color="#3e3e3c">
-                            Adicionar Funcionario
-                        </v-btn>    
-                        <v-btn color="#3e3e3c">
-                            Editar Empresa
-                        </v-btn>
-                    </v-card-actions>
               </v-card>
             </v-col>
             <v-col cols="12" v-if="!showEmpresa">
