@@ -164,17 +164,23 @@ export default{
         
         },
         async findPedido(context, payload){
-            let pedido = null
-            context.commit("limpaPedido")
-            context.commit("limparValorTotal")
-                await pedidoService.findById(payload).then((res)=>{
-                    if(res.status == 200){
-                        context.commit("setListaPedidos", res.data.PRODUTOS)
-                        context.commit("saveValorTotal", parseFloat(res.data.VALOR_TOTAL))
-                        pedido = res.data
-                }
-            })
-            return pedido
+            try {
+                let pedido = null
+                context.commit("limpaPedido")
+                context.commit("limparValorTotal")
+                    await pedidoService.findById(payload).then((res)=>{
+                        if(res.status == 200){
+                            context.commit("setListaPedidos", res.data.PRODUTOS)
+                            context.commit("saveValorTotal", parseFloat(res.data.VALOR_TOTAL))
+                            pedido = res.data
+                    }
+                })
+                return pedido
+            } catch (error) {
+                alert('Pedido não encontrado')
+            }
+
+         
         }
     },
 }

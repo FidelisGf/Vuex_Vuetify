@@ -7,17 +7,25 @@
                 dark
                 class="elevation-5"
                 >
-                    <v-card-title class="ml-2 text-h4 black--text">
+                    <v-card-title class="ml-2 text-h4 black--text d-flex justify-center">
                     {{data.NOME}}
                     </v-card-title>
-                    <v-card-subtitle class="ml-3 mt-2 black--text">CNPJ : {{data.CNPJ}}</v-card-subtitle>
                     <v-card-text class="ml-3 black--text">
-                                 <p>Email : {{data.EMAIL}}}</p>
-                                 <p>Nome Fantasia : {{data.NOME_FANTASIA}}</p>
-                                 <p>Endereço da Empresa : {{data.ENDERECO}}</p>
-                                 <p>Inscrição Estadual : {{data.INC_ESTADUAL}}</p>
+                        <p class=" d-flex justify-center">CNPJ : {{data.CNPJ}}</p>
+                   
+                        <p class=" d-flex justify-center">Email : {{data.EMAIL}}}</p>
+                            
+                        <p class=" d-flex justify-center">Nome Fantasia : {{data.NOME_FANTASIA}}</p>
+                        <p class="d-flex justify-center">Endereço da Empresa : {{data.ENDERECO}}</p>
+                            
+                        
+                                
+
+                                
+                                 
+                        <p class="d-flex justify-center">Inscrição Estadual : {{data.INC_ESTADUAL}}</p>
                     </v-card-text>   
-                    <v-card-actions class="ml-3">
+                    <v-card-actions class="ml-3 d-flex justify-center">
                         <v-btn color="#3e3e3c">
                             Adicionar Funcionario
                         </v-btn>    

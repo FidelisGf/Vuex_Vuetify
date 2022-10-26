@@ -6,6 +6,7 @@ import estoqueMod from './Estoque/estoqueMod'
 import pedidoMod from './Pedido/pedidoMod'
 import produtoMod from './Produtos/produtoMod'
 import userMod from './User/userMod'
+import clienteMod from './Cliente/clienteMod'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -14,7 +15,8 @@ export default new Vuex.Store({
     estoqueMod,
     pedidoMod,
     produtoMod,
-    userMod
+    userMod,
+    clienteMod
   },
   state: {
    

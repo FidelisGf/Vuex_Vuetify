@@ -76,7 +76,7 @@
                     <v-card-subtitle v-if="sucessFind"><v-alert type="success" v-model="sucessFind" dismissible dense shaped
                         outlined class="mt-n5">Pedido carregado com sucesso !</v-alert></v-card-subtitle>
                     <v-row dense class="mt-1">
-                        <v-col cols="12" sm="6">
+                        <v-col cols="12" md="12" sm="6">
                             <form @submit.prevent="addLista" class="d-flex justify-center ml-2 ml-md-6 ml-sm-6 ml-lg-6">
                                 <v-tooltip top>
                                     <template v-slot:activator="{ on, attrs }">
@@ -145,6 +145,23 @@
                                     </template>
                                     <span>Ver a lista do pedido</span>
                                   </v-tooltip>
+                                   <v-tooltip bottom>
+                                    <template  v-slot:activator="{ on, attrs }">
+                                        <v-btn
+                                        color="teal accent-3"
+                                        dark
+                                        icon
+                                        class="ml-2"
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        @click="activeModalCliente"
+                                        >
+                                            <v-icon aria-hidden="false" color="teal lighten-1" >mdi-account</v-icon>
+                                        </v-btn>
+                                    </template>
+                                        <span>Vincular Cliente</span>
+                                  </v-tooltip>
+                                  <ClientModalVue class="ml-1 mt-n3"></ClientModalVue>
                             </form>
                         </v-col>
                         <v-col cols="6" sm="6" class="d-flex justify-center ml-2 ml-md-6 ml-sm-6 ml-lg-6">
@@ -226,6 +243,7 @@
     </v-container>
 </template>
 <script>
+import ClientModalVue from '@/components/ModalComponents/ClientModal.vue';
 import ListaRapidaProduto from '@/components/ModalComponents/ListaRapidaProduto.vue';
 import PedidosModal from '@/components/ModalComponents/PedidosModal.vue';
 import jsPdf from 'jspdf'
@@ -257,7 +275,7 @@ export default {
     },
     computed: {
         ...mapGetters({active : 'pedidoMod/ListaPedidos', pedidos : 'pedidoMod/getPedidos', ValorTotal : 'pedidoMod/getValorTotal', listaRapida : 'getListRapidaProdutos'
-        , cod : 'pedidoMod/getCodigo', pedidoAtual : 'pedidoMod/getPedidoAtual', empresaUser : 'userMod/getEmpresa'}),
+        , cod : 'pedidoMod/getCodigo', pedidoAtual : 'pedidoMod/getPedidoAtual', empresaUser : 'userMod/getEmpresa', cliente : 'clienteMod/getCliente'}),
         troco: function () {
             let resultado = this.ValorTotal - this.dinheiroPago;
             if (resultado > 0) {
@@ -272,18 +290,25 @@ export default {
         ...mapMutations('pedidoMod', ['disableListaPedidos', 'saveValorTotal', 'activeListaPedidos', 'activeListaRapidaProdutos', 'limpaPedido', 'limparValorTotal']),
         ...mapActions('pedidoMod', ['findProduto', 'geraVenda', 'findPedido' , 'editarPedido']),
         ...mapActions('userMod', ['getEmpresaFromUser']),
+        ...mapActions('clienteMod', ['activeModalCliente']),
         buscaLista() {
             this.fail = false
             this.sucesso = false
             this.activeListaRapidaProdutos()
         },
+        vinculaCliente(){
+            this.activeModalCliente
+        },
        async findPedidoById(){
-           let pedido = await this.findPedido(this.id)
+           let pedido = null
+           pedido = await this.findPedido(this.id)
+           if(pedido != null){
             this.escolhaPagamento = pedido.METODO_PAGAMENTO
             this.escolhaSituacao = pedido.APROVADO == "T" ? "Pago" : "Pagamento pendente"
             this.sucessFind = true
             this.editMode = true
             this.findBy = false
+           }
         },
        async  editPedido(){
             this.loading = true
@@ -332,32 +357,42 @@ export default {
             this.produto.quantidade = 1
         },
         async gerarVenda(){
-            if(this.editMode){
-                return this.editPedido()
-            }else{
-                this.loading = true
-                this.fail = false
-                if(this.escolhaSituacao == "Pago"){
-                    this.escolhaSituacao = 'T'
+            await this.getEmpresaFromUser()
+            let validate = this.validate()
+            if(validate){
+                if(this.editMode){
+                    return this.editPedido()
                 }else{
-                    this.escolhaSituacao = 'F'
+                    this.loading = true
+                    this.fail = false
+                    if(this.escolhaSituacao == "Pago"){
+                        this.escolhaSituacao = 'T'
+                    }else{
+                        this.escolhaSituacao = 'F'
+                    }
+                    let payload = null
+                    if(this.cliente.id != null){
+                        payload = {METODO_PAGAMENTO : this.escolhaPagamento, produtos : this.pedidos, aprovado : this.escolhaSituacao, ID_CLIENTE : this.cliente.id}
+                    }else{
+                        payload = {METODO_PAGAMENTO : this.escolhaPagamento, produtos : this.pedidos, aprovado : this.escolhaSituacao}
+                    }
+                    let gerarVenda = await this.geraVenda(payload)
+                    if(gerarVenda){
+                        this.down(this.pedidoAtual)
+                        this.registro = true
+                        this.clear()
+                        this.clearPayment()
+                        this.loading = false
+                        this.limpaPedido()
+                    }else{
+                        this.fail = true
+                    }       
                 }
-                let payload = {METODO_PAGAMENTO : this.escolhaPagamento, produtos : this.pedidos, aprovado : this.escolhaSituacao}
-                 let gerarVenda = await this.geraVenda(payload)
-                if(gerarVenda){
-                    this.down(this.pedidoAtual)
-                    this.registro = true
-                    this.clear()
-                    this.clearPayment()
-                    this.loading = false
-                    this.limpaPedido()
-                }else{
-                    this.fail = true
-                }       
+            }else{
+                alert('A campos que não foram preenchidos')
             }
         },
        async down(pedido){ 
-            this.getEmpresaFromUser()
             let Nome_Empresa = this.empresaUser.NOME
             let pdf = new jsPdf()
             let produtos = this.pedidos
@@ -374,6 +409,9 @@ export default {
             pdf.setFontSize(10);
             pdf.text('Codigo do Pedido :  ' + pedido.codigo, 15, 35)
             pdf.text('Forma de Pagamento :  ' + pedido.metodo_pagamento, 80, 35)
+            if(this.cliente.id != null){
+                pdf.text('Cliente :  ' + this.cliente.nome, 80, 45)
+            }
             pdf.text('Valor Total :  R$' + pedido.valor_total, 160,35)
             pdf.text('Estado do Pagamento : ' + pedido.aprovado, 15,45)
             pdf.text('Produtos do Pedido : ', 15, 55)
@@ -388,7 +426,10 @@ export default {
                 margin: { top: 10 },
                 head: [['CODIGO', 'NOME', 'VALOR', 'QUANTIDADE']],
                 body: values,
-            })  
+            }) 
+            pdf.setFontSize(8);
+            pdf.text('------------------------------------', 15, 155) 
+            pdf.text('Assinatura do Cliente', 18, 158)
             pdf.save('pedido_' + pedido.codigo + '.pdf'); 
         },
         hideSucess : function (){
@@ -409,12 +450,21 @@ export default {
             this.dinheiroPago = 0
             this.escolhaPagamento = ""
         },
+
+
+        validate(){
+            if(this.escolhaPagamento == '' || this.escolhaSituacao == '' || this.pedidos == null){
+                return false
+            }else{
+                return true
+            }
+        }
     },
    
     created() {
         
     },
-    components: { ListaRapidaProduto, PedidosModal }
+    components: { ListaRapidaProduto, PedidosModal, ClientModalVue }
 }
 </script>
 
