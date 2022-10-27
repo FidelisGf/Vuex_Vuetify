@@ -61,7 +61,7 @@ export default {
                 {
                     text: "Codigo",
                     align: "start",
-                    value: "product[0].ID_PRODUTO",
+                    value: "product[0].ID",
                 },
                 {
                     text: "Produto",

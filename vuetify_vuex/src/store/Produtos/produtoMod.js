@@ -3,7 +3,7 @@ export default{
     namespaced: true,
     state: {
         product: {
-            ID_PRODUTO : '',
+            ID : '',
             NOME : '',
             DESC : '',  
             VALOR : 0,
@@ -21,7 +21,7 @@ export default{
             return state.Products
         },
         getProduct(state){
-            return state.product
+            return state.product 
         },
     },
     mutations: {
@@ -38,16 +38,25 @@ export default{
             state.Products.push(payload)
         },
         editListProduct(state, payload){
-            state.Products =  state.Products.filter(item => item.ID_PRODUTO !== payload.ID_PRODUTO)
+            state.Products =  state.Products.filter(item => item.ID !== payload.ID)
             state.Products.push(payload)
         },
         deleteInListProduct(state, payload){
-            state.Products =  state.Products.filter(item => item.ID_PRODUTO !== payload)
+            state.Products =  state.Products.filter(item => item.ID !== payload)
         },
     },
     actions: {
         saveProduct(context, payload){
             context.commit('saveProduct', payload)
+        },
+        editProduct(context, payload){
+            
+            productService.editProduct(payload, payload.ID).then((res) => {
+                if (res.status == 200) {
+                    context.commit("editListProduct", payload)
+                    alert("Produto Editado com suceso !");
+                }
+            });
         },
         beginListProduct(context, payload){
             context.commit('beginListProduct', payload)
@@ -55,15 +64,46 @@ export default{
         saveList(context, payload){
             context.commit('saveListProduct', payload)
         },
+        deleteInList(context, payload){
+            context.commit('deleteInListProduct', payload)
+        },
+        async findByAllCategory(context, payload){
+            try {
+                let resposta = {current_page : null, totalPage : null}
+                await productService.findAllProductByCategory(payload.ID, payload.current_page).then((res) => {
+                    context.commit("beginListProduct",res.data.data)
+                    resposta.current_page = res.data.current_page;
+                    resposta.totalPage = res.data.last_page;
+                });
+                return resposta
+            } catch (error) {
+                alert('Falha ao filtrar por Categoria !')
+            }
+           
+           
+        },
+        async findById(context, payload){
+            try {
+                let data = await productService.findProdutoById(payload).then((res)=>{
+                    console.log(res.data)
+                    return res.data
+                })
+                return data
+            } catch (error) {
+                alert('Não foi possivel identificar esse produto !')
+            }
+           
+        },
         post(context, payload){
             try {
                 productService.postProduto(payload).then((res) => {
                 
                     if (res.status == 200) {
                         console.log(res);
-                        payload.ID_PRODUTO = res.data.ID_PRODUTO
+                        payload.ID = res.data.ID
+                        payload.QUANTIDADE = payload.quantidade_inicial
                         alert("Produto salvo com sucesso");
-                        context.saveList(payload)  
+                        context.commit("saveListProduct",payload)  
                     }
                 });
             } catch (error) {

@@ -13,7 +13,7 @@
                     <v-card-subtitle class="ml-3 mt-2 black--text">Descrição do Produto : {{data.DESC}}</v-card-subtitle>
                     <v-card-text class="ml-3 black--text">
                                  <p>Valor : {{data.VALOR}}</p>
-                                 <p>Categoria do produto  : {{data.category.NOME}}</p>
+                                 <p>Categoria do produto  : {{categoria_Nome}}</p>
                                  <p>Quantidade em estoque : {{quantidade.QUANTIDADE}}</p>
                                  <p>Data de criação do Item : {{data.CREATED_AT}}</p>
                                  <p v-if="data.UPDATED_AT != data.CREATED_AT">Data de atulização do Item : {{data.UPDATED_AT}}</p>
@@ -42,7 +42,7 @@ export default {
     // this.$route.params.id
     data(){
         return{
-            
+            categoria_Nome : '',
             data : [],
             quantidade : 0,
 
@@ -52,6 +52,7 @@ export default {
         getProduto(){
             productService.findProdutoById(this.$route.params.id).then((res) =>  {
                 this.data = res.data
+                this.categoria_Nome = res.data.category.NOME_C
                 
             })
             estoqueService.getQuantidadeFromProduto(this.$route.params.id).then((res) => {

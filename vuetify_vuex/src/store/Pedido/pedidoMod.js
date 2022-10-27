@@ -129,7 +129,7 @@ export default{
                 getProduto = await productService.findProdutoById(payload.id).then((res)=>{
                     if(res.status == 200){
                         this.fail = false
-                        let payload2 = {id : res.data.ID_PRODUTO, nome : res.data.NOME, valor : res.data.VALOR, quantidade : payload.quantidade}
+                        let payload2 = {id : res.data.ID, nome : res.data.NOME, valor : res.data.VALOR, quantidade : payload.quantidade}
                         context.commit('somaItens', parseFloat(res.data.VALOR * payload.quantidade))
                         context.commit('saveCod', res.data.ID)
                         context.commit("savePedidos", payload2) 

@@ -8,11 +8,12 @@
                     v-model="$store.getters.edit"
                     persistent
                     max-width="600px"
+                    
                 >
                   
                     <v-card>
                     <v-card-title>
-                        <span  class="text-h5">Editar Item: {{NOME}} #{{ID_PRODUTO}}</span>
+                        <span  class="text-h5">Editar Item: {{NOME}} #{{ID}}</span>
                     </v-card-title>
                     <v-card-text>
                         <v-container>
@@ -28,6 +29,7 @@
                                         v-model="NOME"
                                         counter="60"
                                         color="teal lighten-1"
+                                        :loading="loading"
                                     ></v-text-field>
                                 </v-col>
                                 <v-col
@@ -41,6 +43,7 @@
                                         label="Desc do produto"
                                         counter="120"
                                         color="teal lighten-1"
+                                        :loading="loading"
                                     ></v-text-field>
                                 </v-col>
                                 <v-col
@@ -57,6 +60,7 @@
                                     value="10.00"
                                     prefix="R$"
                                     type="number"
+                                    :loading="loading"
                                     ></v-text-field>
                                 </v-col>
                                 <v-col
@@ -64,14 +68,14 @@
                                     sm="6"
                                     class="d-flex"
                                 > 
-                                
                                     <v-select
-                                        :items="$store.getters.listCategorias"
+                                        :items="listCategorias"
                                         label="Categoria"
                                         v-model="Categoria"
                                         color="teal lighten-1"
-                                        item-text="NOME" 
+                                        item-text="NOME_C" 
                                         return-object
+                                        :loading="loading"
                                     ></v-select>
                                     <CategoryModal :miniatura="true"  class="mt-4 ml-2 "></CategoryModal>
                                 </v-col>
@@ -91,7 +95,7 @@
                             <v-btn
                                 color="teal lighten-1"
                                 text
-                                @click="editProduct"
+                                @click="editP"
                             >
                             Editar
                         </v-btn>
@@ -104,47 +108,53 @@
 </template>
 
 <script>
-import categoryService from '@/service/categoryService'
-import productService from '@/service/productService'
 import CategoryModal from '../CategoryModal.vue'
+import {  mapActions, mapGetters } from 'vuex'
 export default {
     data() {
         return {
-            ID_PRODUTO: null,
+            ID: null,
             NOME: "",
             VALOR: 0,
             DESC: "",
             Categoria: null,
+            loading : false,
+            quantidade : null,
         };
     },
     methods: {
-        getProduct() {
+        ...mapActions('categoryMod', ['beginListCategoria']),
+        ...mapActions('produtoMod', ['editProduct', 'findById']),
+        async getProduct() {
+            this.loading = true
             this.getCategorias();
-            this.NOME = this.$store.getters.getGenerico.NOME;
-            this.ID_PRODUTO = this.$store.getters.getGenerico.ID_PRODUTO;
-            this.VALOR = this.$store.getters.getGenerico.VALOR;
-            this.DESC = this.$store.getters.getGenerico.DESC;
-            this.Categoria = this.$store.getters.getGenerico.category;
+            this.quantidade = this.$store.getters.getGenerico.QUANTIDADE
+            this.ID = this.$store.getters.getGenerico.ID;
+            let data = await this.findById(this.ID)
+            if(data != null || data != undefined){
+                this.NOME = data.NOME
+                this.DESC = data.DESC
+                this.VALOR = data.VALOR
+                this.Categoria = data.category
+                this.loading = false
+            }
+
         },
         getCategorias() {
-            categoryService.getCategory().then((res) => {
-                this.$store.commit("clearListCategoria");
-                this.$store.commit("beginListCategoria", res.data.data);
-            });
+            this.beginListCategoria()
         },
-        editProduct() {
-            var payload = {ID_PRODUTO : this.ID_PRODUTO, NOME: this.NOME, VALOR: this.VALOR, DESC: this.DESC, ID_CATEGORIA: this.Categoria.ID_CATEGORIA}
-            var payload2 = {ID_PRODUTO : this.ID_PRODUTO, NOME: this.NOME, VALOR: this.VALOR, DESC: this.DESC, category: this.Categoria }
-            productService.editProduct(payload, this.ID_PRODUTO).then((res) => {
-                if (res.status == 200) {
-                    this.$store.commit("editListProduct", payload2)
-                    alert("Produto Editado com suceso !");
-                }
-            });
+        editP() {
+            var payload = {ID : this.ID, NOME: this.NOME, VALOR: this.VALOR, DESC: this.DESC, ID_CATEGORIA: this.Categoria.ID_CATEGORIA, 
+                NOME_C : this.Categoria.NOME_C, QUANTIDADE : this.quantidade}
+            this.editProduct(payload)
+            
         },
         closeEdit() {
             this.$store.commit("disableEdit");
         }
+    },
+    computed:{
+        ...mapGetters({listCategorias : 'categoryMod/listCategorias'})
     },
     created() {
         this.getProduct();

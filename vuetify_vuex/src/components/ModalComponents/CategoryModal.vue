@@ -74,7 +74,7 @@ export default {
    methods:{
         ...mapActions('categoryMod', ['saveListCategoria']),
         postCategory(){
-            let payload = {NOME : this.NOME}
+            let payload = {NOME_C : this.NOME}
             this.saveListCategoria(payload)
         }
    }

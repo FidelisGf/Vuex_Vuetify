@@ -32,20 +32,20 @@
 </template>
 <script>
 import axios from 'axios'
+import { mapActions } from 'vuex'
 export default {
    props:{
       route : String,
    },
    methods:{
+        ...mapActions('produtoMod', ['deleteInList']),
         closeDelete(){
             this.$store.commit('desativateDelete')
         },
         deleteItem(route){
             console.log(route)
             let id = 0
-            if(route == 'products'){
-                id = this.$store.getters.getGenerico.ID_PRODUTO
-            }else if(route == 'categorys'){
+            if(route == 'categorys'){
                 id = this.$store.getters.getGenerico.ID_CATEGORIA
             }else{
                 id = this.$store.getters.getGenerico.ID
@@ -53,7 +53,7 @@ export default {
             axios.delete("http://127.0.0.1:8000/api/" + route  + "/"+ id ).then((res)=>{
                 if(res.status == 200){
                     alert('Item Deletado com sucesso')
-                    this.$store.commit('deleteInListProduct', id)
+                    this.deleteInList(id)
                     this.$store.commit('desativateDelete')
                 }
             })
@@ -61,7 +61,6 @@ export default {
 
    },
    created(){
-      console.log(this.$store.getters.getGenerico.ID_PRODUTO)
       console.log(this.route)
       //this.deleteItem(this.route)
    }

@@ -95,7 +95,7 @@ export default {
                     },
                     { text: "Descrição", value: "DESC" },
                     { text: "Valor", value: "VALOR" },
-                    { text: "Categoria", value: "category.NOME" },
+                    { text: "Categoria", value: "category.NOME_C" },
                 ];
             }
         },

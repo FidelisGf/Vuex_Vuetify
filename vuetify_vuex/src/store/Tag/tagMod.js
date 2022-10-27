@@ -35,6 +35,18 @@ export default{
                 alert('Falha ao cadastrar tipo de despesa')
                 context.commit("disableModalCadastro")
             }
+       },
+       async findAll(){
+          try {
+             let tags = null   
+             await tagService.get().then((res)=>{
+                    console.log(res)
+                    tags = res.data
+             })
+             return tags
+          } catch (error) {
+               alert('Nao foi possivel carregar as Tags')
+          }         
        }
     },
 }

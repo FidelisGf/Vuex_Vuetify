@@ -4,7 +4,7 @@
             v-model="active"
             persistent
             max-width="600px"
-            @keydown.escape="disableModalCadastro"
+            @keydown.escape="disableEditDespesa"
         >
             <v-card>
                 <v-card-title>
@@ -22,6 +22,7 @@
                                 required
                                 v-model="DESC"
                                 color="teal lighten-1"
+                                :loading="loading"
                             ></v-text-field>
                         </v-col>
                         <v-col 
@@ -38,6 +39,7 @@
                                 type="number"
                                 min="0"
                                 prefix="R$"
+                                :loading="loading"
                             ></v-text-field>
                         </v-col>
                         <v-col 
@@ -52,6 +54,7 @@
                                 required
                                 color="teal lighten-1"
                                 type="date"
+                                :loading="loading"
                     
                             ></v-text-field>
                            
@@ -68,6 +71,7 @@
                             required
                             color="teal lighten-1"
                             type="time"
+                            :loading="loading"
         
                         ></v-text-field>
                        
@@ -85,6 +89,7 @@
                                 color="teal lighten-1"
                                 item-text="NOME" 
                                 return-object
+                                :loading="loading"
                             ></v-select>       
                         </v-col>
                    </v-row>
@@ -93,16 +98,16 @@
                     <v-btn
                         color="red lighten-1"
                         text
-                        @click="disableModalCadastro"
+                        @click="disableEditDespesa"
                     >
                     Fechar
                     </v-btn>
                     <v-btn 
                         color="green lighten-1"
                         text
-                        @click="insert"
+                        @click="editDespesa"
                     >
-                    Salvar
+                    Editar
                     </v-btn>
                 </v-card-actions>
             </v-card>
@@ -111,67 +116,55 @@
 </template>
 
 <script>
-import { mapGetters, mapActions} from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 export default {
-   data(){
-    return{
-        DESC : '',
-        CUSTO : 0,
-        DATA : '',
-        HORA : '',
-        TAGS : [],
-        DTFINAL : '',
-        TAG : null
-    }
-   },
-   methods:{
-        ...mapActions('despesaMod', ['disableModalCadastro', 'save']),
-        ...mapActions('tagMod' , ['findAll']),
-        ...mapActions('produtoMod', ['saveList']),
-
-        async getTags(){
-            this.TAGS = await this.findAll()
-        },
-
-       async insert(){
-            this.saveHoraFinal()
-            let custo = parseFloat(this.CUSTO)
-            custo = custo.toFixed(2)
-            if(this.DTFINAL != ''){
-                let payload = {DESC : this.DESC, CUSTO : custo, DATA : this.DTFINAL, ID_TAG : this.TAG.ID}
-                let Id = await this.save(payload)
-                if(Id != null){
-                    let payload2 = {ID : Id, DESC : this.DESC, CUSTO : custo, DATA : this.DTFINAL, tags : this.TAG}
-                    console.log('blz')
-                    console.log(payload)
-                    console.log(payload2)
-                    this.saveList(payload2)
-                } 
-            }else{
-                alert('Data Invalida !');
-            }
-            this.clear()
-        },
-        saveHoraFinal(){
-            let tmp = this.DATA
-            this.DTFINAL = tmp + ' ' + this.HORA
-        },
-        clear(){
-            this.DESC = ''
-            this.CUSTO = 0
-            this.DATA = ''
-            this.HORA = ''
-            this.TAG = null
+    data(){
+        return{
+            DESC : '',
+            CUSTO : null,
+            DATA : '',
+            HORA : '',
+            dtTmp: '',
+            TAG : null,
+            loading : false,
+            TAGS : [],
+            ID : null,
         }
-   },
-
-   computed:{
-        ...mapGetters({active : 'despesaMod/getModalCadastro'})
-   },
-
-   async created(){
-        this.getTags()
-   }
+    },
+    computed:{
+        ...mapGetters({active : 'despesaMod/getEditDespesa'})
+    },
+    methods:{
+        ...mapActions('despesaMod', ['disableEditDespesa', 'findById', 'edit']),
+        ...mapActions('tagMod', ['findAll']),
+        async getDespesa(){
+            this.loading = true
+            this.TAGS = await this.findAll()
+            this.ID = this.$store.getters.getGenerico.ID;
+            let data = await this.findById(this.ID)
+            if(data != null || data != undefined){
+                this.dtTmp = data.DATA.split(" ")
+                this.DATA = this.dtTmp[0]
+                this.HORA = this.dtTmp[1]
+                this.DESC = data.DESC
+                this.CUSTO = data.CUSTO 
+                this.TAG = data.tags.NOME
+            }
+            this.loading = false
+        },
+        transformData(){
+            this.dtTmp  = null
+            this.dtTmp = this.DATA + " " + this.HORA
+        },
+        async editDespesa(){
+            this.transformData()
+            let payload = {ID: this.ID, DESC : this.DESC, CUSTO : this.CUSTO, ID_TAG : this.TAG.ID, DATA : this.dtTmp, tags : this.TAG}
+            await this.edit(payload)
+        }
+    },
+    created(){
+        this.getDespesa()
+    }
 }
 </script>
 

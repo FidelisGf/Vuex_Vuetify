@@ -107,7 +107,7 @@
                                     label="Categoria"
                                     v-model="Categoria"
                                     color="teal lighten-1"
-                                    item-text="NOME" 
+                                    item-text="NOME_C" 
                                     return-object
                                 ></v-select>
                                 <CategoryModal :miniatura="true"  class="mt-4 ml-2 "></CategoryModal>
@@ -161,7 +161,7 @@ export default {
             Categoria: null,
             NOME: "",
             dialog : false,
-            ID_PRODUTO: "",
+            ID: "",
             quantidade_inicial: 0,
             DESC: "",
             VALOR: 1,
@@ -177,15 +177,15 @@ export default {
         ...mapGetters({listCategorias : 'categoryMod/listCategorias', activeEstoque : 'estoqueMod/getAdicionaEstoque'}),
         headers() {
             return [
-                { text: "Cod", value: "ID_PRODUTO",},
                 { text: "Detalhes", value: "info", sortable: false },
+                { text: "Cod", value: "ID",},
                 {
                     text: "Produto",
                     value: "NOME",
                 },
-                { text: "Descrição", value: "DESC" },
+                { text: "Quantidade", value: "QUANTIDADE" },
                 { text: "Valor", value: "VALOR" },
-                { text: "Categoria", value: "category.NOME" },
+                { text: "Categoria", value: "NOME_C" },
                 { text: "Actions", value: "actions", sortable: false },
             ];
         }
@@ -199,13 +199,16 @@ export default {
             this.activeAdicionaEstoque()
         },
         postProduto() {
-            var payload = { NOME: this.NOME, VALOR: this.VALOR, DESC: this.DESC, quantidade_inicial: this.quantidade_inicial, ID_CATEGORIA: this.Categoria.ID_CATEGORIA };
+            var payload = { NOME: this.NOME, VALOR: this.VALOR, DESC: this.DESC,
+                 quantidade_inicial: this.quantidade_inicial,
+                  ID_CATEGORIA: this.Categoria.ID_CATEGORIA
+                  , NOME_C : this.Categoria.NOME_C };
             this.post(payload)
             this.Categoria = null
             this.dialog = false
         },
         cleanProduct(){
-            this.ID_PRODUTO = null
+            this.ID = null
             this.NOME = null
             this.VALOR = null
             this.DESC = null
