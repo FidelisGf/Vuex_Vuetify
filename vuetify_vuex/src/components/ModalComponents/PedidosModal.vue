@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import {mapMutations, mapGetters} from 'vuex'
+import {mapMutations, mapGetters, mapActions} from 'vuex'
 export default {
     props:{
         search : Boolean,
@@ -128,6 +128,7 @@ export default {
     },
     methods:{
         ...mapMutations('pedidoMod', ['disableListaPedidos', 'saveValorTotal', 'removeQntdPedido', 'removePedido']),
+        ...mapActions('utilMod', ['setHeader']),
         disableList(){
             this.disableListaPedidos()
         },

@@ -151,7 +151,7 @@
 import CategoryModal from './CategoryModal.vue'
 import EstoqueModal from './EstoqueModal.vue';
 import ListaGenerica from '../ListaGenerica.vue';
-import { mapGetters, mapMutations ,mapActions } from 'vuex';
+import { mapGetters,mapActions } from 'vuex';
 export default {
     props: {
         miniatura: Boolean
@@ -194,7 +194,8 @@ export default {
    
     methods: {
         ...mapActions('produtoMod', ['saveList', 'post']),
-        ...mapMutations('estoqueMod', ['activeAdicionaEstoque']),
+        ...mapActions('estoqueMod', ['activeAdicionaEstoque']),
+        ...mapActions('utilMod', ['setHeader']),
         activeAdicionarEstoque(){
             this.activeAdicionaEstoque()
         },
@@ -216,8 +217,7 @@ export default {
         }, 
     },
     created() {
-        this.$store.commit("setHeader", this.headers)
-
+        this.setHeader(this.headers)
     },
     components: { CategoryModal, EstoqueModal, ListaGenerica }
 }

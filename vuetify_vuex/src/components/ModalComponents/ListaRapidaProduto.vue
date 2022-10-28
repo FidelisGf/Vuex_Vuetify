@@ -35,7 +35,7 @@
 </template>
 <script>
 import ListaGenerica from '../ListaGenerica.vue'
-import {mapGetters, mapMutations} from 'vuex'
+import {mapGetters, mapMutations, mapActions} from 'vuex'
 export default {
     data() {
         return {
@@ -47,8 +47,9 @@ export default {
     },
     methods: {
         ...mapMutations('pedidoMod', ['desativeListaRapidaProdutos']),
+        ...mapActions('utilMod', ['setHeader']),
         getLista() {
-            this.$store.commit("setHeader", this.headers)
+            this.setHeader(this.headers)
         },
         fechar() {
             this.desativeListaRapidaProdutos()

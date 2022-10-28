@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-dialog
-            v-model="$store.getters.delete"
+            v-model="active"
             persistent
             max-width="520"
         >
@@ -32,33 +32,37 @@
 </template>
 <script>
 import axios from 'axios'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
    props:{
       route : String,
    },
    methods:{
         ...mapActions('produtoMod', ['deleteInList']),
+        ...mapActions('utilMod', ['desativateDelete']),
         closeDelete(){
-            this.$store.commit('desativateDelete')
+            this.desativateDelete()
         },
         deleteItem(route){
             console.log(route)
             let id = 0
             if(route == 'categorys'){
-                id = this.$store.getters.getGenerico.ID_CATEGORIA
+                id = this.generico.ID_CATEGORIA
             }else{
-                id = this.$store.getters.getGenerico.ID
+                id = this.generico.ID
             }
             axios.delete("http://127.0.0.1:8000/api/" + route  + "/"+ id ).then((res)=>{
                 if(res.status == 200){
                     alert('Item Deletado com sucesso')
                     this.deleteInList(id)
-                    this.$store.commit('desativateDelete')
+                    this.desativateDelete()
                 }
             })
         }
 
+   },
+   computed:{
+      ...mapGetters({active : 'utilMod/delete', generico : 'utilMod/getGenerico'})
    },
    created(){
       console.log(this.route)

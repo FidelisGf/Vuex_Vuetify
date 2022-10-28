@@ -5,9 +5,10 @@
                
                
                 <v-dialog
-                    v-model="$store.getters.edit"
+                    v-model="active"
                     persistent
                     max-width="600px"
+                    @keydown.escape="closeEdit"
                     
                 >
                   
@@ -124,12 +125,12 @@ export default {
     },
     methods: {
         ...mapActions('categoryMod', ['beginListCategoria']),
-        ...mapActions('produtoMod', ['editProduct', 'findById']),
+        ...mapActions('produtoMod', ['editProduct', 'findById', 'disableEdit']),
         async getProduct() {
             this.loading = true
             this.getCategorias();
-            this.quantidade = this.$store.getters.getGenerico.QUANTIDADE
-            this.ID = this.$store.getters.getGenerico.ID;
+            this.quantidade = this.generico.QUANTIDADE
+            this.ID = this.generico.ID;
             let data = await this.findById(this.ID)
             if(data != null || data != undefined){
                 this.NOME = data.NOME
@@ -147,14 +148,15 @@ export default {
             var payload = {ID : this.ID, NOME: this.NOME, VALOR: this.VALOR, DESC: this.DESC, ID_CATEGORIA: this.Categoria.ID_CATEGORIA, 
                 NOME_C : this.Categoria.NOME_C, QUANTIDADE : this.quantidade}
             this.editProduct(payload)
+            this.disableEdit()
             
         },
         closeEdit() {
-            this.$store.commit("disableEdit");
+            this.disableEdit()
         }
     },
     computed:{
-        ...mapGetters({listCategorias : 'categoryMod/listCategorias'})
+        ...mapGetters({listCategorias : 'categoryMod/listCategorias', generico : 'utilMod/getGenerico', active : 'produtoMod/edit'})
     },
     created() {
         this.getProduct();

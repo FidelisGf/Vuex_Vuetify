@@ -14,6 +14,7 @@ export default{
             },
           },
         Products : [],
+        edit : false,
 
     },
     getters: {
@@ -22,6 +23,9 @@ export default{
         },
         getProduct(state){
             return state.product 
+        },
+        edit(state){
+            return state.edit
         },
     },
     mutations: {
@@ -44,8 +48,23 @@ export default{
         deleteInListProduct(state, payload){
             state.Products =  state.Products.filter(item => item.ID !== payload)
         },
+        activeEdit(state){
+            state.edit = true
+          },
+        disableEdit(state){
+            state.edit = false
+        },
     },
     actions: {
+        activeEdit(context){
+            context.commit('activeEdit')
+        },
+        disableEdit(context){
+            context.commit('disableEdit')
+        },
+        clearListProduct(context){
+            context.commit('clearListProduct')
+        },
         saveProduct(context, payload){
             context.commit('saveProduct', payload)
         },

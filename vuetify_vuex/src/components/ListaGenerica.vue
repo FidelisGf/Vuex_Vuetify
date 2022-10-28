@@ -6,7 +6,7 @@
                     :search="search"
                     :custom-filter="filterOnlyCapsText"
                     :loading="loading"
-                    :headers="$store.getters.getHeader"
+                    :headers="headers"
                     :items="listaProdutos"
                     :items-per-page="per_page"
                     hide-default-footer       
@@ -72,8 +72,8 @@
                 :length="totalPage"
                 @input="onPageChange">  
             </v-pagination> 
-            <DeleteGeneric v-if="$store.getters.delete" :route="route"></DeleteGeneric>
-            <EditProduct v-if="$store.getters.edit"></EditProduct>
+            <DeleteGeneric v-if="del" :route="route"></DeleteGeneric>
+            <EditProduct v-if="editProd"></EditProduct>
             <EditDespesaVue v-if="editDespesa"></EditDespesaVue>
             </v-col>
         </v-row>
@@ -86,7 +86,7 @@ import DeleteGeneric from './ModalComponents/Delete/DeleteGeneric.vue'
 import EditProduct from './ModalComponents/Edit/EditProduct.vue'
 import EditDespesaVue from './ModalComponents/Edit/EditDespesa.vue'
 import router from '@/router'
-import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { mapActions, mapGetters} from 'vuex';
 export default {
     props: {
         route: String,
@@ -115,9 +115,10 @@ export default {
     },
    
     methods: {
-        ...mapMutations('produtoMod', ['saveProduct', 'beginListProduct', 'saveListProduct', 'editListProduct', 'clearListProduct']),
+        ...mapActions('produtoMod', ['saveProduct', 'beginListProduct', 'saveListProduct', 
+        'editListProduct', 'clearListProduct', 'findByAllCategory', 'activeEdit']),
         ...mapActions('despesaMod', ['activeEditDespesa']),
-        ...mapActions('produtoMod', ['findByAllCategory']),
+        ...mapActions('utilMod' , ['saveGenerico', 'activeDelete']),
         getLista(route) {
             this.dtStart = this.starterDate
             this.dtFinal = this.endDate
@@ -135,6 +136,7 @@ export default {
             }else{
                 axios.get("http://127.0.0.1:8000/api/" + route + "?page=" + this.current_page, { params: { opcao: this.opcao} }).then((response) => {
                     console.log(this.opcao)
+                    console.log(response)
                     this.beginListProduct(response.data.data)
                     this.per_page = response.data.per_page
                     this.loading = false;
@@ -151,13 +153,14 @@ export default {
         },
        
         deleteItem(item) {
-            this.$store.commit("saveGenerico", item)
-            this.$store.commit("activeDelete")
+            
+            this.saveGenerico(item)
+            this.activeDelete()
         },
         editItem(item, route){
-            this.$store.commit("saveGenerico", item)
+            this.saveGenerico(item)
             if(route == 'products'){
-                this.$store.commit("activeEdit")
+                this.activeEdit()
             }else if (route == 'despesas'){
                 this.activeEditDespesa()
 
@@ -215,7 +218,8 @@ export default {
     },
     computed:{
         ...mapGetters({listCategorias : 'categoryMod/listCategorias', listaProdutos : 'produtoMod/listProducts', 
-        editDespesa: 'despesaMod/getEditDespesa'})
+        editDespesa: 'despesaMod/getEditDespesa', headers: 'utilMod/getHeader', 
+        del: 'utilMod/delete', generico : 'utilMod/getGenerico', editProd : 'produtoMod/edit'})
     },  
     created() {
         this.clearPages();

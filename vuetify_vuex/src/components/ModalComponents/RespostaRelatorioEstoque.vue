@@ -5,7 +5,7 @@
                 <v-dialog
                     v-model="active"
                     persistent
-                    max-width="600px"
+                    max-width="650px"
                 > 
                     <v-card>
                     <v-card-title>
@@ -34,7 +34,7 @@
 </template>
 <script>
 import ListaGenerica from '../ListaGenerica.vue';
-import {mapGetters, mapMutations} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 export default {
     props: {
         nomeRelatorio: String
@@ -79,15 +79,18 @@ export default {
         },
     },
     methods: {
-        ...mapMutations('estoqueMod', ['desativeRelatorioEstoque']),
+        ...mapActions('estoqueMod', ['desativeRelatorioEstoque']),
+        ...mapActions('utilMod', ['setHeader']),
         closeRelatorio() {
             this.desativeRelatorioEstoque()
         },
         getLista() {
-            this.$store.commit("setHeader", this.headers)
+            this.setHeader(this.headers)
         },
     },
     created() {
+        console.log(this.nomeRelatorio)
+        console.log('Foda')
         this.getLista()
     },
     components: { ListaGenerica }

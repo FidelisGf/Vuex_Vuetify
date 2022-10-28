@@ -57,7 +57,7 @@
                         >  
                         </v-select>
             </v-col>
-            <RespostaRelatorio :nome-relatorio="relatorioEscolha" :starter-date="startData" :end-date="endData" v-if="$store.getters.getRelatorio"></RespostaRelatorio>
+            <RespostaRelatorio :nome-relatorio="relatorioEscolha" :starter-date="startData" :end-date="endData" v-if="relatorio"></RespostaRelatorio>
             <RespostaRelatorioEstoque :nome-relatorio="relatorioEscolha" v-if="active"></RespostaRelatorioEstoque>
         </v-row>
         <v-row>
@@ -231,7 +231,7 @@
 
 import RespostaRelatorio from '@/components/ModalComponents/RespostaRelatorio.vue';
 import RespostaRelatorioEstoque from '../components/ModalComponents/RespostaRelatorioEstoque.vue';
-import {mapMutations, mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 export default {
     data() {
         return {
@@ -256,7 +256,9 @@ export default {
         };
     },
     computed:{
-        ...mapGetters({active : 'estoqueMod/getRelatorioEstoque'}),                                  
+        ...mapGetters({active : 'estoqueMod/getRelatorioEstoque', filtro : 'utilMod/getFiltro'
+        , notTable : 'utilMod/getNotTableFiltro', relatorio: 'utilMod/getRelatorio'}),    
+                             
           //todas computed nessa view servem para retornar nos v-if
         filledStart: function() {  //verifica se a data inicial foi inserida
             let flag = false
@@ -300,19 +302,21 @@ export default {
       }
     },
     methods: {
-        ...mapMutations('estoqueMod', ['saveFiltroEstoque','activeRelatorioEstoque']),
+        ...mapActions('estoqueMod', ['saveFiltroEstoque','activeRelatorioEstoque']),
+        ...mapActions('utilMod', ['disableNotTableFiltro', 'saveFiltro', 'activeRel']),
         makeRelatorio() {
-            this.$store.commit("disableNotTableFiltro")
+            this.disableNotTableFiltro()
             let validado = this.validaDados()
             if(!validado){
                 alert('Preencha todos os campos necessários')
             }else{
                 let opcao = this.relatorioEscolha
                 if(this.relatorioEscolhaLista == 'Relatorios de Produtos'){
-                    this.$store.commit("saveFiltro", opcao)
-                    this.$store.commit("activeRelatorio")
+                    this.saveFiltro(opcao)
+                    this.activeRel()
                 }
                 else if (this.relatorioEscolhaLista == 'Relatorios do Estoque'){
+                    
                     this.saveFiltroEstoque(opcao)
                     this.activeRelatorioEstoque()
                 }else if(this.relatorioEscolha == 'Pedidos realizados entre duas datas' || this.relatorioEscolha == 'Vendas por periodo de dias' 
@@ -320,15 +324,15 @@ export default {
                    
                     let comparaDatas = this.compareDates()
                     if(comparaDatas){
-                        this.$store.commit("saveFiltro", opcao);
-                        this.$store.commit("activeRelatorio");  
+                        this.saveFiltro(opcao)
+                        this.activeRel()
                         this.clear()
                     }else{
                         alert('Data Inicial maior que data Final')
                     }
                 }else{
-                    this.$store.commit("saveFiltro", opcao);
-                    this.$store.commit("activeRelatorio");  
+                    this.saveFiltro(opcao)
+                    this.activeRel()
                 }
             }
         },
@@ -370,7 +374,7 @@ export default {
             this.start = null,
             this.end = null,
             this.timeHrEndChoose = false
-            this.$store.commit("disableNotTableFiltro");
+            this.disableNotTableFiltro()
         },
         compareDates(){
             let inicio = this.makeValibleData(this.start, this.tmpIni)

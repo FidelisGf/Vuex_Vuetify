@@ -62,7 +62,8 @@ export default {
     },
     methods: {
         ...mapActions("tagMod", ["activeModalCadastro"]),
-        ...mapActions('despesaMod', ['activeMod'])
+        ...mapActions('despesaMod', ['activeMod']),
+        ...mapActions('utilMod', ['setHeader']),
     },
     computed: {
         ...mapGetters({ active: "tagMod/getModalCadastro", activeDespesa : "despesaMod/getModalCadastro"}),
@@ -82,7 +83,7 @@ export default {
         }
     },
     created(){
-        this.$store.commit("setHeader", this.headers)
+        this.setHeader(this.headers)
     },
     components: { TagModal, DespesaModal, ListaGenerica }
 }

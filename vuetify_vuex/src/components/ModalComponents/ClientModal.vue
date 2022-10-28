@@ -247,6 +247,7 @@ export default {
     },
     methods: {
         ...mapActions('clienteMod', ['activeModalCliente', 'saveCliente', 'disableModalCliente', 'getCliente', 'desvincularCliente']),
+        ...mapActions('utilMod', ['setHeader']),
         ativaCadastro() {
             if (this.cadastroRapido) {
                 this.cadastroRapido = false;
@@ -256,7 +257,7 @@ export default {
             }
         },
         ativaLista(){
-            this.$store.commit("setHeader", this.headers)
+            this.setHeader(this.headers)
             if(this.mostraLista){
                 this.mostraLista = false 
             }else{

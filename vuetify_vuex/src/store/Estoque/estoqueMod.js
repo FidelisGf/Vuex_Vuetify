@@ -39,6 +39,24 @@ export default{
         },
     },
     actions: {
+        saveFiltroEstoque(context, payload){
+            context.commit('saveFiltroEstoque', payload)
+        },
+        activeRelatorioEstoque(context){
+            context.commit('activeRelatorioEstoque')
+        },
+        desativeRelatorioEstoque(context){
+            context.commit('desativeRelatorioEstoque')
+        },
+        deleteFiltroEstoque(context){
+            context.commit('deleteFiltroEstoque')
+        },
+        activeAdicionaEstoque(context){
+            context.commit('activeAdicionaEstoque')
+        },
+        desativateAdicionaEstoque(context){
+            context.commit('desativateAdicionaEstoque')
+        },
         saveQuantidade(context, payload){
             estoqueService.adicionarQuantidade(payload).then((res) => {
                 console.log(res);
