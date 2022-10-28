@@ -11,28 +11,28 @@
                                 <v-list-item >
                                     <v-list-item-content>
                                         <v-list-item-title class="ml-2">
-                                            <p class="text-h5"><b>Recebimento Total : R$ {{total}}</b></p>
+                                            <p class="text-h5"><b>Recebimento Total :{{total}}</b></p>
                                         </v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
                                 <v-list-item >
                                     <v-list-item-content>
                                         <v-list-item-title class="ml-2">
-                                            <p><b>Pagamento Por PIX : R$ {{pix}}</b></p>
+                                            <p><b>Pagamento Por PIX : {{pix}}</b></p>
                                         </v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
                                 <v-list-item >
                                     <v-list-item-content>
                                         <v-list-item-title class="ml-2">
-                                            <p><b>Pagamento Por Cartao : R$ {{cartao}}</b></p>
+                                            <p><b>Pagamento Por Cartao : {{cartao}}</b></p>
                                         </v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
                                 <v-list-item >
                                     <v-list-item-content>
                                         <v-list-item-title class="ml-2">
-                                            <p><b>Pagamento Por Dinheiro: R$ {{dinheiro}}</b></p>
+                                            <p><b>Pagamento Por Dinheiro: {{dinheiro}}</b></p>
                                         </v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
@@ -66,10 +66,10 @@ export default {
     },
     methods:{
         
-        getDados(route){
+        async getDados(route){
             this.dtStart = this.starterDate
             this.dtFinal = this.endDate
-            axios.get("http://127.0.0.1:8000/api/" + route, 
+            await axios.get("http://127.0.0.1:8000/api/" + route, 
             { params: { opcao: this.opcao, start : this.dtStart, end : this.dtFinal} }).then((response) => {
                 if(this.route  == 'vendas'){
                     this.dinheiro = response.data[0]
@@ -78,6 +78,11 @@ export default {
                     this.total = response.data[3]
                 }
             })
+            this.total = this.total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
+            this.pix = this.pix.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
+            this.cartao = this.cartao.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
+            this.dinheiro = this.dinheiro.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
+            
         }
     },
     created(){

@@ -9,5 +9,8 @@ export default{
     },
     edit(payload, $id){
         return axios.put("/despesas/" + $id, payload)
+    },
+    despesasByTag($id, page){
+        return axios.get("/despesasByTag/" + $id + "?page=" + page)
     }
 }

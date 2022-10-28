@@ -52,6 +52,21 @@ export default{
                alert('Falha ao registrar despesa')
            }
        },
+       async allByTag(context, payload){
+          try {
+               let resposta = {current_page : null, totalPage : null}
+               console.log(payload)
+               await despesaService.despesasByTag(payload.ID_TAG, payload.current_page).then((res)=>{
+                    console.log(res.data)
+                    context.commit("produtoMod/beginListProduct",res.data.data, { root: true })
+                    resposta.current_page = res.data.current_page;
+                    resposta.totalPage = res.data.last_page;
+               })
+               return resposta
+          } catch (error) {
+               alert('Não foi possivel realizar o filtro')
+          }
+       },
        async findById(context, payload){
           try {
                let data = await despesaService.findById(payload).then((res)=>{

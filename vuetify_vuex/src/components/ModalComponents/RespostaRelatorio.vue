@@ -14,14 +14,13 @@
                     </v-card-title>
                     <v-card-subtitle v-if="entreDatas" class="mt-2 ml-2 text-h8" ><p>De : {{starterDate}}  até : {{endDate}}</p></v-card-subtitle>
                     <v-card-text>
-                        {{notTable}}
                         <v-row v-if="!this.notTable">
                             <ListaGenerica v-if="!pedidos && !vendas" :route="'products'" :opcao="filtro"></ListaGenerica>
                             <ListaGenerica v-if="pedidos" :route="'pedidos'" :opcao="filtro" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
                             <ListaGenerica v-if="vendas" :route="'vendas'" :opcao="filtro" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
                         </v-row>
                         <v-row v-if="notTable">
-                            <RelatorioEscrito v-if="notTable" :route="'vendas'" :opcao="this.$store.getters.getFiltro" :end-date="endDate" :starter-date="starterDate"></RelatorioEscrito>
+                            <RelatorioEscrito v-if="notTable" :route="'vendas'" :opcao="filtro" :end-date="endDate" :starter-date="starterDate"></RelatorioEscrito>
                         </v-row>
                     </v-card-text>
                     <v-card-actions>

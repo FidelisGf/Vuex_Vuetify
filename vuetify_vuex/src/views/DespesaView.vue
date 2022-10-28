@@ -61,7 +61,7 @@ export default {
         };
     },
     methods: {
-        ...mapActions("tagMod", ["activeModalCadastro"]),
+        ...mapActions("tagMod", ["activeModalCadastro", 'findAll']),
         ...mapActions('despesaMod', ['activeMod']),
         ...mapActions('utilMod', ['setHeader']),
     },
@@ -82,7 +82,8 @@ export default {
             ];
         }
     },
-    created(){
+    async created(){
+        await this.findAll()
         this.setHeader(this.headers)
     },
     components: { TagModal, DespesaModal, ListaGenerica }

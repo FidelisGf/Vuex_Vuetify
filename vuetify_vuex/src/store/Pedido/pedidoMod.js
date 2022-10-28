@@ -95,6 +95,36 @@ export default{
         },
     },
     actions: {
+        disableListaPedidos(context){
+            context.commit('disableListaPedidos')
+        },
+        activeListaPedidos(context){
+            context.commit('activeListaPedidos')
+        },
+        somaItens(context){
+            context.commit('somaItens')
+        },
+        limparValorTotal(context){
+            context.commit('limparValorTotal')
+        },
+        limpaPedido(context){
+            context.commit('limpaPedido')
+        },
+        setListaPedidos(context, payload){
+            context.commit('saveListaPedidos', payload)
+        },
+        saveCod(context, payload){
+            context.commit('saveCod', payload)
+        },
+        setPedidoAtual(context, payload){
+            context.commit('setPedidoAtual', payload)
+        },
+        activeListaRapidaProdutos(context){
+            context.commit('activeListaRapidaProdutos')
+        },
+        desativeListaRapidaProdutos(context){
+            context.commit('desativeListaRapidaProdutos')
+        },
         saveValorTotal(context, payload){
             context.commit('saveValorTotal',payload)
         },

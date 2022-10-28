@@ -50,13 +50,24 @@
                                     return-object
                                 >
                                 </v-select>
+                                <v-select v-if="route == 'despesas'"
+                                    :items="listTags"
+                                    label="Filtre por um tipo..."
+                                    v-model="tag"
+                                    color="teal lighten-1"
+                                    item-text="NOME" 
+                                    @keydown.enter="findAllByTags"
+                                    class="mx-5 w-25"
+                                    return-object
+                                >
+                                </v-select>
                             </v-col>
                             <v-col>
                                 <v-btn
                                     color="red lighten-1 "
                                     text
                                     class="mt-n10 ml-3"
-                                    @click="clearCategorySearch"
+                                    @click="clean"
                                 >
                                  Limpar 
                                 </v-btn>
@@ -110,6 +121,9 @@ export default {
             dtStart : '',
             dtFinal : '',
             change : false,
+            tag : null,
+            tempTag: '',
+            filtroTag : false,
 
         };
     },
@@ -117,7 +131,7 @@ export default {
     methods: {
         ...mapActions('produtoMod', ['saveProduct', 'beginListProduct', 'saveListProduct', 
         'editListProduct', 'clearListProduct', 'findByAllCategory', 'activeEdit']),
-        ...mapActions('despesaMod', ['activeEditDespesa']),
+        ...mapActions('despesaMod', ['activeEditDespesa', 'allByTag']),
         ...mapActions('utilMod' , ['saveGenerico', 'activeDelete']),
         getLista(route) {
             this.dtStart = this.starterDate
@@ -132,11 +146,10 @@ export default {
                     this.current_page = response.data.current_page
                     this.tempCurrent = this.current_page
                     this.totalPage = response.data.last_page
+                    
                 });
             }else{
                 axios.get("http://127.0.0.1:8000/api/" + route + "?page=" + this.current_page, { params: { opcao: this.opcao} }).then((response) => {
-                    console.log(this.opcao)
-                    console.log(response)
                     this.beginListProduct(response.data.data)
                     this.per_page = response.data.per_page
                     this.loading = false;
@@ -169,7 +182,10 @@ export default {
         onPageChange() {
             if(this.filtroCategory){
                 this.findAllByCategory()
-            }else{
+            }else if(this.filtroTag){
+                this.findAllByTags()
+            }
+            else{
                 this.getLista(this.route);
             }
             
@@ -187,6 +203,25 @@ export default {
                 typeof value === "string" &&
                 value.toString().toLocaleUpperCase().indexOf(search) !== -1;
         },  
+        async findAllByTags(){
+            if(this.tempCurrent != 1){
+                this.current_page = 1
+                this.tempCurrent = 1;
+            }
+            if(this.tempTag != this.tag.ID){
+                this.current_page = 1;
+            }
+            this.tempTag = this.tag.ID
+            this.loading = true
+            this.filtroTag = true;
+            if(this.tag != ""){
+                let payload = {current_page : this.current_page, ID_TAG : this.tag.ID}
+                let resposta = await this.allByTag(payload)
+                this.current_page = resposta.current_page
+                this.totalPage = resposta.totalPage
+                this.loading = false
+            }
+        },
         async findAllByCategory() {
       
             if(this.tempCurrent != 1){
@@ -209,17 +244,19 @@ export default {
                 this.getLista(this.route)
             }
         },
-        cleanCategoryFilter() {
+        clean(){
             this.current_page = 1
             this.filtroCategory = false;
             this.Categoria = ""
+            this.filtroTag = false
+            this.tag = ""
             this.getLista(this.route)
         }
     },
     computed:{
         ...mapGetters({listCategorias : 'categoryMod/listCategorias', listaProdutos : 'produtoMod/listProducts', 
         editDespesa: 'despesaMod/getEditDespesa', headers: 'utilMod/getHeader', 
-        del: 'utilMod/delete', generico : 'utilMod/getGenerico', editProd : 'produtoMod/edit'})
+        del: 'utilMod/delete', generico : 'utilMod/getGenerico', editProd : 'produtoMod/edit', listTags : 'tagMod/getTags'})
     },  
     created() {
         this.clearPages();

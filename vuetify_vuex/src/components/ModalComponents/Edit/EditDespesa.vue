@@ -132,7 +132,7 @@ export default {
         }
     },
     computed:{
-        ...mapGetters({active : 'despesaMod/getEditDespesa'})
+        ...mapGetters({active : 'despesaMod/getEditDespesa', generico : 'utilMod/getGenerico'})
     },
     methods:{
         ...mapActions('despesaMod', ['disableEditDespesa', 'findById', 'edit']),
@@ -140,7 +140,7 @@ export default {
         async getDespesa(){
             this.loading = true
             this.TAGS = await this.findAll()
-            this.ID = this.$store.getters.getGenerico.ID;
+            this.ID = this.generico.ID;
             let data = await this.findById(this.ID)
             if(data != null || data != undefined){
                 this.dtTmp = data.DATA.split(" ")

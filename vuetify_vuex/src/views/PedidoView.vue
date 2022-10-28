@@ -248,7 +248,7 @@ import ListaRapidaProduto from '@/components/ModalComponents/ListaRapidaProduto.
 import PedidosModal from '@/components/ModalComponents/PedidosModal.vue';
 import jsPdf from 'jspdf'
 import autoTable from 'jspdf-autotable'
-import {mapMutations, mapGetters, mapActions} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 export default {
     data() {
         return {
@@ -285,16 +285,35 @@ export default {
                 return resultado;
             }
         },
+        headers() {
+            return [
+                {
+                    text: "Codigo",
+                    align: "start",
+                    value: "product[0].ID",
+                },
+                {
+                    text: "Produto",
+                    value: "product[0].NOME",
+                },
+                { text: "Descrição", value: "product[0].DESC" },
+                { text: "Valor", value: "product[0].VALOR" },
+                { text: "Quantidade", value: "QUANTIDADE" },
+            ];
+         },
     },
     methods: {
-        ...mapMutations('pedidoMod', ['disableListaPedidos', 'saveValorTotal', 'activeListaPedidos', 'activeListaRapidaProdutos', 'limpaPedido', 'limparValorTotal']),
+        ...mapActions('pedidoMod', ['disableListaPedidos', 'saveValorTotal', 'activeListaPedidos', 'activeListaRapidaProdutos', 'limpaPedido', 'limparValorTotal']),
         ...mapActions('pedidoMod', ['findProduto', 'geraVenda', 'findPedido' , 'editarPedido']),
         ...mapActions('userMod', ['getEmpresaFromUser']),
         ...mapActions('clienteMod', ['activeModalCliente']),
+        ...mapActions('utilMod', ['setHeader']),
         buscaLista() {
             this.fail = false
             this.sucesso = false
+            this.setHeader(this.headers)
             this.activeListaRapidaProdutos()
+            
         },
         vinculaCliente(){
             this.activeModalCliente

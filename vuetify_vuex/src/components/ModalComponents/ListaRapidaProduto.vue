@@ -14,7 +14,7 @@
                     </v-card-title>
                     <v-card-text>
                         <v-row>
-                           <ListaGenerica :route="'estoques'" :opcao="'Disponivel para venda'"></ListaGenerica>
+                           <ListaGenerica v-if="active" :route="'estoques'" :opcao="'Disponivel para venda'"></ListaGenerica>
                         </v-row>
                     </v-card-text>
                     <v-card-actions>
@@ -35,7 +35,7 @@
 </template>
 <script>
 import ListaGenerica from '../ListaGenerica.vue'
-import {mapGetters, mapMutations, mapActions} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 export default {
     data() {
         return {
@@ -46,36 +46,16 @@ export default {
         };
     },
     methods: {
-        ...mapMutations('pedidoMod', ['desativeListaRapidaProdutos']),
-        ...mapActions('utilMod', ['setHeader']),
-        getLista() {
-            this.setHeader(this.headers)
-        },
+        ...mapActions('pedidoMod', ['desativeListaRapidaProdutos']),
         fechar() {
             this.desativeListaRapidaProdutos()
         }
     },
     computed: {
             ...mapGetters({active : 'pedidoMod/getListRapidaProdutos'}),
-         headers() {
-            return [
-                {
-                    text: "Codigo",
-                    align: "start",
-                    value: "product[0].ID",
-                },
-                {
-                    text: "Produto",
-                    value: "product[0].NOME",
-                },
-                { text: "Descrição", value: "product[0].DESC" },
-                { text: "Valor", value: "product[0].VALOR" },
-                { text: "Quantidade", value: "QUANTIDADE" },
-            ];
-         },
     },
     created() {
-        this.getLista();
+       
     },
     components: { ListaGenerica }
 }

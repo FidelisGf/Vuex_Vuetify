@@ -78,6 +78,7 @@ export default{
             });
         },
         beginListProduct(context, payload){
+            context.commit('clearListProduct')
             context.commit('beginListProduct', payload)
         },
         saveList(context, payload){

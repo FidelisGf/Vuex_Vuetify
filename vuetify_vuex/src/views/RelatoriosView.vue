@@ -62,156 +62,57 @@
         </v-row>
         <v-row>
             <v-col v-if="hasDateInput">
-                <v-menu 
-                ref="menu"
-                :close-on-content-click="false"
-                transition="scale-transition"
-                offset-y
-                min-width="auto"
-                >
-                <template v-slot:activator="{ on, attrs }">
                 <v-text-field
+                    dark
                     v-model="start"
                     label="Data Inicial"
-                    prepend-icon="mdi-calendar"
-                    readonly
-                    dark
-                    color="orange darken-1"
-                    v-bind="attrs"
-                    v-on="on"
-                ></v-text-field>
-                </template>
-                <v-date-picker
-                    color="orange darken-1"
-                    v-model="start"
-                    :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
-                    min="1950-01-01"
-                ></v-date-picker>
-            </v-menu>
+                    persistent-hint
+                    required
+                    color="teal lighten-1"
+                    type="date"
+                ></v-text-field>  
             </v-col>
-            <v-col>
-                <v-menu v-if="timeHrEndChoose"
-                    ref="menu"
-                    :close-on-content-click="false"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="auto"
-                    >
-                    <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                        v-model="end"
-                        color="orange darken-1"
-                        dark
-                        label="Data Final"
-                        prepend-icon="mdi-calendar"
-                        readonly
-                        v-bind="attrs"
-                        v-on="on"
-                    ></v-text-field>
-                    </template>
-                    <v-date-picker
-                        color="orange darken-1"
-                        v-model="end"
-                        :max="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)"
-                        min="1950-01-01"
-                    ></v-date-picker>
-                </v-menu>
-            </v-col>
-        </v-row>
-        <v-row>
             <v-col 
-                v-if="filledStart"
-                sm="6"
+            v-if="filledStart"
+            sm="6"
             >
-                <v-dialog
-                ref="dialog"
-                v-model="modHrIni"
-                persistent
-                width="290px"
-                >
-                <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
+       
+                <v-text-field
                     v-model="tmpIni"
                     label="Hora Inicial"
-                    prepend-icon="mdi-clock-time-four-outline"
-                    readonly
+                    persistent-hint
+                    required
+                    color="teal lighten-1"
+                    type="time"
                     dark
-                    color="orange darken-1"
-                    v-bind="attrs"
-                    v-on="on"
-                    ></v-text-field>
-                </template>
-                <v-time-picker
-                    color="orange darken-1"
-                    v-if="modHrIni"
-                    v-model="tmpIni"
-                    format="24hr"
-                    full-width
-                >
-                    <v-spacer></v-spacer>
-                    <v-btn
-                    text
-                    color="teal accent-3"
-                    @click="fechaHoraInicial"
-                    >
-                    Cancel
-                    </v-btn>
-                    <v-btn
-                    text
-                    @click="saveHoraIni"
-                    color="teal accent-3"
-                    >
-                    OK
-                </v-btn>
-              </v-time-picker>
-            </v-dialog>
-          </v-col>
+                ></v-text-field>     
+            </v-col>
+            
+        </v-row>
+        <v-row>
+            <v-col v-if="timeHrEndChoose">
+                <v-text-field
+                    v-model="end"
+                    label="Data Final"
+                    persistent-hint
+                    required
+                    color="teal lighten-1"
+                    type="date"
+                    dark
+                ></v-text-field>  
+            </v-col>
           <v-col 
             v-if="filledEnd"
-            sm="6"
           >
-            <v-dialog
-            ref="dialog"
-            v-model="modHrFin"
-            persistent
-            width="290px"
-            >
-                <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                    color="orange darken-1"
+            <v-text-field
                     dark
                     v-model="tmpFina"
-                    label="Hora Final"
-                    prepend-icon="mdi-clock-time-four-outline"
-                    readonly
-                    v-bind="attrs"
-                    v-on="on"
-                    ></v-text-field>
-                </template>
-                <v-time-picker
-                    color="orange darken-1"
-                    v-if="modHrFin"
-                    v-model="tmpFina"
-                    format="24hr"
-                    full-width
-                >
-                    <v-spacer></v-spacer>
-                        <v-btn
-                        text
-                        color="teal accent-3"
-                        @click="fechaHoraFinal"
-                        >
-                        Cancel
-                        </v-btn>
-                        <v-btn
-                        text
-                        @click="saveHoraFinal"
-                        color="teal accent-3"
-                        >
-                        OK
-                        </v-btn>
-                </v-time-picker>
-      </v-dialog>
+                    label="Hora final"
+                    persistent-hint
+                    required
+                    color="teal lighten-1"
+                    type="time"
+            ></v-text-field>     
         </v-col>
         </v-row>
         <v-row>
@@ -220,7 +121,7 @@
                     Gerar
                     
                 </v-btn>
-                <v-btn color="lime lighten-4" class=" btns ml-3">
+                <v-btn color="lime lighten-4" class=" btns ml-3" @click="clear">
                     Limpar
                 </v-btn>
             </v-col>
@@ -251,8 +152,7 @@ export default {
             modHrIni : false,//Modal para escolher Horario
             modHrFin : false,
             startData : '', //dataInicial Formatada (dia,mes,ano,hora,minuto)
-            endData : '', //dataFinal Formatada (dia,mes,ano,hora,minuto)
-            timeHrEndChoose : false, //Habilita a seleção de data Final
+            endData : '', //dataFinal Formatada (dia,mes,ano,hora,minuto) //Habilita a seleção de data Final
         };
     },
     computed:{
@@ -281,6 +181,14 @@ export default {
             
             if(this.relatorioEscolha == 'Pedidos realizados entre duas datas' 
             || this.relatorioEscolha == 'Vendas por periodo de dias' || this.relatorioEscolha == 'Vendas por Tipo de Pagamento'){
+                flag = true
+                return flag
+            }
+            return flag
+        },
+        timeHrEndChoose: function(){
+            let flag = false
+            if(this.tmpIni != null){
                 flag = true
                 return flag
             }
@@ -323,6 +231,7 @@ export default {
                 || this.relatorioEscolha == 'Vendas por Tipo de Pagamento'){
                    
                     let comparaDatas = this.compareDates()
+                    this.saveHoras()
                     if(comparaDatas){
                         this.saveFiltro(opcao)
                         this.activeRel()
@@ -336,19 +245,19 @@ export default {
                 }
             }
         },
-        fechaHoraFinal(){
-            this.modHrFin = false
-            this.tmpFina = null
-        },
-        fechaHoraInicial(){
-            this.modHrIni = false
-            this.tmpIni = null
+        saveHoras(){
+            this.saveHoraIni()
+            this.saveHoraFinal()
         },
         saveHoraIni(){
             let tmp = this.start
+            
             this.startData = tmp + ' ' + this.tmpIni
-            this.timeHrEndChoose = true
-            this.modHrIni = false
+        },
+        saveHoraFinal(){
+            let tmp = this.end
+            this.endData = tmp + ' ' + this.tmpFina
+            this.modHrFin = false
         },
         refactorStartData(){
             let tmp = this.start
@@ -358,22 +267,12 @@ export default {
             let tmp = this.end
             this.endData = tmp + ' ' + this.tmpFina
         },
-        saveHoraFinal(){
-            let tmp = this.end
-            this.endData = tmp + ' ' + this.tmpFina
-            this.modHrFin = false
-        },
-        formatData(data){
-            if (!data) return null
-            const [year, month, day] = data.split('-')
-            return `${day}.${month}.${year}`
-        },
         clear(){
             this.tmpFina = null,
             this.tmpIni = null,
             this.start = null,
             this.end = null,
-            this.timeHrEndChoose = false
+            this.filledStart = false,
             this.disableNotTableFiltro()
         },
         compareDates(){
@@ -388,11 +287,9 @@ export default {
             }
         },
         makeValibleData(data, hora){
-            console.log(data)
-            console.log(hora)
-            const[year, month, day] = data.split('-')
+            const[day, month, year] = data.split('-')
             const[hours, minutes] = hora.split(':')
-            const date =  new Date(year,month,day,hours, minutes);
+            const date =  new Date(day,month,year,hours, minutes);
             console.log(date)
             return date;
         },
