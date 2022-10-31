@@ -1,70 +1,62 @@
 <template>
-    <v-container>
-        <v-dialog
-            v-model="active"
-            persistent
-            max-width="600px"
-            @keydown.escape="disableEditDespesa"
-        >
-            <v-card>
-                <v-card-title>
-                    Registrar uma despesa
-                </v-card-title>
-                <v-card-text>
-                   <v-row>
-                            <v-col 
-                            cols="12"
-                            sm="6"
+    <v-card>
+            <v-card-title>
+                Edição de Despesa
+            </v-card-title>
+            <v-card-text>
+                <v-row>
+                    <v-col 
+                        cols="12"
+                        sm="6"
                            
-                        >
-                            <v-text-field
-                                label="Descrição da despesa"
-                                required
-                                v-model="DESC"
-                                color="teal lighten-1"
-                                :loading="loading"
-                            ></v-text-field>
-                        </v-col>
-                        <v-col 
-                            cols="12"
-                            sm="6"
-                            md="4"
-                        >
-                            <v-text-field
-                                v-model="CUSTO"
-                                label="Custo da despesa"
-                                persistent-hint
-                                required
-                                color="teal lighten-1"
-                                type="number"
-                                min="0"
-                                prefix="R$"
-                                :loading="loading"
-                            ></v-text-field>
-                        </v-col>
-                        <v-col 
-                            cols="12"
-                            sm="6"
-                            md="4"
-                        >
-                            <v-text-field
-                                v-model="DATA"
-                                label="Data"
-                                persistent-hint
-                                required
-                                color="teal lighten-1"
-                                type="date"
-                                :loading="loading"
+                    >
+                        <v-text-field
+                            label="Descrição da despesa"
+                            required
+                            v-model="DESC"
+                            color="teal lighten-1"
+                            :loading="loading"
+                        ></v-text-field>
+                    </v-col>
+                    <v-col 
+                        cols="12"
+                        sm="6"
+                        md="4"
+                    >
+                        <v-text-field
+                            v-model="CUSTO"
+                            label="Custo da despesa"
+                            persistent-hint
+                            required
+                            color="teal lighten-1"
+                            type="number"
+                            min="0"
+                            prefix="R$"
+                            :loading="loading"
+                        ></v-text-field>
+                    </v-col>
+                    <v-col 
+                        cols="12"
+                        sm="6"
+                        md="4"
+                    >
+                        <v-text-field
+                            v-model="DATA"
+                            label="Data"
+                            persistent-hint
+                            required
+                            color="teal lighten-1"
+                            type="date"
+                            :loading="loading"
                     
-                            ></v-text-field>
-                           
-                        </v-col>
-                        <v-col 
-                            cols="12"
-                            sm="6"
-                            md="4"
-                        >
-                            <v-text-field
+                        ></v-text-field>   
+                    </v-col>
+                    <v-col 
+                        cols="12"
+                        sm="6"
+                        md="4"
+                    >
+                        <v-text-field
                             v-model="HORA"    
                             label="Hora"
                             persistent-hint
@@ -72,47 +64,36 @@
                             color="teal lighten-1"
                             type="time"
                             :loading="loading"
-        
                         ></v-text-field>
                        
-                        </v-col>
-                       
-                        <v-col
+                    </v-col>
+                    <v-col
                             cols="12"
                             sm="6"
                             class="d-flex"
-                        >  
-                            <v-select
-                                :items="TAGS"
-                                label="Tipo da despesa"
-                                v-model="TAG"
-                                color="teal lighten-1"
-                                item-text="NOME" 
-                                return-object
-                                :loading="loading"
-                            ></v-select>       
-                        </v-col>
-                   </v-row>
-                </v-card-text>
-                <v-card-actions class="mt-n4">
-                    <v-btn
-                        color="red lighten-1"
-                        text
-                        @click="disableEditDespesa"
-                    >
-                    Fechar
-                    </v-btn>
-                    <v-btn 
-                        color="green lighten-1"
-                        text
-                        @click="editDespesa"
-                    >
-                    Editar
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-    </v-container>
+                    >  
+                        <v-select
+                            :items="TAGS"
+                            label="Tipo da despesa"
+                            v-model="TAG"
+                            color="teal lighten-1"
+                            item-text="NOME" 
+                            return-object
+                            :loading="loading"
+                        ></v-select>       
+                    </v-col>
+                </v-row>
+            </v-card-text>
+            <v-card-actions class="mt-n4">
+                <v-btn 
+                    color="green lighten-1"
+                    text
+                    @click="editDespesa"
+                >
+                Editar
+                </v-btn>
+            </v-card-actions>
+    </v-card>
 </template>
 
 <script>
@@ -132,7 +113,7 @@ export default {
         }
     },
     computed:{
-        ...mapGetters({active : 'despesaMod/getEditDespesa', generico : 'utilMod/getGenerico'})
+        ...mapGetters({generico : 'utilMod/getGenerico'})
     },
     methods:{
         ...mapActions('despesaMod', ['disableEditDespesa', 'findById', 'edit']),
@@ -152,6 +133,14 @@ export default {
             }
             this.loading = false
         },
+        clear(){
+            this.loading = false
+            this.DATA = ''
+            this.HORA = ''
+            this.DESC = ''
+            this.CUSTO = '' 
+            this.TAG = ''
+        },
         transformData(){
             this.dtTmp  = null
             this.dtTmp = this.DATA + " " + this.HORA
@@ -161,6 +150,14 @@ export default {
             let payload = {ID: this.ID, DESC : this.DESC, CUSTO : this.CUSTO, ID_TAG : this.TAG.ID, DATA : this.dtTmp, tags : this.TAG}
             await this.edit(payload)
         }
+    },
+    watch: {
+        generico : function(val) {
+          if (val) {
+             this.clear()
+             this.getDespesa()
+          }
+        }  
     },
     created(){
         this.getDespesa()

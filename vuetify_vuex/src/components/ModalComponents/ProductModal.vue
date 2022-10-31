@@ -1,10 +1,11 @@
 <template>
     <v-container fluid grid-list-md>
     <v-row>
-        <v-col cols="12">
+        
+        <v-col cols="6">
             <v-btn
                 color="teal accent-3"
-                class="mt-1 ml-1  font-weight-medium"
+                class="mt-5 ml-1  font-weight-medium"
                 dark
                 text
                 @click="activeAdicionarEstoque"
@@ -20,7 +21,7 @@
                 <template v-if="!miniatura" v-slot:activator="{ on, attrs }">
                     <v-btn
                     color="teal accent-3"
-                    class="mt-1 ml-1 font-weight-medium"
+                    class="mt-5 ml-1 font-weight-medium"
                     dark
                     text
                     @click="cleanProduct"
@@ -136,6 +137,19 @@
                 </v-card>
             </v-dialog>
         </v-col>
+        <v-spacer v-if="!$vuetify.breakpoint.smAndDown" ></v-spacer>
+        <v-col>
+            <v-sheet
+                color="cyan lighten-5"
+                elevation="8"
+                height="55px"
+                width="200px"
+                class=" exibeGasto ml-lg-6 ml-md-3 ml-0"
+            >
+                <p style="font-size: 16px;" class="ml-3 mt-2 font-weight-medium">Produtos Ativos</p>
+                <p style="font-size : 14px;" class="mt-n4 ml-5 font-weight-bold">Quantidade Atual : {{countProdutos}}</p>
+            </v-sheet>
+        </v-col>
     </v-row>
     <v-row >
         <v-col cols="12">
@@ -174,7 +188,8 @@ export default {
         };
     },
     computed: {
-        ...mapGetters({listCategorias : 'categoryMod/listCategorias', activeEstoque : 'estoqueMod/getAdicionaEstoque'}),
+        ...mapGetters({listCategorias : 'categoryMod/listCategorias', activeEstoque : 'estoqueMod/getAdicionaEstoque',
+        countProdutos : 'produtoMod/getCount'}),
         headers() {
             return [
                 { text: "Detalhes", value: "info", sortable: false },
@@ -193,7 +208,7 @@ export default {
     },
    
     methods: {
-        ...mapActions('produtoMod', ['saveList', 'post']),
+        ...mapActions('produtoMod', ['saveList', 'post', 'countProd']),
         ...mapActions('estoqueMod', ['activeAdicionaEstoque']),
         ...mapActions('utilMod', ['setHeader']),
         activeAdicionarEstoque(){
@@ -216,13 +231,29 @@ export default {
             this.Categoria = null
         }, 
     },
-    created() {
+   async created() {
         this.setHeader(this.headers)
+        await this.countProd()
     },
     components: { CategoryModal, EstoqueModal, ListaGenerica }
 }
 </script>
 
 <style lang="scss" scoped>
-
+    .exibeGasto{
+        border-color: aqua !important;
+        box-shadow: 0px 2px 25px 2px #96f5f0 !important;
+        border-radius: 10px !important;
+    
+    }
+    .exibeGasto:hover{
+        transform: translate(2px, -2.10px);
+        transition: 1.5s;
+        box-shadow: 0px 2px 35px 2px #505050 !important;
+    }
+    .exibeGasto:hover::after{
+        transform: translate(2px, +2.10px);
+        transition: 1.5s;
+        box-shadow: 0px 2px 25px 2px #E0F2F1 !important;
+    }
 </style>

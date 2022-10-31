@@ -4,8 +4,22 @@
             v-model="active"
             persistent
             max-width="520"
+            @keydown.escape="active = false"
         >
+        <template v-slot:activator="{ on, attrs }">
+            <v-btn
+            color="primary"
+            dark
+            v-bind="attrs"
+            v-on="on"
+            icon 
+            small
+            >
+              <v-icon color="red darken-4" >mdi-delete</v-icon>
+            </v-btn>
+        </template>
         <v-card>
+          {{this.id}}
           <v-card-title class="text-h5">
             Deseja mesmo deletar esse Item ?
           </v-card-title>
@@ -14,7 +28,7 @@
             <v-btn
               color="green darken"
               text
-              @click="closeDelete"
+              @click="active = false"
             >
               Cancelar
             </v-btn>
@@ -34,38 +48,33 @@
 import axios from 'axios'
 import { mapActions, mapGetters } from 'vuex'
 export default {
+   data(){
+      return{
+        active : false,
+      }
+   },
    props:{
       route : String,
+      id : Number,
    },
    methods:{
         ...mapActions('produtoMod', ['deleteInList']),
         ...mapActions('utilMod', ['desativateDelete']),
-        closeDelete(){
-            this.desativateDelete()
-        },
         deleteItem(route){
-            console.log(route)
-            let id = 0
-            if(route == 'categorys'){
-                id = this.generico.ID_CATEGORIA
-            }else{
-                id = this.generico.ID
-            }
-            axios.delete("http://127.0.0.1:8000/api/" + route  + "/"+ id ).then((res)=>{
+            axios.delete("http://127.0.0.1:8000/api/" + route  + "/"+ this.id ).then((res)=>{
                 if(res.status == 200){
                     alert('Item Deletado com sucesso')
-                    this.deleteInList(id)
+                    this.deleteInList(this.id)
                     this.desativateDelete()
                 }
             })
         }
-
    },
    computed:{
-      ...mapGetters({active : 'utilMod/delete', generico : 'utilMod/getGenerico'})
+      ...mapGetters({generico : 'utilMod/getGenerico'})
    },
    created(){
-      console.log(this.route)
+    
       //this.deleteItem(this.route)
    }
 }

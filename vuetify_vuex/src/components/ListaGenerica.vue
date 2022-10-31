@@ -13,8 +13,8 @@
                     class="elevation-2 mt-n5"
                 >
                 <template v-slot:[`item.actions`]="{ item }" >
-                    <v-icon small color="teal lighten-1" class="mr-2" @click="editItem(item, route)">mdi-pencil</v-icon>
-                    <v-icon small color="red lighten-1" @click="deleteItem(item)">mdi-delete</v-icon>          
+                    <v-icon small color="teal lighten-1" class="mr-2 ml-2" @click="editItem(item)">mdi-pencil</v-icon>
+                    <DeleteGeneric :id="item.ID" small :route="route"></DeleteGeneric>        
                 </template>
                 <template v-slot:[`item.info`]="{ item }">
                     <v-icon color="blue darken-4"  @click="info(item.ID)">mdi-alpha-i-circle</v-icon>
@@ -83,10 +83,29 @@
                 :length="totalPage"
                 @input="onPageChange">  
             </v-pagination> 
-            <DeleteGeneric v-if="del" :route="route"></DeleteGeneric>
-            <EditProduct v-if="editProd"></EditProduct>
-            <EditDespesaVue v-if="editDespesa"></EditDespesaVue>
+            
             </v-col>
+            <v-dialog
+                v-model="edit"
+                persistent
+                max-width="550px"
+                @keydown.escape="edit = false"
+            >
+                <v-card class="cards" > 
+                    <v-card-actions>
+                        <v-btn
+                            icon
+                            dark
+                            color="red"
+                            @click="edit = false"
+                        ><v-icon >mdi-close</v-icon></v-btn>
+                    </v-card-actions>
+                    <v-card-text >
+                        <EditProduct v-if="route == 'products'"></EditProduct>
+                        <EditDespesaVue v-if="route == 'despesas'"></EditDespesaVue>
+                    </v-card-text>
+                </v-card>
+            </v-dialog>
         </v-row>
    </v-container>
 </template>
@@ -124,6 +143,7 @@ export default {
             tag : null,
             tempTag: '',
             filtroTag : false,
+            edit : false,
 
         };
     },
@@ -166,18 +186,11 @@ export default {
         },
        
         deleteItem(item) {
-            
             this.saveGenerico(item)
-            this.activeDelete()
         },
-        editItem(item, route){
+        editItem(item){
             this.saveGenerico(item)
-            if(route == 'products'){
-                this.activeEdit()
-            }else if (route == 'despesas'){
-                this.activeEditDespesa()
-
-            }
+            this.edit = true
         },
         onPageChange() {
             if(this.filtroCategory){
@@ -256,7 +269,9 @@ export default {
     computed:{
         ...mapGetters({listCategorias : 'categoryMod/listCategorias', listaProdutos : 'produtoMod/listProducts', 
         editDespesa: 'despesaMod/getEditDespesa', headers: 'utilMod/getHeader', 
-        del: 'utilMod/delete', generico : 'utilMod/getGenerico', editProd : 'produtoMod/edit', listTags : 'tagMod/getTags'})
+        del: 'utilMod/delete', generico : 'utilMod/getGenerico', listTags : 'tagMod/getTags'}),
+
+    
     },  
     created() {
         this.clearPages();
@@ -267,5 +282,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+   
 </style>

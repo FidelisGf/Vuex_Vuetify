@@ -20,6 +20,9 @@ export default{
         return axios.delete("/products/"+$id)
     },
     filters(opcao, page){
-        return axios.get("/filterBy?page=" + page, { params: { opcao: opcao} });
+        return axios.get("/filterBy?page=" + page, { params: { opcao: opcao} })
+    },
+    countProduto(){
+        return axios.get("/countProducts")
     }
 }

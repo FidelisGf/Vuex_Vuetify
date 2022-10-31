@@ -15,7 +15,7 @@ export default{
           },
         Products : [],
         edit : false,
-
+        countProduto : 0,
     },
     getters: {
         listProducts(state){
@@ -27,11 +27,17 @@ export default{
         edit(state){
             return state.edit
         },
+        getCount(state){
+            return state.countProduto
+        }
     },
     mutations: {
         saveProduct(state, payload){
             state.product = payload
-          },
+        },
+        saveCount(state, payload){
+            state.countProduto = payload
+        },
         beginListProduct(state, payload){
             state.Products = payload
         },
@@ -58,6 +64,9 @@ export default{
     actions: {
         activeEdit(context){
             context.commit('activeEdit')
+        },
+        saveCount(context ,payload){
+            context.commit("saveCount", payload)
         },
         disableEdit(context){
             context.commit('disableEdit')
@@ -102,6 +111,15 @@ export default{
            
            
         },
+        async countProd(context){
+            try {
+                await productService.countProduto().then((res)=>{
+                        context.commit("saveCount", res.data)
+                })
+            } catch (error) {
+                console.log(error)    
+            }
+        },
         async findById(context, payload){
             try {
                 let data = await productService.findProdutoById(payload).then((res)=>{
@@ -123,7 +141,8 @@ export default{
                         payload.ID = res.data.ID
                         payload.QUANTIDADE = payload.quantidade_inicial
                         alert("Produto salvo com sucesso");
-                        context.commit("saveListProduct",payload)  
+                        context.commit("saveListProduct",payload) 
+                        context.dispatch("countProd") 
                     }
                 });
             } catch (error) {

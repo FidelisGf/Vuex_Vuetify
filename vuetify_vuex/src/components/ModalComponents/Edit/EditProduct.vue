@@ -1,18 +1,8 @@
 <template>
     <v-container fluid grid-list-md>
-        <v-row>
+        <v-row >
             <v-col cols="12">
-               
-               
-                <v-dialog
-                    v-model="active"
-                    persistent
-                    max-width="600px"
-                    @keydown.escape="closeEdit"
-                    
-                >
-                  
-                    <v-card>
+                <v-card >
                     <v-card-title>
                         <span  class="text-h5">Editar Item: {{NOME}} #{{ID}}</span>
                     </v-card-title>
@@ -89,20 +79,12 @@
                             <v-btn
                                 color="teal lighten-1"
                                 text
-                                @click="closeEdit"
-                            >
-                            Fechar
-                            </v-btn>
-                            <v-btn
-                                color="teal lighten-1"
-                                text
                                 @click="editP"
                             >
                             Editar
                         </v-btn>
                         </v-card-actions>
                     </v-card>
-                </v-dialog>
             </v-col>
         </v-row>
     </v-container>            
@@ -125,7 +107,7 @@ export default {
     },
     methods: {
         ...mapActions('categoryMod', ['beginListCategoria']),
-        ...mapActions('produtoMod', ['editProduct', 'findById', 'disableEdit']),
+        ...mapActions('produtoMod', ['editProduct', 'findById']),
         async getProduct() {
             this.loading = true
             this.getCategorias();
@@ -139,24 +121,33 @@ export default {
                 this.Categoria = data.category
                 this.loading = false
             }
-
         },
         getCategorias() {
             this.beginListCategoria()
+        },
+        clear(){
+            this.NOME = ''
+            this.DESC = ''
+            this.VALOR = ''
+            this.Categoria = ''
+            this.loading = false
         },
         editP() {
             var payload = {ID : this.ID, NOME: this.NOME, VALOR: this.VALOR, DESC: this.DESC, ID_CATEGORIA: this.Categoria.ID_CATEGORIA, 
                 NOME_C : this.Categoria.NOME_C, QUANTIDADE : this.quantidade}
             this.editProduct(payload)
-            this.disableEdit()
-            
         },
-        closeEdit() {
-            this.disableEdit()
-        }
     },
     computed:{
-        ...mapGetters({listCategorias : 'categoryMod/listCategorias', generico : 'utilMod/getGenerico', active : 'produtoMod/edit'})
+        ...mapGetters({listCategorias : 'categoryMod/listCategorias', generico : 'utilMod/getGenerico',})
+    },
+    watch: {
+        generico : function(val) {
+          if (val) {
+             this.clear()
+             this.getProduct()
+          }
+        }  
     },
     created() {
         this.getProduct();
@@ -166,5 +157,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+    
 </style>

@@ -6,19 +6,29 @@
             <v-col cols="10" sm="10" lg="3" md="3">
                 
                 
-                <v-btn
+                <v-btn v-if="!hasFilter"
                     color="teal accent-1"
                     class=" ml-n0 mt-5 mt-md-1 ml-sm-n3 ml-lg-n0  ml-md-n0 font-weight-medium"
                     dark
-                   
+                    @click="active = true"
                     text
                     >
                     <v-icon  dark color="teal accent-1" left>mdi-calendar</v-icon>
                             Ver despesas por data
                 </v-btn>
+                <v-btn v-if="hasFilter"
+                    color="teal accent-1"
+                    class=" ml-n0 mt-5 mt-md-1 ml-sm-n3 ml-lg-n0  ml-md-n0 font-weight-medium"
+                    dark
+                    @click="limpaFiltros"
+                    text
+                    >
+                    <v-icon  dark color="teal accent-1" left>mdi-calendar</v-icon>
+                            Voltar Despesas a ordem normal
+                </v-btn>
             </v-col>
             <v-spacer v-if="!$vuetify.breakpoint.smAndDown" ></v-spacer>
-            <v-col cols="10" sm="10" xs="2" md="2" lg="3">
+            <v-col cols="10" sm="10" xs="2" md="3" lg="3">
                 <v-sheet
                     color="cyan lighten-5"
                     elevation="8"
@@ -31,10 +41,92 @@
                     <p class="mt-n4 ml-10 font-weight-bold">{{this.despesaVl}}</p>
                 </v-sheet>
             </v-col>
+            <v-dialog
+                v-model="active"
+                persistent
+                max-width="720"
+                @keydown.escape="active = false"
+            >
+                <v-card>
+                    <v-card-title>
+                        Despesas entre duas datas
+                    </v-card-title>
+                    <v-card-text>
+                        <v-row>
+                            <v-col 
+                                cols="6"
+                                
+                                >
+                                <v-text-field
+                                    v-model="DATA_INI"
+                                    label="Data Inicial"
+                                    persistent-hint
+                                    required
+                                    color="teal lighten-1"
+                                    type="date"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col 
+                                cols="6"
+                                sm="6"
+                                md="6"
+                                >
+                                <v-text-field
+                                    v-model="HORA_INI"    
+                                    label="Hora Inicial"
+                                    persistent-hint
+                                    required
+                                    color="teal lighten-1"
+                                    type="time"
+                                ></v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col 
+                                cols="6"
+                                
+                                >
+                                <v-text-field
+                                    v-model="DATA_FIN"
+                                    label="Data Final"
+                                    persistent-hint
+                                    required
+                                    color="teal lighten-1"
+                                    type="date"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col 
+                                cols="6"
+                                sm="6"
+                                md="6"
+                                >
+                                <v-text-field
+                                    v-model="HORA_FIN"    
+                                    label="Hora Final"
+                                    persistent-hint
+                                    required
+                                    color="teal lighten-1"
+                                    type="time"
+                                ></v-text-field>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                    <v-card-actions class="d-flex justify-end">
+                        <v-btn
+                            text 
+                            color="green"
+                            @click="getTwoDates"
+                        >
+                            Listar 
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
         </v-row>
+
         <v-row>
             <v-col>
-                <ListaGenerica :route="'despesas'"></ListaGenerica>
+                <ListaGenerica  :key="renicializar" :route="'despesas'" :starter-date="DTINICIAL" :end-date="DTFINAL" :opcao="filtro"></ListaGenerica>
             </v-col>
         </v-row>
     </v-container>
@@ -45,19 +137,72 @@ import ListaGenerica from '@/components/ListaGenerica.vue';
 import DespesaModal from '@/components/ModalComponents/DespesaModal.vue';
 import TagModal from '@/components/ModalComponents/TagModal.vue';
 import {mapActions} from 'vuex';
+
+ 
 export default {
     data() {
         return {
-            finalDateStart : '',
-            finalDateEnd : '',
             op : null,
             despesaVl : 0,
+            active : false,
+            DATA_INI : '',
+            HORA_INI : '',
+            DATA_FIN : '',
+            HORA_FIN : '',
+            DTINICIAL : '',
+            DTFINAL : '',
+            filtro : '',
+            hasFilter : false,
+            renicializar : 0
+           
         };
     },
     methods: {
         ...mapActions("tagMod", ['findAll']),
         ...mapActions('utilMod', ['setHeader']),
-        ...mapActions('despesaMod', ['despesasMes'])
+        ...mapActions('despesaMod', ['despesasMes']),
+        saveDatas(){
+            let tmp = this.DATA_INI
+            this.DTINICIAL = tmp + ' ' + this.HORA_INI
+            tmp = this.DATA_FIN
+            this.DTFINAL = tmp + ' ' + this.HORA_FIN
+        },
+        limpaFiltros(){
+            this.DTFINAL = ''
+            this.DTINICIAL = ''
+            this.filtro = ''
+            this.forceRerender()
+            this.hasFilter = false
+        },  
+        forceRerender (){
+            this.renicializar += this.renicializar + 1;
+        },
+        
+        makeValibleData(data, hora){
+            const[day, month, year] = data.split('-')
+            const[hours, minutes] = hora.split(':')
+            const date =  new Date(day,month,year,hours, minutes);
+            console.log(date)
+            return date;
+        },
+        getTwoDates(){
+            this.saveDatas()
+            this.filtro = "Duas datas"
+            this.hasFilter = true
+            console.log(this.hasFilter)
+            this.forceRerender()
+        },
+        compareDates(){
+            let inicio = this.makeValibleData(this.DATA_INI, this.HORA_INI)
+            let fim = this.makeValibleData(this.DATA_FIN, this.HORA_FIN)
+            console.log(inicio)
+            if(fim < inicio){
+                return false
+            }
+            else{
+                return true
+            }
+        },
     },
     computed: {
         headers (){
