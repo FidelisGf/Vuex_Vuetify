@@ -2,7 +2,6 @@ import clienteService from "@/service/clienteService"
 export default{
     namespaced: true,
     state: {
-        showModalCliente : false,
         client : {
             id : null,
             nome : null,
@@ -14,9 +13,6 @@ export default{
         clienteVinculado : false,
     },
     getters: {
-      getModalCliente(state){
-        return state.showModalCliente
-      },
       getCliente(state){
         return state.client
       },
@@ -25,18 +21,12 @@ export default{
       }
     },
     mutations: {
-      activeModalCliente(state){
-        state.showModalCliente = true
-      },
       saveClient(state, payload){
         state.client.id = payload.ID 
         state.client.nome = payload.NOME
         state.client.cpf = payload.CPF 
         state.client.endereco = payload.ENDERECO
         state.client.telefone = payload.TELEFONE
-      },
-      disableModalCliente(state){
-        state.showModalCliente = false
       },
       activeClienteVinculado(state){
         state.clienteVinculado = true
@@ -54,14 +44,6 @@ export default{
           context.commit("clearClient")
           context.commit("disableClienteVinculado")
           alert('Cliente desvinculado do pedido com sucesso ! ')
-       },
-
-       activeModalCliente(context){
-            console.log('Ativou')
-            context.commit("activeModalCliente")
-       }, 
-       disableModalCliente(context){
-            context.commit('disableModalCliente')
        },
        saveCliente(context, payload){
         try {

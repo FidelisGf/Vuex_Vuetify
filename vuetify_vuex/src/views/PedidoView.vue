@@ -127,41 +127,9 @@
                                     </template>
                                     <span>Adicionar a lista</span>
                                   </v-tooltip>
-                                  <v-tooltip bottom>
-                                    
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <v-btn
-                                            v-bind="attrs"
-                                            v-on="on"
-                                            color="purple lighten-1"
-                                            class="ml-3"
-                                            dark
-                                            icon
-                                            @click="listaPedidos" 
-                                        >
-                                            <v-icon aria-hidden="false" dark color="teal lighten-1">mdi-cart</v-icon>
-                                        </v-btn>
-                                        <PedidosModal v-if="active"></PedidosModal>
-                                    </template>
-                                    <span>Ver a lista do pedido</span>
-                                  </v-tooltip>
-                                   <v-tooltip bottom>
-                                    <template  v-slot:activator="{ on, attrs }">
-                                        <v-btn
-                                        color="teal accent-3"
-                                        dark
-                                        icon
-                                        class="ml-2"
-                                        v-bind="attrs"
-                                        v-on="on"
-                                        @click="activeModalCliente"
-                                        >
-                                            <v-icon aria-hidden="false" color="teal lighten-1" >mdi-account</v-icon>
-                                        </v-btn>
-                                    </template>
-                                        <span>Vincular Cliente</span>
-                                  </v-tooltip>
-                                  <ClientModalVue class="ml-1 mt-n3"></ClientModalVue>
+                                  
+                                  <PedidosModal ></PedidosModal>
+                                  <ClientModalVue class="ml-n3 mt-n3"></ClientModalVue>
                             </form>
                         </v-col>
                         <v-col cols="6" sm="6" class="d-flex justify-center ml-2 ml-md-6 ml-sm-6 ml-lg-6">
@@ -222,7 +190,6 @@
                                 color="purple lighten-1"
                             ></v-select>
                         </v-col>
-                        <ListaRapidaProduto></ListaRapidaProduto>
                         <v-col cols="6" class="d-flex ml-sm-4 ml-xs-4 ml-lg-4 ml-md-4 ml-xl-4 mt-n4">
                             <v-btn
                             class="ma-2 mb-5 gerador"
@@ -240,11 +207,32 @@
                 </v-card>
             </v-col>
         </v-row>
+        <v-dialog
+            @keydown.escape="fechar"
+            v-model="listaRapida"
+            persistent
+            max-width="760px"
+        > 
+            <v-card>
+                <v-card-actions>
+                    <v-btn
+                        icon
+                        
+                    ><v-icon large color="red" @click="fechar">mdi-close</v-icon></v-btn>    
+                </v-card-actions>
+                <v-card-title class="text-h5">
+                    Lista de Produtos
+                </v-card-title>
+                <v-card-text class="mt-3">
+                    <ListaGenerica :route="'estoques'" :opcao="'Disponivel para venda'"></ListaGenerica>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </v-container>
 </template>
 <script>
+import ListaGenerica from '@/components/ListaGenerica.vue';
 import ClientModalVue from '@/components/ModalComponents/ClientModal.vue';
-import ListaRapidaProduto from '@/components/ModalComponents/ListaRapidaProduto.vue';
 import PedidosModal from '@/components/ModalComponents/PedidosModal.vue';
 import jsPdf from 'jspdf'
 import autoTable from 'jspdf-autotable'
@@ -271,11 +259,12 @@ export default {
             registro : false,
             sucessFind : false,
             editMode : false,
+            listaRapida : false,
         };
     },
     computed: {
-        ...mapGetters({active : 'pedidoMod/ListaPedidos', pedidos : 'pedidoMod/getPedidos', ValorTotal : 'pedidoMod/getValorTotal', listaRapida : 'getListRapidaProdutos'
-        , cod : 'pedidoMod/getCodigo', pedidoAtual : 'pedidoMod/getPedidoAtual', empresaUser : 'userMod/getEmpresa', cliente : 'clienteMod/getCliente'}),
+        ...mapGetters({active : 'pedidoMod/ListaPedidos', pedidos : 'pedidoMod/getPedidos', ValorTotal : 'pedidoMod/getValorTotal', 
+         cod : 'pedidoMod/getCodigo', pedidoAtual : 'pedidoMod/getPedidoAtual', empresaUser : 'userMod/getEmpresa', cliente : 'clienteMod/getCliente'}),
         troco: function () {
             let resultado = this.ValorTotal - this.dinheiroPago;
             if (resultado > 0) {
@@ -312,9 +301,12 @@ export default {
             this.fail = false
             this.sucesso = false
             this.setHeader(this.headers)
-            this.activeListaRapidaProdutos()
+            this.listaRapida = true
             
         },
+        fechar(){
+            this.listaRapida = false
+        },  
         vinculaCliente(){
             this.activeModalCliente
         },
@@ -483,7 +475,7 @@ export default {
     created() {
         
     },
-    components: { ListaRapidaProduto, PedidosModal, ClientModalVue }
+    components: { PedidosModal, ClientModalVue, ListaGenerica }
 }
 </script>
 

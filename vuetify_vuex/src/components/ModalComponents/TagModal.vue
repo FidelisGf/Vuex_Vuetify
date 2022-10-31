@@ -4,8 +4,21 @@
             v-model="active"
             persistent
             max-width="300px"
-            @keydown.escape="disableModalCadastro"
+            @keydown.escape="active = false"
         >
+            <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                    color="teal accent-3"
+                    class="mt-1 ml-1  font-weight-medium"
+                    dark
+                    text
+                    v-bind="attrs"
+                    v-on="on"
+                    >
+                        <v-icon  dark color="teal accent-3" left>mdi-plus-circle-outline</v-icon>
+                            Tipo de Despesa
+                    </v-btn>
+            </template>
             <v-card>
                 <v-card-title>
                     Cadastro tipo de despesa
@@ -25,7 +38,7 @@
                     <v-btn
                         color="red lighten-1"
                         text
-                        @click="disableModalCadastro"
+                        @click="active = false"
                     >
                     Fechar
                     </v-btn>
@@ -43,26 +56,22 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import {mapActions } from 'vuex';
 export default {
     data(){
         return{
             NOME : '',
+            active : false,
         }
     },
     methods:{
-
-        ...mapActions('tagMod', ['disableModalCadastro', 'post']),
+        ...mapActions('tagMod', ['post']),
         cadastrarTag(){
             let payload = {NOME : this.NOME}
             this.post(payload)
+            this.NOME = ''
         }
     },
-    computed:{
-        ...mapGetters({active : 'tagMod/getModalCadastro'})
-    }
-
-
 }
 </script>
 

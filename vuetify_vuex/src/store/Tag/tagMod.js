@@ -22,6 +22,9 @@ export default{
        },
        setTags(state, payload){
           state.tags = payload
+       },
+       addTag(state, payload){
+          state.tags.push(payload)
        }
     },
     actions: {
@@ -39,6 +42,7 @@ export default{
                 tagService.save(payload).then((res)=>{
                     console.log(res.data)
                     alert('Tipo de despesa cadastrada com sucesso !')
+                    context.commit("addTag", res.data)
                     context.commit("disableModalCadastro")
                 })
             } catch (error) {
@@ -46,6 +50,7 @@ export default{
                 context.commit("disableModalCadastro")
             }
        },
+      
        async findAll(context){
           try {
              let tags = null   

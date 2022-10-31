@@ -12,5 +12,8 @@ export default{
     },
     despesasByTag($id, page){
         return axios.get("/despesasByTag/" + $id + "?page=" + page)
+    },
+    despesasMes(){
+        return axios.get("/sumDespesasMensais");
     }
 }

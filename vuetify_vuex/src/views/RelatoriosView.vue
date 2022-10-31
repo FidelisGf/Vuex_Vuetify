@@ -57,8 +57,40 @@
                         >  
                         </v-select>
             </v-col>
-            <RespostaRelatorio :nome-relatorio="relatorioEscolha" :starter-date="startData" :end-date="endData" v-if="relatorio"></RespostaRelatorio>
-            <RespostaRelatorioEstoque :nome-relatorio="relatorioEscolha" v-if="active"></RespostaRelatorioEstoque>
+            <v-dialog
+                v-model="relatorio"
+                persistent
+                max-width="700px"
+                @keydown.escape="relatorio = false"
+            >
+                <v-card>
+                    <v-card-actions>
+                        <v-btn 
+                         icon
+                         @click="relatorio = false"
+                        ><v-icon color="red">mdi-close</v-icon></v-btn>
+                    </v-card-actions>
+                    <RespostaRelatorio :nome-relatorio="relatorioEscolha" 
+                    :starter-date="startData" :end-date="endData" :filtro="filtro" :not-table="notTable" 
+                    v-if="relatorio"></RespostaRelatorio>
+                </v-card>
+            </v-dialog>
+            <v-dialog
+                v-model="relatorioE"
+                persistent
+                max-width="700px"
+                @keydown.escape="relatorioE = false"
+            >
+                <v-card>
+                    <v-card-actions>
+                        <v-btn 
+                        icon
+                        @click="relatorioE = false"
+                       ><v-icon color="red">mdi-close</v-icon></v-btn>
+                    </v-card-actions>
+                    <RespostaRelatorioEstoque :filtro="filtro" ></RespostaRelatorioEstoque>
+                </v-card>
+            </v-dialog>
         </v-row>
         <v-row>
             <v-col v-if="hasDateInput">
@@ -76,7 +108,6 @@
             v-if="filledStart"
             sm="6"
             >
-       
                 <v-text-field
                     v-model="tmpIni"
                     label="Hora Inicial"
@@ -152,12 +183,15 @@ export default {
             modHrIni : false,//Modal para escolher Horario
             modHrFin : false,
             startData : '', //dataInicial Formatada (dia,mes,ano,hora,minuto)
-            endData : '', //dataFinal Formatada (dia,mes,ano,hora,minuto) //Habilita a seleção de data Final
+            endData : '', //dataFinal Formatada (dia,mes,ano,hora,minuto) //Habilita a seleção de data Final,
+            relatorio : false,
+            filtro : '',
+            notTable : false,
+            relatorioE : false,
         };
     },
     computed:{
-        ...mapGetters({active : 'estoqueMod/getRelatorioEstoque', filtro : 'utilMod/getFiltro'
-        , notTable : 'utilMod/getNotTableFiltro', relatorio: 'utilMod/getRelatorio'}),    
+        ...mapGetters({active : 'estoqueMod/getRelatorioEstoque'}),    
                              
           //todas computed nessa view servem para retornar nos v-if
         filledStart: function() {  //verifica se a data inicial foi inserida
@@ -211,37 +245,38 @@ export default {
     },
     methods: {
         ...mapActions('estoqueMod', ['saveFiltroEstoque','activeRelatorioEstoque']),
-        ...mapActions('utilMod', ['disableNotTableFiltro', 'saveFiltro', 'activeRel']),
         makeRelatorio() {
-            this.disableNotTableFiltro()
+            this.notTable = false
             let validado = this.validaDados()
             if(!validado){
                 alert('Preencha todos os campos necessários')
             }else{
-                let opcao = this.relatorioEscolha
                 if(this.relatorioEscolhaLista == 'Relatorios de Produtos'){
-                    this.saveFiltro(opcao)
-                    this.activeRel()
+                    this.filtro = this.relatorioEscolha
+                    this.relatorio = true
                 }
                 else if (this.relatorioEscolhaLista == 'Relatorios do Estoque'){
                     
-                    this.saveFiltroEstoque(opcao)
-                    this.activeRelatorioEstoque()
+                    this.filtro = this.relatorioEscolha
+                    this.relatorioE = true
                 }else if(this.relatorioEscolha == 'Pedidos realizados entre duas datas' || this.relatorioEscolha == 'Vendas por periodo de dias' 
                 || this.relatorioEscolha == 'Vendas por Tipo de Pagamento'){
                    
                     let comparaDatas = this.compareDates()
                     this.saveHoras()
                     if(comparaDatas){
-                        this.saveFiltro(opcao)
-                        this.activeRel()
+                        if(this.relatorioEscolha == 'Vendas por Tipo de Pagamento'){
+                            this.notTable = true
+                        } 
+                        this.filtro = this.relatorioEscolha
+                        this.relatorio = true
                         this.clear()
                     }else{
                         alert('Data Inicial maior que data Final')
                     }
                 }else{
-                    this.saveFiltro(opcao)
-                    this.activeRel()
+                    this.filtro = this.relatorioEscolha
+                    this.relatorio = true
                 }
             }
         },

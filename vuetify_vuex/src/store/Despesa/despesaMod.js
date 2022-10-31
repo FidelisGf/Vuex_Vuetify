@@ -87,6 +87,17 @@ export default{
           } catch (error) {
                alert('Falha na edição dessa despesa')
           }
+       },
+       async despesasMes(){
+          try {
+               let valor = await despesaService.despesasMes().then((res)=>{
+                    return res.data
+               })
+               return valor
+          } catch (error) {
+               console.log(error)
+          }
+          
        }
     },
 }

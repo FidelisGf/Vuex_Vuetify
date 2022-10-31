@@ -2,12 +2,7 @@
     <v-container fluid grid-list-md>
         <v-row>
             <v-col cols="12"> 
-                <v-dialog
-                    v-model="active"
-                    persistent
-                    max-width="700px"
-                > 
-                    <v-card>
+                <v-card>
                     <v-card-title>
                         <span  class="text-h5">{{filtro}}</span>
                     </v-card-title>
@@ -16,28 +11,18 @@
                             <ListaGenerica :route="'estoques'" :opcao="filtro"></ListaGenerica>
                         </v-row>
                     </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                            <v-btn
-                                color="teal lighten-1"
-                                text
-                                @click="closeRelatorio"
-                            >
-                            Fechar
-                            </v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
+                </v-card>
             </v-col>
         </v-row>
     </v-container>
 </template>
 <script>
 import ListaGenerica from '../ListaGenerica.vue';
-import {mapActions, mapGetters} from 'vuex'
+import {mapActions} from 'vuex'
 export default {
     props: {
-        nomeRelatorio: String
+        filtro : String,
+
     },
     data() {
         return {
@@ -49,7 +34,6 @@ export default {
         };
     },
     computed: {
-        ...mapGetters({filtro : 'estoqueMod/getFiltroEstoque', active : 'estoqueMod/getRelatorioEstoque'}),
         headers() {
             if(this.filtro != 'Produtos com mais saidas'){
                 return [
@@ -79,17 +63,13 @@ export default {
         },
     },
     methods: {
-        ...mapActions('estoqueMod', ['desativeRelatorioEstoque']),
         ...mapActions('utilMod', ['setHeader']),
-        closeRelatorio() {
-            this.desativeRelatorioEstoque()
-        },
         getLista() {
             this.setHeader(this.headers)
         },
     },
     created() {
-        console.log(this.nomeRelatorio)
+        
         console.log('Foda')
         this.getLista()
     },

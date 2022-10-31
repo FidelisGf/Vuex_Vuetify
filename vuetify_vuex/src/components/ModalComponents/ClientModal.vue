@@ -4,8 +4,20 @@
                 v-model="active"
                 persistent
                 max-width="500px"
-                @keydown.escape="disableModalCliente"
+                @keydown.escape="fechar"
             >
+            <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                    color="teal accent-3"
+                    dark
+                    icon
+                    class="ml-2"
+                    v-bind="attrs"
+                    v-on="on"
+                    >
+                        <v-icon aria-hidden="false" color="teal lighten-1" >mdi-account</v-icon>
+                    </v-btn>
+            </template>
             <v-card v-if="!vinculado">
                 <v-card-title>
                     <span class="text-h8">Insira o codigo do cliente</span>
@@ -47,7 +59,7 @@
                     text
                     dark 
                     color="red lighten-1"
-                    @click="disableModalCliente"
+                    @click="fechar"
                     >
                     Fechar
                     </v-btn>
@@ -224,10 +236,11 @@ export default {
                 telefone : null
             },
             codigo : null,
+            active : false,
         };
     },
     computed: {
-        ...mapGetters({ active: "clienteMod/getModalCliente", vinculado : "clienteMod/getVinculo", clienteVinculado : "clienteMod/getCliente"}),
+        ...mapGetters({vinculado : "clienteMod/getVinculo", clienteVinculado : "clienteMod/getCliente"}),
         headers() {
             return [
                 {
@@ -255,6 +268,9 @@ export default {
             else {
                 this.cadastroRapido = true;
             }
+        },
+        fechar(){
+            this.active = false
         },
         ativaLista(){
             this.setHeader(this.headers)

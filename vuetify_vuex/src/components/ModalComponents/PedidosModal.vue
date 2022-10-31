@@ -4,14 +4,28 @@
             v-model="active"
             persistent
             max-width="650"
-            @keydown.escape="disableList"
-        >
+            @keydown.escape="active = false"
+        >                                    
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        v-bind="attrs"
+                        v-on="on"
+                        color="purple lighten-1"
+                        class="ml-3"
+                        dark
+                        icon
+                        @click="active = true" 
+                    >
+                        <v-icon aria-hidden="false" dark color="teal lighten-1">mdi-cart</v-icon>
+                    </v-btn>
+                    
+                </template>
             <v-card>
                 <v-card-actions>
                     <v-btn
                         color="red darken-1"
                         text
-                        @click="disableList"
+                        @click="active = false"
                         icon
                         >
                         <v-icon color="red darken-4">mdi-close</v-icon>
@@ -119,11 +133,13 @@ export default {
                 valor: null,
                 nome: null,
                 quantidade: null,
+                
             },
+            active : false,
         }
     },
     computed:{
-        ...mapGetters({active : 'pedidoMod/ListaPedidos', pedidos : 'pedidoMod/getPedidos'
+        ...mapGetters({ pedidos : 'pedidoMod/getPedidos'
      , vlTotal : 'pedidoMod/getValorTotal'})
     },
     methods:{

@@ -4,8 +4,21 @@
             v-model="active"
             persistent
             max-width="600px"
-            @keydown.escape="disableModalCadastro"
+            @keydown.escape="active = false"
         >
+            <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                    color="teal accent-3"
+                    class="mt-1 ml-1  font-weight-medium"
+                    dark
+                    text
+                    v-bind="attrs"
+                    v-on="on"
+                    >
+                    <v-icon  dark color="teal accent-3" left>mdi-plus-circle-outline</v-icon>
+                    Despesas
+                </v-btn>
+            </template>
             <v-card>
                 <v-card-title>
                     Registrar uma despesa
@@ -93,7 +106,7 @@
                     <v-btn
                         color="red lighten-1"
                         text
-                        @click="disableModalCadastro"
+                        @click="active = false"
                     >
                     Fechar
                     </v-btn>
@@ -111,7 +124,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 export default {
    data(){
     return{
@@ -119,19 +132,17 @@ export default {
         CUSTO : 0,
         DATA : '',
         HORA : '',
-        TAGS : [],
         DTFINAL : '',
-        TAG : null
+        TAG : null,
+        active : false,
     }
+   },
+   computed:{
+    ...mapGetters({TAGS : 'tagMod/getTags'})
    },
    methods:{
         ...mapActions('despesaMod', ['disableModalCadastro', 'save']),
-        ...mapActions('tagMod' , ['findAll']),
         ...mapActions('produtoMod', ['saveList']),
-
-        async getTags(){
-            this.TAGS = await this.findAll()
-        },
 
        async insert(){
             this.saveHoraFinal()
@@ -165,13 +176,9 @@ export default {
         }
    },
 
-   computed:{
-        ...mapGetters({active : 'despesaMod/getModalCadastro'})
-   },
+   
 
-   async created(){
-        this.getTags()
-   }
+   
 }
 </script>
 

@@ -17,9 +17,6 @@ export default{
         }
     },
     getters: {
-        ListaPedidos(state){
-            return state.showListaPedidos
-        },
         getCodigo(state){
             return state.cod
         },
@@ -28,9 +25,6 @@ export default{
         },
         getPedidos(state){
             return state.pedidos
-        },
-        getListRapidaProdutos(state){
-            return state.showListaRapidaProdutos
         },
         getPedidoAtual(state){
             return state.pedidoAtual
@@ -43,12 +37,6 @@ export default{
             state.pedidoAtual.valor_total = payload.VALOR_TOTAL
             state.pedidoAtual.produtos = payload.PRODUTOS
             state.pedidoAtual.aprovado = payload.APROVADO == 'T' ? "PAGO" : "PENDENTE"  
-        },
-        activeListaRapidaProdutos(state){
-            state.showListaRapidaProdutos = true
-        },
-        desativeListaRapidaProdutos(state){
-            state.showListaRapidaProdutos = false
         },
         saveValorTotal(state,payload){
             
@@ -87,20 +75,8 @@ export default{
               exist.quantidade = payload.quantidade
             }
         },
-        activeListaPedidos(state){
-            state.showListaPedidos = true
-        },
-        disableListaPedidos(state){
-            state.showListaPedidos = false
-        },
     },
     actions: {
-        disableListaPedidos(context){
-            context.commit('disableListaPedidos')
-        },
-        activeListaPedidos(context){
-            context.commit('activeListaPedidos')
-        },
         somaItens(context){
             context.commit('somaItens')
         },
@@ -118,12 +94,6 @@ export default{
         },
         setPedidoAtual(context, payload){
             context.commit('setPedidoAtual', payload)
-        },
-        activeListaRapidaProdutos(context){
-            context.commit('activeListaRapidaProdutos')
-        },
-        desativeListaRapidaProdutos(context){
-            context.commit('desativeListaRapidaProdutos')
         },
         saveValorTotal(context, payload){
             context.commit('saveValorTotal',payload)
@@ -149,9 +119,7 @@ export default{
                         edit = true
                     }
                     return edit
-                })
-             
-            
+                }) 
         },
         async findProduto(context ,payload){
             let getProduto = false
