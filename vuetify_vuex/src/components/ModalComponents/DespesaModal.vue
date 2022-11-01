@@ -1,5 +1,22 @@
 <template>
     <v-container>
+        <v-snackbar
+            v-model="registro"
+            :timeout="timeout"
+        >
+            {{this.msg}}
+            <template v-slot:action="{ attrs }">
+            <v-btn
+                color="red"
+                dark
+                icon
+                v-bind="attrs"
+                @click="registro = false"
+                >
+                <v-icon small>mdi-close</v-icon>
+            </v-btn>
+            </template>
+        </v-snackbar>
         <v-dialog
             v-model="active"
             persistent
@@ -19,106 +36,109 @@
                     Despesas
                 </v-btn>
             </template>
-            <v-card>
-                <v-card-title>
-                    Registrar uma despesa
-                </v-card-title>
-                <v-card-text>
-                   <v-row>
+            <form ref="form" @submit.prevent="insert">
+                <v-card>
+                    <v-card-title>
+                        Registrar uma despesa
+                    </v-card-title>
+                    <v-card-text>
+                       <v-row>
+                                <v-col 
+                                cols="12"
+                                sm="6"
+                               
+                            >
+                                <v-text-field
+                                    label="Descrição da despesa"
+                                    required
+                                    v-model="DESC"
+                                    color="teal lighten-1"
+                                ></v-text-field>
+                            </v-col>
                             <v-col 
-                            cols="12"
-                            sm="6"
-                           
-                        >
-                            <v-text-field
-                                label="Descrição da despesa"
-                                required
-                                v-model="DESC"
-                                color="teal lighten-1"
-                            ></v-text-field>
-                        </v-col>
-                        <v-col 
-                            cols="12"
-                            sm="6"
-                            md="4"
-                        >
-                            <v-text-field
-                                v-model="CUSTO"
-                                label="Custo da despesa"
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                                <v-text-field
+                                    v-model="CUSTO"
+                                    label="Custo da despesa"
+                                    persistent-hint
+                                    required
+                                    color="teal lighten-1"
+                                    type="number"
+                                    min="0"
+                                    prefix="R$"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col 
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                                <v-text-field
+                                    v-model="DATA"
+                                    label="Data"
+                                    persistent-hint
+                                    required
+                                    color="teal lighten-1"
+                                    type="date"
+                        
+                                ></v-text-field>
+                               
+                            </v-col>
+                            <v-col 
+                                cols="12"
+                                sm="6"
+                                md="4"
+                            >
+                                <v-text-field
+                                v-model="HORA"    
+                                label="Hora"
                                 persistent-hint
                                 required
                                 color="teal lighten-1"
-                                type="number"
-                                min="0"
-                                prefix="R$"
-                            ></v-text-field>
-                        </v-col>
-                        <v-col 
-                            cols="12"
-                            sm="6"
-                            md="4"
-                        >
-                            <v-text-field
-                                v-model="DATA"
-                                label="Data"
-                                persistent-hint
-                                required
-                                color="teal lighten-1"
-                                type="date"
-                    
+                                type="time"
+            
                             ></v-text-field>
                            
-                        </v-col>
-                        <v-col 
-                            cols="12"
-                            sm="6"
-                            md="4"
+                            </v-col>
+                           
+                            <v-col
+                                cols="12"
+                                sm="6"
+                                class="d-flex"
+                            >  
+                                <v-select
+                                    :items="TAGS"
+                                    label="Tipo da despesa"
+                                    v-model="TAG"
+                                    color="teal lighten-1"
+                                    item-text="NOME"
+                                    required 
+                                    return-object
+                                ></v-select>       
+                            </v-col>
+                       </v-row>
+                    </v-card-text>
+                    <v-card-actions class="mt-n4">
+                        <v-btn
+                            color="red lighten-1"
+                            text
+                            @click="active = false"
                         >
-                            <v-text-field
-                            v-model="HORA"    
-                            label="Hora"
-                            persistent-hint
-                            required
-                            color="teal lighten-1"
-                            type="time"
-        
-                        ></v-text-field>
-                       
-                        </v-col>
-                       
-                        <v-col
-                            cols="12"
-                            sm="6"
-                            class="d-flex"
-                        >  
-                            <v-select
-                                :items="TAGS"
-                                label="Tipo da despesa"
-                                v-model="TAG"
-                                color="teal lighten-1"
-                                item-text="NOME" 
-                                return-object
-                            ></v-select>       
-                        </v-col>
-                   </v-row>
-                </v-card-text>
-                <v-card-actions class="mt-n4">
-                    <v-btn
-                        color="red lighten-1"
-                        text
-                        @click="active = false"
-                    >
-                    Fechar
-                    </v-btn>
-                    <v-btn 
-                        color="green lighten-1"
-                        text
-                        @click="insert"
-                    >
-                    Salvar
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
+                        Fechar
+                        </v-btn>
+                        <v-btn 
+                            color="green lighten-1"
+                            text
+                            type="submit"
+                        >
+                        Salvar
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </form>
         </v-dialog>
     </v-container>
 </template>
@@ -135,6 +155,9 @@ export default {
         DTFINAL : '',
         TAG : null,
         active : false,
+        registro : false,
+        timeout : 2000,
+        msg : '',
     }
    },
    computed:{
@@ -150,16 +173,19 @@ export default {
             custo = custo.toFixed(2)
             if(this.DTFINAL != ''){
                 let payload = {DESC : this.DESC, CUSTO : custo, DATA : this.DTFINAL, ID_TAG : this.TAG.ID}
-                let Id = await this.save(payload)
-                if(Id != null){
-                    let payload2 = {ID : Id, DESC : this.DESC, CUSTO : custo, DATA : this.DTFINAL, tags : this.TAG}
-                    console.log('blz')
+                let info  = await this.save(payload)
+                if(info.Id != null){
+                    let payload2 = {ID : info.Id, DESC : this.DESC, CUSTO : custo, DATA : this.DTFINAL, tags : this.TAG}
                     console.log(payload)
                     console.log(payload2)
                     this.saveList(payload2)
+                    this.active = false
                 } 
+                this.registro = true
+                this.msg = info.text
             }else{
-                alert('Data Invalida !');
+                this.registro = true
+                this.msg = 'Data Invalida'
             }
             this.clear()
         },

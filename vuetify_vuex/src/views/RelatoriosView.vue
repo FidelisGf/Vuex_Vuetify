@@ -63,17 +63,12 @@
                 max-width="700px"
                 @keydown.escape="relatorio = false"
             >
-                <v-card>
-                    <v-card-actions>
-                        <v-btn 
-                         icon
-                         @click="relatorio = false"
-                        ><v-icon color="red">mdi-close</v-icon></v-btn>
-                    </v-card-actions>
+             
+                  
                     <RespostaRelatorio :nome-relatorio="relatorioEscolha" 
                     :starter-date="startData" :end-date="endData" :filtro="filtro" :not-table="notTable" 
-                    v-if="relatorio"></RespostaRelatorio>
-                </v-card>
+                    @closeModRelatorio="closeRelatorio"></RespostaRelatorio>
+                
             </v-dialog>
             <v-dialog
                 v-model="relatorioE"
@@ -81,15 +76,8 @@
                 max-width="700px"
                 @keydown.escape="relatorioE = false"
             >
-                <v-card>
-                    <v-card-actions>
-                        <v-btn 
-                        icon
-                        @click="relatorioE = false"
-                       ><v-icon color="red">mdi-close</v-icon></v-btn>
-                    </v-card-actions>
-                    <RespostaRelatorioEstoque :filtro="filtro" ></RespostaRelatorioEstoque>
-                </v-card>
+                <RespostaRelatorioEstoque :key="renicializar" @closeModal="closeRelatorio" :filtro="filtro" ></RespostaRelatorioEstoque>
+              
             </v-dialog>
         </v-row>
         <v-row>
@@ -188,6 +176,7 @@ export default {
             filtro : '',
             notTable : false,
             relatorioE : false,
+            renicializar : 0
         };
     },
     computed:{
@@ -202,6 +191,7 @@ export default {
             } 
             return flag
         },
+       
         filledEnd: function(){  //verifica se a data final foi inserida 
             let flag = false
             if(this.end != null){
@@ -210,6 +200,7 @@ export default {
             }
             return flag
         },  
+       
         hasDateInput: function(){ //verifica se o relátorio vai possuir input de datas 
             let flag = false   
             
@@ -244,6 +235,14 @@ export default {
       }
     },
     methods: {
+        closeRelatorio(e){
+            this.relatorioE = e
+            this.relatorio = e
+            this.forceRerender()
+        },
+        forceRerender (){
+            this.renicializar += this.renicializar + 1;
+        },
         ...mapActions('estoqueMod', ['saveFiltroEstoque','activeRelatorioEstoque']),
         makeRelatorio() {
             this.notTable = false
@@ -278,6 +277,7 @@ export default {
                     this.filtro = this.relatorioEscolha
                     this.relatorio = true
                 }
+                
             }
         },
         saveHoras(){

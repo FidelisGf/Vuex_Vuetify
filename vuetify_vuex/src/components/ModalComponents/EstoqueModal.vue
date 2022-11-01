@@ -1,11 +1,6 @@
 <template>
     <div>
-            <v-dialog
-                v-model="active"
-                persistent
-                max-width="550"
-            >
-            <v-card>
+        <v-card>
             <v-card-title class="text-h5">
                 Selecione o produto : 
             </v-card-title>
@@ -55,8 +50,7 @@
                 Adicionar
                 </v-btn>
             </v-card-actions>
-            </v-card>
-        </v-dialog>
+        </v-card>
     </div>
 </template>
 
@@ -69,20 +63,23 @@ export default {
             Produto: null,
             id: null,
             quantidade: null,
+            registro : false,
+            timeout : 2000,
+            msg : '',
+
         };
     },
     methods: {
         ...mapActions('estoqueMod', ['saveQuantidade']),
         ...mapActions('estoqueMod', ['desativateAdicionaEstoque']),
         closeAdicionaEstoque() {
-            this.desativateAdicionaEstoque()
+            this.$emit('closeEstoque', false)
         },
-        adicionarQuantidade() {
+        async adicionarQuantidade() {
             let payload = { product_id: this.id, quantidade: this.quantidade };
-            this.saveQuantidade(payload)
-        },
-        buscaLista() {
-            this.$store.commit("activeListaRapidaProdutos");
+            this.msg = await this.saveQuantidade(payload)
+            let eventPayload = {msg : this.msg, registro : true, dialog : false}
+            this.$emit('postMessage',eventPayload)
         },
     },
     computed:{

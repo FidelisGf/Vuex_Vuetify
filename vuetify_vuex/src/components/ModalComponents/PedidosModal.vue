@@ -18,7 +18,6 @@
                     >
                         <v-icon aria-hidden="false" dark color="teal lighten-1">mdi-cart</v-icon>
                     </v-btn>
-                    
                 </template>
             <v-card>
                 <v-card-actions>
@@ -69,6 +68,7 @@
                             v-model="manipulaQuantidade"
                             persistent 
                             max-width="550"
+                            @keydown.escape="manipulaQuantidade = false"
                         >
                          <v-card>
                             <v-card-title>
@@ -145,11 +145,9 @@ export default {
      , vlTotal : 'pedidoMod/getValorTotal'})
     },
     methods:{
-        ...mapActions('pedidoMod', ['disableListaPedidos', 'saveValorTotal', 'removeQntdPedido', 'removePedido']),
+        ...mapActions('pedidoMod', ['saveValorTotal', 'removeQntdPedido', 'removePedido']),
         ...mapActions('utilMod', ['setHeader']),
-        disableList(){
-            this.disableListaPedidos()
-        },
+       
         ativaManipulaQuantidade(item){
             this.manipulaQuantidade = true
             this.temp.id = item.id

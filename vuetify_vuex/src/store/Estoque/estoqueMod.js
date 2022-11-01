@@ -57,14 +57,22 @@ export default{
         desativateAdicionaEstoque(context){
             context.commit('desativateAdicionaEstoque')
         },
-        saveQuantidade(context, payload){
-            estoqueService.adicionarQuantidade(payload).then((res) => {
-                console.log(res);
-                if (res.status == 200) {
-                    alert("Quantidade Adicionada com sucesso !");
-                    context.commit("desativateAdicionaEstoque");
-                }
-            });
+       async  saveQuantidade(context, payload){
+            let text = null
+            try { 
+                await estoqueService.adicionarQuantidade(payload).then((res) => {
+                    console.log(res);
+                    if (res.status == 200) {
+                        context.commit("desativateAdicionaEstoque");
+                        text = "Sucesso : Quantidade adicionada ao estoque !"
+                    }
+                });
+                return text
+            } catch (error) {
+                text = "Erro : " + error.response.data.message
+                return text
+            }
+          
         }
     },
 }

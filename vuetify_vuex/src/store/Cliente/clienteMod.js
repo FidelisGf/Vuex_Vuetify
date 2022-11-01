@@ -37,13 +37,18 @@ export default{
       clearClient(state){
         state.client.id = null
         state.client.nome = null
+        state.clienteVinculado = false
       } 
     },
     actions: {
+        clearClient(context){
+          context.commit("clearClient")
+        },
        desvincularCliente(context){
           context.commit("clearClient")
           context.commit("disableClienteVinculado")
-          alert('Cliente desvinculado do pedido com sucesso ! ')
+          let text = 'Sucesso : Cliente desvinculado do pedido !'
+          return text
        },
        saveCliente(context, payload){
         try {
@@ -57,15 +62,18 @@ export default{
          
        },
        async getCliente(context, payload){
+        let text = null
           try {
             await clienteService.getById(payload).then((res)=>{
               console.log(res.data)
               context.commit("saveClient", res.data)
               context.commit("activeClienteVinculado")
-              alert('Cliente vinculado ao pedido com sucesso !')
+              text = 'Sucesso : Cliente vinculado ao pedido !'
             })
+            return text
           } catch (error) {
-            alert('Não foi possivel encontrar um cliente')
+            text = "Erro : " + error.response.data.message
+            return text
           }
           
        }

@@ -29,7 +29,7 @@ export default{
     },
     actions: {
        setTags(context, payload){
-          context.commit('setTags', payload)
+            context.commit('setTags', payload)
        },
        activeModalCadastro(context){
             context.commit("activeModalCadastro")
@@ -37,17 +37,18 @@ export default{
        disableModalCadastro(context){
             context.commit("disableModalCadastro")
        },
-       post(context, payload){
+       async post(context, payload){
+            let text = null
             try {
-                tagService.save(payload).then((res)=>{
-                    console.log(res.data)
-                    alert('Tipo de despesa cadastrada com sucesso !')
+               await tagService.save(payload).then((res)=>{
                     context.commit("addTag", res.data)
                     context.commit("disableModalCadastro")
+                    text = "Sucesso : Tipo de Despesa cadastrada com sucesso !"
                 })
+                return text
             } catch (error) {
-                alert('Falha ao cadastrar tipo de despesa')
-                context.commit("disableModalCadastro")
+               context.commit("disableModalCadastro")
+               return  text = "Erro: " + error.response.data.message
             }
        },
       

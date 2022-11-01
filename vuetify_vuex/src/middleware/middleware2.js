@@ -6,14 +6,13 @@ axios.interceptors.response.use(
     async function (error) {
       const access_token = localStorage.getItem("token");
       if (error.response.status === 401 && access_token) {
-        localStorage.setItem('token', error.response.data.access_token)
+        localStorage.setItem('token', error.response.data)
         return error;
       }
       return Promise.reject(error);
     }
 )
 export default{
-    
     async auth(to, from, next){
         axios.defaults.headers.common['Authorization'] = 'Bearer' + localStorage.getItem('token')
         try{
@@ -30,7 +29,7 @@ export default{
             console.log(res.status)
         }catch(e){
             console.log()
-            if(e.response.data == 'token_invalid' || e.response.data == 'user_not_found'){
+            if(e.response.status == 401){
                     alert('Voce precisa estar logado !')
                     next({name: 'login'})
             }

@@ -77,10 +77,6 @@
           alert("Dados Invalidos")
         }
     },
-    async logout(){
-      const res = await this.$http.post("/auth/logout")
-      console.log(res);
-    }
    },
    created(){
       localStorage.clear();

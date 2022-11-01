@@ -1,5 +1,22 @@
 <template>
     <v-container>
+        <v-snackbar
+            v-model="registro"
+            :timeout="timeout"
+        >
+            {{this.msg}}
+            <template v-slot:action="{ attrs }">
+            <v-btn
+                color="red"
+                dark
+                icon
+                v-bind="attrs"
+                @click="registro = false"
+                >
+                <v-icon small>mdi-close</v-icon>
+            </v-btn>
+            </template>
+        </v-snackbar>
         <v-dialog
                 v-model="active"
                 persistent
@@ -88,7 +105,7 @@
                     text
                     dark 
                     color="red lighten-1"
-                    @click="disableModalCliente"
+                    @click="fechar"
                     >
                     Fechar
                     </v-btn>
@@ -237,6 +254,9 @@ export default {
             },
             codigo : null,
             active : false,
+            registro : false,
+            msg : '',
+            timeout : 2000,
         };
     },
     computed: {
@@ -285,12 +305,17 @@ export default {
             this.saveCliente(payload)
             this.cadastroRapido = false
         },
-        setClient(){
-            this.getCliente(this.codigo)
-            this.disableModalCliente()
+        async setClient(){
+            let text = await this.getCliente(this.codigo)
+            this.msg = text
+            this.registro = true
+            this.active = false
         },
-        unsetClient(){
-            this.desvincularCliente()
+        async unsetClient(){
+            let text = await this.desvincularCliente()
+            this.msg = text
+            this.registro = true
+            this.active = false
         }
     },
     components: { ListaGenerica }

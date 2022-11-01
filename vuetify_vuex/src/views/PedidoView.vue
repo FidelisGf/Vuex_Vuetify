@@ -212,21 +212,13 @@
             v-model="listaRapida"
             persistent
             max-width="760px"
-        > 
+        >   
             <v-card>
-                <v-card-actions>
-                    <v-btn
-                        icon
-                        
-                    ><v-icon large color="red" @click="fechar">mdi-close</v-icon></v-btn>    
-                </v-card-actions>
-                <v-card-title class="text-h5">
-                    Lista de Produtos
-                </v-card-title>
-                <v-card-text class="mt-3">
-                    <ListaGenerica :route="'estoques'" :opcao="'Disponivel para venda'"></ListaGenerica>
-                </v-card-text>
+                <p class="mt-5"><v-btn icon text @click="fechar"><v-icon color="red">mdi-close</v-icon></v-btn></p>
+                
+                <ListaGenerica  :route="'estoques'" :opcao="'Disponivel para venda'"></ListaGenerica>
             </v-card>
+            
         </v-dialog>
     </v-container>
 </template>
@@ -295,7 +287,7 @@ export default {
         ...mapActions('pedidoMod', ['disableListaPedidos', 'saveValorTotal', 'activeListaPedidos', 'activeListaRapidaProdutos', 'limpaPedido', 'limparValorTotal']),
         ...mapActions('pedidoMod', ['findProduto', 'geraVenda', 'findPedido' , 'editarPedido']),
         ...mapActions('userMod', ['getEmpresaFromUser']),
-        ...mapActions('clienteMod', ['activeModalCliente']),
+        ...mapActions('clienteMod', ['clearClient']),
         ...mapActions('utilMod', ['setHeader']),
         buscaLista() {
             this.fail = false
@@ -307,9 +299,6 @@ export default {
         fechar(){
             this.listaRapida = false
         },  
-        vinculaCliente(){
-            this.activeModalCliente
-        },
        async findPedidoById(){
            let pedido = null
            pedido = await this.findPedido(this.id)
@@ -328,7 +317,8 @@ export default {
             }else{
                 this.escolhaSituacao = 'F'
             }
-            let payload = {ID : this.id, METODO_PAGAMENTO : this.escolhaPagamento, PRODUTOS : this.pedidos, APROVADO : this.escolhaSituacao}
+            let payload = {ID : this.id, METODO_PAGAMENTO : this.escolhaPagamento, PRODUTOS : this.pedidos, 
+            APROVADO : this.escolhaSituacao, ID_CLIENTE : this.cliente.id}
             await this.editarPedido(payload)
             this.editMode = false
             console.log(this.pedido)
@@ -337,6 +327,7 @@ export default {
             this.clearPayment()
             this.limpaPedido()
             this.limparValorTotal()
+            this.clearClient()
             this.loading = false
         },
         listaPedidos(){
@@ -366,6 +357,7 @@ export default {
             this.produto.valor = null
             this.produto.nome = null
             this.produto.quantidade = 1
+            
         },
         async gerarVenda(){
             await this.getEmpresaFromUser()
@@ -395,6 +387,7 @@ export default {
                         this.clearPayment()
                         this.loading = false
                         this.limpaPedido()
+                        this.clearClient()
                     }else{
                         this.fail = true
                     }       

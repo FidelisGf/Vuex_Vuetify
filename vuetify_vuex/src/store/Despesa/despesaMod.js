@@ -48,16 +48,20 @@ export default{
             context.commit("disableModalCadastro")
        },
       async save(context, payload){
+           let text = null
+           let Id = null
            try {
-               let Id = await despesaService.save(payload).then((res)=>{
+                Id = await despesaService.save(payload).then((res)=>{
                     context.dispatch("despesasMes")
-                    alert('Despesa Registrada com sucesso !')
+                    text = "Sucesso : Despesa cadastrada com sucesso !"
                     return res.data.ID
-
                })
-               return Id
+               let info = {text : text, Id : Id}
+               return info
            } catch (error) {
-               alert('Falha ao registrar despesa')
+              text = "Erro :" + error.response.data.message
+              let info = {text : text, Id : Id}
+              return info
            }
        },
        async allByTag(context, payload){
@@ -82,7 +86,7 @@ export default{
                })
                return data
           } catch (error) {
-               alert('Falha ao carregar despesa !')
+               alert('Não foi possivel encontrar !')
           }
        },
        async edit(context, payload){
@@ -93,7 +97,7 @@ export default{
                     context.commit("produtoMod/editListProduct", payload, { root: true })
                })
           } catch (error) {
-               alert('Falha na edição dessa despesa')
+               alert('Não foi possivel encontrar !')
           }
        },
        async despesasMes(context){

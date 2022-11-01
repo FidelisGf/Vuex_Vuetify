@@ -1,20 +1,20 @@
 <template>
-    <v-container fluid grid-list-md>
-        <v-row>
-            <v-col cols="12"> 
-                <v-card>
-                    <v-card-title>
-                        <span  class="text-h5">{{filtro}}</span>
-                    </v-card-title>
-                    <v-card-text class="mt-5">
-                        <v-row>
-                            <ListaGenerica :route="'estoques'" :opcao="filtro"></ListaGenerica>
-                        </v-row>
-                    </v-card-text>
-                </v-card>
-            </v-col>
-        </v-row>
-    </v-container>
+    <v-card>
+        <v-card-actions>
+            <v-btn 
+                icon
+                @click="emitClose"
+            ><v-icon color="red">mdi-close</v-icon></v-btn>
+        </v-card-actions>
+        <v-card-title class="mt-n5">
+            <span  class="text-h5">{{filtro}}</span>
+        </v-card-title>
+        <v-card-text class="mt-5">
+            <v-row>
+                <ListaGenerica :route="'estoques'" :opcao="filtro"></ListaGenerica>
+            </v-row>
+        </v-card-text>
+    </v-card>
 </template>
 <script>
 import ListaGenerica from '../ListaGenerica.vue';
@@ -22,7 +22,6 @@ import {mapActions} from 'vuex'
 export default {
     props: {
         filtro : String,
-
     },
     data() {
         return {
@@ -67,10 +66,12 @@ export default {
         getLista() {
             this.setHeader(this.headers)
         },
+        emitClose(){
+            console.log('chegou')
+            this.$emit('closeModal', false)
+        }
     },
     created() {
-        
-        console.log('Foda')
         this.getLista()
     },
     components: { ListaGenerica }

@@ -1,26 +1,26 @@
-<template>
-    <v-container fluid grid-list-md>
-        <v-row>
-            <v-col cols="12"> 
-                    <v-card>
-                        <v-card-title>
-                            <span  class="text-h5 ">{{filtro}}</span>
-                        </v-card-title>
-                        <v-card-subtitle v-if="entreDatas" class="mt-2 ml-2 text-h8" ><p>De : {{starterDate}}  até : {{endDate}}</p></v-card-subtitle>
-                        <v-card-text class="mt-3">
-                            <v-row v-if="!ntTable">
-                                <ListaGenerica v-if="!pedidos && !vendas" :route="'products'" :opcao="filtro"></ListaGenerica>
-                                <ListaGenerica v-if="pedidos" :route="'pedidos'" :opcao="filtro" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
-                                <ListaGenerica v-if="vendas" :route="'vendas'" :opcao="filtro" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
-                            </v-row>
-                            <v-row v-if="ntTable">
-                                <RelatorioEscrito v-if="notTable" :route="'vendas'" :opcao="filtro" :end-date="endDate" :starter-date="starterDate"></RelatorioEscrito>
-                            </v-row>
-                        </v-card-text>
-                    </v-card>
-            </v-col>
-        </v-row>
-    </v-container>
+<template> 
+    <v-card>
+        <v-card-actions>
+            <v-btn 
+                icon
+                @click="closeRelatorio"
+            ><v-icon color="red">mdi-close</v-icon></v-btn>
+        </v-card-actions>
+        <v-card-title class="mt-n5">
+            <span  class="text-h5 ">{{filtro}}</span>
+        </v-card-title>
+        <v-card-subtitle v-if="entreDatas" class="mt-2 ml-2 text-h8" ><p>De : {{starterDate}}  até : {{endDate}}</p></v-card-subtitle>
+        <v-card-text class="mt-3">
+            <v-row v-if="!ntTable">
+                <ListaGenerica v-if="!pedidos && !vendas" :route="'products'" :opcao="filtro"></ListaGenerica>
+                <ListaGenerica v-if="pedidos" :route="'pedidos'" :opcao="filtro" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
+                <ListaGenerica v-if="vendas" :route="'vendas'" :opcao="filtro" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
+            </v-row>
+            <v-row v-if="ntTable">
+                <RelatorioEscrito v-if="notTable" :route="'vendas'" :opcao="filtro" :end-date="endDate" :starter-date="starterDate"></RelatorioEscrito>
+            </v-row>
+        </v-card-text>
+    </v-card>
 </template>
 
 <script>
@@ -90,6 +90,9 @@ export default {
         ...mapActions('utilMod', ['setHeader']),
         getLista() {
             this.setHeader(this.headers)
+        },
+        closeRelatorio(){
+            this.$emit('closeModRelatorio', false)
         },
         checkRelatorio(){
             if(this.filtro == 'Vendas por periodo de dias'){

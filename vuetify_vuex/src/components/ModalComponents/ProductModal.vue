@@ -12,7 +12,7 @@
                 dark
                 icon
                 v-bind="attrs"
-                @click="fracasso = false"
+                @click="registro = false"
                 >
                 <v-icon small>mdi-close</v-icon>
             </v-btn>
@@ -24,7 +24,7 @@
                 class="mt-0 ml-1  font-weight-medium"
                 dark
                 text
-                @click="activeAdicionarEstoque"
+                @click="estoqueMod = true"
             >
             <v-icon  dark color="teal accent-3" left>mdi-plus-circle-outline</v-icon>
                 Estoque
@@ -195,7 +195,14 @@
         </v-col>      
     </v-row>
     <v-row>
-        <EstoqueModal v-if="activeEstoque"></EstoqueModal>
+        <v-dialog
+            v-model="estoqueMod"
+            persistent
+            max-width="550"
+            @keydown.escape="estoqueMod = false"
+        >
+            <EstoqueModal @postMessage="getMessage" @closeEstoque="closeEstoqueMod"></EstoqueModal>
+        </v-dialog>
     </v-row>
 </v-container>
 </template>
@@ -228,6 +235,7 @@ export default {
             fracasso : false,
             msg : '',
             timeout : 2000,
+            estoqueMod : false,
            
         };
     },
@@ -248,16 +256,22 @@ export default {
                 { text: "Actions", value: "actions", sortable: false },
             ];
         }
-       
     },
     methods: {
         ...mapActions('produtoMod', ['saveList', 'post', 'countProd']),
         ...mapActions('estoqueMod', ['activeAdicionaEstoque']),
         ...mapActions('utilMod', ['setHeader']),
         ...mapActions('medidaMod', ['getAll']),
-        activeAdicionarEstoque(){
-            this.activeAdicionaEstoque()
+        closeEstoqueMod(e){
+            console.log('Aqui')
+            this.estoqueMod = e
         },
+        getMessage(e){
+           
+            this.msg = e.msg
+            this.registro = e.registro
+            this.estoqueMod = e.dialog
+        },  
        async postProduto() {
             var payload = { NOME: this.NOME, VALOR: this.VALOR, DESC: this.DESC,
                  quantidade_inicial: this.quantidade_inicial,

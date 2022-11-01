@@ -1,5 +1,22 @@
 <template>
     <v-container fluid grid-list-md>
+        <v-snackbar
+            v-model="registro"
+            :timeout="timeout"
+        >
+            {{this.msg}}
+            <template v-slot:action="{ attrs }">
+                <v-btn
+                    color="red"
+                    dark
+                    icon
+                    v-bind="attrs"
+                    @click="registro = false"
+                >
+                    <v-icon small>mdi-close</v-icon>
+                </v-btn>
+            </template>
+        </v-snackbar>
         <v-row class="d-flex flex-md-row flex-lg-row flex-column align-center ">
             <v-col cols="11" lg="2" md="2"><DespesaModal class="mt-0 mt-md-1"></DespesaModal></v-col>
             <v-col cols="11" lg="3" md="3"><TagModal class="mt-0 mt-md-1" ></TagModal></v-col>
@@ -47,80 +64,82 @@
                 max-width="720"
                 @keydown.escape="active = false"
             >
-                <v-card>
-                    <v-card-title>
-                        Despesas entre duas datas
-                    </v-card-title>
-                    <v-card-text>
-                        <v-row>
-                            <v-col 
-                                cols="6"
-                                
-                                >
-                                <v-text-field
-                                    v-model="DATA_INI"
-                                    label="Data Inicial"
-                                    persistent-hint
-                                    required
-                                    color="teal lighten-1"
-                                    type="date"
-                                ></v-text-field>
-                            </v-col>
-                            <v-col 
-                                cols="6"
-                                sm="6"
-                                md="6"
-                                >
-                                <v-text-field
-                                    v-model="HORA_INI"    
-                                    label="Hora Inicial"
-                                    persistent-hint
-                                    required
-                                    color="teal lighten-1"
-                                    type="time"
-                                ></v-text-field>
-                            </v-col>
-                        </v-row>
-                        <v-row>
-                            <v-col 
-                                cols="6"
-                                
-                                >
-                                <v-text-field
-                                    v-model="DATA_FIN"
-                                    label="Data Final"
-                                    persistent-hint
-                                    required
-                                    color="teal lighten-1"
-                                    type="date"
-                                ></v-text-field>
-                            </v-col>
-                            <v-col 
-                                cols="6"
-                                sm="6"
-                                md="6"
-                                >
-                                <v-text-field
-                                    v-model="HORA_FIN"    
-                                    label="Hora Final"
-                                    persistent-hint
-                                    required
-                                    color="teal lighten-1"
-                                    type="time"
-                                ></v-text-field>
-                            </v-col>
-                        </v-row>
-                    </v-card-text>
-                    <v-card-actions class="d-flex justify-end">
-                        <v-btn
-                            text 
-                            color="green"
-                            @click="getTwoDates"
-                        >
-                            Listar 
-                        </v-btn>
-                    </v-card-actions>
-                </v-card>
+                <form ref="form" @submit.prevent="getTwoDates">
+                    <v-card>
+                        <v-card-title>
+                            Despesas entre duas datas
+                        </v-card-title>
+                        <v-card-text>
+                            <v-row>
+                                <v-col 
+                                    cols="6"
+                                    
+                                    >
+                                    <v-text-field
+                                        v-model="DATA_INI"
+                                        label="Data Inicial"
+                                        persistent-hint
+                                        required
+                                        color="teal lighten-1"
+                                        type="date"
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col 
+                                    cols="6"
+                                    sm="6"
+                                    md="6"
+                                    >
+                                    <v-text-field
+                                        v-model="HORA_INI"    
+                                        label="Hora Inicial"
+                                        persistent-hint
+                                        required
+                                        color="teal lighten-1"
+                                        type="time"
+                                    ></v-text-field>
+                                </v-col>
+                            </v-row>
+                            <v-row>
+                                <v-col 
+                                    cols="6"
+                                    
+                                    >
+                                    <v-text-field
+                                        v-model="DATA_FIN"
+                                        label="Data Final"
+                                        persistent-hint
+                                        required
+                                        color="teal lighten-1"
+                                        type="date"
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col 
+                                    cols="6"
+                                    sm="6"
+                                    md="6"
+                                    >
+                                    <v-text-field
+                                        v-model="HORA_FIN"    
+                                        label="Hora Final"
+                                        persistent-hint
+                                        required
+                                        color="teal lighten-1"
+                                        type="time"
+                                    ></v-text-field>
+                                </v-col>
+                            </v-row>
+                        </v-card-text>
+                        <v-card-actions class="d-flex justify-end">
+                            <v-btn
+                                text 
+                                color="green"
+                                type="submit"
+                            >
+                                Listar 
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </form>
             </v-dialog>
         </v-row>
 
@@ -152,8 +171,10 @@ export default {
             DTFINAL : '',
             filtro : '',
             hasFilter : false,
-            renicializar : 0
-           
+            renicializar : 0,
+            registro : false,
+            msg : '',
+            timeout : 2000,
         };
     },
     methods: {
@@ -172,6 +193,8 @@ export default {
             this.filtro = ''
             this.forceRerender()
             this.hasFilter = false
+            this.msg = 'Filtros limpados com sucesso !'
+            this.registro = true
         },  
         forceRerender (){
             this.renicializar += this.renicializar + 1;
@@ -186,10 +209,20 @@ export default {
         },
         getTwoDates(){
             this.saveDatas()
-            this.filtro = "Duas datas"
-            this.hasFilter = true
-            console.log(this.hasFilter)
-            this.forceRerender()
+            if(!this.compareDates()){
+                this.msg = 'Data Inicial maior que a Data Final'
+                this.registro = true
+                this.active = false
+                this.limpaFiltros()
+            }else{
+                this.filtro = "Duas datas"
+                this.hasFilter = true
+                console.log(this.hasFilter)
+                this.forceRerender()
+                this.msg = 'Busca realizada com sucesso !'
+                this.registro = true
+                this.active = false
+            }
         },
         compareDates(){
             let inicio = this.makeValibleData(this.DATA_INI, this.HORA_INI)

@@ -143,12 +143,12 @@ export default{
                         payload.QUANTIDADE = payload.quantidade_inicial
                         context.commit("saveListProduct",payload) 
                         context.dispatch("countProd") 
-                        text = "Sucesso : produto cadastrado com sucesso !"
+                        text = "Sucesso : Produto cadastrado com sucesso !"
                     }
                 });
                 return text;
             } catch (error) {
-                text = "Error : " + error.message
+                text = "Error : " + error.response.data.message
                 return await text
             }
             

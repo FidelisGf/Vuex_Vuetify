@@ -1,5 +1,22 @@
 <template>
     <v-container>
+        <v-snackbar
+            v-model="registro"
+            :timeout="timeout"
+        >
+            {{this.msg}}
+            <template v-slot:action="{ attrs }">
+            <v-btn
+                color="red"
+                dark
+                icon
+                v-bind="attrs"
+                @click="registro = false"
+                >
+                <v-icon small>mdi-close</v-icon>
+            </v-btn>
+            </template>
+        </v-snackbar>
         <v-dialog
             v-model="active"
             persistent
@@ -62,14 +79,19 @@ export default {
         return{
             NOME : '',
             active : false,
+            registro : false,
+            msg : '',
+            timeout : 2000,
         }
     },
     methods:{
         ...mapActions('tagMod', ['post']),
-        cadastrarTag(){
+        async cadastrarTag(){
             let payload = {NOME : this.NOME}
-            this.post(payload)
+            this.msg = await this.post(payload)
             this.NOME = ''
+            this.active = false
+            this.registro = true
         }
     },
 }

@@ -137,7 +137,6 @@ export default{
                 }) 
                 return getProduto
             } catch (error) {
-                alert('Falha ao encontrar o produto por esse codigo !')
                 return getProduto
             }
           
@@ -168,8 +167,12 @@ export default{
                 context.commit("limparValorTotal")
                     await pedidoService.findById(payload).then((res)=>{
                         if(res.status == 200){
+                            console.log(res)
                             context.commit("setListaPedidos", res.data.PRODUTOS)
                             context.commit("saveValorTotal", parseFloat(res.data.VALOR_TOTAL))
+                            if(res.data.ID_CLIENTE != null){
+                                context.dispatch("clienteMod/getCliente", res.data.ID_CLIENTE, { root: true })
+                            }
                             pedido = res.data
                     }
                 })
