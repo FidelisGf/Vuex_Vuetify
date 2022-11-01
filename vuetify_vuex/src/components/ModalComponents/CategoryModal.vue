@@ -4,6 +4,7 @@
             v-model="dialog"
             persistent
             max-width="300px"
+            @keydown.escape="dialog = false"
             >
             <template v-if="miniatura" v-slot:activator="{ on, attrs }">
                 <v-btn

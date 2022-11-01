@@ -10,6 +10,7 @@ import clienteMod from './Cliente/clienteMod'
 import tagMod from './Tag/tagMod'
 import despesaMod from './Despesa/despesaMod'
 import utilMod from './Utils/utilMod'
+import medidaMod from './Medida/medidaMod'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -22,7 +23,8 @@ export default new Vuex.Store({
     clienteMod,
     tagMod,
     despesaMod,
-    utilMod
+    utilMod,
+    medidaMod
   },
   state: {
    

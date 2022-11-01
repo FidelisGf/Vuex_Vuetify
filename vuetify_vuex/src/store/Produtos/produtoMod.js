@@ -132,21 +132,24 @@ export default{
             }
            
         },
-        post(context, payload){
+        async post(context, payload){
+            let text = null
             try {
-                productService.postProduto(payload).then((res) => {
                 
+                await productService.postProduto(payload).then((res) => {
                     if (res.status == 200) {
                         console.log(res);
                         payload.ID = res.data.ID
                         payload.QUANTIDADE = payload.quantidade_inicial
-                        alert("Produto salvo com sucesso");
                         context.commit("saveListProduct",payload) 
                         context.dispatch("countProd") 
+                        text = "Sucesso : produto cadastrado com sucesso !"
                     }
                 });
+                return text;
             } catch (error) {
-                alert('Falha ao cadastrar esse produto !')
+                text = "Error : " + error.message
+                return await text
             }
             
         }

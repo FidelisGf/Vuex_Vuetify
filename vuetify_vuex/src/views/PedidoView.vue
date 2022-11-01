@@ -435,7 +435,7 @@ export default {
                 styles: { fillColor: [211, 211, 211] },
                 theme : 'striped',
                 margin: { top: 10 },
-                head: [['CODIGO', 'NOME', 'VALOR', 'QUANTIDADE']],
+                head: [['CODIGO', 'NOME', 'VALOR', 'QUANTIDADE', 'MEDIDA']],
                 body: values,
             }) 
             pdf.setFontSize(8);

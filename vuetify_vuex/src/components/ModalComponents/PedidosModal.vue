@@ -25,13 +25,14 @@
                     <v-btn
                         color="red darken-1"
                         text
+                        class="ml-n3 mt-n2"
                         @click="active = false"
                         icon
                         >
                         <v-icon color="red darken-4">mdi-close</v-icon>
                     </v-btn>
                 </v-card-actions>    
-                <v-card-title  class="text-h5 font-weight-bold">
+                <v-card-title  class="text-h5 font-weight-bold mt-n5">
                     Lista de Produtos da Venda
                 </v-card-title>
                 <v-card-subtitle class="mt-1 ml-3"><p>Valor total : <b>R$ {{vlTotal}}</b> </p></v-card-subtitle>
@@ -46,13 +47,14 @@
                             <v-card-title>
                                <p>
                                 <b class="ml-n1">Nome do Produto : </b >{{ item.nome}}
-                                <v-icon color="red darken-4"  class="ml-1 mt-n1" @click="ativaManipulaQuantidade(item)">mdi-close</v-icon>
+                                <v-icon color="blue darken-4"  class="ml-1 mt-n1" @click="ativaManipulaQuantidade(item)">mdi-pencil</v-icon>
+                                <v-icon color="red darken-4"  class="ml-1 mt-n1" @click="removePedido(item)">mdi-close</v-icon>
                                </p>      
                             </v-card-title>
                             <v-card-subtitle class="mt-n5">
                                 <p>
                                     <b>Valor : R$ </b>{{ item.valor}}     
-                                    <b> Quantidade :</b> {{item.quantidade}} 
+                                    <b> Quantidade :</b> {{item.quantidade}}  {{item.medida}}
                                 </p>
                             </v-card-subtitle>
                             <v-card-text class="mt-n6">

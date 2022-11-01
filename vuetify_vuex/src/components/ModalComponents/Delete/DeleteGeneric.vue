@@ -19,7 +19,7 @@
             </v-btn>
         </template>
         <v-card>
-          {{this.id}}
+          
           <v-card-title class="text-h5">
             Deseja mesmo deletar esse Item ?
           </v-card-title>

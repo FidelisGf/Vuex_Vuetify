@@ -4,6 +4,7 @@ export default{
     state: {
        showCadastro : false,
        edit : false,
+       despesasMes : 0
     },
     getters: {
        getModalCadastro(state){
@@ -11,6 +12,9 @@ export default{
        },
        getEditDespesa(state){
           return state.edit
+       },
+       getDespesasMes(state){
+          return state.despesasMes
        }
     },
     mutations: {
@@ -25,6 +29,9 @@ export default{
        },
        disableEditDespesa(state){
           state.edit = false
+       },
+       setDespesasMes(state, payload){
+          state.despesasMes = payload
        }
     },
     actions: {
@@ -43,9 +50,10 @@ export default{
       async save(context, payload){
            try {
                let Id = await despesaService.save(payload).then((res)=>{
-                    
+                    context.dispatch("despesasMes")
                     alert('Despesa Registrada com sucesso !')
                     return res.data.ID
+
                })
                return Id
            } catch (error) {
@@ -88,12 +96,12 @@ export default{
                alert('Falha na edição dessa despesa')
           }
        },
-       async despesasMes(){
+       async despesasMes(context){
           try {
-               let valor = await despesaService.despesasMes().then((res)=>{
-                    return res.data
+              await despesaService.despesasMes().then((res)=>{
+                    context.commit("setDespesasMes", res.data ) 
                })
-               return valor
+               
           } catch (error) {
                console.log(error)
           }

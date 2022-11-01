@@ -38,7 +38,7 @@
 
                 >
                     <p style="font-size: 16px;" class="ml-2 mt-4 font-weight-bold">Despesas do Mês</p>
-                    <p class="mt-n4 ml-10 font-weight-bold">{{this.despesaVl}}</p>
+                    <p class="mt-n4 ml-10 font-weight-bold">{{despesasValor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>
                 </v-sheet>
             </v-col>
             <v-dialog
@@ -136,14 +136,13 @@
 import ListaGenerica from '@/components/ListaGenerica.vue';
 import DespesaModal from '@/components/ModalComponents/DespesaModal.vue';
 import TagModal from '@/components/ModalComponents/TagModal.vue';
-import {mapActions} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 
  
 export default {
     data() {
         return {
             op : null,
-            despesaVl : 0,
             active : false,
             DATA_INI : '',
             HORA_INI : '',
@@ -205,6 +204,7 @@ export default {
         },
     },
     computed: {
+        ...mapGetters({despesasValor : 'despesaMod/getDespesasMes'}),
         headers (){
             return [
                     {
@@ -218,13 +218,12 @@ export default {
                     { text: "Tipo", value: "tags.NOME"},
                     { text: "Actions", value: "actions", sortable: false },
             ];
-        }
+        },
     },
     async created(){
         await this.findAll()
         this.setHeader(this.headers)
-        this.despesaVl = await this.despesasMes()
-        this.despesaVl = this.despesaVl.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
+        await this.despesasMes()
     },
     components: { TagModal, DespesaModal, ListaGenerica }
 }

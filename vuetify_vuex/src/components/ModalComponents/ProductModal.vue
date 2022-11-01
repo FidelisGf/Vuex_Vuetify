@@ -1,11 +1,27 @@
 <template>
     <v-container fluid grid-list-md>
     <v-row>
-        
+        <v-snackbar
+            v-model="registro"
+            :timeout="timeout"
+        >
+            {{this.msg}}
+            <template v-slot:action="{ attrs }">
+            <v-btn
+                color="red"
+                dark
+                icon
+                v-bind="attrs"
+                @click="fracasso = false"
+                >
+                <v-icon small>mdi-close</v-icon>
+            </v-btn>
+            </template>
+        </v-snackbar>
         <v-col cols="6">
             <v-btn
                 color="teal accent-3"
-                class="mt-5 ml-1  font-weight-medium"
+                class="mt-0 ml-1  font-weight-medium"
                 dark
                 text
                 @click="activeAdicionarEstoque"
@@ -16,12 +32,13 @@
             <v-dialog
                 v-model="dialog"
                 persistent
-                max-width="600px"
+                max-width="720px"
+                @keydown.escape="dialog = false"
             >
                 <template v-if="!miniatura" v-slot:activator="{ on, attrs }">
                     <v-btn
                     color="teal accent-3"
-                    class="mt-5 ml-1 font-weight-medium"
+                    class="mt-0 ml-1 font-weight-medium"
                     dark
                     text
                     @click="cleanProduct"
@@ -32,110 +49,131 @@
                         Novo Produto
                     </v-btn>
                 </template>
-              
-                <v-card>
-                <v-card-title>
-                    <span class="text-h5">Cadastar novo produto</span>
-                </v-card-title>
-                <v-card-text>
+                <form ref="form" @submit.prevent="postProduto">
+                    <v-card>
+                    <v-card-title>
+                        <span class="text-h5">Cadastar novo produto</span>
+                    </v-card-title>
+                    <v-card-text>
                     <v-container>
-                        <v-row>
-                            <v-col
-                                cols="12"
-                                sm="6"
-                                md="4"
-                            >
-                                <v-text-field
-                                    label="Nome do produto"
-                                    required
-                                    v-model="NOME"
-                                    counter="60"
-                                    color="teal lighten-1"
-                                ></v-text-field>
-                            </v-col>
-                            <v-col
-                                cols="12"
-                                sm="6"
-                                md="4"
-                            
-                            >
-                                <v-text-field
-                                    v-model="DESC"
-                                    label="Desc do produto"
-                                    counter="120"
-                                    color="teal lighten-1"
-                                ></v-text-field>
-                            </v-col>
-                            <v-col
-                                cols="12"
-                                sm="6"
-                                md="4"
-                            >
-                                <v-text-field
-                                v-model="VALOR"
-                                label="Valor do produto"
-                                persistent-hint
-                                required
-                                color="teal lighten-1"
-                                value="10.00"
-                                prefix="R$"
-                                type="number"
-                                ></v-text-field>
-                            </v-col>
-                            <v-col 
-                                cols="12"
-                                sm="6"
-                                md="4"
-                            >
-                                <v-text-field
-                                    v-model="quantidade_inicial"
-                                    label="Quantidade"
+                      
+                            <v-row>
+                                <v-col
+                                    cols="12"
+                                    sm="6"
+                                    md="4"
+                                >
+                                    <v-text-field
+                                        label="Nome do produto"
+                                        required
+                                        v-model="NOME"
+                                        counter="60"
+                                        color="teal lighten-1"
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col
+                                    cols="12"
+                                    sm="6"
+                                    md="4"
+                                
+                                >
+                                    <v-text-field
+                                        v-model="DESC"
+                                        label="Desc do produto"
+                                        counter="120"
+                                        required
+                                        color="teal lighten-1"
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col
+                                    cols="12"
+                                    sm="6"
+                                    md="4"
+                                >
+                                    <v-text-field
+                                    v-model="VALOR"
+                                    label="Valor do produto"
                                     persistent-hint
                                     required
                                     color="teal lighten-1"
+                                    value="10.00"
+                                    prefix="R$"
                                     type="number"
-                                    min="0"
-                                ></v-text-field>
-                            </v-col>
-                            <v-col
-                                cols="12"
-                                sm="6"
-                                class="d-flex"
-                            > 
-                            
-                                <v-select
-                                    :items="listCategorias"
-                                    label="Categoria"
-                                    v-model="Categoria"
-                                    color="teal lighten-1"
-                                    item-text="NOME_C" 
-                                    return-object
-                                ></v-select>
-                                <CategoryModal :miniatura="true"  class="mt-4 ml-2 "></CategoryModal>
-                            </v-col>
-                    </v-row>
-                </v-container>
-                <small >*Os produtos criados serão adicionados ao seu estoque.</small>
-            </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                        <v-btn
-                            color="teal lighten-1"
-                            text
-                            @click="dialog = false"
-                        >
-                        Fechar
-                        </v-btn>
-                        <v-btn 
-                            color="teal lighten-1"
-                            text
-                            @click="postProduto"
-                        >
-                        Salvar
-                        </v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col 
+                                    cols="12"
+                                    sm="4"
+                                    md="4"
+                                >
+                                    <v-text-field
+                                        v-model="quantidade_inicial"
+                                        label="Quantidade"
+                                        persistent-hint
+                                        required
+                                        color="teal lighten-1"
+                                        type="number"
+                                        min="0"
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col
+                                    cols="12"
+                                    sm="4"
+                                    class="d-flex"
+                                > 
+                                
+                                    <v-select
+                                        :items="listCategorias"
+                                        label="Categoria"
+                                        v-model="Categoria"
+                                        color="teal lighten-1"
+                                        item-text="NOME_C" 
+                                        return-object
+                                        transition="fab-transition"
+                                        required
+                                    ></v-select>
+                                    <CategoryModal :miniatura="true"  class="mt-4 ml-2 "></CategoryModal>
+                                </v-col>
+                                <v-col
+                                    cols="12"
+                                    sm="4"
+                                    class="d-flex flex-row"
+                                > 
+                                    <v-select
+                                        :items="listMedidas"
+                                        label="Unidade de Medida"
+                                        v-model="Medida"
+                                        color="teal lighten-1"
+                                        item-text="NOME" 
+                                        return-object
+                                        required
+                                    ></v-select>
+                                    <MedidaModal></MedidaModal>
+                                </v-col>
+                        </v-row>
+                        </v-container>
+                        <small >*Os produtos criados serão adicionados ao seu estoque.</small>
+                        </v-card-text>
+                        <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn
+                                        color="red lighten-1"
+                                        text
+                                        @click="dialog = false"
+                                    >
+                                    Fechar
+                                    </v-btn>
+                                    <v-btn 
+                                        color="teal lighten-1"
+                                        text
+                                        type="submit"
+                                    >
+                                    Salvar
+                                    </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </form> 
+        </v-dialog>
         </v-col>
         <v-spacer v-if="!$vuetify.breakpoint.smAndDown" ></v-spacer>
         <v-col>
@@ -144,7 +182,7 @@
                 elevation="8"
                 height="55px"
                 width="200px"
-                class=" exibeGasto ml-lg-6 ml-md-3 ml-0"
+                class=" exibeGasto ml-lg-6 ml-md-3 ml-0 mt-n5"
             >
                 <p style="font-size: 16px;" class="ml-3 mt-2 font-weight-medium">Produtos Ativos</p>
                 <p style="font-size : 14px;" class="mt-n4 ml-5 font-weight-bold">Quantidade Atual : {{countProdutos}}</p>
@@ -166,6 +204,7 @@ import CategoryModal from './CategoryModal.vue'
 import EstoqueModal from './EstoqueModal.vue';
 import ListaGenerica from '../ListaGenerica.vue';
 import { mapGetters,mapActions } from 'vuex';
+import MedidaModal from './MedidaModal.vue';
 export default {
     props: {
         miniatura: Boolean
@@ -173,6 +212,7 @@ export default {
     data() {
         return {
             Categoria: null,
+            Medida : null,
             NOME: "",
             dialog : false,
             ID: "",
@@ -184,12 +224,16 @@ export default {
             ID_CATEGORIA: 0,
             products: [],
             tempCategory : null,
+            registro : false,
+            fracasso : false,
+            msg : '',
+            timeout : 2000,
            
         };
     },
     computed: {
         ...mapGetters({listCategorias : 'categoryMod/listCategorias', activeEstoque : 'estoqueMod/getAdicionaEstoque',
-        countProdutos : 'produtoMod/getCount'}),
+        countProdutos : 'produtoMod/getCount', listMedidas : 'medidaMod/getMedidas'}),
         headers() {
             return [
                 { text: "Detalhes", value: "info", sortable: false },
@@ -206,22 +250,25 @@ export default {
         }
        
     },
-   
     methods: {
         ...mapActions('produtoMod', ['saveList', 'post', 'countProd']),
         ...mapActions('estoqueMod', ['activeAdicionaEstoque']),
         ...mapActions('utilMod', ['setHeader']),
+        ...mapActions('medidaMod', ['getAll']),
         activeAdicionarEstoque(){
             this.activeAdicionaEstoque()
         },
-        postProduto() {
+       async postProduto() {
             var payload = { NOME: this.NOME, VALOR: this.VALOR, DESC: this.DESC,
                  quantidade_inicial: this.quantidade_inicial,
                   ID_CATEGORIA: this.Categoria.ID_CATEGORIA
-                  , NOME_C : this.Categoria.NOME_C };
-            this.post(payload)
+                  , NOME_C : this.Categoria.NOME_C, ID_MEDIDA : this.Medida.ID };
+            this.msg = await this.post(payload)      
+            console.log(this.msg)
+            this.registro = true
+            this.dialog = false 
+            this.cleanProduct()
             this.Categoria = null
-            this.dialog = false
         },
         cleanProduct(){
             this.ID = null
@@ -229,13 +276,16 @@ export default {
             this.VALOR = null
             this.DESC = null
             this.Categoria = null
+            this.Medida = null
+            this.quantidade_inicial = 0
         }, 
     },
    async created() {
         this.setHeader(this.headers)
+        await this.getAll()
         await this.countProd()
     },
-    components: { CategoryModal, EstoqueModal, ListaGenerica }
+    components: { CategoryModal, EstoqueModal, ListaGenerica, MedidaModal }
 }
 </script>
 
