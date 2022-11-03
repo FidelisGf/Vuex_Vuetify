@@ -1,0 +1,105 @@
+<!-- <template>
+    <v-card>
+        <v-card-actions>
+            <v-btn
+                color="red darken-1"
+                text
+                class="ml-n3 mt-n2"
+                @click="active = false"
+                icon
+                >
+                <v-icon color="red darken-4">mdi-close</v-icon>
+            </v-btn>
+        </v-card-actions>    
+        <v-card-title  class="text-h5 font-weight-bold mt-n5">
+            Lista de Produtos da Venda
+        </v-card-title>
+        <v-card-subtitle class="mt-1 ml-3"><p>Valor total : <b>R$ {{vlTotal}}</b> </p></v-card-subtitle>
+        <v-card-text>
+            <v-list>
+                <v-list-item  v-for="item in pedidos" :key="item.id">
+                    <v-list-item-content class="mt-n8" >
+                        <v-list-item-title >
+                            <v-card>
+                                <v-divider></v-divider>
+                                <v-card-title>
+                                    <p>
+                                        <b class="ml-n1">Nome do Produto : </b >{{ item.nome}}
+                                        <v-icon color="blue darken-4"  class="ml-1 mt-n1" @click="ativaManipulaQuantidade(item)">mdi-pencil</v-icon>
+                                        <v-icon color="red darken-4"  class="ml-1 mt-n1" @click="removePedido(item)">mdi-close</v-icon>
+                                    </p>      
+                                </v-card-title>
+                                <v-card-subtitle class="mt-n5">
+                                    <p>
+                                        <b>Valor : R$ </b>{{ item.valor}}     
+                                        <b> Quantidade :</b> {{item.quantidade}}  {{item.medida}}
+                                    </p>
+                                </v-card-subtitle>
+                                <v-card-text class="mt-n6">
+                                    <p>Sub total desse Item : R$ {{item.valor * item.quantidade}}</p>
+                                </v-card-text>
+                                <v-divider class="mt-n3"></v-divider>
+                            </v-card>
+                    </v-list-item-title>
+                        <v-dialog v-if="manipulaQuantidade"
+                            v-model="manipulaQuantidade"
+                            persistent 
+                            max-width="550"
+                            @keydown.escape="manipulaQuantidade = false"
+                        >
+                            <v-card>
+                                <v-card-title>
+                                    Manipule a quantidade do Item #{{temp.nome}}
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-row>
+                                        <v-col sm="6">
+                                            <label class="ml-3">Quantidade do Produto</label>
+                                            <v-text-field
+                                            class="ml-3 w-25"
+                                            outlined
+                                            dense 
+                                            required
+                                            v-model="temp.quantidade"
+                                            single-line
+                                            type="number"
+                                            ></v-text-field>
+                                        </v-col>
+                                    </v-row>
+                                    <small>Caso a quantidade chegue a 0, o item será removido da lista</small>
+                                </v-card-text>
+                                <v-card-actions class="d-flex justify-end">
+                                        <v-btn
+                                            color="red darken-1"
+                                            text
+                                            @click="disableManipulaQuantidade"
+                                        >
+                                            Fechar
+                                        </v-btn>
+                                        <v-btn
+                                            color="green darken-1"
+                                            text
+                                            @click="removeFromList(temp)"
+                                        >
+                                            Salvar
+                                        </v-btn>
+                                </v-card-actions>
+                            </v-card>   
+                        </v-dialog>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list>
+            <small>Esses itens estão presentes nessa venda</small>
+        </v-card-text>
+    </v-card>
+</template>
+
+<script>
+export default {
+   
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style> -->

@@ -11,6 +11,7 @@ import tagMod from './Tag/tagMod'
 import despesaMod from './Despesa/despesaMod'
 import utilMod from './Utils/utilMod'
 import medidaMod from './Medida/medidaMod'
+import materiaMod from './Materia/materiaMod'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -24,14 +25,15 @@ export default new Vuex.Store({
     tagMod,
     despesaMod,
     utilMod,
-    medidaMod
+    medidaMod,
+    materiaMod
   },
   state: {
    
    
   
    
-    edit : false,
+    
    
    
   },
@@ -39,23 +41,12 @@ export default new Vuex.Store({
    
    
    
-    delete(state){
-      return state.delete
-    },
-    edit(state){
-      return state.edit
-    },
-   
+  
    
   },
   mutations: {
    
-    activeEdit(state){
-      state.edit = true
-    },
-    disableEdit(state){
-      state.edit = false
-    },
+
     
    
     

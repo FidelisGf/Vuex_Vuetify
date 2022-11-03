@@ -52,135 +52,165 @@
                         Novo Produto
                     </v-btn>
                 </template>
-                <form ref="form" @submit.prevent="postProduto">
-                    <v-card>
-                    <v-card-title>
-                        <span class="text-h5">Cadastar novo produto</span>
-                    </v-card-title>
-                    <v-card-text>
-                    <v-container>
-                      
-                            <v-row>
-                                <v-col
-                                    cols="12"
-                                    sm="6"
-                                    md="4"
+                    <v-stepper dark v-model="e1">
+                            <v-stepper-header >
+                                <v-stepper-step
+                                    :complete="e1 > 1"
+                                    step="1"
+                                    color="green darken-1"
+                                   
                                 >
-                                    <v-text-field
-                                        label="Nome do produto"
-                                        required
-                                        v-model="NOME"
-                                        counter="60"
-                                        color="teal lighten-1"
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col
-                                    cols="12"
-                                    sm="6"
-                                    md="4"
+                                    Info Básicas
+                                </v-stepper-step>
                                 
-                                >
-                                    <v-text-field
-                                        v-model="DESC"
-                                        label="Desc do produto"
-                                        counter="120"
-                                        required
-                                        color="teal lighten-1"
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col
-                                    cols="12"
-                                    sm="6"
-                                    md="4"
-                                >
-                                    <v-text-field
-                                    v-model="VALOR"
-                                    label="Valor do produto"
-                                    persistent-hint
-                                    required
-                                    color="teal lighten-1"
-                                    value="10.00"
-                                    prefix="R$"
-                                    type="number"
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col 
-                                    cols="12"
-                                    sm="4"
-                                    md="4"
-                                >
-                                    <v-text-field
-                                        v-model="quantidade_inicial"
-                                        label="Quantidade"
-                                        persistent-hint
-                                        required
-                                        color="teal lighten-1"
-                                        type="number"
-                                        min="0"
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col
-                                    cols="12"
-                                    sm="4"
-                                    class="d-flex"
-                                > 
+                                <v-divider></v-divider>
                                 
-                                    <v-select
-                                        :items="listCategorias"
-                                        label="Categoria"
-                                        v-model="Categoria"
-                                        color="teal lighten-1"
-                                        item-text="NOME_C" 
-                                        return-object
-                                        transition="fab-transition"
-                                        required
-                                    ></v-select>
-                                    <CategoryModal :miniatura="true"  class="mt-4 ml-2 "></CategoryModal>
-                                </v-col>
-                                <v-col
-                                    cols="12"
-                                    sm="4"
-                                    class="d-flex flex-row"
-                                > 
-                                    <v-select
-                                        :items="listMedidas"
-                                        label="Unidade de Medida"
-                                        v-model="Medida"
-                                        color="teal lighten-1"
-                                        item-text="NOME" 
-                                        return-object
-                                        required
-                                    ></v-select>
-                                    <MedidaModal></MedidaModal>
-                                </v-col>
-                        </v-row>
-                        </v-container>
-                        <small >*Os produtos criados serão adicionados ao seu estoque.</small>
-                        </v-card-text>
-                        <v-card-actions>
-                                    <v-spacer></v-spacer>
-                                    <v-btn
-                                        color="red lighten-1"
-                                        text
-                                        @click="dialog = false"
-                                    >
-                                    Fechar
-                                    </v-btn>
-                                    <v-btn 
-                                        color="teal lighten-1"
-                                        text
-                                        type="submit"
-                                    >
-                                    Salvar
-                                    </v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </form> 
+                                <v-stepper-step
+                                    :complete="e1 > 2"
+                                    step="2"
+                                    color="green darken-1"
+                                    
+                                >
+                                     Matérias Primas
+                                </v-stepper-step>
+                            </v-stepper-header>
+                                <v-stepper-items>
+                                    <v-stepper-content  step="1">
+                                        <v-card color="#303030">
+                                            <v-card-title class="white--text">
+                                                        <span class="text-h5">Cadastar novo produto</span>
+                                            </v-card-title>
+                                            <form ref="form" @submit.prevent="proximaEtapa">
+                                                <v-card-text>
+                                                    <v-row>
+                                                        <v-col
+                                                            cols="12"
+                                                            sm="6"
+                                                            md="4"
+                                                        >
+                                                        <v-text-field
+                                                            label="Nome do produto"
+                                                            required
+                                                            dark
+                                                            v-model="NOME"
+                                                            counter="60"
+                                                            color="teal lighten-1"
+                                                        ></v-text-field>
+                                                    </v-col>
+                                                    <v-col
+                                                        cols="12"
+                                                        sm="6"
+                                                        md="4"
+                                                        
+                                                    >
+                                                        <v-text-field
+                                                            v-model="DESC"
+                                                            dark
+                                                            label="Desc do produto"
+                                                            counter="120"
+                                                            required
+                                                            color="teal lighten-1"
+                                                        ></v-text-field>
+                                                    </v-col>
+                                                    <v-col
+                                                        cols="12"
+                                                        sm="6"
+                                                        md="4"
+                                                    >
+                                                        <v-text-field
+                                                            v-model="VALOR"
+                                                            label="Valor do produto"
+                                                            persistent-hint
+                                                            required
+                                                            dark
+                                                            color="teal lighten-1"
+                                                            value="10.00"
+                                                            prefix="R$"
+                                                            type="number"
+                                                        ></v-text-field>
+                                                    </v-col>
+                                                    <v-col 
+                                                        cols="12"
+                                                        sm="4"
+                                                        md="4"
+                                                    >
+                                                        <v-text-field
+                                                            v-model="quantidade_inicial"
+                                                            label="Quantidade"
+                                                            persistent-hint
+                                                            required
+                                                            dark
+                                                            color="teal lighten-1"
+                                                            type="number"
+                                                            min="0"
+                                                        ></v-text-field>
+                                                    </v-col>
+                                                    <v-col
+                                                        cols="12"
+                                                        sm="4"
+                                                        class="d-flex"
+                                                    > 
+                                                        
+                                                        <v-select
+                                                            :items="listCategorias"
+                                                            label="Categoria"
+                                                            v-model="Categoria"
+                                                            color="teal lighten-1"
+                                                            item-text="NOME_C" 
+                                                            return-object
+                                                            dark
+                                                            transition="fab-transition"
+                                                            required
+                                                    ></v-select>
+                                                    <CategoryModal :miniatura="true"  class="mt-4 ml-2 "></CategoryModal>
+                                                </v-col>
+                                                <v-col
+                                                    cols="12"
+                                                    sm="4"
+                                                    class="d-flex flex-row"
+                                                > 
+                                                    <v-select
+                                                        :items="listMedidas"
+                                                        label="Unidade de Medida"
+                                                        v-model="Medida"
+                                                        dark
+                                                        color="teal lighten-1"
+                                                        item-text="NOME" 
+                                                        return-object
+                                                        required
+                                                    ></v-select>
+                                                    <MedidaModal></MedidaModal>
+                                                </v-col>
+                                            </v-row>
+                                        </v-card-text>  
+                                        <small class="ml-3" >*Os produtos criados serão adicionados ao seu estoque.</small>  
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn
+                                                color="red lighten-1"
+                                                text
+                                                @click="dialog = false"
+                                            >
+                                                Fechar
+                                            </v-btn>
+                                            <v-btn 
+                                                color="teal lighten-1"
+                                                text
+                                                type="submit"
+                                            >
+                                                Proxima
+                                            </v-btn>
+                                        </v-card-actions>
+                                    </form> 
+                                </v-card>         
+                            </v-stepper-content>
+                            <v-stepper-content step="2">
+                                <ChoseMateriaisModal @voltar-etapa="voltarEtapa" @fechar="closeByChildEvent"></ChoseMateriaisModal>    
+                            </v-stepper-content>
+                        </v-stepper-items>                
+                    </v-stepper>   
             </v-dialog>
-        
-        </v-col>
-       
-            
+        </v-col>     
         <v-spacer v-if="!$vuetify.breakpoint.smAndDown" ></v-spacer>
         <v-col 
             cols="10" 
@@ -227,6 +257,7 @@ import ListaGenerica from '../ListaGenerica.vue';
 import { mapGetters,mapActions } from 'vuex';
 import MedidaModal from './MedidaModal.vue';
 import MaterialModal from './MaterialModal.vue';
+import ChoseMateriaisModal from './ChoseMateriaisModal.vue';
 export default {
     props: {
         miniatura: Boolean
@@ -251,6 +282,7 @@ export default {
             msg : '',
             timeout : 2000,
             estoqueMod : false,
+            e1 : 1,
            
         };
     },
@@ -281,6 +313,13 @@ export default {
             console.log('Aqui')
             this.estoqueMod = e
         },
+        closeByChildEvent(e){
+            this.dialog = e.estado
+            this.e1 = e.valor
+        },
+        voltarEtapa(e){
+            this.e1 = e
+        },
         getMessage(e){
            
             this.msg = e.msg
@@ -299,6 +338,9 @@ export default {
             this.cleanProduct()
             this.Categoria = null
         },
+        proximaEtapa(){
+            this.e1 = 2
+        },
         cleanProduct(){
             this.ID = null
             this.NOME = null
@@ -314,7 +356,7 @@ export default {
         await this.getAll()
         await this.countProd()
     },
-    components: { CategoryModal, EstoqueModal, ListaGenerica, MedidaModal, MaterialModal }
+    components: { CategoryModal, EstoqueModal, ListaGenerica, MedidaModal, MaterialModal, ChoseMateriaisModal }
 }
 </script>
 

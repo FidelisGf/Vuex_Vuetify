@@ -55,6 +55,23 @@
                                     max-width="551px"
                                     @keydown.escape="cadModal = false"
                                 >
+                                    <v-snackbar
+                                        v-model="registro"
+                                        :timeout="timeout"
+                                    >
+                                        {{this.msg}}
+                                        <template v-slot:action="{ attrs }">
+                                        <v-btn
+                                            color="red"
+                                            dark
+                                            icon
+                                            v-bind="attrs"
+                                            @click="registro = false"
+                                            >
+                                            <v-icon small>mdi-close</v-icon>
+                                        </v-btn>
+                                        </template>
+                                    </v-snackbar>
                                     <form>
                                         <v-card color="grey darken-3">
                                             <v-card-title class="text-h6 white--text">
@@ -104,11 +121,13 @@
                                                     text 
                                                     dark 
                                                     color="red lighten-2"
+                                                    @click="cadModal = false"
                                                 >Fechar</v-btn>
                                                 <v-btn
                                                     text 
                                                     dark 
                                                     color="green accent-3"
+                                                    @click="saveMateriaPrima"
                                                 >Salvar</v-btn>
                                                   
                                             </v-card-actions>
@@ -140,11 +159,33 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
    data(){
         return{
             dialog : false,
             cadModal : false,
+            NOME : '',
+            CUSTO : 0,
+            QUANTIDADE : 0,
+            msg : '',
+            registro : false,
+            timeout : 2000,
+        }
+   },
+   methods:{
+        ...mapActions('materiaMod', ['post', 'findMateria']),
+        async saveMateriaPrima() {
+            let payload = {NOME : this.NOME, CUSTO : this.CUSTO, QUANTIDADE : this.QUANTIDADE}
+            this.msg = await this.post(payload)
+            this.registro = true
+            this.clear()
+        },
+       
+        clear(){
+            this.NOME = ''
+            this.CUSTO = 0
+            this.QUANTIDADE  = 0
         }
    }
 }
