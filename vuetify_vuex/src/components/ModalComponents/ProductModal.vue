@@ -1,6 +1,6 @@
 <template>
     <v-container fluid grid-list-md>
-    <v-row>
+    <v-row class="d-flex flex-column-reverse d-sm-flex flex-md-row">
         <v-snackbar
             v-model="registro"
             :timeout="timeout"
@@ -18,7 +18,10 @@
             </v-btn>
             </template>
         </v-snackbar>
-        <v-col cols="6">
+        <v-col cols="12" md="12" sm="12"  lg="6" class="d-flex flex-column-reverse flex-md-row justify-center justify-lg-start">
+            <div class="ml-0 pl-0 d-flex justify-center">
+                <MaterialModal class="ml-sm-0  pl-sm-0  "></MaterialModal>
+            </div>
             <v-btn
                 color="teal accent-3"
                 class="mt-0 ml-1  font-weight-medium"
@@ -173,16 +176,27 @@
                         </v-card-actions>
                     </v-card>
                 </form> 
-        </v-dialog>
+            </v-dialog>
+        
         </v-col>
+       
+            
         <v-spacer v-if="!$vuetify.breakpoint.smAndDown" ></v-spacer>
-        <v-col>
+        <v-col 
+            cols="10" 
+            md="12" 
+            lg="3" 
+            sm="12" 
+            class="pl-sm-0 mt-2 mt-md-2 mt-lg-2 
+                   d-inline-flex d-lg-inline-flex  
+                   justify-center justify-lg-start ml-10 ml-sm-0 "
+        >
             <v-sheet
                 color="cyan lighten-5"
                 elevation="8"
-                height="55px"
+                height="57px"
                 width="200px"
-                class=" exibeGasto ml-lg-6 ml-md-3 ml-0 mt-n5"
+                class=" exibeGasto ml-lg-6 ml-md-3  mt-n5 "
             >
                 <p style="font-size: 16px;" class="ml-3 mt-2 font-weight-medium">Produtos Ativos</p>
                 <p style="font-size : 14px;" class="mt-n4 ml-5 font-weight-bold">Quantidade Atual : {{countProdutos}}</p>
@@ -212,6 +226,7 @@ import EstoqueModal from './EstoqueModal.vue';
 import ListaGenerica from '../ListaGenerica.vue';
 import { mapGetters,mapActions } from 'vuex';
 import MedidaModal from './MedidaModal.vue';
+import MaterialModal from './MaterialModal.vue';
 export default {
     props: {
         miniatura: Boolean
@@ -299,7 +314,7 @@ export default {
         await this.getAll()
         await this.countProd()
     },
-    components: { CategoryModal, EstoqueModal, ListaGenerica, MedidaModal }
+    components: { CategoryModal, EstoqueModal, ListaGenerica, MedidaModal, MaterialModal }
 }
 </script>
 

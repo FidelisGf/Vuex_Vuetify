@@ -69,7 +69,6 @@ export default{
                let resposta = {current_page : null, totalPage : null}
                console.log(payload)
                await despesaService.despesasByTag(payload.ID_TAG, payload.current_page).then((res)=>{
-                    console.log(res.data)
                     context.commit("produtoMod/beginListProduct",res.data.data, { root: true })
                     resposta.current_page = res.data.current_page;
                     resposta.totalPage = res.data.last_page;
@@ -90,14 +89,17 @@ export default{
           }
        },
        async edit(context, payload){
+          let text = ""
           try {
                await despesaService.edit(payload, payload.ID).then((res)=>{
                     console.log(res.data)
-                    alert('Despesa editada com sucesso !')
+                    text = "Sucesso : Despesa editada !"
                     context.commit("produtoMod/editListProduct", payload, { root: true })
                })
+               return text
           } catch (error) {
-               alert('Não foi possivel encontrar !')
+               text = "Erro :" + error.response.data.message
+               return text
           }
        },
        async despesasMes(context){

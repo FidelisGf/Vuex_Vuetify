@@ -71,7 +71,6 @@
         </v-dialog>
     </v-container>
 </template>
-
 <script>
 import {mapActions } from 'vuex';
 export default {

@@ -400,10 +400,11 @@ export default {
             let Nome_Empresa = this.empresaUser.NOME
             let pdf = new jsPdf()
             let produtos = this.pedidos
+            let nomeClatura = pedido.aprovado == "PAGO" ? 'Pedido' : 'Orçamento'
             console.log(pedido)
             let values = produtos.map( (elemento) => Object.values(elemento));
             pdf.setFontSize(26)
-            pdf.text(Nome_Empresa + ' pedido N#' + ' ' +  pedido.codigo , 15, 15)
+            pdf.text(Nome_Empresa + ' ' + nomeClatura + '#' +  pedido.codigo , 5, 15)
             pdf.setFontSize(10)
             pdf.text('CNPJ :  ' + this.empresaUser.CNPJ, 15, 22)
             pdf.text('ENDEREÇO : '  + this.empresaUser.ENDERECO, 70, 22)

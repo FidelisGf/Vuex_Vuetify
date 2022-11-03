@@ -37,7 +37,7 @@
                                     color="teal lighten-1"
                                     label="Search (APENAS COM CAPS)"
                                     class="mx-5 w-25"
-                                >   
+                                    >   
                                 </v-text-field>
                                 <v-select v-if="route == 'products'"
                                     :items="listCategorias"
@@ -50,61 +50,47 @@
                                     return-object
                                 >
                                 </v-select>
-                                <v-select v-if="route == 'despesas'"
-                                    :items="listTags"
-                                    label="Filtre por um tipo..."
-                                    v-model="tag"
-                                    color="teal lighten-1"
-                                    item-text="NOME" 
-                                    @keydown.enter="findAllByTags"
-                                    class="mx-5 w-25"
-                                    return-object
-                                >
-                                </v-select>
-                            </v-col>
-                            <v-col>
-                                <v-btn
-                                    color="red lighten-1 "
-                                    text
-                                    class="mt-n10 ml-3"
-                                    @click="clean"
-                                >
-                                 Limpar 
-                                </v-btn>
-                            </v-col>
-                        </v-row>
-                       
-                    </div>
-                </template>
-            </v-data-table>
-            <v-pagination
-                color="teal lighten-1"
-                v-model="current_page"
-                :length="totalPage"
-                @input="onPageChange">  
-            </v-pagination> 
-            
+                                    <v-select v-if="route == 'despesas'"
+                                        :items="listTags"
+                                        label="Filtre por um tipo..."
+                                        v-model="tag"
+                                        color="teal lighten-1"
+                                        item-text="NOME" 
+                                        @keydown.enter="findAllByTags"
+                                        class="mx-5 w-25"
+                                        return-object
+                                    >
+                                    </v-select>
+                                </v-col>
+                                <v-col>
+                                    <v-btn
+                                        color="red lighten-1 "
+                                        text
+                                        class="mt-n10 ml-3"
+                                        @click="clean"
+                                    >
+                                    Limpar 
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </div>
+                    </template>
+                </v-data-table>
+                <v-pagination
+                    color="teal lighten-1"
+                    v-model="current_page"
+                    :length="totalPage"
+                    @input="onPageChange">  
+                </v-pagination> 
             </v-col>
             <v-dialog
                 v-model="edit"
                 persistent
-                max-width="550px"
+                max-width="720px"
                 @keydown.escape="edit = false"
             >
-                <v-card class="cards" > 
-                    <v-card-actions>
-                        <v-btn
-                            icon
-                            dark
-                            color="red"
-                            @click="edit = false"
-                        ><v-icon >mdi-close</v-icon></v-btn>
-                    </v-card-actions>
-                    <v-card-text >
-                        <EditProduct v-if="route == 'products'"></EditProduct>
-                        <EditDespesaVue v-if="route == 'despesas'"></EditDespesaVue>
-                    </v-card-text>
-                </v-card>
+                <EditProduct @close-edit="closeEdits" v-if="route == 'products'"></EditProduct>
+                <EditDespesaVue @close-edit-despesa="closeEdits"  v-if="route == 'despesas'"></EditDespesaVue>   
             </v-dialog>
         </v-row>
    </v-container>
@@ -144,7 +130,6 @@ export default {
             tempTag: '',
             filtroTag : false,
             edit : false,
-
         };
     },
    
@@ -179,7 +164,9 @@ export default {
                 });
             }  
         },
-
+        closeEdits(e){
+            this.edit = e
+        },
         clearCategorySearch(){
             this.Categoria = ""
             this.getLista(this.route)

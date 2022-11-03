@@ -1,8 +1,35 @@
 <template>
     <v-card>
-            <v-card-title>
-                Edição de Despesa
-            </v-card-title>
+        <v-snackbar
+            v-model="registro"
+            :timeout="timeout"
+        >
+            {{this.msg}}
+            <template v-slot:action="{ attrs }">
+            <v-btn
+                color="red"
+                dark
+                icon
+                v-bind="attrs"
+                @click="registro = false"
+                >
+                <v-icon small>mdi-close</v-icon>
+            </v-btn>
+            </template>
+        </v-snackbar>
+        <v-card-actions>
+            <v-btn
+                icon
+                text
+                dark
+                @click="closeEdit"
+            >
+            <v-icon color="red">mdi-close</v-icon>
+            </v-btn>
+        </v-card-actions>
+        <v-card-title class="mt-n3 text-h5">
+            Edição de Despesa
+        </v-card-title>
             <v-card-text>
                 <v-row>
                     <v-col 
@@ -84,13 +111,13 @@
                     </v-col>
                 </v-row>
             </v-card-text>
-            <v-card-actions class="mt-n4">
+            <v-card-actions class="mt-n4 d-flex justify-end">
                 <v-btn 
-                    color="green lighten-1"
+                    color="green darken-1"
                     text
                     @click="editDespesa"
                 >
-                Editar
+                    Editar
                 </v-btn>
             </v-card-actions>
     </v-card>
@@ -110,6 +137,9 @@ export default {
             loading : false,
             TAGS : [],
             ID : null,
+            msg : '',
+            registro : false,
+            timeout : 2000,
         }
     },
     computed:{
@@ -133,6 +163,9 @@ export default {
             }
             this.loading = false
         },
+        closeEdit(){
+            this.$emit('close-edit-despesa', false)
+        },
         clear(){
             this.loading = false
             this.DATA = ''
@@ -148,7 +181,8 @@ export default {
         async editDespesa(){
             this.transformData()
             let payload = {ID: this.ID, DESC : this.DESC, CUSTO : this.CUSTO, ID_TAG : this.TAG.ID, DATA : this.dtTmp, tags : this.TAG}
-            await this.edit(payload)
+            this.msg = await this.edit(payload)
+            this.registro = true
         }
     },
     watch: {

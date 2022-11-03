@@ -77,14 +77,21 @@ export default{
         saveProduct(context, payload){
             context.commit('saveProduct', payload)
         },
-        editProduct(context, payload){
-            
-            productService.editProduct(payload, payload.ID).then((res) => {
-                if (res.status == 200) {
-                    context.commit("editListProduct", payload)
-                    alert("Produto Editado com suceso !");
-                }
-            });
+        async editProduct(context, payload){
+            let text = ""
+            try {
+                await productService.editProduct(payload, payload.ID).then((res) => {
+                    if (res.status == 200) {
+                        context.commit("editListProduct", payload)
+                        text = "Sucesso : Produto editado !"
+                    }
+                    
+                });
+                return text
+            } catch (error) {
+                text = "Error : " + error.response.data.message   
+                return text
+            }
         },
         beginListProduct(context, payload){
             context.commit('clearListProduct')
@@ -108,8 +115,6 @@ export default{
             } catch (error) {
                 alert('Falha ao filtrar por Categoria !')
             }
-           
-           
         },
         async countProd(context){
             try {

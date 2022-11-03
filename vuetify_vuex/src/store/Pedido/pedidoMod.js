@@ -131,7 +131,7 @@ export default{
                         context.commit('somaItens', parseFloat(res.data.VALOR * payload.quantidade))
                         context.commit('saveCod', res.data.ID)
                         context.commit("savePedidos", payload2) 
-                        console.log(payload)
+                        console.log(payload2)
                         return true
                     }
                 }) 
