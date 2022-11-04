@@ -26,7 +26,7 @@
                                     <p class="white--text">
                                         <b class="ml-n1 subtitle-2 text-md-subtitle-1">Nome do Item : <b class="subtitle-1 " style="color: #39FF14;">#{{ item.NOME}}</b></b>
                                         <v-icon small color="blue lighten-1" class="ml-3 mt-n0" @click="activeManipula(item)">mdi-pencil</v-icon>
-                                        <v-icon small color="red lighten-1"  class="ml-3 mt-n0" >mdi-close</v-icon>
+                                        <v-icon small color="red lighten-1"  class="ml-3 mt-n0" @click="removeMateria(item)">mdi-close</v-icon>
                                     </p>      
                                 </v-card-title>
                                 <v-card-subtitle class="mt-n5 white--text"> 
@@ -47,7 +47,17 @@
                         >
                             <v-card>
                                 <v-card-title>
-                                    Manipule a quantidade do Item #{{temp.NOME}}
+                                    <p v-if="!notification">Manipule a quantidade do Item #{{temp.NOME}}</p>
+                                    <v-alert v-if="notification && msg.type == 'success'" type="success" v-model="notification" 
+                                    dismissible dense shaped
+                                    outlined class="not" >
+                                        {{msg.text }}  
+                                    </v-alert>
+                                    <v-alert v-if="notification && msg.type == 'danger'" type="error" v-model="notification" 
+                                    dismissible dense shaped
+                                    outlined class="not" >
+                                        {{msg.text }}  
+                                    </v-alert>
                                 </v-card-title>
                                 <v-card-text>
                                     <v-row>
@@ -87,7 +97,7 @@
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
-            <small class="ml-2 white--text">Esses itens fazem parte da composição do produto</small>
+            <small class="ml-2 white--text">*Esses itens fazem parte da composição do produto</small>
         </v-card-text>
     </v-card>
 </template>
@@ -99,10 +109,15 @@ export default {
         return{
             manipulaQuantidade : false,
             temp : null,
+            notification : false,
+            msg : {
+                text : '',
+                type : '',
+            }
         }
    },
    methods:{
-        ...mapActions('materiaMod', ['removeMateria', 'removeQntdMateria', 'saveCustoTotal']),
+        ...mapActions('materiaMod', ['removeMateria', 'removeQntdMateria', 'saveCustoTotal', 'checkQuantidade']),
         activeManipula(item){
             this.temp = item
             this.manipulaQuantidade = true
@@ -115,18 +130,29 @@ export default {
                 await this.removeMateria(item)
                 this.valorTotal = 0
                 this.materias.forEach(element => {
-                   this.valorTotal += parseFloat(element.quantidade * element.valor)
+                   this.valorTotal += parseFloat(element.QUANTIDADE * element.CUSTO)
                 });
                 this.saveCustoTotal(parseFloat( this.valorTotal ))
                 this.manipulaQuantidade = false
             }else{
-                this.removeQntdPedido(item)
-                this.valorTotal = 0
-                this.materias.forEach(element => {
-                   this.valorTotal += parseFloat(element.quantidade * element.valor)
-                });
-                this.saveCustoTotal(parseFloat( this.valorTotal ))
-                this.manipulaQuantidade = false
+                let payload = {ID : item.ID, QUANTIDADE : item.QUANTIDADE}
+                let checaQuantidade = await this.checkQuantidade(payload)
+                if(checaQuantidade == true){
+                    this.removeQntdMateria(item)
+                    this.valorTotal = 0
+                    this.materias.forEach(element => {
+                    this.valorTotal += parseFloat(element.QUANTIDADE * element.CUSTO)
+                    });
+                    this.saveCustoTotal(parseFloat( this.valorTotal ))
+                    this.notification = true
+                    this.msg.text = "Quantidade Alterada !"
+                    this.msg.type = "success"
+                }else if(!checaQuantidade){
+                    this.notification = true
+                    this.msg.text = "Quantidade disponivel insuficiente !"
+                    this.msg.type = "danger"
+                }
+                
             }
         }
    },

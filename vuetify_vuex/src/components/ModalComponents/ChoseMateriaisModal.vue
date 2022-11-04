@@ -1,5 +1,5 @@
 <template>
-    <v-card color="#303030">
+    <v-card class="cards-colors">
         <form @submit.prevent="addToList">
             <v-card-title  class="white--text text-h8">
                 <p v-if="!notification">Escolha os Materiais do Produto...</p>
@@ -66,8 +66,7 @@
                                     dark
                                     rules="required|min:1"
                                     type="submit"
-                                    icon 
-                                    
+                                    icon  
                                 >
                                     <v-icon aria-label="Adicionar a lista" aria-hidden="false" dark color="teal accent-2">mdi-plus-circle-outline</v-icon>
                                 </v-btn>
@@ -83,7 +82,7 @@
                                     class="ml-3"
                                     dark
                                     icon 
-                                    @click="materiaisMod = true                "
+                                    @click="materiaisMod = true"
                                 >
                                     <v-icon>mdi-list-box-outline</v-icon>
                                 </v-btn>
@@ -136,6 +135,7 @@
                     color="teal lighten-1"
                     text
                     type="submit"
+                    @click="finalizar"
                 >
                     Salvar
                 </v-btn>
@@ -152,7 +152,7 @@ export default {
         return{
             listMateria : false,
             CODIGO : undefined,
-            QUANTIDADE : null,
+            QUANTIDADE : 1,
             notification : false,
             msg : null,
             materiaisMod : false
@@ -164,6 +164,9 @@ export default {
         voltarEtapa() {
             this.$emit("voltar-etapa", 1);
         },
+        finalizar(){
+            this.$emit("finalizarCadastro")
+        },
         fecharLista(e){
             this.materiaisMod = e
         },
@@ -171,6 +174,23 @@ export default {
             let payload = {ID : this.CODIGO, QUANTIDADE : this.QUANTIDADE}
             this.msg = await this.findMateria(payload)
             this.notification = true
+            this.hideSucess()
+        },
+        clear(){
+            this.CODIGO = undefined
+            this.QUANTIDADE = 1
+        },
+        hideSucess : function (){
+            if(this.notification){
+                let interval = setInterval(() => {
+                    this.notification = false; this.clearIntervalo(interval);
+                    }, 1100)
+                setInterval(interval);
+                this.clear()
+            }      
+        },
+        clearIntervalo : function (interaval){
+            clearInterval(interaval)
         },
         async buscaLista(){
             await this.setHeader(this.headers)
@@ -202,8 +222,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
     .not{
         width: 100%;
     }
+    
 </style>

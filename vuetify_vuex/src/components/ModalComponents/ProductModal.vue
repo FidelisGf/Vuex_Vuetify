@@ -76,9 +76,9 @@
                             </v-stepper-header>
                                 <v-stepper-items>
                                     <v-stepper-content  step="1">
-                                        <v-card color="#303030">
+                                        <v-card class="cards-colors">
                                             <v-card-title class="white--text">
-                                                        <span class="text-h5">Cadastar novo produto</span>
+                                                        <span class="text-h5">Informações do Produto</span>
                                             </v-card-title>
                                             <form ref="form" @submit.prevent="proximaEtapa">
                                                 <v-card-text>
@@ -205,7 +205,8 @@
                                 </v-card>         
                             </v-stepper-content>
                             <v-stepper-content step="2">
-                                <ChoseMateriaisModal @voltar-etapa="voltarEtapa" @fechar="closeByChildEvent"></ChoseMateriaisModal>    
+                                <ChoseMateriaisModal @voltar-etapa="voltarEtapa" 
+                                @fechar="closeByChildEvent" @finalizarCadastro="postProduto"></ChoseMateriaisModal>    
                             </v-stepper-content>
                         </v-stepper-items>                
                     </v-stepper>   
@@ -288,7 +289,7 @@ export default {
     },
     computed: {
         ...mapGetters({listCategorias : 'categoryMod/listCategorias', activeEstoque : 'estoqueMod/getAdicionaEstoque',
-        countProdutos : 'produtoMod/getCount', listMedidas : 'medidaMod/getMedidas'}),
+        countProdutos : 'produtoMod/getCount', listMedidas : 'medidaMod/getMedidas', materias : 'materiaMod/getMateriais'}),
         headers() {
             return [
                 { text: "Detalhes", value: "info", sortable: false },
@@ -330,13 +331,15 @@ export default {
             var payload = { NOME: this.NOME, VALOR: this.VALOR, DESC: this.DESC,
                  quantidade_inicial: this.quantidade_inicial,
                   ID_CATEGORIA: this.Categoria.ID_CATEGORIA
-                  , NOME_C : this.Categoria.NOME_C, ID_MEDIDA : this.Medida.ID };
-            this.msg = await this.post(payload)      
-            console.log(this.msg)
-            this.registro = true
-            this.dialog = false 
-            this.cleanProduct()
-            this.Categoria = null
+                  , NOME_C : this.Categoria.NOME_C, ID_MEDIDA : this.Medida.ID, MATERIAIS : this.materias };
+            console.log('Foi')
+            console.log(payload)
+            // this.msg = await this.post(payload)      
+            // console.log(this.msg)
+            // this.registro = true
+            // this.dialog = false 
+            // this.cleanProduct()
+            // this.Categoria = null
         },
         proximaEtapa(){
             this.e1 = 2
@@ -360,12 +363,15 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
     .exibeGasto{
         border-color: aqua !important;
         box-shadow: 0px 2px 25px 2px #96f5f0 !important;
         border-radius: 10px !important;
     
+    }
+    .cards-colors{
+        background-color: rgb(48, 48, 48) !important;
     }
     .exibeGasto:hover{
         transform: translate(2px, -2.10px);

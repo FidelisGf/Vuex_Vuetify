@@ -19,25 +19,27 @@ export default{
             state.materiais = payload
         },
         saveMaterialInList(state, payload){
-            console.log(state.materiais)
             const exist = state.materiais.find(o => o.ID == payload.ID)
             if(exist){
              exist.QUANTIDADE += parseInt(payload.QUANTIDADE)
             }else{
               state.materiais.push(payload)
             }
+            console.log(state.materiais)
         },
         somaCustoTotal(state, payload){
             state.custo_total += parseFloat(payload)
         },
         removeMateria(state, payload){
+            state.custo_total = parseFloat(state.custo_total - (payload.QUANTIDADE * payload.CUSTO))
             state.materiais = state.materiais.filter(o => o.ID !== payload.ID)
         },
         removeQntdMateria(state, payload){
             const exist = state.materiais.find(o => o.ID == payload.ID)
             if(exist){
-            exist.QUANTIDADE = payload.QUANTIDADE
+            exist.QUANTIDADE =parseInt( payload.QUANTIDADE )
             }
+            console.log(state.materiais)
         },
         saveCustoTotal(state, payload){
             state.custo_total = payload
@@ -85,6 +87,23 @@ export default{
                 payload2.text = 'Falha ao adicionar Item !'
                 payload2.type = 'danger'
                 return payload2
+            }
+       },
+       async checkQuantidade(context, payload){
+            let flag = false
+            try {
+                console.log(payload)
+                await materiaService.findById(payload.ID).then((res)=>{
+                    console.log(res.data)
+                    if(res.data.QUANTIDADE >= payload.QUANTIDADE){
+                        flag = true
+                        
+                    }
+                })
+                return flag
+               
+            }catch(error){
+                return flag
             }
        }
     },
