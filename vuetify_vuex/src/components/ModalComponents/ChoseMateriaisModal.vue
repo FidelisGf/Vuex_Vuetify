@@ -38,7 +38,6 @@
                              </template>
                              <span>F2 exibe a lista !</span>
                         </v-tooltip>   
-                       
                     </v-col>
                     <v-col>
                         <v-text-field
@@ -84,6 +83,7 @@
                                     class="ml-3"
                                     dark
                                     icon 
+                                    @click="materiaisMod = true                "
                                 >
                                     <v-icon>mdi-list-box-outline</v-icon>
                                 </v-btn>
@@ -96,7 +96,7 @@
                                 @keydown.escape="materiaisMod = false"
                             
                             >
-
+                                <ListMateriaisModal @fechar-Lista="fecharLista"></ListMateriaisModal>
                             </v-dialog>
                         </v-tooltip>
                         <v-dialog
@@ -119,21 +119,21 @@
             </v-card-text>
             <v-card-actions class="d-flex justify-end mt-0 mt-lg-5 ">
                 <v-btn
-                    color="blue accent-3"
+                    color="blue lighten-1"
                     text
                     @click="voltarEtapa"
                 >
                     Voltar
                 </v-btn>
                 <v-btn
-                    color="red accent-2"
+                    color="red lighten-1"
                     text
                     @click="fechar"
                 >
                     Fechar
                 </v-btn>
                 <v-btn 
-                    color="teal accent-3"
+                    color="teal lighten-1"
                     text
                     type="submit"
                 >
@@ -146,6 +146,7 @@
 <script>
 import ListaGenerica from '../ListaGenerica.vue';
 import { mapActions } from 'vuex';
+import ListMateriaisModal from './ListMateriaisModal.vue';
 export default {
     data(){
         return{
@@ -162,6 +163,9 @@ export default {
         ...mapActions('materiaMod', ['findMateria']),
         voltarEtapa() {
             this.$emit("voltar-etapa", 1);
+        },
+        fecharLista(e){
+            this.materiaisMod = e
         },
         async addToList(){
             let payload = {ID : this.CODIGO, QUANTIDADE : this.QUANTIDADE}
@@ -194,7 +198,7 @@ export default {
             ];
          },
     },
-    components: { ListaGenerica }
+    components: { ListaGenerica, ListMateriaisModal }
 }
 </script>
 

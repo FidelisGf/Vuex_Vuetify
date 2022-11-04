@@ -71,7 +71,7 @@
         console.log(res);
         if(res.status == 200){
           localStorage.setItem('token', res.data.access_token)
-          this.$router.push('/')
+          this.$router.push('/home')
           localStorage.setItem('user', this.username)
         }else{
           alert("Dados Invalidos")

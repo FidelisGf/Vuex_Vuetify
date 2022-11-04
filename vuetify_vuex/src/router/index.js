@@ -7,7 +7,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     name: 'home',
     beforeEnter: Guard.auth,
     component: HomeView,
@@ -72,7 +72,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/RegisterView.vue')
   },
   {
-    path: '/login',
+    path: '/',
     name: 'login',
     
     component: () => import(/* webpackChunkName: "about" */ '../views/LoginView.vue')
