@@ -65,11 +65,11 @@
                 @keydown.escape="active = false"
             >
                 <form ref="form" @submit.prevent="getTwoDates">
-                    <v-card>
-                        <v-card-title>
+                    <v-card class="cards-colors">
+                        <v-card-title class="white--text">
                             Despesas entre duas datas
                         </v-card-title>
-                        <v-card-text>
+                        <v-card-text class="white--text">
                             <v-row>
                                 <v-col 
                                     cols="6"
@@ -82,6 +82,7 @@
                                         required
                                         color="teal lighten-1"
                                         type="date"
+                                        dark
                                     ></v-text-field>
                                 </v-col>
                                 <v-col 
@@ -96,6 +97,7 @@
                                         required
                                         color="teal lighten-1"
                                         type="time"
+                                        dark
                                     ></v-text-field>
                                 </v-col>
                             </v-row>
@@ -111,6 +113,7 @@
                                         required
                                         color="teal lighten-1"
                                         type="date"
+                                        dark
                                     ></v-text-field>
                                 </v-col>
                                 <v-col 
@@ -125,6 +128,7 @@
                                         required
                                         color="teal lighten-1"
                                         type="time"
+                                        dark
                                     ></v-text-field>
                                 </v-col>
                             </v-row>
@@ -132,7 +136,7 @@
                         <v-card-actions class="d-flex justify-end">
                             <v-btn
                                 text 
-                                color="green"
+                                color="teal accent-2"
                                 type="submit"
                             >
                                 Listar 

@@ -24,7 +24,7 @@
             </div>
             <v-btn
                 color="teal accent-3"
-                class="mt-0 ml-1 ml-lg-5  font-weight-medium"
+                class="mt-0 ml-1 ml-lg-0  font-weight-medium"
                 dark
                 text
                 @click="estoqueMod = true"
@@ -270,7 +270,6 @@ export default {
             NOME: "",
             dialog : false,
             ID: "",
-            quantidade_inicial: 0,
             DESC: "",
             VALOR: 1,
             filtroAtivo : false,
@@ -284,13 +283,15 @@ export default {
             timeout : 2000,
             estoqueMod : false,
             e1 : 1,
+            quantidade_inicial : 0,
             renicializar : 0,
            
         };
     },
     computed: {
         ...mapGetters({listCategorias : 'categoryMod/listCategorias', activeEstoque : 'estoqueMod/getAdicionaEstoque',
-        countProdutos : 'produtoMod/getCount', listMedidas : 'medidaMod/getMedidas', materias : 'materiaMod/getMateriais'}),
+        countProdutos : 'produtoMod/getCount', listMedidas : 'medidaMod/getMedidas'
+        , materias : 'materiaMod/getMateriais'}),
         headers() {
             return [
                 { text: "Detalhes", value: "info", sortable: false },
@@ -306,22 +307,34 @@ export default {
             ];
         }
     },
+    watch: {
+        quantidade_inicial: function(val) {
+          if (val) {
+             this.setQntdProd(val)
+          }
+        },
+    },
     methods: {
-        ...mapActions('produtoMod', ['saveList', 'post', 'countProd']),
+        ...mapActions('produtoMod', ['saveList', 'post', 'countProd', 'setQntdProd']),
         ...mapActions('estoqueMod', ['activeAdicionaEstoque']),
         ...mapActions('medidaMod', ['getAll']),
+        ...mapActions('materiaMod', ['clearMateriais']),
         closeEstoqueMod(e){
-            console.log('Aqui')
+            
             this.estoqueMod = e
+
         },
         forceRerender (){
             this.renicializar += this.renicializar + 1;
         },
-        closeByChildEvent(e){
+        async closeByChildEvent(e){
+            this.clearMateriais()
+            await this.forceRerender()
             this.dialog = e.estado
             this.e1 = e.valor
         },
-        voltarEtapa(e){
+        async voltarEtapa(e){
+            await this.forceRerender()
             this.e1 = e
         },
         getMessage(e){
@@ -340,10 +353,11 @@ export default {
             await this.forceRerender()      
             this.registro = true
             this.dialog = false 
+            this.e1 = 1
+            this.clearMateriais()
             this.cleanProduct()
             this.Categoria = null
             this.loading = false
-
         },
         proximaEtapa(){
             this.e1 = 2

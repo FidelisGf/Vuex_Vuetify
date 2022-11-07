@@ -18,11 +18,17 @@
                     <DeleteGeneric :id="item.ID" small :route="route"></DeleteGeneric>        
                 </template>
                 <template v-slot:[`item.info`]="{ item }">
-                    <v-icon color="blue darken-4"  @click="info(item.ID)">mdi-alpha-i-circle</v-icon>
+                    <v-icon color="blue accent-1"  @click="info(item)">mdi-alpha-i-circle</v-icon>
                 </template>
                 <template v-slot:[`item.APROVADO`]="{ item }">
                     <span v-if="item.APROVADO == 'T'">APROVADO</span>
                     <span color="red" v-if="item.APROVADO == 'F'">PENDENTE</span>
+                </template>
+                <template v-slot:[`item.CUSTO`]="{item}">
+                    <span>R$ {{item.CUSTO.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</span>
+                </template>
+                <template v-slot:[`item.VALOR`]="{item}">
+                    <span>R$ {{item.VALOR.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</span>
                 </template>
                 <template v-slot:[`item.PRODUTOS`]="{ item }">
                     <span v-for="prod in item.PRODUTOS" :key="prod.id">
@@ -93,6 +99,14 @@
                 <EditProduct @close-edit="closeEdits" v-if="route == 'products'"></EditProduct>
                 <EditDespesaVue @close-edit-despesa="closeEdits"  v-if="route == 'despesas'"></EditDespesaVue>   
             </v-dialog>
+            <v-dialog
+                v-model="detail"
+                persistent
+                max-width="780px"
+                @keydown.escape="detail = false"
+            >
+                <DetailProduct v-if="route == 'products'"></DetailProduct>
+            </v-dialog>
         </v-row>
    </v-container>
 </template>
@@ -102,8 +116,8 @@ import axios from 'axios'
 import DeleteGeneric from './ModalComponents/Delete/DeleteGeneric.vue'
 import EditProduct from './ModalComponents/Edit/EditProduct.vue'
 import EditDespesaVue from './ModalComponents/Edit/EditDespesa.vue'
-import router from '@/router'
 import { mapActions, mapGetters} from 'vuex';
+import DetailProduct from './ModalComponents/Detail/DetailProduct.vue'
 export default {
     props: {
         route: String,
@@ -125,6 +139,7 @@ export default {
             filtroCategory : false,
             delete : false,
             Categoria : '',
+            detail : false,
             dtStart : '',
             dtFinal : '',
             change : false,
@@ -153,7 +168,6 @@ export default {
                     this.current_page = response.data.current_page
                     this.tempCurrent = this.current_page
                     this.totalPage = response.data.last_page
-                    
                 });
             }else{
                 axios.get("http://127.0.0.1:8000/api/" + route + "?page=" + this.current_page, { params: { opcao: this.opcao} }).then((response) => {
@@ -192,8 +206,9 @@ export default {
             }
             
         },
-        info(id){
-            router.push({ path: `/${this.route}/detail/${id}`}) 
+        info(item){
+            this.detail = true
+            this.saveGenerico(item)
         },
         clearPages() {
             this.current_page = 1;
@@ -266,7 +281,7 @@ export default {
         this.clearPages();
         this.getLista(this.route);
     },
-    components: { DeleteGeneric, EditProduct, EditDespesaVue }
+    components: { DeleteGeneric, EditProduct, EditDespesaVue, DetailProduct }
 }
 </script>
 

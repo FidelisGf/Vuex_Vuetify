@@ -14,9 +14,13 @@ export default{
             },
           },
         Products : [],
+        qntdProd  : 0,
         countProduto : 0,
     },
     getters: {
+        getQntdProd(state){
+            return state.qntdProd
+        },
         listProducts(state){
             return state.Products
         },
@@ -28,6 +32,9 @@ export default{
         }
     },
     mutations: {
+        setQntdProd(state, payload){
+            state.qntdProd = payload
+        },
         saveProduct(state, payload){
             state.product = payload
         },
@@ -52,6 +59,9 @@ export default{
         },
     },
     actions: {
+        setQntdProd(context, payload){
+            context.commit("setQntdProd", payload)
+        },
         saveCount(context ,payload){
             context.commit("saveCount", payload)
         },

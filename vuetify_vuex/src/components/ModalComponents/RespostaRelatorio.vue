@@ -1,16 +1,14 @@
 <template> 
-    <v-card>
+    <v-card class="relatorios">
         <v-card-actions>
             <v-btn 
                 icon
+                class="ml-n3 mt-n2"
                 @click="closeRelatorio"
-            ><v-icon color="red">mdi-close</v-icon></v-btn>
+            ><v-icon color="red accent-1">mdi-close</v-icon></v-btn>
         </v-card-actions>
-        <v-card-title class="mt-n5">
-            <span  class="text-h5 ">{{filtro}}</span>
-        </v-card-title>
-        <v-card-subtitle v-if="entreDatas" class="mt-2 ml-2 text-h8" ><p>De : {{starterDate}}  até : {{endDate}}</p></v-card-subtitle>
-        <v-card-text class="mt-3">
+        <v-card-subtitle v-if="entreDatas" class="mt-2 ml-2 text-h8 white--text" ><p>De : {{starterDate}}  até : {{endDate}}</p></v-card-subtitle>
+        <v-card-text class="mt-3 white--text">
             <v-row v-if="!ntTable">
                 <ListaGenerica v-if="!pedidos && !vendas" :route="'products'" :opcao="filtro" :headers="headers"></ListaGenerica>
                 <ListaGenerica v-if="pedidos" :route="'pedidos'" :opcao="filtro" :headers="headers" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
@@ -108,6 +106,6 @@ export default {
 }   
 </script>
 
-<style lang="scss" scoped>
-
+<style lang="scss">
+   
 </style>

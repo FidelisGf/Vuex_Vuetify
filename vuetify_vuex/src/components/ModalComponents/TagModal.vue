@@ -36,11 +36,11 @@
                             Tipo de Despesa
                     </v-btn>
             </template>
-            <v-card>
-                <v-card-title>
+            <v-card class="cards-colors">
+                <v-card-title class="white--text">
                     Cadastro tipo de despesa
                 </v-card-title>
-                <v-card-subtitle>
+                <v-card-subtitle class="white--text">
                     Insira o nome do tipo abaixo...
                 </v-card-subtitle>
                 <v-card-text>
@@ -48,19 +48,20 @@
                         label="Nome do tipo de despesa"
                         required
                         v-model="NOME"
+                        dark
                         color="teal lighten-1"
                     ></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-btn
-                        color="red lighten-1"
+                        color="red accent-1"
                         text
                         @click="active = false"
                     >
                     Fechar
                     </v-btn>
                     <v-btn 
-                        color="green lighten-1"
+                        color="teal accent-2"
                         text
                         @click="cadastrarTag"
                     >

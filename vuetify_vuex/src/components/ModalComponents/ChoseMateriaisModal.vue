@@ -4,7 +4,7 @@
             <v-card-title  class="white--text text-h8">
                 <p v-if="!notification">Escolha os Materiais do Produto...</p>
 
-                <v-alert v-if="notification" type="success" v-model="notification" 
+                <v-alert v-if="notification && msg.type == 'success'" type="success" v-model="notification" 
                 dismissible dense shaped
                 outlined class="not" >
                     {{msg.text }}  
@@ -145,7 +145,7 @@
 </template>
 <script>
 import ListaGenerica from '../ListaGenerica.vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import ListMateriaisModal from './ListMateriaisModal.vue';
 export default {
     data(){
@@ -170,7 +170,7 @@ export default {
             this.materiaisMod = e
         },
         async addToList(){
-            let payload = {ID : this.CODIGO, QUANTIDADE : this.QUANTIDADE}
+            let payload = {ID : this.CODIGO, QUANTIDADE : this.QUANTIDADE, QNTD_PROD : this.qntdProd}
             this.msg = await this.findMateria(payload)
             this.notification = true
             this.hideSucess()
@@ -201,6 +201,7 @@ export default {
        
     },
     computed: {
+        ...mapGetters({qntdProd : 'produtoMod/getQntdProd'}),
         headers() {
             return [
                 {

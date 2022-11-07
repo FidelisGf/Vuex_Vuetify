@@ -14,7 +14,7 @@
         <v-card-title  class="text-h6 white--text font-weight-bold mt-n5">
             Lista de Matérias-Primas do produto.
         </v-card-title>
-        <v-card-subtitle class="mt-1 ml-3 white--text"><p >Custo total para produção : <b class="lime--text">R$ {{total}}</b> </p></v-card-subtitle>
+        <v-card-subtitle class="mt-1 ml-3 white--text"><p >Custo total para produção : <b class="lime--text"> {{total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</b> </p></v-card-subtitle>
         <v-card-text>
             <v-list color="#303030">
                 <v-list-item color="#303030"  v-for="item in materias" :key="item.ID">
@@ -30,11 +30,11 @@
                                     </p>      
                                 </v-card-title>
                                 <v-card-subtitle class="mt-n5 white--text"> 
-                                        <p>Custo do Item : R${{ item.CUSTO}}</p>
+                                        <p>Custo do Item : {{ item.CUSTO.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>
                                         <p class="mt-n3">Quantidade : {{item.QUANTIDADE}} </p>
                                 </v-card-subtitle>
                                 <v-card-text class="mt-n7 white--text">
-                                    <p>Sub total desse Item : R$ {{item.CUSTO * item.QUANTIDADE}}</p>
+                                    <p>Sub total desse Item : {{(item.CUSTO * item.QUANTIDADE).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>
                                 </v-card-text>
                                 <v-divider class="mt-n3" color="white"></v-divider>
                             </v-card>

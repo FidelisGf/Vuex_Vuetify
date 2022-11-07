@@ -27,6 +27,10 @@ export default{
             }
          
         },
+        clearMateriais(state){
+            state.materiais = null
+            state.custo_total = 0
+        },
         somaCustoTotal(state, payload){
             state.custo_total += parseFloat(payload)
         },
@@ -53,6 +57,9 @@ export default{
         }
     },
     actions: {
+        clearMateriais(context){
+            context.commit("clearMateriais")
+        },
         saveCustoTotal(context, payload){
             context.commit("saveCustoTotal", payload)
         },
@@ -102,10 +109,16 @@ export default{
             try {
                 await materiaService.findById(payload.ID).then((res)=>{
                     let obj = {ID : res.data.ID,  NOME : res.data.NOME, CUSTO : parseFloat(res.data.CUSTO), QUANTIDADE : parseInt(payload.QUANTIDADE)}
-                    context.commit("saveMaterialInList", obj)
-                    context.commit("somaCustoTotal", parseFloat(res.data.CUSTO * payload.QUANTIDADE))
-                    payload2.text = "Item adicionado com sucesso !"
-                    payload2.type = "success"
+                    if(res.data.QUANTIDADE >= (payload.QUANTIDADE * payload.QNTD_PROD)){
+                        console.log((payload.QUANTIDADE * payload.QNTD_PROD))
+                        context.commit("saveMaterialInList", obj)
+                        context.commit("somaCustoTotal", parseFloat(res.data.CUSTO * payload.QUANTIDADE))
+                        payload2.text = "Item adicionado com sucesso !"
+                        payload2.type = "success"
+                    }else{
+                        payload2.text = "Quantidade Insuficiente !"
+                        payload2.type = "danger"
+                    }
                 })
                 return payload2
             } catch (error) {

@@ -4,7 +4,7 @@ export default{
     namespaced: true,
     state: {
         pedidos: [],
-        valor_Total_Pedidos : null,
+        valor_Total_Pedidos : 0,
         cod : null,
         pedidoAtual : {
             codigo : null,

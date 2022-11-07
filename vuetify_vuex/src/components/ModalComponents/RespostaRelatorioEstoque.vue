@@ -1,15 +1,13 @@
 <template>
-    <v-card>
+    <v-card class="relatorios">
         <v-card-actions>
             <v-btn 
                 icon
                 @click="emitClose"
-            ><v-icon color="red">mdi-close</v-icon></v-btn>
+                class="ml-n3 mt-n2"
+            ><v-icon color="red accent-1">mdi-close</v-icon></v-btn>
         </v-card-actions>
-        <v-card-title class="mt-n5">
-            <span  class="text-h5">{{filtro}}</span>
-        </v-card-title>
-        <v-card-text class="mt-5">
+        <v-card-text class="mt-5 white--text">
             <v-row>
                 <ListaGenerica :route="'estoques'" :headers="headers"  :opcao="filtro" ></ListaGenerica>
             </v-row>

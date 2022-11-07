@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-card class="cards-colors">
         <v-snackbar
             v-model="registro"
             :timeout="timeout"
@@ -7,7 +7,7 @@
             {{this.msg}}
             <template v-slot:action="{ attrs }">
             <v-btn
-                color="red"
+                color="red accent-1"
                 dark
                 icon
                 v-bind="attrs"
@@ -22,10 +22,11 @@
                 icon
                 text 
                 dark 
+                class="ml-n3 mt-n1"
                 @click="closeEdit"
-            ><v-icon color="red">mdi-close</v-icon></v-btn>
+            ><v-icon color="red accent-2">mdi-close</v-icon></v-btn>
         </v-card-actions>
-        <v-card-title>
+        <v-card-title class="white--text">
             <span  class="mt-n3 text-h5">Editar Item: <b>{{NOME}} #{{ID}}</b></span>
         </v-card-title>
         <v-card-text>
@@ -39,6 +40,7 @@
                         <v-text-field
                             label="Nome do produto"
                             required
+                            dark
                             v-model="NOME"
                             counter="60"
                             color="teal lighten-1"
@@ -52,6 +54,7 @@
                     >
                         <v-text-field
                             v-model="DESC"
+                            dark
                             label="Desc do produto"
                             counter="120"
                             color="teal lighten-1"
@@ -68,6 +71,7 @@
                             label="Valor do produto"
                             persistent-hint
                             required
+                            dark
                             color="teal lighten-1"
                             value="10.00"
                             prefix="R$"
@@ -86,6 +90,7 @@
                                 v-model="Categoria"
                                 color="teal lighten-1"
                                 item-text="NOME_C" 
+                                dark
                                 return-object
                                 :loading="loading"
                             ></v-select>
@@ -101,6 +106,7 @@
                                 label="Unidade de Medida"
                                 v-model="Medida"
                                 color="teal lighten-1"
+                                dark
                                 item-text="NOME" 
                                 return-object
                                 required
@@ -109,7 +115,7 @@
                         </v-col>
                 </v-row>
             </v-container>
-            <small >*Manipule os dados basicos do produto.</small>
+            <small class="white--text" >*Manipule os dados basicos do produto.</small>
         </v-card-text>
         <v-card-actions>
             <v-spacer></v-spacer>

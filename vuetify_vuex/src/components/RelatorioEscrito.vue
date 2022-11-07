@@ -2,36 +2,36 @@
     <v-container>
         <v-row>
             <v-col>
-                <v-card>
-                        <v-card-title>
+                <v-card color="#1e1e1e">
+                        <v-card-title class="white--text">
                             Tipo de Pagamentos 
                         </v-card-title>
-                        <v-card-text>
-                            <v-list>
+                        <v-card-text class="white--text">
+                            <v-list color="#1e1e1e">
                                 <v-list-item >
                                     <v-list-item-content>
-                                        <v-list-item-title class="ml-2">
+                                        <v-list-item-title class="ml-2 white--text">
                                             <p class="text-h5"><b>Recebimento Total :{{total}}</b></p>
                                         </v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
                                 <v-list-item >
                                     <v-list-item-content>
-                                        <v-list-item-title class="ml-2">
+                                        <v-list-item-title class="ml-2 white--text">
                                             <p><b>Pagamento Por PIX : {{pix}}</b></p>
                                         </v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
                                 <v-list-item >
                                     <v-list-item-content>
-                                        <v-list-item-title class="ml-2">
+                                        <v-list-item-title class="ml-2 white--text">
                                             <p><b>Pagamento Por Cartao : {{cartao}}</b></p>
                                         </v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
                                 <v-list-item >
                                     <v-list-item-content>
-                                        <v-list-item-title class="ml-2">
+                                        <v-list-item-title class="ml-2 white--text">
                                             <p><b>Pagamento Por Dinheiro: {{dinheiro}}</b></p>
                                         </v-list-item-title>
                                     </v-list-item-content>

@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-card class="cards-colors">
         <v-snackbar
             v-model="registro"
             :timeout="timeout"
@@ -23,11 +23,12 @@
                 text
                 dark
                 @click="closeEdit"
+                class="ml-n3 mt-n1"
             >
-            <v-icon color="red">mdi-close</v-icon>
+            <v-icon color="red accent-2">mdi-close</v-icon>
             </v-btn>
         </v-card-actions>
-        <v-card-title class="mt-n3 text-h5">
+        <v-card-title class="mt-n3 text-h5 white--text">
             Edição de Despesa
         </v-card-title>
             <v-card-text>
@@ -43,6 +44,7 @@
                             v-model="DESC"
                             color="teal lighten-1"
                             :loading="loading"
+                            dark
                         ></v-text-field>
                     </v-col>
                     <v-col 
@@ -60,6 +62,7 @@
                             min="0"
                             prefix="R$"
                             :loading="loading"
+                            dark
                         ></v-text-field>
                     </v-col>
                     <v-col 
@@ -75,6 +78,7 @@
                             color="teal lighten-1"
                             type="date"
                             :loading="loading"
+                            dark
                     
                         ></v-text-field>   
                     </v-col>
@@ -91,6 +95,7 @@
                             color="teal lighten-1"
                             type="time"
                             :loading="loading"
+                            dark
                         ></v-text-field>
                        
                     </v-col>
@@ -107,13 +112,14 @@
                             item-text="NOME" 
                             return-object
                             :loading="loading"
+                            dark
                         ></v-select>       
                     </v-col>
                 </v-row>
             </v-card-text>
             <v-card-actions class="mt-n4 d-flex justify-end">
                 <v-btn 
-                    color="green darken-1"
+                    color="green accent-3"
                     text
                     @click="editDespesa"
                 >

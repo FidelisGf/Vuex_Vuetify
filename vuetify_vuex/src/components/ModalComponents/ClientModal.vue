@@ -32,7 +32,7 @@
                     v-bind="attrs"
                     v-on="on"
                     >
-                        <v-icon aria-hidden="false" color="teal lighten-1" >mdi-account</v-icon>
+                        <v-icon aria-hidden="false" color="teal accent-1" >mdi-account</v-icon>
                     </v-btn>
             </template>
             <v-card v-if="!vinculado" class="cards-colors">

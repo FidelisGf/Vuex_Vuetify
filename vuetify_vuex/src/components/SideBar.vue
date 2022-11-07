@@ -198,9 +198,15 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
 .bg-active {
   background-color: #4CAF50;
   color : white !important;
+}
+.cards-colors{
+  background-color: rgb(48, 48, 48) !important;
+}
+.relatorios{
+  background-color: rgb(30, 30, 30) !important;
 }
 </style>

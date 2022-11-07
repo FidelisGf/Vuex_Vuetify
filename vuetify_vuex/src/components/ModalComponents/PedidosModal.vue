@@ -16,7 +16,7 @@
                         icon
                         @click="active = true" 
                     >
-                        <v-icon aria-hidden="false" dark color="teal lighten-1">mdi-cart</v-icon>
+                        <v-icon aria-hidden="false" dark color="teal accent-1">mdi-cart</v-icon>
                     </v-btn>
                 </template>
             <v-card class="cards-colors">
@@ -34,7 +34,7 @@
                 <v-card-title  class="text-h5 white--text mt-n5">
                     Lista de Produtos da Venda
                 </v-card-title>
-                <v-card-subtitle class="mt-1 ml-3 total" ><p>Valor total : <b>R$ {{vlTotal}}</b> </p></v-card-subtitle>
+                <v-card-subtitle class="mt-1 ml-3 total" ><p>Valor total : <b>{{vlTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</b> </p></v-card-subtitle>
                 <v-card-text>
             <v-list class="cards-colors">
                 <v-list-item  v-for="item in pedidos" :key="item.id">
@@ -52,13 +52,13 @@
                             </v-card-title>
                             <v-card-subtitle class="mt-n5 white--text">
                                 <p class="mt-n2 info_prod">
-                                    <b class="white--text font-weight-regular">Valor : </b>R$ {{ item.valor}}     
+                                    <b class="white--text font-weight-regular">Valor : </b>R$ {{item.valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}     
                                     
                                 </p>
                                 <p class="mt-n2 info_prod">
                                     <b class="white--text font-weight-regular"> Quantidade :</b> {{item.quantidade}}  {{item.medida}}
                                 </p>
-                                <p class="mt-n2 info_prod font-weight-regular"><b class="white--text">Sub total  : </b>R$ {{item.valor * item.quantidade}}</p>
+                                <p class="mt-n2 info_prod font-weight-regular"><b class="white--text">Sub total  : </b>{{(item.valor * item.quantidade).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>
                             </v-card-subtitle>
                            
                             <v-divider class="mt-n3 " color="white"></v-divider>

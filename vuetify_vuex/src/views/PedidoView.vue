@@ -3,8 +3,9 @@
         <v-row>
             <v-col cols="12">
                 <v-card 
-                     elevation="21">
-                    <v-card-title class="text-h5 font-weight-bold">
+                     elevation="21"
+                     class="cards-colors">
+                    <v-card-title class="text-h5 font-weight-bold white--text">
                         Registrar uma Venda
                         <v-tooltip bottom>      
                             <template v-slot:activator="{ on, attrs }">
@@ -17,7 +18,7 @@
                                     @click="findBy = true"
                                     icon 
                                 >
-                                    <v-icon aria-hidden="false" dark color="teal lighten-1">mdi-magnify</v-icon>
+                                    <v-icon aria-hidden="false" dark color="teal accent-1">mdi-magnify</v-icon>
                                 </v-btn>
                                     <v-dialog
                                             v-model="findBy"
@@ -25,18 +26,18 @@
                                             max-width="650"
                                             @keydown.escape="findBy = false"
                                         >
-                                        <v-card>
+                                        <v-card class="cards-colors">
                                             <v-card-actions>
                                                 <v-btn
-                                                    color="red darken-1"
+                                                    color="red accent-1"
                                                     text
                                                     @click="findBy = false"
                                                     icon
                                                     >
-                                                    <v-icon color="red darken-4">mdi-close</v-icon>
+                                                    <v-icon color="red accent-1">mdi-close</v-icon>
                                                 </v-btn>
                                             </v-card-actions>    
-                                            <v-card-title  class="text-h6 font-weight-bold mt-n4">
+                                            <v-card-title  class="text-h6 font-weight-bold mt-n4 white--text">
                                                 Digite o Codigo do Pedido 
                                             </v-card-title>
                                             <v-card-text class="mt-n2">
@@ -44,6 +45,7 @@
                                                     v-model="id"
                                                     label="Codigo..."
                                                     outlined
+                                                    dark
                                                     clearable
                                                     dense 
                                                     required
@@ -53,7 +55,7 @@
                                             </v-card-text>
                                             <v-card-actions class="d-flex justify-end mt-n8">
                                                 <v-btn
-                                                    color="green darken-1"
+                                                    color="teal accent-1"
                                                     text
                                                     @click="findPedidoById"
                                                     >
@@ -63,18 +65,18 @@
                                         </v-card> 
                                     </v-dialog>    
                             </template>
-                            <span>Carregar um Pedido</span>
+                            <span class="white--text">Carregar um Pedido</span>
                           </v-tooltip>
                     </v-card-title>
-                    <v-card-subtitle class="font-weight-medium" >Favor informar todos os campos necessários</v-card-subtitle>
+                    <v-card-subtitle class="font-weight-medium white--text" >Favor informar todos os campos necessários</v-card-subtitle>
                     <v-card-subtitle v-if="sucesso"><v-alert  type="success" v-model="sucesso" dismissible dense shaped
-                        outlined class="mt-n5">Produto adicionado a lista com sucesso !</v-alert></v-card-subtitle>
+                        outlined class="mt-n5 white--text">Produto adicionado a lista com sucesso !</v-alert></v-card-subtitle>
                     <v-card-subtitle v-if="fail && sucesso == false"><v-alert type="error" v-model="fail" dismissible dense shaped
-                        outlined class="mt-n5">Algo de errado ocorreu, verifique se o produto existe !</v-alert></v-card-subtitle>
+                        outlined class="mt-n5 white--text">Algo de errado ocorreu, verifique se o produto existe !</v-alert></v-card-subtitle>
                     <v-card-subtitle v-if="registro"><v-alert type="success" v-model="registro" dismissible dense shaped
-                        outlined class="mt-n5">Pedido Registrado com sucesso !</v-alert></v-card-subtitle>
+                        outlined class="mt-n5 white--text">Pedido Registrado com sucesso !</v-alert></v-card-subtitle>
                     <v-card-subtitle v-if="sucessFind"><v-alert type="success" v-model="sucessFind" dismissible dense shaped
-                        outlined class="mt-n5">Pedido carregado com sucesso !</v-alert></v-card-subtitle>
+                        outlined class="mt-n5 white--text">Pedido carregado com sucesso !</v-alert></v-card-subtitle>
                     <v-row dense class="mt-1">
                         <v-col cols="12" md="12" sm="6">
                             <form @submit.prevent="addLista" class="d-flex justify-center ml-2 ml-md-6 ml-sm-6 ml-lg-6">
@@ -86,8 +88,9 @@
                                             outlined
                                             clearable
                                             dense 
+                                            dark
                                             required
-                                            color="purple lighten-1"
+                                            color="teal accent-2"
                                             @keydown.f2="buscaLista"
                                             type="number"
                                             min="0"
@@ -101,9 +104,10 @@
                                     class="ml-3 w-25"
                                     label="Quantidade do produto"
                                     outlined
+                                    dark
                                     clearable
                                     dense 
-                                    color="purple lighten-1"
+                                    color="teal accent-2"
                                     required
                                     v-model="produto.quantidade"
                                     type="number"
@@ -115,14 +119,13 @@
                                         <v-btn
                                             v-bind="attrs"
                                             v-on="on"
-                                            color="purple lighten-1"
                                             class="ml-3"
                                             dark
                                             rules="required|min:1"
                                             type="submit"
                                             icon 
                                         >
-                                            <v-icon aria-label="Adicionar a lista" aria-hidden="false" dark color="teal lighten-1">mdi-plus-circle-outline</v-icon>
+                                            <v-icon aria-label="Adicionar a lista" aria-hidden="false" dark color="teal accent-1">mdi-plus-circle-outline</v-icon>
                                         </v-btn>
                                     </template>
                                     <span>Adicionar a lista</span>
@@ -139,7 +142,8 @@
                                 label="Escolha o metodo de pagamento"
                                 dense
                                 outlined
-                                color="purple lighten-1"
+                                dark
+                                color="teal accent-2"
                             ></v-select>
                         </v-col>
                         <v-col
@@ -154,9 +158,10 @@
                                 label="Dinheiro Pago"
                                 required
                                 outlined
+                                dark
                                 value="0.00"
                                 prefix="R$"
-                                color="purple lighten-1"
+                                color="teal accent-2"
                             ></v-text-field>
                             <v-text-field
                                 v-model="troco"
@@ -165,8 +170,9 @@
                                 label="Troco"
                                 outlined
                                 readonly
+                                dark
                                 min="-0.01"
-                                color="purple lighten-1"
+                                color="teal accent-2"
                                 prefix="R$"
                             ></v-text-field>
                             <v-text-field
@@ -176,8 +182,9 @@
                                 label="Valor Total"
                                 outlined
                                 readonly
+                                dark
                                 prefix="R$"
-                                color="purple lighten-1"
+                                color="teal accent-2"
                             ></v-text-field>
                         </v-col>
                         <v-col cols="6" sm="6" class="d-flex justify-center ml-2 ml-md-6 ml-sm-6 ml-lg-6">
@@ -187,7 +194,8 @@
                                 dense
                                 v-model="escolhaSituacao"
                                 outlined
-                                color="purple lighten-1"
+                                dark
+                                color="teal accent-2"
                             ></v-select>
                         </v-col>
                         <v-col cols="6" class="d-flex ml-sm-4 ml-xs-4 ml-lg-4 ml-md-4 ml-xl-4 mt-n4">
@@ -198,7 +206,7 @@
                             :loading="loading"
                             :disabled="loading"
                             @click="gerarVenda"
-                            color="purple darken-1"
+                            color="teal accent-2"
                           >
                             Gerar Venda
                           </v-btn>
@@ -476,13 +484,7 @@ export default {
     .item-name{
         font-size: 14px;
     }
-    .gerador:hover{
-        cursor: pointer;
-        transition: .4s .02s ease-in all;
-        border-color: #ad07f5;
-        background-color: rgb(238, 238, 235);
-        
-    }
+   
 
 
 </style>
