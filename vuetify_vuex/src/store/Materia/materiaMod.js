@@ -25,21 +25,28 @@ export default{
             }else{
               state.materiais.push(payload)
             }
-            console.log(state.materiais)
+         
         },
         somaCustoTotal(state, payload){
             state.custo_total += parseFloat(payload)
         },
         removeMateria(state, payload){
+           
             state.custo_total = parseFloat(state.custo_total - (payload.QUANTIDADE * payload.CUSTO))
             state.materiais = state.materiais.filter(o => o.ID !== payload.ID)
         },
-        removeQntdMateria(state, payload){
-            const exist = state.materiais.find(o => o.ID == payload.ID)
-            if(exist){
-            exist.QUANTIDADE =parseInt( payload.QUANTIDADE )
+        async removeQntdMateria(state, payload){
+            if(payload.check == true){
+                const exist = state.materiais.find(o => o.ID == payload.ID)
+                if(exist){
+                exist.QUANTIDADE =parseInt( payload.QUANTIDADE )
+                }
+                console.log(state.materiais)
+            }else{
+               
+                console.log(state.materiais)
             }
-            console.log(state.materiais)
+           
         },
         saveCustoTotal(state, payload){
             state.custo_total = payload
@@ -52,8 +59,26 @@ export default{
         removeMateria(context, payload){
             context.commit('removeMateria', payload)
         },
-        removeQntdMateria(context, payload){
-            context.commit('removeQntdMateria', payload)
+        async removeQntdMateria(context, payload){
+            payload.check = false
+            let check = await context.dispatch("checkQuantidade", payload)
+           
+            let msg = {text : '', type : ''}
+            if(check){
+               
+                msg.type = "success"
+                msg.text = "Quantidade Alterada com sucesso !"
+                payload.check = true
+                context.commit('removeQntdMateria', payload)
+                return msg
+            }else{
+               
+                msg.type = "danger"
+                msg.text = "Quantidade Insuficiente !"
+                context.commit("removeQntdMateria", payload)
+                return msg
+            }
+           
         },
        setMateriais(context, payload){
             context.commit("setMateriais", payload)
@@ -92,7 +117,7 @@ export default{
        async checkQuantidade(context, payload){
             let flag = false
             try {
-                console.log(payload)
+                
                 await materiaService.findById(payload.ID).then((res)=>{
                     console.log(res.data)
                     if(res.data.QUANTIDADE >= payload.QUANTIDADE){

@@ -113,21 +113,25 @@ export default {
             msg : {
                 text : '',
                 type : '',
-            }
+            },
+            oldQntd : null,
         }
    },
    methods:{
         ...mapActions('materiaMod', ['removeMateria', 'removeQntdMateria', 'saveCustoTotal', 'checkQuantidade']),
         activeManipula(item){
             this.temp = item
+            this.oldQntd = item.QUANTIDADE
             this.manipulaQuantidade = true
         },
         fechar(){
             this.$emit('fechar-Lista', false)
         },
-        async removeFromList(item){
-            if(parseInt(item.QUANTIDADE) <= 0){
-                await this.removeMateria(item)
+        async removeFromList(){
+            let tmp = this.temp
+            
+            if(parseInt(tmp.QUANTIDADE) <= 0){
+                await this.removeMateria(tmp)
                 this.valorTotal = 0
                 this.materias.forEach(element => {
                    this.valorTotal += parseFloat(element.QUANTIDADE * element.CUSTO)
@@ -135,24 +139,16 @@ export default {
                 this.saveCustoTotal(parseFloat( this.valorTotal ))
                 this.manipulaQuantidade = false
             }else{
-                let payload = {ID : item.ID, QUANTIDADE : item.QUANTIDADE}
-                let checaQuantidade = await this.checkQuantidade(payload)
-                if(checaQuantidade == true){
-                    this.removeQntdMateria(item)
-                    this.valorTotal = 0
-                    this.materias.forEach(element => {
-                    this.valorTotal += parseFloat(element.QUANTIDADE * element.CUSTO)
-                    });
-                    this.saveCustoTotal(parseFloat( this.valorTotal ))
-                    this.notification = true
-                    this.msg.text = "Quantidade Alterada !"
-                    this.msg.type = "success"
-                }else if(!checaQuantidade){
-                    this.notification = true
-                    this.msg.text = "Quantidade disponivel insuficiente !"
-                    this.msg.type = "danger"
+                this.msg = await this.removeQntdMateria(tmp)
+                if(this.msg.type == 'danger'){
+                    this.temp.QUANTIDADE = this.oldQntd
                 }
-                
+                this.valorTotal = 0
+                this.materias.forEach(element => {
+                this.valorTotal += parseFloat(element.QUANTIDADE * element.CUSTO)
+                });
+                this.saveCustoTotal(parseFloat( this.valorTotal ))
+                this.notification = true
             }
         }
    },

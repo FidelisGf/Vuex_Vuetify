@@ -20,11 +20,11 @@
         </v-snackbar>
         <v-col cols="12" md="12" sm="12"  lg="6" class="d-flex flex-column-reverse flex-md-row justify-center justify-lg-start">
             <div class="ml-0 pl-0 d-flex justify-center">
-                <MaterialModal class="ml-sm-0  pl-sm-0  "></MaterialModal>
+                <MaterialModal class="ml-sm-0  pl-sm-0 ml-lg-10  "></MaterialModal>
             </div>
             <v-btn
                 color="teal accent-3"
-                class="mt-0 ml-1  font-weight-medium"
+                class="mt-0 ml-1 ml-lg-5  font-weight-medium"
                 dark
                 text
                 @click="estoqueMod = true"
@@ -227,7 +227,7 @@
                 elevation="8"
                 height="57px"
                 width="200px"
-                class=" exibeGasto ml-lg-6 ml-md-3  mt-n5 "
+                class=" exibeGasto ml-lg-10 ml-md-3  mt-n5 "
             >
                 <p style="font-size: 16px;" class="ml-3 mt-2 font-weight-medium">Produtos Ativos</p>
                 <p style="font-size : 14px;" class="mt-n4 ml-5 font-weight-bold">Quantidade Atual : {{countProdutos}}</p>

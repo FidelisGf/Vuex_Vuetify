@@ -10,6 +10,7 @@
                     :items="listaProdutos"
                     :items-per-page="per_page"
                     hide-default-footer       
+                    dark
                     class="elevation-2 mt-n5"
                 >
                 <template v-slot:[`item.actions`]="{ item }" >
