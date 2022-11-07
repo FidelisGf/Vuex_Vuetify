@@ -10,29 +10,42 @@
             Detalhes do Produto : # {{produto.NOME}}
         </v-card-title>
         <v-card-text >
-            <v-row class="d-flex flex-column">
-                <v-col class="white--text d-flex justify-center text-h6 font-italic">
-                    <p >
-                        <b class="font-italic titulo">Descrição : </b>{{produto.DESC}}
-                    </p>
+            <v-row class="d-flex flex-column flex-md-row mt-4">
+                <v-col class="white--text d-flex justify-space-around text-h6 font-italic">
                     <p>
                         <b class="font-italic titulo pl-5">Nome : </b>{{produto.NOME}}
                     </p>
                 </v-col>
-                <v-col class="white--text d-flex justify-center text-h6   font-italic">
+                <v-col class="white--text d-flex justify-space-around text-h6   font-italic">
+                    <p>
+                        <b class="font-italic titulo">Descrição : </b>{{produto.DESC}}
+                    </p>
+                </v-col>
+
+            </v-row>
+            <v-row class="d-flex flex-column flex-md-row">
+                
+                <v-col class="white--text d-flex justify-space-around text-h6   font-italic">
                     <p>
                         <b class="font-italic titulo">Codigo  : </b>{{produto.ID}}
                     </p>
+                   
+                </v-col>
+                <v-col class="white--text d-flex justify-space-around text-h6   font-italic">
                     <p>
                         <b class="font-italic titulo pl-5">Valor : </b>{{produto.VALOR}}
                     </p>
                 </v-col>
-                <v-col class="white--text d-flex justify-center text-h6  font-italic">
+            </v-row>
+            <v-row class="d-flex flex-column flex-md-row">
+                <v-col class="white--text d-flex justify-space-around text-h6  font-italic">
                     <p>
-                        <b class="font-italic titulo">Categoria : </b>{{produto.category.NOME_C}}
-                    </p>
+                        <b class="font-italic titulo ml-n10">Categoria : </b>{{produto.category.NOME_C}}
+                    </p>  
+                </v-col>
+                <v-col class="white--text d-flex justify-space-around text-h6  font-italic">
                     <p>
-                        <b class="font-italic titulo pl-5">Medida : </b>{{produto.medida.NOME}}
+                        <b class="font-italic titulo ">Medida : </b>{{produto.medida.NOME}}
                     </p>
                 </v-col>
             </v-row>
