@@ -2,7 +2,7 @@ import categoryService from "@/service/categoryService"
 export default {
     namespaced: true,
     state: {
-        Teste : 'Normal',
+       
         Categorias : [],
     },
     getters: {
@@ -14,9 +14,6 @@ export default {
         },
     },
     mutations: {
-        saveTest(state){
-            state.Teste = 'Mudou'
-        },
         beginListCategoria(state, payload){
             state.Categorias = payload
         },

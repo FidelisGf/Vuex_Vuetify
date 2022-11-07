@@ -129,7 +129,6 @@ export default {
         },
         async removeFromList(){
             let tmp = this.temp
-            
             if(parseInt(tmp.QUANTIDADE) <= 0){
                 await this.removeMateria(tmp)
                 this.valorTotal = 0

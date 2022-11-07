@@ -15,25 +15,25 @@
             icon 
             small
             >
-              <v-icon color="red darken-4" >mdi-delete</v-icon>
+              <v-icon color="red accent-3" >mdi-delete</v-icon>
             </v-btn>
         </template>
-        <v-card>
+        <v-card class="cards-colors">
           
-          <v-card-title class="text-h5">
+          <v-card-title class="text-h5 white--text">
             Deseja mesmo deletar esse Item ?
           </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
-              color="green darken"
+              color="green accent-3"
               text
               @click="active = false"
             >
               Cancelar
             </v-btn>
             <v-btn
-              color="red darken-1"
+              color="red accent-3"
               text
               @click="deleteItem(route)"
             >
@@ -59,13 +59,12 @@ export default {
    },
    methods:{
         ...mapActions('produtoMod', ['deleteInList']),
-        ...mapActions('utilMod', ['desativateDelete']),
         deleteItem(route){
             axios.delete("http://127.0.0.1:8000/api/" + route  + "/"+ this.id ).then((res)=>{
                 if(res.status == 200){
                     alert('Item Deletado com sucesso')
                     this.deleteInList(this.id)
-                    this.desativateDelete()
+                    this.active = false
                 }
             })
         }
@@ -80,6 +79,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
 
 </style>

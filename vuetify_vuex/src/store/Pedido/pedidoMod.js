@@ -5,8 +5,6 @@ export default{
     state: {
         pedidos: [],
         valor_Total_Pedidos : null,
-        showListaPedidos : false,
-        showListaRapidaProdutos : false,
         cod : null,
         pedidoAtual : {
             codigo : null,
@@ -139,7 +137,6 @@ export default{
             } catch (error) {
                 return getProduto
             }
-          
         },
         async geraVenda(context, payload){
             let gera = false
@@ -158,7 +155,6 @@ export default{
                 alert('Falha ao Gerar Venda')
                 return gera
             }
-        
         },
         async findPedido(context, payload){
             try {
@@ -180,8 +176,6 @@ export default{
             } catch (error) {
                 alert('Pedido não encontrado')
             }
-
-         
         }
     },
 }

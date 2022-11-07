@@ -11,14 +11,13 @@
         </v-card-title>
         <v-card-text class="mt-5">
             <v-row>
-                <ListaGenerica :route="'estoques'" :opcao="filtro"></ListaGenerica>
+                <ListaGenerica :route="'estoques'" :headers="headers"  :opcao="filtro" ></ListaGenerica>
             </v-row>
         </v-card-text>
     </v-card>
 </template>
 <script>
 import ListaGenerica from '../ListaGenerica.vue';
-import {mapActions} from 'vuex'
 export default {
     props: {
         filtro : String,
@@ -62,17 +61,10 @@ export default {
         },
     },
     methods: {
-        ...mapActions('utilMod', ['setHeader']),
-        getLista() {
-            this.setHeader(this.headers)
-        },
         emitClose(){
             console.log('chegou')
             this.$emit('closeModal', false)
         }
-    },
-    created() {
-        this.getLista()
     },
     components: { ListaGenerica }
 }

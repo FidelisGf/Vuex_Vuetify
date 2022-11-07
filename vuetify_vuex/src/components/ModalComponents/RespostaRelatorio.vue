@@ -12,9 +12,9 @@
         <v-card-subtitle v-if="entreDatas" class="mt-2 ml-2 text-h8" ><p>De : {{starterDate}}  até : {{endDate}}</p></v-card-subtitle>
         <v-card-text class="mt-3">
             <v-row v-if="!ntTable">
-                <ListaGenerica v-if="!pedidos && !vendas" :route="'products'" :opcao="filtro"></ListaGenerica>
-                <ListaGenerica v-if="pedidos" :route="'pedidos'" :opcao="filtro" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
-                <ListaGenerica v-if="vendas" :route="'vendas'" :opcao="filtro" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
+                <ListaGenerica v-if="!pedidos && !vendas" :route="'products'" :opcao="filtro" :headers="headers"></ListaGenerica>
+                <ListaGenerica v-if="pedidos" :route="'pedidos'" :opcao="filtro" :headers="headers" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
+                <ListaGenerica v-if="vendas" :route="'vendas'" :opcao="filtro" :headers="headers" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
             </v-row>
             <v-row v-if="ntTable">
                 <RelatorioEscrito v-if="notTable" :route="'vendas'" :opcao="filtro" :end-date="endDate" :starter-date="starterDate"></RelatorioEscrito>
@@ -26,7 +26,6 @@
 <script>
 import ListaGenerica from '../ListaGenerica.vue';
 import RelatorioEscrito from '../RelatorioEscrito.vue';
-import {mapActions} from 'vuex'
 export default {
     props: {
         nomeRelatorio: String,
@@ -87,10 +86,6 @@ export default {
         },
     },
     methods: {
-        ...mapActions('utilMod', ['setHeader']),
-        getLista() {
-            this.setHeader(this.headers)
-        },
         closeRelatorio(){
             this.$emit('closeModRelatorio', false)
         },
@@ -107,9 +102,6 @@ export default {
     created() {
         this.checkRelatorio()
         console.log(this.notTable)
-        if(!this.notTable){
-            this.getLista()
-        }
         
     },
     components: { ListaGenerica, RelatorioEscrito }

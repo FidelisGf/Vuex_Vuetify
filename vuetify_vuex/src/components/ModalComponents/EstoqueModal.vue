@@ -1,10 +1,10 @@
 <template>
     <div>
-        <v-card>
-            <v-card-title class="text-h5">
+        <v-card class="cards-colors">
+            <v-card-title class="text-h5 white--text">
                 Selecione o produto : 
             </v-card-title>
-            <v-card-text>
+            <v-card-text class="white--text">
                 <p>A quantidade inserida será somada com a quantidade existente do produto.</p>
                 <v-tooltip top>
                     <template v-slot:activator="{ on, attrs }">
@@ -13,6 +13,7 @@
                             label="Digite o Codigo do produto"
                             outlined
                             dense 
+                            dark
                             required
                             single-line
                             type="number"
@@ -21,7 +22,7 @@
                             v-on="on"
                         ></v-text-field>
                     </template>
-                    <span>Caso não saiba, consulte na lista</span>
+                    <span class="white--text">Caso não saiba, consulte na lista</span>
                 </v-tooltip>
                 <v-text-field
                     v-model="quantidade"
@@ -29,21 +30,22 @@
                     required
                     color="teal lighten-1"
                     type="number"
+                    dark
                     min="0"
                 ></v-text-field>
-                <small>Atenção ao escolher o produto</small>
+                <small class="white--text">Atenção ao escolher o produto</small>
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn
-                color="green darken"
+                color="red accent-2"
                 text
                 @click="closeAdicionaEstoque"
                 >
                 Cancelar
                 </v-btn>
                 <v-btn
-                color="red darken-1"
+                color="teal accent-3"
                 text
                 @click="adicionarQuantidade"
                 >
@@ -88,6 +90,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
 
 </style>

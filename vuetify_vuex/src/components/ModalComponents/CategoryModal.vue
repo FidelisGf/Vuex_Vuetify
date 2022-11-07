@@ -17,9 +17,9 @@
                 <v-icon dark color="teal lighten-1">mdi-plus-circle-outline</v-icon>
                 </v-btn>
             </template>
-            <v-card>
+            <v-card class="cards-colors">
                 <v-card-title>
-                    <span class="text-h6">Cadastro de Categoria</span>
+                    <span class="text-h6 white--text">Cadastro de Categoria</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
@@ -30,6 +30,7 @@
                                 <v-text-field
                                 label="Nome da Categoria"
                                 required
+                                dark
                                 v-model="NOME"
                                 counter="60"
                                 color="teal lighten-1"
@@ -41,14 +42,14 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                         <v-btn
-                            color="teal lighten-1"
+                            color="red accent-2"
                             text
                             @click="dialog = false"
                         >
                         Fechar
                         </v-btn>
                         <v-btn
-                            color="teal lighten-1"
+                            color="teal accent-3"
                             text
                             @click="postCategory"
                         >
@@ -82,6 +83,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
 
 </style>

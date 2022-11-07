@@ -216,7 +216,7 @@
             <v-card>
                 <p class="mt-5"><v-btn icon text @click="fechar"><v-icon color="red">mdi-close</v-icon></v-btn></p>
                 
-                <ListaGenerica  :route="'estoques'" :opcao="'Disponivel para venda'"></ListaGenerica>
+                <ListaGenerica :key="restart" :headers="headers" :route="'estoques'" :opcao="'Disponivel para venda'"></ListaGenerica>
             </v-card>
             
         </v-dialog>
@@ -252,6 +252,7 @@ export default {
             sucessFind : false,
             editMode : false,
             listaRapida : false,
+            restart : 0,
         };
     },
     computed: {
@@ -288,13 +289,11 @@ export default {
         ...mapActions('pedidoMod', ['findProduto', 'geraVenda', 'findPedido' , 'editarPedido']),
         ...mapActions('userMod', ['getEmpresaFromUser']),
         ...mapActions('clienteMod', ['clearClient']),
-        ...mapActions('utilMod', ['setHeader']),
         buscaLista() {
+            this.restart += 1
             this.fail = false
             this.sucesso = false
-            this.setHeader(this.headers)
-            this.listaRapida = true
-            
+            this.listaRapida = true 
         },
         fechar(){
             this.listaRapida = false

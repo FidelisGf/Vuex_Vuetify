@@ -145,7 +145,7 @@
 
         <v-row>
             <v-col>
-                <ListaGenerica  :key="renicializar" :route="'despesas'" :starter-date="DTINICIAL" :end-date="DTFINAL" :opcao="filtro"></ListaGenerica>
+                <ListaGenerica :headers="headers"  :key="renicializar" :route="'despesas'" :starter-date="DTINICIAL" :end-date="DTFINAL" :opcao="filtro"></ListaGenerica>
             </v-col>
         </v-row>
     </v-container>
@@ -179,7 +179,6 @@ export default {
     },
     methods: {
         ...mapActions("tagMod", ['findAll']),
-        ...mapActions('utilMod', ['setHeader']),
         ...mapActions('despesaMod', ['despesasMes']),
         saveDatas(){
             let tmp = this.DATA_INI
@@ -255,7 +254,6 @@ export default {
     },
     async created(){
         await this.findAll()
-        this.setHeader(this.headers)
         await this.despesasMes()
     },
     components: { TagModal, DespesaModal, ListaGenerica }

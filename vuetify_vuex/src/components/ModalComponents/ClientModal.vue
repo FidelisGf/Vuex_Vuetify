@@ -35,9 +35,9 @@
                         <v-icon aria-hidden="false" color="teal lighten-1" >mdi-account</v-icon>
                     </v-btn>
             </template>
-            <v-card v-if="!vinculado">
+            <v-card v-if="!vinculado" class="cards-colors">
                 <v-card-title>
-                    <span class="text-h8">Insira o codigo do cliente</span>
+                    <span class="text-h8 white--text">Insira o codigo do cliente</span>
                     <v-tooltip bottom>
                         <template  v-slot:activator="{ on, attrs }">
                             <v-btn
@@ -61,6 +61,7 @@
                             <v-text-field
                                 label="Codigo..."
                                 required
+                                dark
                                 v-model="codigo"
                                 color="teal lighten-1"
                                 v-bind="attrs"
@@ -90,15 +91,15 @@
                     </v-btn>
                 </v-card-actions>
             </v-card>
-            <v-card v-else-if="vinculado">
+            <v-card v-else-if="vinculado" class="cards-colors">
                 <v-card-title>
-                    <span>Dados do cliente</span>
+                    <span class="white--text">Dados do cliente</span>
                 </v-card-title>
                 <v-card-text >
-                    <p class="font-weight-bold black--text">Nome : {{clienteVinculado.nome}}</p>
-                    <p class="font-weight-bold black--text">Cpf : {{clienteVinculado.cpf}} </p>
-                    <p class="font-weight-bold black--text">Endereço : {{clienteVinculado.endereco}} </p>
-                    <p class="font-weight-bold black--text">Telefone : {{clienteVinculado.telefone}}</p>
+                    <p class="font-weight-medium white--text">Nome : {{clienteVinculado.nome}}</p>
+                    <p class="font-weight-medium white--text">Cpf : {{clienteVinculado.cpf}} </p>
+                    <p class="font-weight-medium white--text">Endereço : {{clienteVinculado.endereco}} </p>
+                    <p class="font-weight-medium white--text">Telefone : {{clienteVinculado.telefone}}</p>
                 </v-card-text>
                 <v-card-actions>
                     <v-btn
@@ -126,8 +127,8 @@
             max-width="550px"
             @keydown.escape="cadastroRapido = false"
         >
-            <v-card>
-                <v-card-title>
+            <v-card class="cards-colors">
+                <v-card-title class="white--text">
                     Cadastro rapido de cliente
                 </v-card-title>
                 <v-card-text>
@@ -141,6 +142,7 @@
                                 <v-text-field
                                     label="Nome do Cliente"
                                     required
+                                    dark
                                     v-model="client.nome"
                                     counter="60"
                                     color="teal lighten-1"
@@ -154,6 +156,7 @@
                             >
                                 <v-text-field
                                     label="CPF"
+                                    dark
                                     counter="11"
                                     v-model="client.cpf"
                                     color="teal lighten-1"
@@ -168,6 +171,7 @@
                                 label="Endereço"
                                 persistent-hint
                                 required
+                                dark
                                 v-model="client.endereco"
                                 color="teal lighten-1"
                                 ></v-text-field>
@@ -181,6 +185,7 @@
                                     label="Telefone"
                                     persistent-hint
                                     required
+                                    dark
                                     v-model="client.telefone"
                                     color="teal lighten-1"
                                     type="tel"
@@ -215,7 +220,7 @@
             max-width="750px"
             @keydown.escape="mostraLista = false"
         >
-        <v-card>
+        <v-card class="cards-colors">
             <v-card-actions class="d-flex justify-start">
                 <v-btn
                     icon
@@ -226,11 +231,11 @@
                     <v-icon>mdi-close</v-icon>
                 </v-btn>    
             </v-card-actions>
-            <v-card-title>
+            <v-card-title class="white--text">
                 Lista de clientes
             </v-card-title>
             <v-card-text class="mt-2">
-                <ListaGenerica v-if="mostraLista" :route="'clientes'" ></ListaGenerica>
+                <ListaGenerica v-if="mostraLista" :route="'clientes'" :headers="headers" ></ListaGenerica>
             </v-card-text>
         </v-card>
         </v-dialog>
@@ -280,7 +285,6 @@ export default {
     },
     methods: {
         ...mapActions('clienteMod', ['activeModalCliente', 'saveCliente', 'disableModalCliente', 'getCliente', 'desvincularCliente']),
-        ...mapActions('utilMod', ['setHeader']),
         ativaCadastro() {
             if (this.cadastroRapido) {
                 this.cadastroRapido = false;
@@ -293,7 +297,6 @@ export default {
             this.active = false
         },
         ativaLista(){
-            this.setHeader(this.headers)
             if(this.mostraLista){
                 this.mostraLista = false 
             }else{
@@ -322,6 +325,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
 </style>

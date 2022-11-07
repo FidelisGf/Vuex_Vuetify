@@ -19,7 +19,7 @@
                     Materias Prima
                 </v-btn>
             </template>
-            <v-card color="grey darken-3">
+            <v-card class="cards-colors">
                 <v-card-actions>
                     <v-btn
                         icon 
@@ -73,7 +73,7 @@
                                         </template>
                                     </v-snackbar>
                                     <form>
-                                        <v-card color="grey darken-3">
+                                        <v-card class="cards-colors">
                                             <v-card-title class="text-h6 white--text">
                                                 Cadastro de Materia Prima
                                             </v-card-title>

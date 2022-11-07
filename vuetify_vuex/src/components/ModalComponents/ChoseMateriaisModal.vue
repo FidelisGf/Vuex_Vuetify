@@ -4,7 +4,7 @@
             <v-card-title  class="white--text text-h8">
                 <p v-if="!notification">Escolha os Materiais do Produto...</p>
 
-                <v-alert v-if="notification && msg.type == 'success'" type="success" v-model="notification" 
+                <v-alert v-if="notification" type="success" v-model="notification" 
                 dismissible dense shaped
                 outlined class="not" >
                     {{msg.text }}  
@@ -109,7 +109,7 @@
                                     Materiais Disponiveis
                                 </v-card-title>
                                 <v-card-text class="mt-3">
-                                    <ListaGenerica :route="'materiais'"></ListaGenerica>
+                                    <ListaGenerica :route="'materiais'" :headers="headers"></ListaGenerica>
                                 </v-card-text>
                             </v-card>
                         </v-dialog>        
@@ -159,7 +159,6 @@ export default {
         }
     },
     methods: {
-        ...mapActions('utilMod', ['setHeader']),
         ...mapActions('materiaMod', ['findMateria']),
         voltarEtapa() {
             this.$emit("voltar-etapa", 1);
@@ -193,13 +192,13 @@ export default {
             clearInterval(interaval)
         },
         async buscaLista(){
-            await this.setHeader(this.headers)
             this.listMateria = true
         },
         fechar(){
             let payload = {valor : 1, estado : false }            
             this.$emit("fechar",payload)
-        }
+        },
+       
     },
     computed: {
         headers() {

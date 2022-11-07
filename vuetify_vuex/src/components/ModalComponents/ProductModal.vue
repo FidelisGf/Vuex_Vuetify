@@ -236,7 +236,7 @@
     </v-row>
     <v-row >
         <v-col cols="12">
-           <ListaGenerica :route="'products'"></ListaGenerica>
+           <ListaGenerica :key="renicializar" :route="'products'" :headers="headers"></ListaGenerica>
         </v-col>      
     </v-row>
     <v-row>
@@ -284,6 +284,7 @@ export default {
             timeout : 2000,
             estoqueMod : false,
             e1 : 1,
+            renicializar : 0,
            
         };
     },
@@ -308,11 +309,13 @@ export default {
     methods: {
         ...mapActions('produtoMod', ['saveList', 'post', 'countProd']),
         ...mapActions('estoqueMod', ['activeAdicionaEstoque']),
-        ...mapActions('utilMod', ['setHeader']),
         ...mapActions('medidaMod', ['getAll']),
         closeEstoqueMod(e){
             console.log('Aqui')
             this.estoqueMod = e
+        },
+        forceRerender (){
+            this.renicializar += this.renicializar + 1;
         },
         closeByChildEvent(e){
             this.dialog = e.estado
@@ -332,14 +335,15 @@ export default {
                  quantidade_inicial: this.quantidade_inicial,
                   ID_CATEGORIA: this.Categoria.ID_CATEGORIA
                   , NOME_C : this.Categoria.NOME_C, ID_MEDIDA : this.Medida.ID, MATERIAIS : this.materias };
-            console.log('Foi')
-            console.log(payload)
-            // this.msg = await this.post(payload)      
-            // console.log(this.msg)
-            // this.registro = true
-            // this.dialog = false 
-            // this.cleanProduct()
-            // this.Categoria = null
+            this.msg = await this.post(payload)
+            this.loading = true
+            await this.forceRerender()      
+            this.registro = true
+            this.dialog = false 
+            this.cleanProduct()
+            this.Categoria = null
+            this.loading = false
+
         },
         proximaEtapa(){
             this.e1 = 2
@@ -355,7 +359,6 @@ export default {
         }, 
     },
    async created() {
-        this.setHeader(this.headers)
         await this.getAll()
         await this.countProd()
     },

@@ -2,51 +2,19 @@ import despesaService from "@/service/despesaService"
 export default{
     namespaced: true,
     state: {
-       showCadastro : false,
-       edit : false,
        despesasMes : 0
     },
     getters: {
-       getModalCadastro(state){
-            return state.showCadastro
-       },
-       getEditDespesa(state){
-          return state.edit
-       },
        getDespesasMes(state){
           return state.despesasMes
        }
     },
     mutations: {
-       activeModalCadastro(state){
-            state.showCadastro = true
-       },
-       disableModalCadastro(state){
-            state.showCadastro = false
-       },
-       activeEditDespesa(state){
-          state.edit = true
-       },
-       disableEditDespesa(state){
-          state.edit = false
-       },
        setDespesasMes(state, payload){
           state.despesasMes = payload
        }
     },
     actions: {
-       activeEditDespesa(context){
-          context.commit('activeEditDespesa')
-       },   
-       disableEditDespesa(context){
-          context.commit('disableEditDespesa')
-       },
-       activeMod(context){
-            context.commit("activeModalCadastro")
-       },
-       disableModalCadastro(context){
-            context.commit("disableModalCadastro")
-       },
       async save(context, payload){
            let text = null
            let Id = null

@@ -37,8 +37,8 @@
                 </v-btn>
             </template>
             <form ref="form" @submit.prevent="insert">
-                <v-card>
-                    <v-card-title>
+                <v-card class="cards-colors">
+                    <v-card-title class="white--text">
                         Registrar uma despesa
                     </v-card-title>
                     <v-card-text>
@@ -49,6 +49,7 @@
                                
                             >
                                 <v-text-field
+                                    dark
                                     label="Descrição da despesa"
                                     required
                                     v-model="DESC"
@@ -61,6 +62,7 @@
                                 md="4"
                             >
                                 <v-text-field
+                                    dark
                                     v-model="CUSTO"
                                     label="Custo da despesa"
                                     persistent-hint
@@ -83,6 +85,7 @@
                                     required
                                     color="teal lighten-1"
                                     type="date"
+                                    dark
                         
                                 ></v-text-field>
                                
@@ -99,7 +102,7 @@
                                 required
                                 color="teal lighten-1"
                                 type="time"
-            
+                                dark
                             ></v-text-field>
                            
                             </v-col>
@@ -117,20 +120,21 @@
                                     item-text="NOME"
                                     required 
                                     return-object
+                                    dark
                                 ></v-select>       
                             </v-col>
                        </v-row>
                     </v-card-text>
-                    <v-card-actions class="mt-n4">
+                    <v-card-actions class="mt-n4 d-flex justify-end">
                         <v-btn
-                            color="red lighten-1"
+                            color="red accent-2"
                             text
                             @click="active = false"
                         >
                         Fechar
                         </v-btn>
                         <v-btn 
-                            color="green lighten-1"
+                            color="teal accent-3"
                             text
                             type="submit"
                         >
@@ -208,6 +212,13 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-
+<style lang="scss" >
+    .theme--dark input[type="date"]::-webkit-calendar-picker-indicator {
+        background: url(https://img.icons8.com/cotton/64/000000/calendar.png) no-repeat;
+        background-size: 24px 24px;
+    }
+    .theme--dark input[type="time"]::-webkit-calendar-picker-indicator {
+        background: url(https://img.icons8.com/cotton/64/000000/clock.png) no-repeat;
+        background-size: 24px 24px;
+    }
 </style>

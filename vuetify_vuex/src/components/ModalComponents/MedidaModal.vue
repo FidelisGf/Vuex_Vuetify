@@ -17,11 +17,11 @@
         <v-icon dark color="deep-purple lighten-3">mdi-plus-circle-outline</v-icon>
         </v-btn>
     </template>
-    <v-card>
-        <v-card-title>
+    <v-card class="cards-colors">
+        <v-card-title class="white--text">
             <span class="text-h6">Cadastro de Medida</span>
         </v-card-title>
-        <v-card-text>
+        <v-card-text class="white--text">
             <v-container>
                 <v-row>
                     <v-col
@@ -31,6 +31,7 @@
                         label="Nome da Medida"
                         required
                         v-model="NOME"
+                        dark
                         counter="20"
                         color="teal lighten-1"
                         ></v-text-field>
@@ -41,14 +42,14 @@
         <v-card-actions>
             <v-spacer></v-spacer>
                 <v-btn
-                    color="teal lighten-1"
+                    color="red accent-2"
                     text
                     @click="dialog = false"
                 >
                 Fechar
                 </v-btn>
                 <v-btn
-                    color="teal lighten-1"
+                    color="teal accent-3"
                     text
                     @click="postMedida"
                 >

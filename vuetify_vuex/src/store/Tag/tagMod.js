@@ -2,24 +2,14 @@ import tagService from "@/service/tagService"
 export default{
     namespaced: true,
     state: {
-       showCadastro : false,
        tags : []
     },
     getters: {
-       getModalCadastro(state){
-            return state.showCadastro
-       },
        getTags(state){
             return state.tags
        }
     },
     mutations: {
-       activeModalCadastro(state){
-            state.showCadastro = true
-       },
-       disableModalCadastro(state){
-            state.showCadastro = false
-       },
        setTags(state, payload){
           state.tags = payload
        },
@@ -30,12 +20,6 @@ export default{
     actions: {
        setTags(context, payload){
             context.commit('setTags', payload)
-       },
-       activeModalCadastro(context){
-            context.commit("activeModalCadastro")
-       },
-       disableModalCadastro(context){
-            context.commit("disableModalCadastro")
        },
        async post(context, payload){
             let text = null

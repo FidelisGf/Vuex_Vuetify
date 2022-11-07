@@ -14,7 +14,7 @@
                     class="elevation-2 mt-n5"
                 >
                 <template v-slot:[`item.actions`]="{ item }" >
-                    <v-icon small color="teal lighten-1" class="mr-2 ml-2" @click="editItem(item)">mdi-pencil</v-icon>
+                    <v-icon small color="teal accent-3" class="mr-2 ml-2" @click="editItem(item)">mdi-pencil</v-icon>
                     <DeleteGeneric :id="item.ID" small :route="route"></DeleteGeneric>        
                 </template>
                 <template v-slot:[`item.info`]="{ item }">
@@ -110,6 +110,7 @@ export default {
         opcao : String,
         starterDate : String,
         endDate : String,
+        headers : Array,
     },
     data() {
         return {
@@ -256,7 +257,7 @@ export default {
     },
     computed:{
         ...mapGetters({listCategorias : 'categoryMod/listCategorias', listaProdutos : 'produtoMod/listProducts', 
-        editDespesa: 'despesaMod/getEditDespesa', headers: 'utilMod/getHeader', 
+        editDespesa: 'despesaMod/getEditDespesa', 
         del: 'utilMod/delete', generico : 'utilMod/getGenerico', listTags : 'tagMod/getTags'}),
 
     
