@@ -78,7 +78,7 @@
                     <v-card-subtitle v-if="sucessFind"><v-alert type="success" v-model="sucessFind" dismissible dense shaped
                         outlined class="mt-n5 white--text">Pedido carregado com sucesso !</v-alert></v-card-subtitle>
                     <v-row dense class="mt-1">
-                        <v-col cols="12" md="12" sm="6">
+                        <v-col cols="12" md="12" sm="12">
                             <form @submit.prevent="addLista" class="d-flex justify-center ml-2 ml-md-6 ml-sm-6 ml-lg-6">
                                 <v-tooltip top>
                                     <template v-slot:activator="{ on, attrs }">
@@ -208,7 +208,7 @@
                             @click="gerarVenda"
                             color="teal accent-2"
                           >
-                            Gerar Venda
+                            {{msg}}
                           </v-btn>
                         </v-col>
                     </v-row>
@@ -221,7 +221,7 @@
             persistent
             max-width="760px"
         >   
-            <v-card>
+            <v-card color="#1e1e1e">
                 <p class="mt-5"><v-btn icon text @click="fechar"><v-icon color="red">mdi-close</v-icon></v-btn></p>
                 
                 <ListaGenerica :key="restart" :headers="headers" :route="'estoques'" :opcao="'Disponivel para venda'"></ListaGenerica>
@@ -252,6 +252,7 @@ export default {
                 nome: null,
                 quantidade: 1,
             },
+            msg : 'Gerar Venda',
             fail : false,
             id : null,
             sucesso : false,
@@ -314,6 +315,7 @@ export default {
             this.escolhaSituacao = pedido.APROVADO == "T" ? "Pago" : "Pagamento pendente"
             this.sucessFind = true
             this.editMode = true
+            this.msg = 'Alterar Pedido'
             this.findBy = false
            }
         },
@@ -328,6 +330,7 @@ export default {
             APROVADO : this.escolhaSituacao, ID_CLIENTE : this.cliente.id}
             await this.editarPedido(payload)
             this.editMode = false
+            this.msg = 'Gerar Venda'
             console.log(this.pedido)
             this.down(this.pedidoAtual)
             this.clear()

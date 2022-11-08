@@ -41,6 +41,37 @@ export default{
                 console.log(res.data)
                 context.commit('saveUser', res.data.NAME)
             })
+        },
+        async login(context, payload){
+            let check = {login : false, vinculado : false}
+            try {
+                await userService.login(payload).then(async (res)=>{
+                    localStorage.setItem('token', res.data.access_token)
+                    check.login = true
+                    check.vinculado = await context.dispatch("checkEmpresa", res.data.access_token)
+                })
+                return check
+            } catch (error) {
+                return check
+            }
+        },
+        async checkEmpresa(context, payload){
+            let check = false
+            try {
+                 await userService.checkEmpresa(payload).then((res)=>{
+                    console.log(res)
+                    if(res.data != 0){
+                        check = true
+                    }else {
+                        check =  false
+                    }
+                })
+                return check
+            } catch (error) {
+                check = false
+                return check
+            }
+           
         }
     },
 }

@@ -18,20 +18,12 @@ export default{
         try{
             const res = await axios.get("/auth/validateTkn")
             if(res.status === 200){
-                const res = await axios.get("/checaEmpUser")
-                if(res.data == 1){
-                    next();
-                }else if(res.data != 1){
-                    alert('Vincule uma empresa a sua conta !');
-                    next();
-                }
+                next()
             }
-            console.log(res.status)
         }catch(e){
             console.log()
             if(e.response.status == 401){
-                    alert('Voce precisa estar logado !')
-                    next({name: 'login'})
+                next({name: 'login'})
             }
         }
     }

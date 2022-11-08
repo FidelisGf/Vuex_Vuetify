@@ -9,5 +9,9 @@ export default{
     },
     profile(){
         return axios.get("/profile")
+    },
+    checkEmpresa(payload){
+        axios.defaults.headers.common['Authorization'] = 'Bearer' + payload
+        return axios.get("/checaEmpUser")
     }
 }

@@ -259,8 +259,7 @@ export default {
                     this.filtro = this.relatorioEscolha
                     this.relatorioE = true
                 }else if(this.relatorioEscolha == 'Pedidos realizados entre duas datas' || this.relatorioEscolha == 'Vendas por periodo de dias' 
-                || this.relatorioEscolha == 'Vendas por Tipo de Pagamento'){
-                   
+                || this.relatorioEscolha == 'Vendas por Tipo de Pagamento'){ 
                     let comparaDatas = this.compareDates()
                     this.saveHoras()
                     if(comparaDatas){

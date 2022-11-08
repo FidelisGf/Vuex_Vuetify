@@ -53,7 +53,6 @@
  </template>
  
  <script>
- import userService from '@/service/userService';
  import { mapActions } from 'vuex';
  export default {
    
@@ -64,15 +63,17 @@
      };
    },
    methods: {
-    ...mapActions('userMod', ['setUser', 'profile']),
+    ...mapActions('userMod', ['setUser', 'profile', 'checkEmpresa', 'login']),
     async logar(){
          let payload = {NAME : this.username, PASSWORD: this.password}
-        const res = await userService.login(payload)
-        console.log(res);
-        if(res.status == 200){
-          localStorage.setItem('token', res.data.access_token)
-          this.$router.push('/home')
+         let res = await this.login(payload)
+        if(res.login){
           localStorage.setItem('user', this.username)
+          if(res.vinculado){
+            this.$router.push('/home')
+          }else{
+            this.$router.push('/vincula-empresa')
+          }
         }else{
           alert("Dados Invalidos")
         }

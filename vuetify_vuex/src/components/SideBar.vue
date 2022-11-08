@@ -66,7 +66,7 @@
               </v-list-item-icon>
               <v-list-item-title>Despesas</v-list-item-title>
             </v-list-item>
-            <v-list-item @click="$router.push('/login')" link>
+            <v-list-item @click="$router.push('/')" link>
               <v-list-item-icon>
                 <v-icon>mdi-arrow-left</v-icon>
               </v-list-item-icon>
@@ -76,83 +76,55 @@
          
         </v-list>
     </v-navigation-drawer>
-      <v-toolbar dense app dark color="grey darken-0" class="hidden-md-and-up">
-        <v-toolbar-title class="text-h10">Admin : {{name}}</v-toolbar-title>
-        <v-spacer></v-spacer>
+      <v-toolbar dense app dark  class="hidden-md-and-up">
         <v-app-bar-nav-icon @click.native="dialog = true"></v-app-bar-nav-icon>
         <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-          <v-card>
-            <v-toolbar flat color="white darken-1">
-              <v-toolbar-title>Config</v-toolbar-title>
-              <v-spacer></v-spacer>
+          <v-card class="cards-colors">
+            <v-toolbar flat class="cards-colors">
               <v-btn icon @click.native="dialog = false">
-                <v-icon>mdi-close</v-icon>
+                <v-icon color="red accent-1">mdi-close</v-icon>
               </v-btn>
             </v-toolbar>
-              <v-list>
-                <v-list-item class="px-5">
-                  <v-list-item-content>
-                    <v-list-item-subtitle>Admin</v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item class="px-2">
-                  <v-list-item-avatar>
-                    <v-img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"></v-img>
-                  </v-list-item-avatar>
-                  <v-list-item-content>
-                    <v-list-item-title class="text-h8">
-                      {{name}}
-                    </v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list>
-              <v-divider></v-divider>
               <v-list
               nav
               dense
-              class="text-center pt-2"
+              class="text-center pt-2 cards-colors"
               >
-                <v-list-item @click="$router.push('/products')" @click.native="dialog = false" link >
+                <v-list-item @click="$router.push('/pedidos')" @click.native="dialog = false" link >
                     <v-list-item-icon>
-                      <v-icon>mdi-baguette</v-icon>
+                      <v-icon color="white">mdi-cash-register</v-icon>
                     </v-list-item-icon>
-                    <v-list-item-title color="teal lighten-1">Meus Produtos</v-list-item-title>
+                    <v-list-item-title class="white--text" color="teal lighten-1">Registrar Venda</v-list-item-title>
                 </v-list-item>
                 <v-list-item @click="$router.push('/empresa')" @click.native="dialog = false" link >
                   <v-list-item-icon>
-                    <v-icon>mdi-domain</v-icon>
+                    <v-icon color="white">mdi-domain</v-icon>
                   </v-list-item-icon>
-                  <v-list-item-title>Minha Empresa</v-list-item-title>
+                  <v-list-item-title class="white--text">Minha Empresa</v-list-item-title>
                 </v-list-item>
-                <v-list-item  link>
+                <v-list-item link @click="$router.push('/estoque')" @click.native="dialog = false">
                   <v-list-item-icon>
-                    <v-icon>mdi-star</v-icon>
+                    <v-icon color="white">mdi-archive</v-icon>
                   </v-list-item-icon>
-                  <v-list-item-title>Minhas Categorias</v-list-item-title>
+                  <v-list-item-title class="white--text">Gestão do Estoque</v-list-item-title>
                 </v-list-item>
-                <v-list-item link>
+                <v-list-item link @click="$router.push('/relatorio')" @click.native="dialog = false">
                   <v-list-item-icon>
-                    <v-icon>mdi-archive</v-icon>
+                    <v-icon color="white">mdi-printer</v-icon>
                   </v-list-item-icon>
-                  <v-list-item-title>Gestão do Estoque</v-list-item-title>
+                  <v-list-item-title class="white--text">Relatorios Diversos</v-list-item-title>
                 </v-list-item>
-                <v-list-item link>
+                <v-list-item link @click="$router.push('/despesas')" @click.native="dialog = false">
                   <v-list-item-icon>
-                    <v-icon>mdi-printer</v-icon>
+                    <v-icon color="white">mdi-currency-usd-off</v-icon>
                   </v-list-item-icon>
-                  <v-list-item-title>Relatorio de Vendas</v-list-item-title>
+                  <v-list-item-title class="white--text">Despesas</v-list-item-title>
                 </v-list-item>
-                <v-list-item link>
+                <v-list-item  @click="$router.push('/')" link>
                   <v-list-item-icon>
-                    <v-icon>mdi-account</v-icon>
+                    <v-icon color="white">mdi-arrow-left</v-icon>
                   </v-list-item-icon>
-                  <v-list-item-title>Usuarios do Sistema</v-list-item-title>
-                </v-list-item>
-                <v-list-item @click="$router.push('/')" link>
-                  <v-list-item-icon>
-                    <v-icon>mdi-arrow-left</v-icon>
-                  </v-list-item-icon>
-                  <v-list-item-title>Sair</v-list-item-title>
+                  <v-list-item-title class="white--text">Sair</v-list-item-title>
                 </v-list-item>
               </v-list>
           </v-card>

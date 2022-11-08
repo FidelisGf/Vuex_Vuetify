@@ -1,73 +1,92 @@
 <template>
-   <v-card class="cards-colors " :elevation="10">
-        <v-card-actions>
-            <v-btn
-                icon 
-                dark 
-            ><v-icon color="red accent-2">mdi-close</v-icon></v-btn>
-        </v-card-actions>
-        <v-card-title class="white--text text-h5 mt-n5 ">
-            <p class="pl-5">Detalhes do Produto : # {{produto.NOME}} [{{produto.ID}}] </p>
-        </v-card-title>
-        <v-card-text class="mt-n5">
-            <v-row class="d-flex flex-column flex-md-row">
-                <v-col class="white--text text-h6 font-italic">
-                    <p>
-                        <b class="font-italic titulo pl-5">Descriçao : </b>{{produto.DESC}}...
-                    </p>
-                </v-col>
-            </v-row>
-            <v-row class="d-flex flex-column flex-md-row mt-n5">
-                <v-col class="white--text text-h6 font-italic mt-n5">
-                    <p>
-                        <b class="font-italic titulo pl-5">Valor do Produto : </b>R$ {{produto.VALOR.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
-                    </p>
-                </v-col>
-            </v-row>  
-            <v-row class="d-flex flex-column flex-md-row mt-n5">
-                <v-col class="white--text text-h6 font-italic mt-n5">
-                    <p>
-                        <b class="font-italic titulo pl-5">Categoria do Produto : </b>{{produto.category.NOME_C}} [{{produto.category.ID_CATEGORIA}}]
-                    </p>
-                </v-col>
-            </v-row>  
-            <v-row class="d-flex flex-column flex-md-row mt-n5">
-                <v-col class="white--text text-h6 font-italic mt-n5">
-                    <p>
-                        <b class="font-italic titulo pl-5">Unidade de Medida : </b>{{produto.medida.NOME}} [{{produto.medida.ID}}]
-                    </p>
-                </v-col>
-            </v-row> 
-            <v-row class="d-flex flex-column flex-md-row mt-n2">
-                <v-col class="white--text text-h6 font-italic mt-n2">
-                    <p>
-                        <b class="font-italic titulo pl-5">Matérias Primas necessárias : </b>
-                    </p>
-                    <v-row class="flex-column ml-10 mt-8"> 
-                        <v-col v-for="materia in produto.MATERIAIS" :key="materia.ID"  class="white--text subtitle-1 font-italic">
-                            <p class="pl-5 mt-n10"><b class="titulo">Nome :</b> {{materia.NOME}}   
-                                <b class="titulo">/ Quantidade :</b> {{materia.QUANTIDADE}}   <b class="titulo">/ Custo :</b> {{materia.CUSTO.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>
-                        </v-col>
-                    </v-row>
-                </v-col>
-            </v-row>
-            <v-row class="d-flex flex-column flex-md-row mt-n5">
-                <v-col class="white--text text-h6 font-italic mt-n5">
-                    <p>
-                        <b class="font-italic titulo pl-5">Lucro encima do custo :</b> {{lucro.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
-                        ({{percent}}%) de lucro
-                    </p>
-                </v-col>
-            </v-row>
-            <v-row class="d-flex flex-column flex-md-row mt-n2">
-                <v-col class="white--text text-h6 font-italic mt-n2">
-                    <p>
-                        <b class="font-italic titulo pl-5">Data de Registro  : </b> {{produto.CREATED_AT}}
-                    </p>
-                </v-col>
-            </v-row>    
-        </v-card-text>
-   </v-card>
+    <v-container  fluid >
+        <v-skeleton-loader
+            v-if="loading == true" class="black" :loading="loading" transition="fade-transition" type="card"
+        >
+        </v-skeleton-loader>
+        <v-card class="cards-colors" :elevation="6" v-if="loading == false" >
+            <v-card-actions>
+                <v-btn
+                    icon 
+                    dark 
+                    class="mt-n1 ml-n1"
+                ><v-icon color="red accent-2 ">mdi-close</v-icon></v-btn>
+            </v-card-actions>
+            <v-card-title class="white--text text-h5 mt-n7">
+                <p class="pl-5">Detalhes do Produto : # {{produto.NOME}} [{{produto.ID}}] </p>
+            </v-card-title>
+            <v-card-text class="mt-n4">
+                <v-row class="d-flex flex-column flex-md-row">
+                    <v-col class="white--text  text-subtitle-1 text-md-h6  font-italic">
+                        <p>
+                            <b class="font-italic titulo pl-5">Descriçao : </b>{{produto.DESC}}...
+                        </p>
+                    </v-col>
+                </v-row>
+                <v-row class="d-flex flex-column flex-md-row mt-n5">
+                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
+                        <p>
+                            <b class="font-italic titulo pl-5">Valor do Produto : </b>R$ {{produto.VALOR.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
+                        </p>
+                    </v-col>
+                </v-row> 
+                <v-row class="d-flex flex-column flex-md-row mt-n5">
+                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
+                        <p>
+                            <b class="font-italic titulo pl-5">Quantidade em Estoque : </b> {{generico.QUANTIDADE}}
+                        </p>
+                    </v-col>
+                </v-row>   
+                <v-row class="d-flex flex-column flex-md-row mt-n5">
+                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
+                        <p>
+                            <b class="font-italic titulo pl-5">Categoria do Produto : </b>{{produto.category.NOME_C}} [{{produto.category.ID_CATEGORIA}}]
+                        </p>
+                    </v-col>
+                </v-row>  
+                <v-row class="d-flex flex-column flex-md-row mt-n5">
+                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
+                        <p>
+                            <b class="font-italic titulo pl-5">Unidade de Medida : </b>{{produto.medida.NOME}} [{{produto.medida.ID}}]
+                        </p>
+                    </v-col>
+                </v-row> 
+                <v-row class="d-flex flex-column flex-md-row mt-n1">
+                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-md-n6 mt-n2 ">
+                        <p>
+                            <b class="font-italic titulo pl-5">Matérias Primas necessárias : </b>
+                        </p>
+                        <v-row class="flex-column ml-3 ml-md-10 mt-6"> 
+                            <v-col v-for="materia in produto.MATERIAIS" :key="materia.ID"  class="white--text subtitle-1 font-italic">
+                                <p class="pl-0 pl-md-5 mt-n10"><b class="titulo">Nome :</b> {{materia.NOME}}   
+                                    <b class="titulo">/ Quantidade :</b> {{materia.QUANTIDADE}}   <b class="titulo">/ Custo :</b> {{materia.CUSTO.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>
+                            </v-col>
+                        </v-row>
+                    </v-col>
+                </v-row>
+                <v-row class="d-flex flex-column flex-md-row mt-n5">
+                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
+                        <p>
+                            <b class="font-italic titulo pl-4 pl-md-5">Lucro encima do custo :</b> {{lucro.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
+                            <span v-if="percent >= 50" class="green--text">({{percent}}%) de lucro</span><span class="red--text" v-else>({{percent}}%) de lucro</span>
+                        </p>
+                    </v-col>
+                </v-row>
+                <v-row class="d-flex flex-column flex-md-row mt-n2 justify-lg-start">
+                    <v-col class="white--text text-subtitle-1  font-italic mt-n2">
+                        <v-timeline>
+                            <v-timeline-item>Criado em : {{produto.CREATED_AT}}</v-timeline-item>
+                            <v-timeline-item class="text-right">
+                             Atualizado em : {{produto.UPDATED_AT}}
+                            </v-timeline-item>
+                          </v-timeline>
+                    </v-col>
+                </v-row>    
+            </v-card-text>
+        </v-card>
+    </v-container>
+  
+
 </template>
 
 <script>
@@ -79,22 +98,39 @@ export default {
             NOME : '',
             lucro : 0,
             percent : null,
+            loading : true
         }
     },
     methods:{
         ...mapActions('produtoMod', ['findById', 'getLucroByProd']),
         async getProduct() {
-            this.loading = true
             this.produto = await this.findById(this.generico.ID)
             this.lucro = await this.getLucroByProd(this.generico.ID)
             if(this.produto != null || this.produto != undefined){
-                this.loading = false
                 console.log(this.produto)
+                this.produto.CREATED_AT = await this.formatDate(this.produto.CREATED_AT)
+                this.produto.UPDATED_AT = await this.formatDate(this.produto.UPDATED_AT)
+                this.loading = false
             }
             await this.getPercent()
         },
+        clear(){
+            this.produto = null
+            this.getProduct()
+        },
         getPercent(){
             this.percent = Math.round((this.lucro / this.produto.VALOR) * 100);
+        },
+        formatDate(date){
+            let obj = new Date(date)
+            let day = obj.getDate()
+            let month = obj.getMonth()
+            month = parseInt(month + 1)
+            let year = obj.getFullYear()
+            let hour = obj.getHours()
+            let minu = obj.getMinutes()
+            let formatData  = day + "/" + month+ "/" + year + ": " + hour + ":" + minu ;
+            return formatData
         }
     },
     computed:{
@@ -103,9 +139,10 @@ export default {
     watch: {
         generico : function(val) {
           if (val) {
+            this.loading = true
              this.clear()
-             this.getProduct()
           }
+          this.generico = val
         }  
     },
     created(){

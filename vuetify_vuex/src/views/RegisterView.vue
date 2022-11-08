@@ -70,7 +70,7 @@ export default {
             console.log(res);
             if(res.status == 200){
                 alert('Usuario Criado com sucesso !')
-                this.$router.push('/login')
+                this.$router.push({name : 'login'})
             }else{
                 alert("Dados Invalidos");
             }
