@@ -154,6 +154,17 @@ export default{
                 return await text
             }
             
+        },
+        async getLucroByProd(context, payload){
+            try {
+                let lucro = 0
+                await productService.getLucroByProduct(payload).then((res) =>{
+                    lucro = res.data
+                })
+                return lucro
+            } catch (error) {
+                return error
+            }
         }
 
     }  

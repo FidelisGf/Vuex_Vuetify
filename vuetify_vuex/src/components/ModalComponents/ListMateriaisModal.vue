@@ -30,8 +30,8 @@
                                     </p>      
                                 </v-card-title>
                                 <v-card-subtitle class="mt-n5 white--text"> 
-                                        <p>Custo do Item : {{ item.CUSTO.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>
-                                        <p class="mt-n3">Quantidade : {{item.QUANTIDADE}} </p>
+                                    <p>Custo do Item : {{ item.CUSTO.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>
+                                    <p class="mt-n3">Quantidade : {{item.QUANTIDADE}} </p>
                                 </v-card-subtitle>
                                 <v-card-text class="mt-n7 white--text">
                                     <p>Sub total desse Item : {{(item.CUSTO * item.QUANTIDADE).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>

@@ -24,5 +24,8 @@ export default{
     },
     countProduto(){
         return axios.get("/countProducts")
+    },
+    getLucroByProduct($id){
+        return axios.get("/findLucroByProduto/" + $id)
     }
 }
