@@ -105,7 +105,7 @@
                 max-width="780px"
                 @keydown.escape="detail = false"
             >
-                <DetailProduct v-if="route == 'products'"></DetailProduct>
+                <DetailProduct @close="closeDetail" v-if="route == 'products'"></DetailProduct>
             </v-dialog>
         </v-row>
    </v-container>
@@ -182,6 +182,9 @@ export default {
         },
         closeEdits(e){
             this.edit = e
+        },
+        closeDetail(e){
+            this.detail = e
         },
         clearCategorySearch(){
             this.Categoria = ""

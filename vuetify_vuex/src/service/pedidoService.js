@@ -12,5 +12,8 @@ export default{
     },
     edit($id, payload){
         return axios.put("/pedidos/" + $id, payload)
+    },
+    checkQuantidadeProduto(payload){
+        return axios.get("/checkQuantidadeProduto/" + payload.id, payload)
     }
 }

@@ -15,7 +15,7 @@
                                 <v-list-item >
                                     <v-list-item-content>
                                         <v-list-item-title class="ml-2 white--text">
-                                            <p class="text-h5"><b>Lucro Total : {{lucro}}</b></p>
+                                            <p class="text-h5 title-text"><b>Lucro Total : {{lucro}}</b></p>
                                         </v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
@@ -49,7 +49,7 @@
                                 </v-list-item>
                                 <v-list-item >
                                     <v-list-item-content>
-                                        <v-list-item-title class="ml-2 white--text">
+                                        <v-list-item-title class="ml-2 footer-text">
                                             <p><b>Gastos com Matéria Prima : {{gasto}}</b></p>
                                         </v-list-item-title>
                                     </v-list-item-content>
@@ -117,5 +117,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+    .title-text{
+        color: #B2FF59 !important;
+    }
+    .footer-text{
+        color:  #FF5252 !important;
+    }
 </style>

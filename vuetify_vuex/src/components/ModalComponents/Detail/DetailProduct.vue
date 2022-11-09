@@ -1,5 +1,5 @@
 <template>
-    <v-container  fluid >
+    <div>
         <v-skeleton-loader
             v-if="loading == true" class="black" :loading="loading" transition="fade-transition" type="card"
         >
@@ -10,12 +10,13 @@
                     icon 
                     dark 
                     class="mt-n1 ml-n1"
-                ><v-icon color="red accent-2 ">mdi-close</v-icon></v-btn>
+                    @click="close"
+                ><v-icon color="red accent-2 " >mdi-close</v-icon></v-btn>
             </v-card-actions>
-            <v-card-title class="white--text text-h5 mt-n7">
+            <v-card-title class="white--text text-h5 mt-n4">
                 <p class="pl-5">Detalhes do Produto : # {{produto.NOME}} [{{produto.ID}}] </p>
             </v-card-title>
-            <v-card-text class="mt-n4">
+            <v-card-text class="mt-n7">
                 <v-row class="d-flex flex-column flex-md-row">
                     <v-col class="white--text  text-subtitle-1 text-md-h6  font-italic">
                         <p>
@@ -51,8 +52,23 @@
                         </p>
                     </v-col>
                 </v-row> 
+                <v-row class="d-flex flex-column flex-md-row mt-n5">
+                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
+                        <p>
+                            <b class="font-italic titulo pl-4 pl-md-5">Lucro encima do custo :</b> {{lucro.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
+                            <span v-if="percent >= 50" class="green--text">({{percent}}%) de lucro</span><span class="red--text" v-else>({{percent}}%) de lucro</span>
+                        </p>
+                    </v-col>
+                </v-row>
+                <v-row class="mt-n3 ml-8">
+                    <v-col cols="11" >
+                        <div class="d-flex justify-center mt-n2">
+                            <v-divider class="linha" ></v-divider>
+                        </div>
+                    </v-col>
+                </v-row>
                 <v-row class="d-flex flex-column flex-md-row mt-n1">
-                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-md-n6 mt-n2 ">
+                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-md-0 mt-n2 ">
                         <p>
                             <b class="font-italic titulo pl-5">Matérias Primas necessárias : </b>
                         </p>
@@ -64,27 +80,31 @@
                         </v-row>
                     </v-col>
                 </v-row>
-                <v-row class="d-flex flex-column flex-md-row mt-n5">
-                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
-                        <p>
-                            <b class="font-italic titulo pl-4 pl-md-5">Lucro encima do custo :</b> {{lucro.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
-                            <span v-if="percent >= 50" class="green--text">({{percent}}%) de lucro</span><span class="red--text" v-else>({{percent}}%) de lucro</span>
-                        </p>
+                <v-row class="mt-n4 ml-8">
+                    <v-col cols="11" >
+                        <div class="d-flex justify-center mt-n2">
+                            <v-divider class="linha" ></v-divider>
+                        </div>
                     </v-col>
                 </v-row>
                 <v-row class="d-flex flex-column flex-md-row mt-n2 justify-lg-start">
                     <v-col class="white--text text-subtitle-1  font-italic mt-n2">
                         <v-timeline>
-                            <v-timeline-item>Criado em : {{produto.CREATED_AT}}</v-timeline-item>
-                            <v-timeline-item class="text-right">
-                             Atualizado em : {{produto.UPDATED_AT}}
+                            <v-timeline-item color="blue accent-2"
+                                fill-dot
+                                small
+                            >
+                                Criado em : {{produto.CREATED_AT}}
+                            </v-timeline-item>
+                            <v-timeline-item class="text-right" fill-dot small color="teal accent-3">
+                            Atualizado em : {{produto.UPDATED_AT}}
                             </v-timeline-item>
                           </v-timeline>
                     </v-col>
                 </v-row>    
             </v-card-text>
         </v-card>
-    </v-container>
+    </div>
   
 
 </template>
@@ -117,6 +137,9 @@ export default {
         clear(){
             this.produto = null
             this.getProduct()
+        },
+        close(){
+            this.$emit('close', false)
         },
         getPercent(){
             this.percent = Math.round((this.lucro / this.produto.VALOR) * 100);
@@ -154,5 +177,8 @@ export default {
 <style lang="scss" scoped>
     .titulo{
         color: #c5c3c3 !important;
+    }
+    .linha{
+        background-color: #BDBDBD !important;
     }
 </style>

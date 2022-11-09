@@ -6,6 +6,7 @@
             max-width="421px"
             @keydown.escape="dialog = false"
             >
+            
             <template  v-slot:activator="{ on, attrs }">
                 <v-btn
                 color="teal accent-3"
@@ -55,23 +56,7 @@
                                     max-width="551px"
                                     @keydown.escape="cadModal = false"
                                 >
-                                    <v-snackbar
-                                        v-model="registro"
-                                        :timeout="timeout"
-                                    >
-                                        {{this.msg}}
-                                        <template v-slot:action="{ attrs }">
-                                        <v-btn
-                                            color="red"
-                                            dark
-                                            icon
-                                            v-bind="attrs"
-                                            @click="registro = false"
-                                            >
-                                            <v-icon small>mdi-close</v-icon>
-                                        </v-btn>
-                                        </template>
-                                    </v-snackbar>
+                                    
                                     <form>
                                         <v-card class="cards-colors">
                                             <v-card-title class="text-h6 white--text">
@@ -146,9 +131,99 @@
                                     outlined
                                     dark
                                     color="teal accent-3"
+                                    @click="qntdModal = true"
                                 >
                                     Aumentar Estoque da Materia
                                 </v-btn>
+                            </v-col>
+                            <v-col>
+                                <v-dialog
+                                    v-model="qntdModal"
+                                    persistent
+                                    max-width="551px"
+                                    @keydown.escape="qntdModal = false"
+                                >
+                                    <v-card class="cards-colors">
+                                        <v-card-title class="white--text">
+                                            Adicionar Quantidade para Matéria 
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <v-row>
+                                                <v-col cols="12">
+                                                    <v-text-field
+                                                        dark
+                                                        label="Codigo do Material"
+                                                        required
+                                                        v-model="codigo"
+                                                        color="teal lighten-1"
+                                                        type="number"
+                                                        value="1"
+                                                        min="1"
+                                                        @keydown.f2="listaRapida = true"
+                                                    ></v-text-field>
+                                                </v-col>
+                                                <v-col cols="12">
+                                                    <v-text-field
+                                                        dark
+                                                        label="Quantidade a ser adicionada"
+                                                        required
+                                                        v-model="QUANTIDADE"
+                                                        color="teal lighten-1"
+                                                        type="number"
+                                                        value="1"
+                                                        min="1"
+                                                    ></v-text-field>
+                                                </v-col>
+                                            </v-row>  
+                                            <v-row>
+                                                <v-col>
+                                                    <v-dialog
+                                                        v-model="listaRapida"
+                                                        persistent
+                                                        max-width="650px"
+                                                        @keydown.escape="listaRapida = false"
+                                            
+                                                    >
+                                                        <v-card color="#1e1e1e">
+                                                            <v-card-actions>
+                                                                <v-btn
+                                                                    icon
+                                                                    dark
+                                                                    @click="listaRapida = false"
+                                                                    class="ml-n3 mt-n2"
+                                                                >
+                                                                <v-icon color="red accent-1">mdi-close</v-icon>
+                                                                </v-btn>
+                                                            </v-card-actions>
+                                                            <v-card-text>
+                                                                <ListaGenerica :route="'materiais'" :headers="headers"></ListaGenerica>
+                                                            </v-card-text>
+                                                            
+                                                        </v-card>
+                                                      
+                                                    </v-dialog>
+                                                    
+                                                </v-col>
+                                            </v-row>
+                                        </v-card-text>
+                                        <v-card-actions class="d-flex justify-center">
+                                            <v-btn
+                                                text 
+                                                color="red accent-1"
+                                                @click="qntdModal = false"
+                                            >
+                                                Fechar
+                                            </v-btn>
+                                            <v-btn
+                                                text 
+                                                color="teal accent-1"
+                                                @click="addMaterial"
+                                            >
+                                                Salvar
+                                            </v-btn>
+                                        </v-card-actions>
+                                   </v-card>
+                                </v-dialog>
                             </v-col>    
                         </v-row>        
                     </v-container>
@@ -160,34 +235,62 @@
 
 <script>
 import { mapActions } from 'vuex'
+import ListaGenerica from '../ListaGenerica.vue'
 export default {
-   data(){
-        return{
-            dialog : false,
-            cadModal : false,
-            NOME : '',
-            CUSTO : 0,
-            QUANTIDADE : 0,
-            msg : '',
-            registro : false,
-            timeout : 2000,
-        }
-   },
-   methods:{
-        ...mapActions('materiaMod', ['post', 'findMateria']),
+    data() {
+        return {
+            dialog: false,
+            cadModal: false,
+            qntdModal: false,
+            NOME: "",
+            CUSTO: 0,
+            QUANTIDADE: 0,
+            msg: "",
+            codigo: null,
+            listaRapida : false,
+        };
+    },
+    computed:{
+        headers() {
+            return [
+                {
+                    text: "Codigo",
+                    align: "start",
+                    value: "ID",
+                },
+                {
+                    text: "Item",
+                    value: "NOME",
+                },
+                { text: "Custo", value: "CUSTO" },
+                { text: "Qntd. Disponivel", value: "QUANTIDADE" },
+            ];
+         },
+    },
+    methods: {
+        ...mapActions("materiaMod", ['post', 'findMateria', 'adicionaMaterial']),
         async saveMateriaPrima() {
-            let payload = {NOME : this.NOME, CUSTO : this.CUSTO, QUANTIDADE : this.QUANTIDADE}
+            let payload = { NOME: this.NOME, CUSTO: this.CUSTO, QUANTIDADE: this.QUANTIDADE }
             this.msg = await this.post(payload)
-            this.registro = true
-            this.clear()
+            this.$emit('messageSnackBar', this.msg)
+            this.clear();
         },
-       
-        clear(){
-            this.NOME = ''
+        async addMaterial(){
+            let payload = {ID : this.codigo, QUANTIDADE : this.QUANTIDADE}
+            this.msg = await this.adicionaMaterial(payload)
+            console.log(this.msg)
+            this.qntdModal = false 
+            this.$emit('messageSnackBar', this.msg)
+            this.clear();
+        },
+        clear() {
+            this.NOME = ""
             this.CUSTO = 0
-            this.QUANTIDADE  = 0
+            this.QUANTIDADE = 0
+            this.codigo = null
         }
-   }
+    },
+    components: { ListaGenerica }
 }
 </script>
 

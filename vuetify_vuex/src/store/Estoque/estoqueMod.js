@@ -64,9 +64,10 @@ export default{
                     console.log(res);
                     if (res.status == 200) {
                         context.commit("desativateAdicionaEstoque");
-                        text = "Sucesso : Quantidade adicionada ao estoque !"
+                        text = res.data.message
                     }
                 });
+                
                 return text
             } catch (error) {
                 text = "Erro : " + error.response.data.message

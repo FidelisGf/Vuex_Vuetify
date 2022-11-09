@@ -80,8 +80,9 @@ export default {
         async adicionarQuantidade() {
             let payload = { product_id: this.id, quantidade: this.quantidade };
             this.msg = await this.saveQuantidade(payload)
-            let eventPayload = {msg : this.msg, registro : true, dialog : false}
-            this.$emit('postMessage',eventPayload)
+            this.$emit('postMessage',this.msg)
+            this.id = null
+            this.quantidade = null
         },
     },
     computed:{

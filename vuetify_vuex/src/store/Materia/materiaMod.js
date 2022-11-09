@@ -104,13 +104,25 @@ export default{
                 return text
             }
        },
+       async adicionaMaterial(context, payload){
+            let text = ""
+            try {
+                await materiaService.aumentaQuantidade(payload).then((res)=>{
+                    console.log(res)
+                    text = res.data.message
+                })
+                return text
+            } catch (error) {
+                text = "Erro :" + error.response.data.message
+                return text
+            }
+       },
        async findMateria(context, payload){
             let payload2 = {text : '', type : ''} 
             try {
                 await materiaService.findById(payload.ID).then((res)=>{
-                    let obj = {ID : res.data.ID,  NOME : res.data.NOME, CUSTO : parseFloat(res.data.CUSTO), QUANTIDADE : parseInt(payload.QUANTIDADE)}
-                    if(res.data.QUANTIDADE >= (payload.QUANTIDADE * payload.QNTD_PROD)){
-                        console.log((payload.QUANTIDADE * payload.QNTD_PROD))
+                    let obj = {ID : res.data.ID,  NOME : res.data.NOME, CUSTO : parseFloat(res.data.CUSTO), QUANTIDADE : payload.QUANTIDADE}
+                    if(res.data.QUANTIDADE >= parseInt(payload.QUANTIDADE * payload.QNTD_PROD)){
                         context.commit("saveMaterialInList", obj)
                         context.commit("somaCustoTotal", parseFloat(res.data.CUSTO * payload.QUANTIDADE))
                         payload2.text = "Item adicionado com sucesso !"

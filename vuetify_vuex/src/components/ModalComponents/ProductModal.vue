@@ -20,7 +20,7 @@
         </v-snackbar>
         <v-col cols="12" md="12" sm="12"  lg="6" class="d-flex flex-column-reverse flex-md-row justify-center justify-lg-start">
             <div class="ml-0 pl-0 d-flex justify-center">
-                <MaterialModal class="ml-sm-0  pl-sm-0 ml-lg-10  "></MaterialModal>
+                <MaterialModal @messageSnackBar="getMessage" class="ml-sm-0  pl-sm-0 ml-lg-10  "></MaterialModal>
             </div>
             <v-btn
                 color="teal accent-3"
@@ -337,12 +337,12 @@ export default {
             await this.forceRerender()
             this.e1 = e
         },
-        getMessage(e){
-           
-            this.msg = e.msg
-            this.registro = e.registro
-            this.estoqueMod = e.dialog
+        async getMessage(e){
+            this.msg = e
+            this.registro = true
+            await this.forceRerender()
         },  
+        
        async postProduto() {
             var payload = { NOME: this.NOME, VALOR: this.VALOR, DESC: this.DESC,
                  quantidade_inicial: this.quantidade_inicial,

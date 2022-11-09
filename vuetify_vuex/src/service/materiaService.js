@@ -10,5 +10,8 @@ export default{
     },
     findById($id){
         return axios.get("/materiais/" + $id)
+    },
+    aumentaQuantidade(payload){
+        return axios.put("/adicionaQuantidadeMaterial/" + payload.ID, payload)
     }  
 }

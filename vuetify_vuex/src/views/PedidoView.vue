@@ -1,10 +1,32 @@
 <template>
     <v-container >
         <v-row>
+            <v-snackbar
+                v-model="registro"
+                :timeout="timeout"
+                :color="color"
+                
+                bottom
+                right
+            >
+                {{this.msg}}
+                <template v-slot:action="{ attrs }">
+                    <v-btn
+                        color="red"
+                        dark
+                        icon
+                        v-bind="attrs"
+                        @click="registro = false"
+                        >
+                        <v-icon small>mdi-close</v-icon>
+                    </v-btn>
+                </template>
+            </v-snackbar>
             <v-col cols="12">
                 <v-card 
                      elevation="21"
-                     class="cards-colors">
+                     class="cards-colors"
+                >
                     <v-card-title class="text-h5 font-weight-bold white--text">
                         Registrar uma Venda
                         <v-tooltip bottom>      
@@ -68,16 +90,7 @@
                             <span class="white--text">Carregar um Pedido</span>
                           </v-tooltip>
                     </v-card-title>
-                    <v-card-subtitle class="font-weight-medium white--text" >Favor informar todos os campos necessários</v-card-subtitle>
-                    <v-card-subtitle v-if="sucesso"><v-alert  type="success" v-model="sucesso" dismissible dense shaped
-                        outlined class="mt-n5 white--text">Produto adicionado a lista com sucesso !</v-alert></v-card-subtitle>
-                    <v-card-subtitle v-if="fail && sucesso == false"><v-alert type="error" v-model="fail" dismissible dense shaped
-                        outlined class="mt-n5 white--text">Algo de errado ocorreu, verifique se o produto existe !</v-alert></v-card-subtitle>
-                    <v-card-subtitle v-if="registro"><v-alert type="success" v-model="registro" dismissible dense shaped
-                        outlined class="mt-n5 white--text">Pedido Registrado com sucesso !</v-alert></v-card-subtitle>
-                    <v-card-subtitle v-if="sucessFind"><v-alert type="success" v-model="sucessFind" dismissible dense shaped
-                        outlined class="mt-n5 white--text">Pedido carregado com sucesso !</v-alert></v-card-subtitle>
-                    <v-row dense class="mt-1">
+                    <v-row>
                         <v-col cols="12" md="12" sm="12">
                             <form @submit.prevent="addLista" class="d-flex justify-center ml-2 ml-md-6 ml-sm-6 ml-lg-6">
                                 <v-tooltip top>
@@ -208,7 +221,7 @@
                             @click="gerarVenda"
                             color="teal accent-2"
                           >
-                            {{msg}}
+                            {{btn_msg}}
                           </v-btn>
                         </v-col>
                     </v-row>
@@ -252,12 +265,13 @@ export default {
                 nome: null,
                 quantidade: 1,
             },
-            msg : 'Gerar Venda',
-            fail : false,
+            btn_msg : 'Gerar Venda',
             id : null,
-            sucesso : false,
             findBy : false,
             registro : false,
+            timeout : 2000,
+            msg : '',
+            color : '',
             sucessFind : false,
             editMode : false,
             listaRapida : false,
@@ -300,8 +314,6 @@ export default {
         ...mapActions('clienteMod', ['clearClient']),
         buscaLista() {
             this.restart += 1
-            this.fail = false
-            this.sucesso = false
             this.listaRapida = true 
         },
         fechar(){
@@ -315,7 +327,7 @@ export default {
             this.escolhaSituacao = pedido.APROVADO == "T" ? "Pago" : "Pagamento pendente"
             this.sucessFind = true
             this.editMode = true
-            this.msg = 'Alterar Pedido'
+            this.btn_msg = 'Alterar Pedido'
             this.findBy = false
            }
         },
@@ -330,7 +342,10 @@ export default {
             APROVADO : this.escolhaSituacao, ID_CLIENTE : this.cliente.id}
             await this.editarPedido(payload)
             this.editMode = false
-            this.msg = 'Gerar Venda'
+            this.registro = true 
+            this.msg = 'Pedido Editado com sucesso !'
+            this.color = 'green darken-3'
+            this.btn_msg = 'Gerar Venda'
             console.log(this.pedido)
             this.down(this.pedidoAtual)
             this.clear()
@@ -351,15 +366,22 @@ export default {
         },
         async addLista(){
             if(this.produto.quantidade == 0 || this.produto.id == null){
-                return alert('Quantidade não pode ser zero e nem o produto pode ser vazio !')
-            }
-            let payload = {quantidade : this.produto.quantidade, id : this.produto.id}
-            let getProd = await this.findProduto(payload)
-            if(getProd){
-                this.sucesso = true  
-                this.hideSucess()
+                this.registro = true 
+                this.msg = 'Quantidade não pode ser zero e nem o produto pode ser vazio !'
+                this.color = 'yellow darken-4'
             }else{
-                this.fail = true
+                let payload = {quantidade : this.produto.quantidade, id : parseInt(this.produto.id)}
+                console.log(payload)
+                let getProd = await this.findProduto(payload)
+                if(getProd){
+                    this.sucesso = true  
+                    this.registro = true 
+                    this.msg = 'Produto Adicionado a Lista com successo !'
+                    this.color = 'green darken-3'
+                    this.hideSucess()
+                }else{
+                    this.fail = true
+                }
             }
         },
         clear(){
@@ -392,7 +414,9 @@ export default {
                     let gerarVenda = await this.geraVenda(payload)
                     if(gerarVenda){
                         this.down(this.pedidoAtual)
-                        this.registro = true
+                        this.registro = true 
+                        this.msg = 'Pedido Gerado com sucesso !'
+                        this.color = 'green darken-3'
                         this.clear()
                         this.clearPayment()
                         this.loading = false
@@ -400,10 +424,13 @@ export default {
                         this.clearClient()
                     }else{
                         this.fail = true
+                        this.loading = false
                     }       
                 }
             }else{
-                alert('A campos que não foram preenchidos')
+                this.registro = true 
+                this.msg = 'A campos que não foram preenchidos !'
+                this.color = 'yellow darken-4'
             }
         },
        async down(pedido){ 

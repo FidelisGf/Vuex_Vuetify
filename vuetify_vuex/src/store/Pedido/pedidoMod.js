@@ -122,15 +122,23 @@ export default{
         async findProduto(context ,payload){
             let getProduto = false
             try {
-                getProduto = await productService.findProdutoById(payload.id).then((res)=>{
+                getProduto = await productService.findProdutoById(payload.id).then(async (res)=>{
                     if(res.status == 200){
                         this.fail = false
-                        let payload2 = {id : res.data.ID, nome : res.data.NOME, valor : res.data.VALOR, quantidade : payload.quantidade, medida : res.data.medida.NOME}
-                        context.commit('somaItens', parseFloat(res.data.VALOR * payload.quantidade))
-                        context.commit('saveCod', res.data.ID)
-                        context.commit("savePedidos", payload2) 
-                        console.log(payload2)
-                        return true
+                        let check = null
+                        await pedidoService.checkQuantidadeProduto(payload).then((res2)=>{
+                            check = res2.data
+                        });
+                        if(check == true){
+                            let payload2 = {id : res.data.ID, nome : res.data.NOME, valor : res.data.VALOR, quantidade : payload.quantidade, medida : res.data.medida.NOME}
+                            context.commit('somaItens', parseFloat(res.data.VALOR * payload.quantidade))
+                            context.commit('saveCod', res.data.ID)
+                            context.commit("savePedidos", payload2) 
+                            console.log(payload2)
+                            return true
+                        }else{
+                            return false
+                        } 
                     }
                 }) 
                 return getProduto

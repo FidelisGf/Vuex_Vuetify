@@ -175,7 +175,7 @@ export default {
             this.notification = true
             this.hideSucess()
         },
-        clear(){
+        clear(){ 
             this.CODIGO = undefined
             this.QUANTIDADE = 1
         },
@@ -198,7 +198,6 @@ export default {
             let payload = {valor : 1, estado : false }            
             this.$emit("fechar",payload)
         },
-       
     },
     computed: {
         ...mapGetters({qntdProd : 'produtoMod/getQntdProd'}),
