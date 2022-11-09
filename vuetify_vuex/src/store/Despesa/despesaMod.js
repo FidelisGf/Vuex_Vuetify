@@ -35,7 +35,6 @@ export default{
        async allByTag(context, payload){
           try {
                let resposta = {current_page : null, totalPage : null}
-               console.log(payload)
                await despesaService.despesasByTag(payload.ID_TAG, payload.current_page).then((res)=>{
                     context.commit("produtoMod/beginListProduct",res.data.data, { root: true })
                     resposta.current_page = res.data.current_page;
@@ -59,8 +58,7 @@ export default{
        async edit(context, payload){
           let text = ""
           try {
-               await despesaService.edit(payload, payload.ID).then((res)=>{
-                    console.log(res.data)
+               await despesaService.edit(payload, payload.ID).then(()=>{
                     text = "Sucesso : Despesa editada !"
                     context.commit("produtoMod/editListProduct", payload, { root: true })
                })
@@ -77,7 +75,7 @@ export default{
                })
                
           } catch (error) {
-               console.log(error)
+               return error
           }
           
        }

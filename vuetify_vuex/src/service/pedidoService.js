@@ -14,6 +14,8 @@ export default{
         return axios.put("/pedidos/" + $id, payload)
     },
     checkQuantidadeProduto(payload){
-        return axios.get("/checkQuantidadeProduto/" + payload.id, payload)
+        payload.quantidade = parseInt(payload.quantidade)
+        payload.id = parseInt(payload.id)
+        return axios.post("/checkQuantidadeProduto", payload)
     }
 }

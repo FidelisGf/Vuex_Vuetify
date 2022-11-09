@@ -142,7 +142,6 @@ export default {
          this.NOME_FANTASIA, EMAIL : this.EMAIL, INC_ESTADUAL : this.INC_ESTADUAL,
          ENDERECO : this.ENDERECO }
          const res = await this.$http.post("/vincularUserEmpresa", data)
-         console.log(res)
          if(res.status == 200){
             alert('Empresa cadastrada e vinculada com sucesso !')
             this.$router.push('/')

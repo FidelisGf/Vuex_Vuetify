@@ -60,7 +60,6 @@ export default {
     },
     methods: {
         emitClose(){
-            console.log('chegou')
             this.$emit('closeModal', false)
         }
     },

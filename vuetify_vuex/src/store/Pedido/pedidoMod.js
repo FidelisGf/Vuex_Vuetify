@@ -110,7 +110,6 @@ export default{
             context.commit("limpaPedido")
              await pedidoService.edit(payload.ID, payload).then((res)=>{
                     if(res.status ===  200){
-                        console.log(res.data)
                         context.commit("setPedidoAtual", res.data)
                         context.commit("setListaPedidos", res.data.PRODUTOS)
                         context.commit("saveValorTotal", res.data.VALOR_TOTAL)
@@ -134,7 +133,6 @@ export default{
                             context.commit('somaItens', parseFloat(res.data.VALOR * payload.quantidade))
                             context.commit('saveCod', res.data.ID)
                             context.commit("savePedidos", payload2) 
-                            console.log(payload2)
                             return true
                         }else{
                             return false
@@ -151,7 +149,6 @@ export default{
             try {
                 gera = await pedidoService.save(payload).then((res)=>{
                     if(res.status == 201){
-                        console.log(res.data)
                         context.commit("setPedidoAtual", res.data)
                         context.commit("limparValorTotal")
                         return true
@@ -171,7 +168,6 @@ export default{
                 context.commit("limparValorTotal")
                     await pedidoService.findById(payload).then((res)=>{
                         if(res.status == 200){
-                            console.log(res)
                             context.commit("setListaPedidos", res.data.PRODUTOS)
                             context.commit("saveValorTotal", parseFloat(res.data.VALOR_TOTAL))
                             if(res.data.ID_CLIENTE != null){

@@ -12,12 +12,14 @@ import despesaMod from './Despesa/despesaMod'
 import utilMod from './Utils/utilMod'
 import medidaMod from './Medida/medidaMod'
 import materiaMod from './Materia/materiaMod'
+import empresaMod from './Empresa/empresaMod'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
     categoryMod,
     estoqueMod,
+    empresaMod,
     pedidoMod,
     produtoMod,
     userMod,
@@ -29,29 +31,22 @@ export default new Vuex.Store({
     materiaMod
   },
   state: {
-   
-   
-  
-   
-    
-   
-   
+    loading : false
   },
   getters: {
-   
-   
-   
-  
-   
+      loading(state){
+        return state.loading
+      }
+    
   },
   mutations: {
-   
-
-    
-   
-    
+    setLoading(state, payload){
+        state.loading = payload
+    }
   },
   actions: {
-   
+    setLoading(context, payload){
+        context.commit("setLoading", payload)
+    }
   },
 })

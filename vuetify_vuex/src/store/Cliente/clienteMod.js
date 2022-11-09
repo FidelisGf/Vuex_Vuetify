@@ -52,8 +52,7 @@ export default{
        },
        saveCliente(context, payload){
         try {
-          clienteService.save(payload).then((res) =>{
-            console.log(res.data)
+          clienteService.save(payload).then(() =>{
             alert('Cliente cadastrado com sucesso !')
           })
         } catch (error) {
@@ -65,7 +64,6 @@ export default{
         let text = null
           try {
             await clienteService.getById(payload).then((res)=>{
-              console.log(res.data)
               context.commit("saveClient", res.data)
               context.commit("activeClienteVinculado")
               text = 'Sucesso : Cliente vinculado ao pedido !'

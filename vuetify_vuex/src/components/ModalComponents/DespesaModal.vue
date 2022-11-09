@@ -180,8 +180,6 @@ export default {
                 let info  = await this.save(payload)
                 if(info.Id != null){
                     let payload2 = {ID : info.Id, DESC : this.DESC, CUSTO : custo, DATA : this.DTFINAL, tags : this.TAG}
-                    console.log(payload)
-                    console.log(payload2)
                     this.saveList(payload2)
                     this.active = false
                 } 

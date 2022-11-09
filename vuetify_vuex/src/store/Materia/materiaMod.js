@@ -35,7 +35,6 @@ export default{
             state.custo_total += parseFloat(payload)
         },
         removeMateria(state, payload){
-           
             state.custo_total = parseFloat(state.custo_total - (payload.QUANTIDADE * payload.CUSTO))
             state.materiais = state.materiais.filter(o => o.ID !== payload.ID)
         },
@@ -45,12 +44,7 @@ export default{
                 if(exist){
                 exist.QUANTIDADE =parseInt( payload.QUANTIDADE )
                 }
-                console.log(state.materiais)
-            }else{
-               
-                console.log(state.materiais)
             }
-           
         },
         saveCustoTotal(state, payload){
             state.custo_total = payload
@@ -108,7 +102,6 @@ export default{
             let text = ""
             try {
                 await materiaService.aumentaQuantidade(payload).then((res)=>{
-                    console.log(res)
                     text = res.data.message
                 })
                 return text
@@ -144,7 +137,6 @@ export default{
             try {
                 
                 await materiaService.findById(payload.ID).then((res)=>{
-                    console.log(res.data)
                     if(res.data.QUANTIDADE >= payload.QUANTIDADE){
                         flag = true
                         

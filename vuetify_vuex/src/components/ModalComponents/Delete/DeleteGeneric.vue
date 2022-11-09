@@ -72,10 +72,6 @@ export default {
    computed:{
       ...mapGetters({generico : 'utilMod/getGenerico'})
    },
-   created(){
-    
-      //this.deleteItem(this.route)
-   }
 }
 </script>
 

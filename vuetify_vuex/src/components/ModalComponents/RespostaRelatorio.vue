@@ -1,22 +1,22 @@
 <template> 
     <v-card class="relatorios">
         <v-card-actions>
-            <v-btn 
-                icon
-                class="ml-n3 mt-n2"
+            <v-btn
+                icon 
+                dark 
                 @click="closeRelatorio"
-            ><v-icon color="red accent-1">mdi-close</v-icon></v-btn>
+                class="ml-n2 mt-n1"
+            >
+                <v-icon color="red accent-2">mdi-close</v-icon>
+            </v-btn>
         </v-card-actions>
-        <v-card-subtitle v-if="entreDatas" class="mt-2 ml-2 text-h8 white--text" ><p>De : {{starterDate}}  até : {{endDate}}</p></v-card-subtitle>
-        <v-card-text class="mt-3 white--text">
-            <v-row v-if="!ntTable">
-                <ListaGenerica v-if="!pedidos && !vendas" :route="'products'" :opcao="filtro" :headers="headers"></ListaGenerica>
-                <ListaGenerica v-if="pedidos" :route="'pedidos'" :opcao="filtro" :headers="headers" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
-                <ListaGenerica v-if="vendas" :route="'vendas'" :opcao="filtro" :headers="headers" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
-            </v-row>
-            <v-row v-if="ntTable">
-                <RelatorioEscrito v-if="notTable" :route="'vendas'" :opcao="filtro" :end-date="endDate" :starter-date="starterDate"></RelatorioEscrito>
-            </v-row>
+        <v-card-text class="mt-n2" v-if="!ntTable">
+            <ListaGenerica v-if="!pedidos && !vendas" :route="'products'" :opcao="filtro" :headers="headers"></ListaGenerica>
+            <ListaGenerica v-if="pedidos" :route="'pedidos'" :opcao="filtro" :headers="headers" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
+            <ListaGenerica v-if="vendas" :route="'vendas'" :opcao="filtro" :headers="headers" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
+        </v-card-text>
+        <v-card-text v-if="ntTable">
+            <RelatorioEscrito v-if="notTable" :route="'vendas'" :opcao="filtro" :end-date="endDate" :starter-date="starterDate"></RelatorioEscrito>
         </v-card-text>
     </v-card>
 </template>
@@ -99,7 +99,6 @@ export default {
     },
     created() {
         this.checkRelatorio()
-        console.log(this.notTable)
         
     },
     components: { ListaGenerica, RelatorioEscrito }

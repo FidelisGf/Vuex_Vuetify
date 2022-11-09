@@ -6,57 +6,50 @@
                     v-if="loading == true" class="black" :loading="loading" transition="fade-transition" type="card"
                 >
                 </v-skeleton-loader>
-                <v-card color="#1e1e1e" v-if="loading == false">
-                        <v-card-title class="white--text">
-                            Tipo de Pagamentos 
-                        </v-card-title>
-                        <v-card-text class="white--text">
-                            <v-list color="#1e1e1e">
-                                <v-list-item >
-                                    <v-list-item-content>
-                                        <v-list-item-title class="ml-2 white--text">
-                                            <p class="text-h5 title-text"><b>Lucro Total : {{lucro}}</b></p>
-                                        </v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                                <v-list-item >
-                                    <v-list-item-content>
-                                        <v-list-item-title class="ml-2 white--text">
-                                            <p><b>Recebimento Total : {{total}}</b></p>
-                                        </v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                                <v-list-item >
-                                    <v-list-item-content>
-                                        <v-list-item-title class="ml-2 white--text">
-                                            <p><b>Pagamento Por PIX : {{pix}}</b></p>
-                                        </v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                                <v-list-item >
-                                    <v-list-item-content>
-                                        <v-list-item-title class="ml-2 white--text">
-                                            <p><b>Pagamento Por Cartao : {{cartao}}</b></p>
-                                        </v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                                <v-list-item >
-                                    <v-list-item-content>
-                                        <v-list-item-title class="ml-2 white--text">
-                                            <p><b>Pagamento Por Dinheiro: {{dinheiro}}</b></p>
-                                        </v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                                <v-list-item >
-                                    <v-list-item-content>
-                                        <v-list-item-title class="ml-2 footer-text">
-                                            <p><b>Gastos com Matéria Prima : {{gasto}}</b></p>
-                                        </v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
-                            </v-list>
-                        </v-card-text>
-                </v-card>      
+                    <v-list color="#1e1e1e">
+                        <v-list-item >
+                            <v-list-item-content>
+                                <v-list-item-title class="ml-0 ml-sm-2 white--text">
+                                    <p class="text-sm-h5 title-text"><b>Lucro Total : {{lucro}}</b></p>
+                                </v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-list-item >
+                            <v-list-item-content>
+                                <v-list-item-title class="ml-0 ml-sm-2  white--text">
+                                    <p><b class=" text-sm-body-1 text-caption">Recebimento Total : {{total}}</b></p>
+                                </v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-list-item >
+                            <v-list-item-content>
+                                <v-list-item-title class="ml-0 white--text ml-sm-2">
+                                    <p><b class="text-caption text-sm-body-1 ">Pagamento Por PIX : {{pix}}</b></p>
+                                </v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-list-item >
+                            <v-list-item-content>
+                                <v-list-item-title class="ml-0 white--text ml-sm-2">
+                                    <p><b class="text-caption text-sm-body-1">Pagamento Por Cartao : {{cartao}}</b></p>
+                                </v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-list-item >
+                            <v-list-item-content>
+                                <v-list-item-title class="ml-0 white--text ml-sm-2">
+                                    <p><b class="text-caption text-sm-body-1">Pagamento Por Dinheiro: {{dinheiro}}</b></p>
+                                </v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-list-item >
+                            <v-list-item-content>
+                                <v-list-item-title class="ml-0 footer-text ml-sm-2">
+                                    <p ><b class="text-caption text-sm-body-1 ">Gastos com Matéria Prima : {{gasto}}</b></p>
+                                </v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list>
             </v-col>
         </v-row>
     </v-container>

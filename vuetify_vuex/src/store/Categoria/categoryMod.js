@@ -28,8 +28,7 @@ export default {
             })
         },
         saveListCategoria(context, payload){
-            categoryService.postCategory(payload).then((res) => {
-                console.log(res);
+            categoryService.postCategory(payload).then(() => {
                 alert('Categoria criada com sucesso ! ')
             })
             context.dispatch('beginListCategoria')

@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
     data(){
         return{
@@ -60,27 +61,23 @@ export default {
         }
     },
     methods:{
+        ...mapActions('empresaMod', ['getByUser', 'checkEmpresa']),
         async checkUserHaveOffice(){
-            const res = await this.$http.get("/checaEmpUser")
-            console.log(res);
-            if(res.data == 1){
+            const res =  await this.checkEmpresa()
+            if(res == 1){
                 this.getEmpresaByUser();
-                console.log(this.data.data);
                 this.showEmpresa = true;
             }else{
                 this.showEmpresa = false;
             }
         },
         async getEmpresaByUser(){
-            const res = await this.$http.get("/empresaPorUsuario");
-            console.log(res.data[0]);
-            this.data = res.data[0];
-            console.log(this.data);
+            const res = await this.getByUser()
+            this.data = res;
         }
     },
     created(){
         this.checkUserHaveOffice();
-        
     }
 }
 </script>

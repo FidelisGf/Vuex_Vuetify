@@ -17,10 +17,10 @@
                 </v-btn>
             </template>
         </v-snackbar>
-        <v-row class="d-flex flex-md-row flex-lg-row flex-column align-center ">
-            <v-col cols="11" lg="2" md="2"><DespesaModal class="mt-0 mt-md-1"></DespesaModal></v-col>
-            <v-col cols="11" lg="3" md="3"><TagModal class="mt-0 mt-md-1" ></TagModal></v-col>
-            <v-col cols="10" sm="10" lg="3" md="3">
+        <v-row class="d-flex flex-md-row flex-lg-row justify-center mt-8 mt-md-0">
+            <v-col cols="9" lg="2" sm="5" md="2" ><DespesaModal class="mt-0 mt-md-0"></DespesaModal></v-col>
+            <v-col cols="9" lg="3" sm="4" md="3" ><TagModal class="mt-0 mt-md-0" ></TagModal></v-col>
+            <v-col cols="8" sm="5" lg="3" md="3" class="mt-0 mt-md-3" >
                 
                 
                 <v-btn v-if="!hasFilter"
@@ -45,7 +45,7 @@
                 </v-btn>
             </v-col>
             <v-spacer v-if="!$vuetify.breakpoint.smAndDown" ></v-spacer>
-            <v-col cols="10" sm="10" xs="2" md="3" lg="3">
+            <v-col cols="8" sm="4" xs="2" md="3" lg="3">
                 <v-sheet
                     color="cyan lighten-5"
                     elevation="8"
@@ -63,6 +63,7 @@
                 persistent
                 max-width="720"
                 @keydown.escape="active = false"
+                
             >
                 <form ref="form" @submit.prevent="getTwoDates">
                     <v-card class="cards-colors">
@@ -207,7 +208,6 @@ export default {
             const[day, month, year] = data.split('-')
             const[hours, minutes] = hora.split(':')
             const date =  new Date(day,month,year,hours, minutes);
-            console.log(date)
             return date;
         },
         getTwoDates(){
@@ -220,7 +220,6 @@ export default {
             }else{
                 this.filtro = "Duas datas"
                 this.hasFilter = true
-                console.log(this.hasFilter)
                 this.forceRerender()
                 this.msg = 'Busca realizada com sucesso !'
                 this.registro = true
@@ -230,7 +229,6 @@ export default {
         compareDates(){
             let inicio = this.makeValibleData(this.DATA_INI, this.HORA_INI)
             let fim = this.makeValibleData(this.DATA_FIN, this.HORA_FIN)
-            console.log(inicio)
             if(fim < inicio){
                 return false
             }

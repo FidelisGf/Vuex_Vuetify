@@ -1,6 +1,6 @@
 <template>
   <v-app>
-      <SideBar/>
+    <SideBar/>
     <v-main class="info" >
       <v-container fluid>
         <router-view></router-view>

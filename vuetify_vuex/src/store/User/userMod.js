@@ -25,20 +25,17 @@ export default{
     actions: {
         setUser(context, payload){
             context.commit('saveUser', payload)
-            console.log(payload);
         },
         setEmpresa(context, payload){
             context.commit('saveEmpresa', payload)
         },
         async getEmpresaFromUser(context){
             await userService.getEmpresaFromUser().then((res) =>{
-                console.log(res.data)
                 context.dispatch('setEmpresa', res.data)
             })   
         },
         profile(context){
             userService.profile().then((res)=>{
-                console.log(res.data)
                 context.commit('saveUser', res.data.NAME)
             })
         },
@@ -59,7 +56,6 @@ export default{
             let check = false
             try {
                  await userService.checkEmpresa(payload).then((res)=>{
-                    console.log(res)
                     if(res.data != 0){
                         check = true
                     }else {

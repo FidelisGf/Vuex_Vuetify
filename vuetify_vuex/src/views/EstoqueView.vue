@@ -1,5 +1,5 @@
 <template>
-    <ProductModal :miniatura="false"></ProductModal>               
+    <ProductModal  :miniatura="false"></ProductModal>               
 </template>
 <script>
 import ProductModal from '@/components/ModalComponents/ProductModal.vue'

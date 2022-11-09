@@ -186,7 +186,6 @@ export default {
             var payload = {ID : this.ID, NOME: this.NOME, VALOR: this.VALOR, DESC: this.DESC, ID_CATEGORIA: this.Categoria.ID_CATEGORIA, 
                 NOME_C : this.Categoria.NOME_C, QUANTIDADE : this.quantidade, ID_MEDIDA : this.Medida.ID}
             this.msg = await this.editProduct(payload)
-            console.log(this.msg)
             this.registro = true
         },
     },

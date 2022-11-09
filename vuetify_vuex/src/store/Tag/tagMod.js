@@ -40,7 +40,6 @@ export default{
           try {
              let tags = null   
              await tagService.get().then((res)=>{
-                    console.log(res)
                     tags = res.data
                     context.commit('setTags', res.data)
              })

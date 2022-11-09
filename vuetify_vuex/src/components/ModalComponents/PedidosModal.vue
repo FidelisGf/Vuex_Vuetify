@@ -5,6 +5,7 @@
             persistent
             max-width="650"
             @keydown.escape="active = false"
+            :fullscreen="$vuetify.breakpoint.mobile"
         >                                    
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn

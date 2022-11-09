@@ -1,6 +1,6 @@
 <template>
     <v-container fluid grid-list-md>
-        <v-row dense>
+        <v-row dense class="mt-8 mt-md-0">
             <v-col cols="12">
                 <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
@@ -62,6 +62,7 @@
                 persistent
                 max-width="700px"
                 @keydown.escape="relatorio = false"
+                :fullscreen="$vuetify.breakpoint.mobile"
             >
              
                   
@@ -75,6 +76,7 @@
                 persistent
                 max-width="700px"
                 @keydown.escape="relatorioE = false"
+                :fullscreen="$vuetify.breakpoint.mobile"
             >
                 <RespostaRelatorioEstoque :key="renicializar" @closeModal="closeRelatorio" :filtro="filtro" ></RespostaRelatorioEstoque>
               
@@ -83,7 +85,7 @@
         <v-row>
             <v-col v-if="hasDateInput">
                 <v-text-field
-                    dark
+                    darks
                     v-model="start"
                     label="Data Inicial"
                     persistent-hint
@@ -138,7 +140,6 @@
             <v-col>
                 <v-btn color="green accent-1" class="btns" @click="makeRelatorio">
                     Gerar
-                    
                 </v-btn>
                 <v-btn color="lime lighten-4" class=" btns ml-3" @click="clear">
                     Limpar
@@ -312,7 +313,6 @@ export default {
         compareDates(){
             let inicio = this.makeValibleData(this.start, this.tmpIni)
             let fim = this.makeValibleData(this.end, this.tmpFina)
-            console.log(inicio)
             if(fim < inicio){
                 return false
             }
@@ -324,7 +324,6 @@ export default {
             const[day, month, year] = data.split('-')
             const[hours, minutes] = hora.split(':')
             const date =  new Date(day,month,year,hours, minutes);
-            console.log(date)
             return date;
         },
         validaDados(){
@@ -350,6 +349,14 @@ export default {
 <style lang="scss" scoped>
     .btns{
         width: 20%;
+    }
+    .theme--dark input[type="date"]::-webkit-calendar-picker-indicator {
+        background: url(https://img.icons8.com/cotton/64/000000/calendar.png) no-repeat;
+        background-size: 24px 24px;
+    }
+    .theme--dark input[type="time"]::-webkit-calendar-picker-indicator {
+        background: url(https://img.icons8.com/cotton/64/000000/clock.png) no-repeat;
+        background-size: 24px 24px;
     }
 
 </style>

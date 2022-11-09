@@ -119,13 +119,12 @@ export default{
                         context.commit("saveCount", res.data)
                 })
             } catch (error) {
-                console.log(error)    
+                return error  
             }
         },
         async findById(context, payload){
             try {
                 let data = await productService.findProdutoById(payload).then((res)=>{
-                    console.log(res.data)
                     return res.data
                 })
                 return data
@@ -140,7 +139,6 @@ export default{
                 
                 await productService.postProduto(payload).then((res) => {
                     if (res.status == 200) {
-                        console.log(res);
                         payload.ID = res.data.ID
                         payload.QUANTIDADE = payload.quantidade_inicial
                         context.commit("saveListProduct",payload) 

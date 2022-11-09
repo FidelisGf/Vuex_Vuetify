@@ -127,7 +127,6 @@ export default {
             this.produto = await this.findById(this.generico.ID)
             this.lucro = await this.getLucroByProd(this.generico.ID)
             if(this.produto != null || this.produto != undefined){
-                console.log(this.produto)
                 this.produto.CREATED_AT = await this.formatDate(this.produto.CREATED_AT)
                 this.produto.UPDATED_AT = await this.formatDate(this.produto.UPDATED_AT)
                 this.loading = false

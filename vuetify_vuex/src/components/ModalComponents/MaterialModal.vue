@@ -278,7 +278,6 @@ export default {
         async addMaterial(){
             let payload = {ID : this.codigo, QUANTIDADE : this.QUANTIDADE}
             this.msg = await this.adicionaMaterial(payload)
-            console.log(this.msg)
             this.qntdModal = false 
             this.$emit('messageSnackBar', this.msg)
             this.clear();

@@ -67,7 +67,6 @@ export default {
     methods:{
         async register(){
             const res = await this.$http.post("/auth/register", {NAME : this.username, PASSWORD: this.password, EMAIL : this.email})
-            console.log(res);
             if(res.status == 200){
                 alert('Usuario Criado com sucesso !')
                 this.$router.push({name : 'login'})

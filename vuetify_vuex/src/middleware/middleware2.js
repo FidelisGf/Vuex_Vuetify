@@ -21,7 +21,6 @@ export default{
                 next()
             }
         }catch(e){
-            console.log()
             if(e.response.status == 401){
                 next({name: 'login'})
             }

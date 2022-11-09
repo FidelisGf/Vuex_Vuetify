@@ -61,7 +61,6 @@ export default{
             let text = null
             try { 
                 await estoqueService.adicionarQuantidade(payload).then((res) => {
-                    console.log(res);
                     if (res.status == 200) {
                         context.commit("desativateAdicionaEstoque");
                         text = res.data.message

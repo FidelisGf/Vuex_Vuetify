@@ -1,6 +1,6 @@
 <template>
     <v-container >
-        <v-row>
+        <v-row class="mt-8 mt-md-0">
             <v-snackbar
                 v-model="registro"
                 :timeout="timeout"
@@ -26,6 +26,7 @@
                 <v-card 
                      elevation="21"
                      class="cards-colors"
+                    
                 >
                     <v-card-title class="text-h5 font-weight-bold white--text">
                         Registrar uma Venda
@@ -91,8 +92,8 @@
                           </v-tooltip>
                     </v-card-title>
                     <v-row>
-                        <v-col cols="12" md="12" sm="12">
-                            <form @submit.prevent="addLista" class="d-flex justify-center ml-2 ml-md-6 ml-sm-6 ml-lg-6">
+                        <v-col cols="11" md="8" sm="12">
+                            <form @submit.prevent="addLista" class="d-flex justify-center ml-2 ml-md-6 ml-sm-6 ml-lg-6 flex-column flex-sm-row ">
                                 <v-tooltip top>
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-text-field
@@ -114,7 +115,7 @@
                                     <span>Tecle f2 para ver os disponiveis</span>
                                   </v-tooltip>
                                     <v-text-field
-                                    class="ml-3 w-25"
+                                    class="ml-0 ml-sm-3 w-25"
                                     label="Quantidade do produto"
                                     outlined
                                     dark
@@ -127,28 +128,30 @@
                                     min="0"
                                    
                                 ></v-text-field>
-                                <v-tooltip bottom>
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <v-btn
-                                            v-bind="attrs"
-                                            v-on="on"
-                                            class="ml-3"
-                                            dark
-                                            rules="required|min:1"
-                                            type="submit"
-                                            icon 
-                                        >
-                                            <v-icon aria-label="Adicionar a lista" aria-hidden="false" dark color="teal accent-1">mdi-plus-circle-outline</v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <span>Adicionar a lista</span>
-                                  </v-tooltip>
-                                  
-                                  <PedidosModal ></PedidosModal>
-                                  <ClientModalVue class="ml-n3 mt-n3"></ClientModalVue>
+                                <div class="d-flex  flex-row  justify-lg-start pl-16 pl-sm-0">
+                                        <v-tooltip bottom>
+                                            <template v-slot:activator="{ on, attrs }">
+                                                <v-btn
+                                                    v-bind="attrs"
+                                                    v-on="on"
+                                                    class="ml-0 ml-sm-3"
+                                                    dark
+                                                    rules="required|min:1"
+                                                    type="submit"
+                                                    icon 
+                                                    
+                                                >
+                                                    <v-icon aria-label="Adicionar a lista" aria-hidden="false" dark color="teal accent-1">mdi-plus-circle-outline</v-icon>
+                                                </v-btn>
+                                            </template>
+                                            <span>Adicionar a lista</span>
+                                        </v-tooltip>
+                                        <PedidosModal class="pl-sm-0 pl-3" ></PedidosModal>
+                                        <ClientModalVue class="pl-sm-3 pl-5 ml-n3 mt-n3"></ClientModalVue>
+                                  </div>
                             </form>
                         </v-col>
-                        <v-col cols="6" sm="6" class="d-flex justify-center ml-2 ml-md-6 ml-sm-6 ml-lg-6">
+                        <v-col cols="11" sm="6" md="6" class="d-flex justify-center ml-2 ml-md-6 ml-sm-6 ml-lg-6 mt-sm-0 mt-n2">
                             <v-select
                                 v-model="escolhaPagamento"
                                 :items="MetodosPagamento"
@@ -162,10 +165,11 @@
                         <v-col
                             cols="10"
                             sm="10"
-                            class="d-flex justify-space-around ml-2 ml-md-6 ml-sm-6 ml-lg-6"
+                            class="d-flex justify-space-around ml-2 ml-md-6 ml-sm-6 ml-lg-6 flex-column flex-md-row"
                             v-if="escolhaPagamento == 'Dinheiro'"
                         > 
                             <v-text-field
+                                class="ml-sm-0 ml-3"
                                 v-model="dinheiroPago"
                                 small
                                 label="Dinheiro Pago"
@@ -200,7 +204,12 @@
                                 color="teal accent-2"
                             ></v-text-field>
                         </v-col>
-                        <v-col cols="6" sm="6" class="d-flex justify-center ml-2 ml-md-6 ml-sm-6 ml-lg-6">
+                        <v-col 
+                        cols="11" 
+                        sm="6" 
+                        class="d-flex justify-center ml-2 ml-md-6 
+                            ml-sm-6 ml-lg-6 mt-sm-0 mt-n8"
+                        >
                             <v-select
                                 :items="situacoes"
                                 label="Situação desse pedido"
@@ -211,7 +220,7 @@
                                 color="teal accent-2"
                             ></v-select>
                         </v-col>
-                        <v-col cols="6" class="d-flex ml-sm-4 ml-xs-4 ml-lg-4 ml-md-4 ml-xl-4 mt-n4">
+                        <v-col cols="11" sm="6" class="d-flex ml-sm-4 ml-xs-4 ml-lg-4 ml-md-4 ml-xl-4 mt-n4">
                             <v-btn
                             class="ma-2 mb-5 gerador"
                             block
@@ -233,6 +242,7 @@
             v-model="listaRapida"
             persistent
             max-width="760px"
+            :fullscreen="$vuetify.breakpoint.mobile"
         >   
             <v-card color="#1e1e1e">
                 <p class="mt-5"><v-btn icon text @click="fechar"><v-icon color="red">mdi-close</v-icon></v-btn></p>
@@ -292,7 +302,7 @@ export default {
         },
         headers() {
             return [
-                {
+                { 
                     text: "Codigo",
                     align: "start",
                     value: "product[0].ID",
@@ -323,9 +333,11 @@ export default {
            let pedido = null
            pedido = await this.findPedido(this.id)
            if(pedido != null){
+            this.registro = true 
+            this.msg = 'Pedido carregado com sucesso !'
+            this.color = 'green darken-3'
             this.escolhaPagamento = pedido.METODO_PAGAMENTO
             this.escolhaSituacao = pedido.APROVADO == "T" ? "Pago" : "Pagamento pendente"
-            this.sucessFind = true
             this.editMode = true
             this.btn_msg = 'Alterar Pedido'
             this.findBy = false
@@ -346,7 +358,6 @@ export default {
             this.msg = 'Pedido Editado com sucesso !'
             this.color = 'green darken-3'
             this.btn_msg = 'Gerar Venda'
-            console.log(this.pedido)
             this.down(this.pedidoAtual)
             this.clear()
             this.clearPayment()
@@ -371,16 +382,17 @@ export default {
                 this.color = 'yellow darken-4'
             }else{
                 let payload = {quantidade : this.produto.quantidade, id : parseInt(this.produto.id)}
-                console.log(payload)
                 let getProd = await this.findProduto(payload)
                 if(getProd){
-                    this.sucesso = true  
                     this.registro = true 
                     this.msg = 'Produto Adicionado a Lista com successo !'
                     this.color = 'green darken-3'
                     this.hideSucess()
                 }else{
-                    this.fail = true
+                    this.registro = true 
+                    this.msg = 'Quantidade em estoque insuficiente !'
+                    this.color = 'red darken-3'
+                    this.hideSucess()
                 }
             }
         },
@@ -438,7 +450,6 @@ export default {
             let pdf = new jsPdf()
             let produtos = this.pedidos
             let nomeClatura = pedido.aprovado == "PAGO" ? 'Pedido' : 'Orçamento'
-            console.log(pedido)
             let values = produtos.map( (elemento) => Object.values(elemento));
             pdf.setFontSize(26)
             pdf.text(Nome_Empresa + ' ' + nomeClatura + '#' +  pedido.codigo , 5, 15)
