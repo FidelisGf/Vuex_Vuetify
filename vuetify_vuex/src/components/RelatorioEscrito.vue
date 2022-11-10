@@ -57,7 +57,7 @@
 
 <script>
 import axios from 'axios';
-
+import { mapActions } from 'vuex';
 export default {
     props:{
         route: String,
@@ -79,7 +79,7 @@ export default {
         }
     },
     methods:{
-        
+        ...mapActions('utilMod' , ['setLoad']),
         async getDados(route){
             this.dtStart = this.starterDate
             this.dtFinal = this.endDate
@@ -101,6 +101,7 @@ export default {
             this.dinheiro = this.dinheiro.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
             this.lucro = this.lucro.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
             this.gasto = this.gasto.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
+            this.setLoad(false)
         }
     },
     created(){

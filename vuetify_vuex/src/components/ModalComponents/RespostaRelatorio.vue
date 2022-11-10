@@ -1,29 +1,37 @@
 <template> 
-    <v-card class="relatorios">
-        <v-card-actions>
-            <v-btn
-                icon 
-                dark 
-                @click="closeRelatorio"
-                class="ml-n2 mt-n1"
-            >
-                <v-icon color="red accent-2">mdi-close</v-icon>
-            </v-btn>
-        </v-card-actions>
-        <v-card-text class="mt-n2" v-if="!ntTable">
-            <ListaGenerica v-if="!pedidos && !vendas" :route="'products'" :opcao="filtro" :headers="headers"></ListaGenerica>
-            <ListaGenerica v-if="pedidos" :route="'pedidos'" :opcao="filtro" :headers="headers" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
-            <ListaGenerica v-if="vendas" :route="'vendas'" :opcao="filtro" :headers="headers" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
-        </v-card-text>
-        <v-card-text v-if="ntTable">
-            <RelatorioEscrito v-if="notTable" :route="'vendas'" :opcao="filtro" :end-date="endDate" :starter-date="starterDate"></RelatorioEscrito>
-        </v-card-text>
-    </v-card>
+    <div>
+        <v-skeleton-loader
+            v-if="loading == true" class="black" :loading="loading" transition="fade-transition" type="card"
+        >
+        </v-skeleton-loader>
+        <v-card class="relatorios" v-show="loading == false">
+            <v-card-actions>
+                <v-btn
+                    icon 
+                    dark 
+                    @click="closeRelatorio"
+                    class="ml-n2 mt-n1"
+                >
+                    <v-icon color="red accent-2">mdi-close</v-icon>
+                </v-btn>
+            </v-card-actions>
+            <v-card-text class="mt-n2" v-if="!ntTable">
+                <ListaGenerica :key="restart"  v-if="!pedidos && !vendas" :route="'products'" :opcao="filtro" :headers="headers"></ListaGenerica>
+                <ListaGenerica :key="restart"  v-if="pedidos" :route="'pedidos'" :opcao="filtro" :headers="headers" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
+                <ListaGenerica :key="restart"  v-if="vendas" :route="'vendas'" :opcao="filtro" :headers="headers" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
+            </v-card-text>
+            <v-card-text v-if="ntTable">
+                <RelatorioEscrito v-if="notTable" :route="'vendas'" :opcao="filtro" :end-date="endDate" :starter-date="starterDate"></RelatorioEscrito>
+            </v-card-text> 
+        </v-card>
+    </div>
+   
 </template>
 
 <script>
 import ListaGenerica from '../ListaGenerica.vue';
 import RelatorioEscrito from '../RelatorioEscrito.vue';
+import { mapGetters, mapActions } from 'vuex';
 export default {
     props: {
         nomeRelatorio: String,
@@ -31,6 +39,7 @@ export default {
         endDate : String,
         filtro : String,
         notTable : Boolean,
+        route : String,
     },
     data() {
         return {
@@ -39,9 +48,11 @@ export default {
             pedidos : false,
             vendas : false,
             entreDatas : false,
+            restart : 0,
         };
     },
     computed: {
+        ...mapGetters({loading : 'utilMod/getLoad'}),
         ntTable : function(){
             return this.notTable
         },
@@ -76,16 +87,20 @@ export default {
                         align: "start",
                         value: "NOME",
                     },
-                    { text: "Descrição", value: "DESC" },
-                    { text: "Valor", value: "VALOR" },
                     { text: "Categoria", value: "category.NOME_C" },
+                    { text: "Valor", value: "VALOR" }, 
                 ];
             }
         },
     },
     methods: {
+        ...mapActions('utilMod', ['setLoad']),
         closeRelatorio(){
+            this.restart += 1
             this.$emit('closeModRelatorio', false)
+        },
+        stopeLoad(e){
+            this.loading = e
         },
         checkRelatorio(){
             if(this.filtro == 'Vendas por periodo de dias'){
@@ -98,8 +113,20 @@ export default {
         }
     },
     created() {
-        this.checkRelatorio()
         
+        this.setLoad(true)
+        this.checkRelatorio()
+        console.log(this.loading)
+    },
+
+    watch:{
+        filtro : function(val){
+            if(val){
+                this.setLoad(true)
+                this.restart += 1
+                this.checkRelatorio()
+            }
+        }
     },
     components: { ListaGenerica, RelatorioEscrito }
 }   

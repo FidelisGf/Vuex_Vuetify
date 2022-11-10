@@ -6,6 +6,22 @@
                     <template v-slot:activator="{ on, attrs }">
                         <v-select
                             class="mt-3"
+                            :items="modelosRelatorios"
+                            label="Escolha o modelo do relatorio"
+                            v-model="relatorioEscolhaModelo"
+                            outlined 
+                            dark
+                            color="orange darken-1"
+                            v-bind="attrs"
+                            v-on="on"     
+                            >  
+                        </v-select>
+                    </template>
+                    <span >Selecione o modelo de relatorio a ser gerado</span>
+                </v-tooltip>
+                <v-tooltip bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-select
                             :items="relatoriosList"
                             label="Escolha um Relatorio"
                             v-model="relatorioEscolhaLista"
@@ -60,12 +76,10 @@
             <v-dialog
                 v-model="relatorio"
                 persistent
-                max-width="700px"
+                max-width="850px"
                 @keydown.escape="relatorio = false"
-                :fullscreen="$vuetify.breakpoint.mobile"
+                :fullscreen="$vuetify.breakpoint.xsOnly"
             >
-             
-                  
                     <RespostaRelatorio :nome-relatorio="relatorioEscolha" 
                     :starter-date="startData" :end-date="endData" :filtro="filtro" :not-table="notTable" 
                     @closeModRelatorio="closeRelatorio"></RespostaRelatorio>
@@ -74,13 +88,20 @@
             <v-dialog
                 v-model="relatorioE"
                 persistent
-                max-width="700px"
+                max-width="750px"
                 @keydown.escape="relatorioE = false"
                 :fullscreen="$vuetify.breakpoint.mobile"
             >
-                <RespostaRelatorioEstoque :key="renicializar" @closeModal="closeRelatorio" :filtro="filtro" ></RespostaRelatorioEstoque>
+                <RespostaRelatorioEstoque  :key="renicializar" @closeModal="closeRelatorio" :filtro="filtro" ></RespostaRelatorioEstoque>
               
             </v-dialog>
+            <RelatorioPDF :key="renicializarPdf" 
+                v-if="pdf == true" 
+                :starter-date="startData" 
+                :end-date="endData" :filtro="filtro"
+                :route="route"
+                :columns="pdfColumn">
+            </RelatorioPDF>
         </v-row>
         <v-row>
             <v-col v-if="hasDateInput">
@@ -89,7 +110,9 @@
                     v-model="start"
                     label="Data Inicial"
                     persistent-hint
+                    class="input"
                     required
+                    dark
                     color="teal lighten-1"
                     type="date"
                 ></v-text-field>  
@@ -103,6 +126,7 @@
                     label="Hora Inicial"
                     persistent-hint
                     required
+                    class="input"
                     color="teal lighten-1"
                     type="time"
                     dark
@@ -153,10 +177,13 @@
 import RespostaRelatorio from '@/components/ModalComponents/RespostaRelatorio.vue';
 import RespostaRelatorioEstoque from '../components/ModalComponents/RespostaRelatorioEstoque.vue';
 import {mapGetters, mapActions} from 'vuex'
+import RelatorioPDF from '@/components/RelatorioPDF.vue';
 export default {
     data() {
         return {
             relatoriosList: ["Relatorios de Produtos", "Relatorios do Estoque", "Relatorios de Pedidos", "Relatorio de Vendas"],
+            modelosRelatorios : ["PDF", "Tabela Virtual"],
+            relatorioEscolhaModelo : null,
             relatorioEscolhaLista : null, // Escolha de uma das listas
             relatorioEscolha: null, // Escolha de uma opção dentro de uma lista
             relatorioProductList : ["Produtos mais caros", "Produtos mais baratos"],
@@ -177,7 +204,12 @@ export default {
             filtro : '',
             notTable : false,
             relatorioE : false,
-            renicializar : 0
+            renicializar : 0,
+            renicializarPdf : 0,
+            pdfColumn : null,
+            loading : false,
+            route : '',
+            pdf : false,
         };
     },
     computed:{
@@ -246,38 +278,56 @@ export default {
         },
         ...mapActions('estoqueMod', ['saveFiltroEstoque','activeRelatorioEstoque']),
         makeRelatorio() {
+            this.filtro = this.relatorioEscolha
+            this.loading = true
             this.notTable = false
             let validado = this.validaDados()
+            if(this.start != null && this.end != null){
+                let comparaDatas = this.compareDates()
+                this.saveHoras()
+                if(comparaDatas){
+                    if(this.relatorioEscolha == 'Vendas por Tipo de Pagamento'){
+                        this.notTable = true
+                    }
+                }else{
+                        alert('Data Inicial maior que data Final')
+                        return 
+                    }
+            }
             if(!validado){
                 alert('Preencha todos os campos necessários')
             }else{
-                if(this.relatorioEscolhaLista == 'Relatorios de Produtos'){
-                    this.filtro = this.relatorioEscolha
-                    this.relatorio = true
-                }
-                else if (this.relatorioEscolhaLista == 'Relatorios do Estoque'){
-                    
-                    this.filtro = this.relatorioEscolha
-                    this.relatorioE = true
-                }else if(this.relatorioEscolha == 'Pedidos realizados entre duas datas' || this.relatorioEscolha == 'Vendas por periodo de dias' 
-                || this.relatorioEscolha == 'Vendas por Tipo de Pagamento'){ 
-                    let comparaDatas = this.compareDates()
-                    this.saveHoras()
-                    if(comparaDatas){
-                        if(this.relatorioEscolha == 'Vendas por Tipo de Pagamento'){
-                            this.notTable = true
-                        } 
-                        this.filtro = this.relatorioEscolha
-                        this.relatorio = true
-                        this.clear()
-                    }else{
-                        alert('Data Inicial maior que data Final')
+                if(this.relatorioEscolhaModelo == 'PDF'){ 
+                    switch (this.relatorioEscolhaLista) {
+                        case 'Relatorios de Produtos':
+                            this.pdfColumn = ['CODIGO', 'NOME', 'CATEGORIA', 'MEDIDA', 'VALOR', 'QUANTIDADE']
+                            this.route = 'products'
+                            break
+                       case 'Relatorios do Estoque':
+                            this.pdfColumn = ['CODIGO', 'PRODUTO', 'VALOR', 'QUANTIDADE', 'SAIDAS']
+                            this.route = 'estoques'
+                            break
+                        case 'Relatorios de Pedidos':    
+                            this.pdfColumn = ['CODIGO', 'METODO_PAGAMENTO', 'VALOR_TOTAL', 'SITUAÇÃO', 'FEITO EM']
+                            this.route = 'pedidos'
+                            break
+                        case 'Relatorio de Vendas':
+                            this.pdfColumn = ['CODIGO', 'VALOR_TOTAL', 'COD PEDIDO', 'METODO_PAGAMENTO', 'DT_PAGAMENTO']
+                            this.route = 'vendas'
+                            break    
+                        default:
+                            console.log('Vazio.'); 
+                            break   
                     }
+                    this.pdf = true
+                    this.renicializarPdf += 1
                 }else{
-                    this.filtro = this.relatorioEscolha
-                    this.relatorio = true
-                }
-                
+                    if(this.relatorioEscolhaLista == 'Relatorios do Estoque'){
+                        this.relatorioE = true
+                    }else{
+                        this.relatorio = true
+                    }
+                } 
             }
         },
         saveHoras(){
@@ -286,7 +336,6 @@ export default {
         },
         saveHoraIni(){
             let tmp = this.start
-            
             this.startData = tmp + ' ' + this.tmpIni
         },
         saveHoraFinal(){
@@ -308,6 +357,10 @@ export default {
             this.start = null,
             this.end = null,
             this.filledStart = false,
+            this.relatorioEscolhaModelo = null
+            this.relatorioEscolhaLista = null // Escolha de uma das listas
+            this.relatorioEscolha = null
+            this.closeRelatorio(false)
             this.disableNotTableFiltro()
         },
         compareDates(){
@@ -342,7 +395,7 @@ export default {
             }
         }
     },
-    components: { RespostaRelatorio, RespostaRelatorioEstoque }
+    components: { RespostaRelatorio, RespostaRelatorioEstoque, RelatorioPDF }
 }
 </script>
 

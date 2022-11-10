@@ -241,7 +241,7 @@
             @keydown.escape="fechar"
             v-model="listaRapida"
             persistent
-            max-width="760px"
+            max-width="860px"
             :fullscreen="$vuetify.breakpoint.mobile"
         >   
             <v-card color="#1e1e1e">

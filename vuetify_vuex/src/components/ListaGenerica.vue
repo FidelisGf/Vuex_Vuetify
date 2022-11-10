@@ -154,7 +154,7 @@ export default {
         ...mapActions('produtoMod', ['saveProduct', 'beginListProduct', 'saveListProduct', 
         'editListProduct', 'clearListProduct', 'findByAllCategory', 'activeEdit']),
         ...mapActions('despesaMod', ['activeEditDespesa', 'allByTag']),
-        ...mapActions('utilMod' , ['saveGenerico', 'activeDelete']),
+        ...mapActions('utilMod' , ['saveGenerico', 'setLoad']),
         getLista(route) {
             this.dtStart = this.starterDate
             this.dtFinal = this.endDate
@@ -168,6 +168,8 @@ export default {
                     this.current_page = response.data.current_page
                     this.tempCurrent = this.current_page
                     this.totalPage = response.data.last_page
+                    this.setLoad(false)
+                    console.log(this.loadCom)
                 });
             }else{
                 axios.get("http://127.0.0.1:8000/api/" + route + "?page=" + this.current_page, { params: { opcao: this.opcao} }).then((response) => {
@@ -177,6 +179,8 @@ export default {
                     this.current_page = response.data.current_page
                     this.tempCurrent = this.current_page
                     this.totalPage = response.data.last_page
+                    this.setLoad(false)
+                    console.log(this.loadCom)
                 });
             }  
         },
@@ -276,7 +280,7 @@ export default {
     computed:{
         ...mapGetters({listCategorias : 'categoryMod/listCategorias', listaProdutos : 'produtoMod/listProducts', 
         editDespesa: 'despesaMod/getEditDespesa', 
-        del: 'utilMod/delete', generico : 'utilMod/getGenerico', listTags : 'tagMod/getTags'}),
+        del: 'utilMod/delete', loadCom : 'utilMod/getLoad', generico : 'utilMod/getGenerico', listTags : 'tagMod/getTags'}),
 
     
     },  
