@@ -9,7 +9,7 @@
                           <v-toolbar-title>Cadastro Usuario</v-toolbar-title>
                        </v-toolbar>
                        <v-card-text>
-                       <form ref="form" @submit.prevent="logar">
+                       <form ref="form" @submit.prevent="makeRegister">
                               <v-text-field
                                 v-model="username"
                                 name="username"
@@ -44,7 +44,7 @@
                                 dark
                                 rounded
                             ></v-text-field>
-                             <v-btn  type="submit" @click="register" class="acesso mt-4"  color="green accent-3" value="log in">Criar conta</v-btn>
+                             <v-btn  type="submit" class="acesso mt-4"  color="green accent-3" value="log in">Criar conta</v-btn>
                         </form>
                        </v-card-text>
                     </v-card>
@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
     data(){
         return{
@@ -65,14 +66,11 @@ export default {
         }
     },
     methods:{
-        async register(){
-            const res = await this.$http.post("/auth/register", {NAME : this.username, PASSWORD: this.password, EMAIL : this.email})
-            if(res.status == 200){
-                alert('Usuario Criado com sucesso !')
-                this.$router.push({name : 'login'})
-            }else{
-                alert("Dados Invalidos");
-            }
+        ...mapActions('userMod', ['register']),
+        async makeRegister(){
+           let payload = {NAME : this.username, PASSWORD: this.password, EMAIL : this.email}
+           await this.register(payload)
+           this.$router.push({name : 'login'})
         }
     },
     async created(){

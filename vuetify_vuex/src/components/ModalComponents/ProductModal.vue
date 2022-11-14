@@ -1,6 +1,6 @@
 <template>
     <v-container fluid grid-list-md>
-    <v-row class="d-flex flex-column-reverse d-sm-flex flex-md-row mt-10 mt-md-0">
+    <v-row class="d-flex flex-column-reverse d-sm-flex flex-md-row mt-10 mt-md-0 mt-lg-0">
         <v-snackbar
             v-model="registro"
             :timeout="timeout"
@@ -18,7 +18,7 @@
             </v-btn>
             </template>
         </v-snackbar>
-        <v-col cols="12" md="12" sm="12"  lg="6" class="d-flex flex-column-reverse flex-md-row justify-center justify-lg-start">
+        <v-col cols="12" md="12" sm="12"  lg="6" class="d-flex flex-column-reverse flex-md-row justify-center justify-lg-start mt-0 mt-md-10 mt-lg-0">
             <div class="ml-0 ml-lg-n10 pl-0 d-flex justify-center">
                 <MaterialModal @messageSnackBar="getMessage" class="ml-sm-0  pl-sm-0 ml-lg-10  "></MaterialModal>
             </div>

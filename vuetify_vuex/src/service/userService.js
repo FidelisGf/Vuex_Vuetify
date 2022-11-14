@@ -10,6 +10,12 @@ export default{
     profile(){
         return axios.get("/profile")
     },
+    vinculaEmpresa(payload){
+        return axios.post("/vincularUserEmpresa", payload)
+    },
+    register(payload){
+        return axios.post("/auth/register", payload)
+    },
     checkEmpresa(payload){
         axios.defaults.headers.common['Authorization'] = 'Bearer' + payload
         return axios.get("/checaEmpUser")

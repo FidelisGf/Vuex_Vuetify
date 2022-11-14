@@ -17,7 +17,7 @@
                 </v-btn>
             </template>
         </v-snackbar>
-        <v-row class="d-flex flex-md-row flex-lg-row justify-center mt-8 mt-md-0">
+        <v-row class="d-flex flex-md-row flex-lg-row justify-center mt-8 ml-md-10 ml-lg-0  mt-lg-0">
             <v-col cols="9" lg="2" sm="5" md="2" ><DespesaModal class="mt-0 mt-md-0"></DespesaModal></v-col>
             <v-col cols="9" lg="3" sm="4" md="3" ><TagModal class="mt-0 mt-md-0" ></TagModal></v-col>
             <v-col cols="8" sm="5" lg="3" md="3" class="mt-0 mt-md-3" >
@@ -105,7 +105,6 @@
                             <v-row>
                                 <v-col 
                                     cols="6"
-                                    
                                     >
                                     <v-text-field
                                         v-model="DATA_FIN"
@@ -218,7 +217,7 @@ export default {
                 this.active = false
                 this.limpaFiltros()
             }else{
-                this.filtro = "Duas datas"
+                this.filtro = "Despesas entre duas datas"
                 this.hasFilter = true
                 this.forceRerender()
                 this.msg = 'Busca realizada com sucesso !'

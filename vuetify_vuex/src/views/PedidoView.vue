@@ -1,6 +1,6 @@
 <template>
     <v-container >
-        <v-row class="mt-8 mt-md-0">
+        <v-row class="mt-8 mt-md-10 mt-lg-0">
             <v-snackbar
                 v-model="registro"
                 :timeout="timeout"

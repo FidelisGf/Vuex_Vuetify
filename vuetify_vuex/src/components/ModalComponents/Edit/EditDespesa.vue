@@ -165,7 +165,7 @@ export default {
                 this.HORA = this.dtTmp[1]
                 this.DESC = data.DESC
                 this.CUSTO = data.CUSTO 
-                this.TAG = data.tags.NOME
+                this.TAG = data.tags
             }
             this.loading = false
         },

@@ -16,9 +16,8 @@
                 </v-btn>
             </v-card-actions>
             <v-card-text class="mt-n2" v-if="!ntTable">
-                <ListaGenerica :key="restart"  v-if="!pedidos && !vendas" :route="'products'" :opcao="filtro" :headers="headers"></ListaGenerica>
-                <ListaGenerica :key="restart"  v-if="pedidos" :route="'pedidos'" :opcao="filtro" :headers="headers" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
-                <ListaGenerica :key="restart"  v-if="vendas" :route="'vendas'" :opcao="filtro" :headers="headers" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
+                <ListaGenerica :key="restart"  v-if="!pedidos && !vendas && !despesas" :route="'products'" :opcao="filtro" :headers="headers"></ListaGenerica>
+                <ListaGenerica :key="restart"  v-if="pedidos == true || vendas == true || despesas == true" :route="route" :opcao="filtro" :headers="headers" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
             </v-card-text>
             <v-card-text v-if="ntTable">
                 <RelatorioEscrito v-if="notTable" :route="'vendas'" :opcao="filtro" :end-date="endDate" :starter-date="starterDate"></RelatorioEscrito>
@@ -39,7 +38,6 @@ export default {
         endDate : String,
         filtro : String,
         notTable : Boolean,
-        route : String,
     },
     data() {
         return {
@@ -47,8 +45,10 @@ export default {
             tmp : false,
             pedidos : false,
             vendas : false,
+            despesas : false,
             entreDatas : false,
             restart : 0,
+            route : '',
         };
     },
     computed: {
@@ -57,7 +57,7 @@ export default {
             return this.notTable
         },
         headers() {
-            if(this.filtro == 'Pedidos realizados entre duas datas'){
+            if(this.pedidos == true){
                 return [
                     {
                         text: "CODIGO",
@@ -69,7 +69,7 @@ export default {
                     { text: "PAGAMENTO", value: "APROVADO" },
                     { text: "PRODUTOS", value: "PRODUTOS" },
                 ];
-            }else if(this.filtro == 'Vendas por periodo de dias'){
+            }else if(this.vendas == true){
                 return [
                     {
                         text: "CODIGO",
@@ -79,6 +79,18 @@ export default {
                     { text: "METODO PAGAMENTO", value: "METODO_PAGAMENTO" },
                     { text: "VALOR TOTAL", value: "VALOR_TOTAL" },
                     { text: "DATA DE PAGAMENTO", value: "DT_PAGAMENTO" },
+                ];
+            }else if(this.despesas == true){
+                return [
+                    {
+                        text: "CODIGO",
+                        align: "start",
+                        value: "ID",
+                    },
+                    { text: "CUSTO", value: "CUSTO" },
+                    { text: "DESC", value: "DESC" },
+                    { text: "TIPO", value: "tags.NOME" },
+                    { text: "DATA", value: "DATA" },
                 ];
             }else{
                 return [
@@ -104,10 +116,16 @@ export default {
         },
         checkRelatorio(){
             if(this.filtro == 'Vendas por periodo de dias'){
+                this.route = 'vendas'
                 this.vendas = true
                 this.entreDatas = true
             }else if(this.filtro == 'Pedidos realizados entre duas datas'){
+                this.route = 'pedidos'
                 this.pedidos = true
+                this.entreDatas = true
+            }else if(this.filtro == 'Despesas entre duas datas'){
+                this.route = 'despesas'
+                this.despesas = true
                 this.entreDatas = true
             }
         }
@@ -118,7 +136,6 @@ export default {
         this.checkRelatorio()
         console.log(this.loading)
     },
-
     watch:{
         filtro : function(val){
             if(val){

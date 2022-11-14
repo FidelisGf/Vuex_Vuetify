@@ -9,7 +9,7 @@
                           <v-toolbar-title>Cadastre sua Empresa</v-toolbar-title>
                        </v-toolbar>
                        <v-card-text>
-                       <form ref="form" @submit.prevent="logar">
+                       <form ref="form" @submit.prevent="vincularOfficeUser">
                         <v-row>
                            <v-col>
                               <v-text-field
@@ -22,6 +22,7 @@
                                 filled
                                 color="light-green "
                                 dark
+                                v-mask="'##.###.###/####-##'"
                                 class="inputs"
                                 rounded
                              ></v-text-field>
@@ -35,6 +36,7 @@
                                 required
                                 prepend-inner-icon="mdi-text-box"
                                 filled
+                                counter="9"
                                 color="light-green "
                                 dark
                                 class="inputs"
@@ -53,6 +55,7 @@
                                 required
                                 prepend-inner-icon="mdi-store"
                                 filled
+                                counter="50"
                                 color="light-green "
                                 dark
                                 class="inputs"
@@ -66,6 +69,7 @@
                                 type="email"
                                 placeholder="E-mail da empresa"
                                 required
+                                counter="120"
                                 prepend-inner-icon="mdi-email"
                                 filled
                                 color="light-green "
@@ -89,6 +93,7 @@
                               required
                               prepend-inner-icon="mdi-store-edit"
                               filled
+                              counter="60"
                               color="light-green "
                               dark
                               class="inputs"
@@ -112,7 +117,7 @@
                            </v-col>
                         </v-row>  
                             <v-card-actions class="d-flex justify-center">
-                              <v-btn type="submit" @click="vincularOfficeUser" class="acesso mt-4" color="green accent-3" value="log in">Vincular empresa</v-btn>
+                              <v-btn type="submit" class="acesso mt-4" color="green accent-3" value="log in">Vincular empresa</v-btn>
                             </v-card-actions>
                         </form>
                        </v-card-text>
@@ -125,6 +130,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
     data(){
       return{
@@ -137,14 +143,17 @@ export default {
       }
     },
     methods:{
+      ...mapActions('userMod', ['vinculaEmpresa']),
       async vincularOfficeUser(){
          var data = { NOME: this.NOME, CNPJ: this.CNPJ, NOME_FANTASIA : 
          this.NOME_FANTASIA, EMAIL : this.EMAIL, INC_ESTADUAL : this.INC_ESTADUAL,
          ENDERECO : this.ENDERECO }
-         const res = await this.$http.post("/vincularUserEmpresa", data)
-         if(res.status == 200){
+         const res = await this.vinculaEmpresa(data)
+         if(res){
             alert('Empresa cadastrada e vinculada com sucesso !')
             this.$router.push('/')
+         }else{
+            alert('Dados Invalidos')
          }
       }
     }

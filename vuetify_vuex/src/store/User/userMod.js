@@ -39,6 +39,29 @@ export default{
                 context.commit('saveUser', res.data.NAME)
             })
         },
+        async vinculaEmpresa(context, payload){
+            let tmp = false
+            try {
+                await userService.vinculaEmpresa(payload).then((res)=>{
+                    console.log(res.data)
+                    tmp = true
+                })
+                return tmp
+            } catch (error) {
+                tmp = false
+                return tmp
+            }
+        },
+        async register(context, payload){
+            try {
+                await userService.register(payload).then(()=>{
+                    alert('Usuario Criado com sucesso !')
+                    
+                })
+            } catch (error) {
+                alert("Dados Invalidos");
+            }
+        },
         async login(context, payload){
             let check = {login : false, vinculado : false}
             try {

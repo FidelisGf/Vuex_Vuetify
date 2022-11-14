@@ -1,6 +1,6 @@
 <template>
     <v-container fluid grid-list-md>
-        <v-row dense class="mt-8 mt-md-0">
+        <v-row dense class="mt-8 mt-md-10 mt-lg-0">
             <v-col cols="12">
                 <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
@@ -65,7 +65,16 @@
                         </v-select>
                         <v-select v-if="relatorioEscolhaLista == 'Relatorio de Vendas'"
                             :items="relatorioVendaList"
-                            label="Tipo de relatorio para os pedidos"
+                            label="Tipo de relatorio para as vendas"
+                            v-model="relatorioEscolha"
+                            color="orange darken-1"
+                            dark
+                            outlined  
+                        >  
+                        </v-select>
+                        <v-select v-if="relatorioEscolhaLista == 'Relatorio de Despesas'"
+                            :items="relatorioDespesaList"
+                            label="Tipo de relatorio para as despesas"
                             v-model="relatorioEscolha"
                             color="orange darken-1"
                             dark
@@ -78,9 +87,8 @@
                 persistent
                 max-width="850px"
                 @keydown.escape="relatorio = false"
-                :fullscreen="$vuetify.breakpoint.xsOnly"
             >
-                    <RespostaRelatorio :nome-relatorio="relatorioEscolha" 
+                    <RespostaRelatorio v-if="relatorio" :nome-relatorio="relatorioEscolha" 
                     :starter-date="startData" :end-date="endData" :filtro="filtro" :not-table="notTable" 
                     @closeModRelatorio="closeRelatorio"></RespostaRelatorio>
                 
@@ -90,9 +98,8 @@
                 persistent
                 max-width="750px"
                 @keydown.escape="relatorioE = false"
-                :fullscreen="$vuetify.breakpoint.mobile"
             >
-                <RespostaRelatorioEstoque  :key="renicializar" @closeModal="closeRelatorio" :filtro="filtro" ></RespostaRelatorioEstoque>
+                    <RespostaRelatorioEstoque v-if="relatorioE" @closeModal="closeRelatorio" :filtro="filtro" ></RespostaRelatorioEstoque>
               
             </v-dialog>
             <RelatorioPDF :key="renicializarPdf" 
@@ -181,7 +188,7 @@ import RelatorioPDF from '@/components/RelatorioPDF.vue';
 export default {
     data() {
         return {
-            relatoriosList: ["Relatorios de Produtos", "Relatorios do Estoque", "Relatorios de Pedidos", "Relatorio de Vendas"],
+            relatoriosList: ["Relatorios de Produtos", "Relatorio de Despesas", "Relatorios do Estoque", "Relatorios de Pedidos", "Relatorio de Vendas"],
             modelosRelatorios : ["PDF", "Tabela Virtual"],
             relatorioEscolhaModelo : null,
             relatorioEscolhaLista : null, // Escolha de uma das listas
@@ -190,6 +197,7 @@ export default {
             relatorioEstoqueList : ["Produtos com mais estoque", "Produtos com pouco estoque", "Produtos com mais saidas"],
             relatorioPedidoList : ["Pedidos realizados entre duas datas"],
             relatorioVendaList : ["Vendas por periodo de dias", "Vendas por Tipo de Pagamento"],
+            relatorioDespesaList : ["Despesas entre duas datas"],
             number_per_pages: null,
             activeRelatorio: false,
             end : null, // dataFinal (dia,mes,ano)
@@ -238,7 +246,7 @@ export default {
             let flag = false   
             
             if(this.relatorioEscolha == 'Pedidos realizados entre duas datas' 
-            || this.relatorioEscolha == 'Vendas por periodo de dias' || this.relatorioEscolha == 'Vendas por Tipo de Pagamento'){
+            || this.relatorioEscolha == 'Vendas por periodo de dias' || this.relatorioEscolha == 'Vendas por Tipo de Pagamento' || this.relatorioEscolha == 'Despesas entre duas datas'){
                 flag = true
                 return flag
             }
@@ -265,6 +273,16 @@ export default {
             this.refactorEndData()
         }
         val = this.end
+      },
+      relatorioEscolhaLista: function(val){
+        if(val){
+            this.relatorioEscolha = ''
+            this.tmpFina = null
+            this.tmpIni = null
+            this.start = null
+            this.end = null
+            this.filledStart = false
+        }
       }
     },
     methods: {
@@ -314,7 +332,11 @@ export default {
                         case 'Relatorio de Vendas':
                             this.pdfColumn = ['CODIGO', 'VALOR_TOTAL', 'COD PEDIDO', 'METODO_PAGAMENTO', 'DT_PAGAMENTO']
                             this.route = 'vendas'
-                            break    
+                            break
+                        case 'Relatorio de Despesas':    
+                            this.pdfColumn = ['CODIGO', 'CUSTO', 'DESCRIÇÃO', 'TIPO']
+                            this.route = 'despesas'
+                            break        
                         default:
                             console.log('Vazio.'); 
                             break   

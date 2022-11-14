@@ -1,6 +1,6 @@
 <template>
     <v-container fluid grid-list-md>
-        <v-row dense>
+        <v-row dense class="mt-12 mt-lg-0">
             <v-col cols="12" v-if="showEmpresa">
                 <v-card
                 color="#f2f2f2"

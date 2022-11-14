@@ -35,7 +35,7 @@
                 <v-card-title  class="text-h5 white--text mt-n5">
                     Lista de Produtos da Venda
                 </v-card-title>
-                <v-card-subtitle class="mt-1 ml-3 total" ><p>Valor total : <b>{{vlTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</b> </p></v-card-subtitle>
+                <v-card-subtitle class="mt-1 font-italic ml-3 total" ><p>Valor total : <b>{{vlTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</b> </p></v-card-subtitle>
                 <v-card-text>
             <v-list class="cards-colors">
                 <v-list-item  v-for="item in pedidos" :key="item.id">
@@ -188,9 +188,9 @@ export default {
 
 <style lang="scss" >
     .total{
-        color: #FFD740!important;
+        color: #f3f3f3!important;
     }
     .info_prod{
-        color: #69F0AE !important;
+        color: #c4c4c4 !important;
     }
 </style>

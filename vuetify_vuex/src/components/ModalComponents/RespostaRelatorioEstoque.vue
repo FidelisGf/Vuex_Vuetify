@@ -13,7 +13,7 @@
             </v-card-actions>
             <v-card-text class="mt-5 white--text">
                 <v-row>
-                    <ListaGenerica :route="'estoques'" :headers="headers"  :opcao="filtro" ></ListaGenerica>
+                    <ListaGenerica :key="restart" :route="'estoques'" :headers="headers"  :opcao="filtro" ></ListaGenerica>
                 </v-row>
             </v-card-text>
         </v-card>
@@ -22,7 +22,7 @@
 </template>
 <script>
 import ListaGenerica from '../ListaGenerica.vue';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 export default {
     props: {
         filtro : String,
@@ -33,7 +33,8 @@ export default {
                 current: 1,
                 total: 0
             },
-            lista: []
+            lista: [],
+            restart : 0,
         };
     },
     computed: {
@@ -67,8 +68,17 @@ export default {
         },
     },
     methods: {
+        ...mapActions('utilMod', ['setLoad']),
         emitClose(){
             this.$emit('closeModal', false)
+        }
+    },
+    watch:{
+        filtro : function(val){
+            if(val){
+                this.setLoad(true)
+                this.restart += 1
+            }
         }
     },
     components: { ListaGenerica }
