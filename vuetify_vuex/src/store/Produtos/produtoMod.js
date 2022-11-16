@@ -19,7 +19,7 @@ export default{
     },
     getters: {
         getQntdProd(state){
-            return state.qntdProd
+            return parseFloat( state.qntdProd )
         },
         listProducts(state){
             return state.Products
@@ -42,6 +42,7 @@ export default{
             state.countProduto = payload
         },
         beginListProduct(state, payload){
+           
             state.Products = payload
         },
         clearListProduct(state){

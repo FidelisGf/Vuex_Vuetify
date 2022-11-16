@@ -171,6 +171,7 @@ export default {
         },
         async addToList(){
             let payload = {ID : this.CODIGO, QUANTIDADE : this.QUANTIDADE, QNTD_PROD : this.qntdProd}
+            console.log(payload)
             this.msg = await this.findMateria(payload)
             this.notification = true
             this.hideSucess()

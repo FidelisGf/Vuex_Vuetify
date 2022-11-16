@@ -72,6 +72,15 @@
                             outlined  
                         >  
                         </v-select>
+                        <v-select v-if="relatorioEscolhaLista == 'Relatorios de Lucros'"
+                            :items="relatorioLucrosList"
+                            label="Tipo de relatorio para os lucros e gastos"
+                            v-model="relatorioEscolha"
+                            color="orange darken-1"
+                            dark
+                            outlined  
+                        >  
+                        </v-select>
                         <v-select v-if="relatorioEscolhaLista == 'Relatorio de Despesas'"
                             :items="relatorioDespesaList"
                             label="Tipo de relatorio para as despesas"
@@ -188,16 +197,20 @@ import RelatorioPDF from '@/components/RelatorioPDF.vue';
 export default {
     data() {
         return {
-            relatoriosList: ["Relatorios de Produtos", "Relatorio de Despesas", "Relatorios do Estoque", "Relatorios de Pedidos", "Relatorio de Vendas"],
+            relatoriosList: ["Relatorios de Produtos", 
+                            "Relatorio de Despesas", "Relatorios do Estoque", 
+                            "Relatorios de Pedidos", "Relatorio de Vendas",
+                            "Relatorios de Lucros"],
             modelosRelatorios : ["PDF", "Tabela Virtual"],
             relatorioEscolhaModelo : null,
             relatorioEscolhaLista : null, // Escolha de uma das listas
-            relatorioEscolha: null, // Escolha de uma opção dentro de uma lista
+            relatorioEscolha: '', // Escolha de uma opção dentro de uma lista
             relatorioProductList : ["Produtos mais caros", "Produtos mais baratos"],
             relatorioEstoqueList : ["Produtos com mais estoque", "Produtos com pouco estoque", "Produtos com mais saidas"],
             relatorioPedidoList : ["Pedidos realizados entre duas datas"],
             relatorioVendaList : ["Vendas por periodo de dias", "Vendas por Tipo de Pagamento"],
             relatorioDespesaList : ["Despesas entre duas datas"],
+            relatorioLucrosList: ["Lucros e Gastos por dias"],
             number_per_pages: null,
             activeRelatorio: false,
             end : null, // dataFinal (dia,mes,ano)
@@ -244,9 +257,8 @@ export default {
        
         hasDateInput: function(){ //verifica se o relátorio vai possuir input de datas 
             let flag = false   
-            
-            if(this.relatorioEscolha == 'Pedidos realizados entre duas datas' 
-            || this.relatorioEscolha == 'Vendas por periodo de dias' || this.relatorioEscolha == 'Vendas por Tipo de Pagamento' || this.relatorioEscolha == 'Despesas entre duas datas'){
+
+            if(this.relatorioEscolha.includes("datas") || this.relatorioEscolha.includes("dias")){
                 flag = true
                 return flag
             }
@@ -336,7 +348,10 @@ export default {
                         case 'Relatorio de Despesas':    
                             this.pdfColumn = ['CODIGO', 'CUSTO', 'DESCRIÇÃO', 'TIPO']
                             this.route = 'despesas'
-                            break        
+                            break 
+                        case 'Relatorios de Lucros' :
+                            this.route = 'vendas'
+                            break           
                         default:
                             console.log('Vazio.'); 
                             break   
@@ -381,7 +396,7 @@ export default {
             this.filledStart = false,
             this.relatorioEscolhaModelo = null
             this.relatorioEscolhaLista = null // Escolha de uma das listas
-            this.relatorioEscolha = null
+            this.relatorioEscolha = ''
             this.closeRelatorio(false)
             this.disableNotTableFiltro()
         },
@@ -402,7 +417,7 @@ export default {
             return date;
         },
         validaDados(){
-            if(this.relatorioEscolha == null || this.relatorioEscolhaLista == null){
+            if(this.relatorioEscolha == '' || this.relatorioEscolhaLista == null){
                return false
             }else{
                 if(this.relatorioEscolha != 'Pedidos realizados entre duas datas'){

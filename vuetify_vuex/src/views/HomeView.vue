@@ -97,11 +97,7 @@ import Dicas from '@/components/DicasSistema.vue';
         dialog: false,
       }
     },
-    methods:{
-      scrollBack(){
-          scrollTo(0, 0)
-      }
-    }
+  
 
   }
 </script>

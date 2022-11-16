@@ -33,9 +33,12 @@ export default {
             await this.setListaItens(payload)
             let pdf = new jsPDF()
             let values = this.itens
-            
-            values = this.toCurrency(values)
-            values = values.map( (elemento) => Object.values(elemento));
+            if(this.filtro != 'Lucros e Gastos por dias'){
+                console.log('Entrou aqui')
+                values = this.toCurrency(values)
+                values = values.map( (elemento) => Object.values(elemento));
+            }
+            console.log(this.itens)
             pdf.setFontSize(26)
             pdf.text(this.empresaUser.NOME + ' Relatorio'  , 15, 15)
             pdf.setFontSize(10)
@@ -50,21 +53,35 @@ export default {
             if(this.starterDate != undefined || this.starterDate != null){
                 pdf.text("Data Inicial : " + this.starterDate + "  Data Final : " + this.endDate, 20, 42)
             }
-            autoTable(pdf,
-            {
-                startY: 46,
-                cellWidth: 'auto',
-                headStyles: {fillColor: [128,128,128]},
-                styles: { fillColor: [211, 211, 211], overflow: 'linebreak' },
-                theme : 'striped',
-                margin: { top: 10 },
-                head: [this.columns],
-                body: values,
-            }) 
+            if(this.columns != undefined || this.columns != null){
+                autoTable(pdf,
+                {
+                    startY: 46,
+                    cellWidth: 'auto',
+                    headStyles: {fillColor: [128,128,128]},
+                    styles: { fillColor: [211, 211, 211], overflow: 'linebreak' },
+                    theme : 'striped',
+                    margin: { top: 10 },
+                    head: [this.columns],
+                    body: values,
+                }) 
+            }
             if(this.route == 'vendas'){
-                pdf.text('Valor Total : ' + this.itens.vlTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 20, 100)
-                pdf.text('Lucros : ' + this.itens.vlReal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 65, 100)
-                pdf.text('Gastos : ' + this.itens.vlDiff.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 105, 100)
+                if(this.filtro == 'Lucros e Gastos por dias'){
+                    console.log('Entrou no filtro ! ')
+                    this.itens.Despesas = parseFloat(this.itens.Despesas)
+                    pdf.text('Total de Vendas : ' + this.itens.Total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 20, 50)
+                    pdf.text('Total de Lucros nas Vendas : ' + this.itens.Lucro_Vendas.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 95, 50)
+                    pdf.text('Total de gastos com Despesa : ' + this.itens.Despesas.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 20, 58)
+                    if(this.itens.Saldo_Final < 0 ){
+                        pdf.setTextColor(225,51,36)
+                    }
+                    pdf.text('Saldo Final : ' + this.itens.Saldo_Final.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 95, 58 )
+                }else{
+                    pdf.text('Valor Total : ' + this.itens.vlTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 20, 100)
+                    pdf.text('Lucros : ' + this.itens.vlReal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 65, 100)
+                    pdf.text('Gastos : ' + this.itens.vlDiff.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 105, 100)
+                }
             }
             pdf.save('relatorio.pdf'); 
         },
