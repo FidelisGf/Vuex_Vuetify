@@ -3,11 +3,12 @@ export default{
     namespaced: true,
     state: {
         client : {
-            id : null,
+            id : 0,
             nome : null,
             cpf : null,
             endereco : null,
             telefone : null,
+            email : null,
 
         },
         clienteVinculado : false,
@@ -22,11 +23,12 @@ export default{
     },
     mutations: {
       saveClient(state, payload){
-        state.client.id = payload.ID 
+        state.client.id = parseInt(payload.ID) 
         state.client.nome = payload.NOME
         state.client.cpf = payload.CPF 
         state.client.endereco = payload.ENDERECO
         state.client.telefone = payload.TELEFONE
+        state.client.email = payload.EMAIL
       },
       activeClienteVinculado(state){
         state.clienteVinculado = true
@@ -49,6 +51,11 @@ export default{
           context.commit("disableClienteVinculado")
           let text = 'Sucesso : Cliente desvinculado do pedido !'
           return text
+       },
+       async sendEmail(context, payload){
+          await clienteService.sendEmailPdf(payload).then((res)=>{
+            console.log(res)
+          })
        },
        saveCliente(context, payload){
         try {

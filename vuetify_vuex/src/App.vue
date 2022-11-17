@@ -19,16 +19,17 @@ export default {
     created(){
         axios.interceptors.request.use ((config)=>{
             this.$store.commit('setLoading', true)
-           
             return config;
         }, (erorr)=>{
             this.$store.commit('setLoading', false)
-            
             return Promise.reject(erorr)
         })
         axios.interceptors.response.use((response)=>{
           this.$store.commit('setLoading', false)
           return response
+        },async function (error) {
+          this.$store.commit('setLoading', false)
+          return Promise.reject(error)
         })
     },
     components: {  BarraLoading }

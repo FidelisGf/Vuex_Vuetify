@@ -156,9 +156,8 @@ export default{
                 })
                 return gera
             } catch (error) {
-
                 alert('Falha ao Gerar Venda')
-                return gera
+                return error
             }
         },
         async findPedido(context, payload){

@@ -251,6 +251,34 @@
             </v-card>
             
         </v-dialog>
+        <v-dialog
+        @keydown.escape="confirmModal = false"
+        v-model="confirmModal"
+        persistent
+        max-width="400px"
+        >
+                <v-card class="white--text" dark>
+                    <v-card-text class="mt-2">
+                            Deseja enviar o arquivo para o e-mail do cliente ? 
+                    </v-card-text>
+                    <v-card-actions>
+                            <v-btn
+                                text
+                                color="red accent-2"
+                                @click="confirmModal = false"
+                            >
+                                Não
+                            </v-btn>
+                            <v-btn
+                                text
+                                color="teal accent-2" 
+                                @click="sendEmailToUser"
+                            >
+                                Sim
+                            </v-btn>
+                    </v-card-actions>
+                </v-card>
+        </v-dialog>
     </v-container>
 </template>
 <script>
@@ -266,6 +294,7 @@ export default {
             MetodosPagamento: ["Dinheiro", "Cartao/Debito", "Cartao/Credito", "Pix"],
             escolhaPagamento: "",
             loading : false,
+            confirmModal : false,
             dinheiroPago: 0,
             situacoes: ["Pago", "Pagamento pendente"],
             escolhaSituacao : '',
@@ -277,6 +306,7 @@ export default {
             },
             btn_msg : 'Gerar Venda',
             id : null,
+            guardCodPedido : 0,
             findBy : false,
             registro : false,
             timeout : 2000,
@@ -321,7 +351,7 @@ export default {
         ...mapActions('pedidoMod', ['disableListaPedidos', 'saveValorTotal', 'activeListaPedidos', 'activeListaRapidaProdutos', 'limpaPedido', 'limparValorTotal']),
         ...mapActions('pedidoMod', ['findProduto', 'geraVenda', 'findPedido' , 'editarPedido']),
         ...mapActions('userMod', ['getEmpresaFromUser']),
-        ...mapActions('clienteMod', ['clearClient']),
+        ...mapActions('clienteMod', ['clearClient', 'sendEmail']),
         buscaLista() {
             this.restart += 1
             this.listaRapida = true 
@@ -363,7 +393,7 @@ export default {
             this.clearPayment()
             this.limpaPedido()
             this.limparValorTotal()
-            this.clearClient()
+            
             this.loading = false
         },
         listaPedidos(){
@@ -433,10 +463,11 @@ export default {
                         this.clearPayment()
                         this.loading = false
                         this.limpaPedido()
-                        this.clearClient()
                     }else{
-                        this.fail = true
+                        this.clear()
+                        this.clearPayment()
                         this.loading = false
+                        this.limpaPedido()
                     }       
                 }
             }else{
@@ -483,7 +514,11 @@ export default {
             pdf.setFontSize(8);
             pdf.text('------------------------------------', 15, 155) 
             pdf.text('Assinatura do Cliente', 18, 158)
-            pdf.save('pedido_' + pedido.codigo + '.pdf'); 
+            let saved = pdf.save('pedido.pdf'); 
+            if(this.cliente.id != null && saved){
+                this.guardCodPedido = pedido.codigo
+                this.confirmModal = true
+            }
         },
         hideSucess : function (){
             if(this.sucesso){
@@ -493,6 +528,13 @@ export default {
                 setInterval(interval);
                 this.clear()
             }      
+        },
+        sendEmailToUser(){
+            console.log(this.cliente)
+            let payload =  {ID : this.cliente.id, cod : this.guardCodPedido}
+            this.sendEmail(payload)
+            this.confirmModal = false
+            this.clearClient()
         },
 
         clearIntervalo : function (interaval){

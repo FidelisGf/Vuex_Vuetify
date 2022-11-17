@@ -98,6 +98,7 @@
                 <v-card-text >
                     <p class="font-weight-medium white--text">Nome : {{clienteVinculado.nome}}</p>
                     <p class="font-weight-medium white--text">Cpf : {{clienteVinculado.cpf}} </p>
+                    <p class="font-weight-medium white--text">Email : {{clienteVinculado.email}} </p>
                     <p class="font-weight-medium white--text">Endereço : {{clienteVinculado.endereco}} </p>
                     <p class="font-weight-medium white--text">Telefone : {{clienteVinculado.telefone}}</p>
                 </v-card-text>
@@ -191,6 +192,21 @@
                                     type="tel"
                                 ></v-text-field>
                             </v-col>
+                            <v-col 
+                            cols="12"
+                            sm="6"
+                            md="6"
+                        >
+                            <v-text-field
+                                label="Email"
+                                persistent-hint
+                                required
+                                dark
+                                v-model="client.email"
+                                color="teal lighten-1"
+                                type="email"
+                            ></v-text-field>
+                        </v-col>
                         </v-row>
                     </v-container>
                 </v-card-text>
@@ -255,7 +271,8 @@ export default {
                 nome : null,
                 cpf : null,
                 endereco : null,
-                telefone : null
+                telefone : null,
+                email : null,
             },
             codigo : null,
             active : false,
@@ -304,7 +321,7 @@ export default {
             }
         },
         insert(){
-            let payload = {NOME : this.client.nome, CPF : this.client.cpf, ENDERECO: this.client.endereco, TELEFONE : this.client.telefone}
+            let payload = {NOME : this.client.nome, CPF : this.client.cpf, ENDERECO: this.client.endereco, TELEFONE : this.client.telefone, EMAIL : this.client.email}
             this.saveCliente(payload)
             this.cadastroRapido = false
         },

@@ -1,6 +1,7 @@
 import axios from "axios";
 axios.interceptors.response.use(
     (response) => {
+        
       return response;
     },
     async function (error) {
@@ -13,6 +14,7 @@ axios.interceptors.response.use(
     }
 )
 export default{
+    
     async auth(to, from, next){
         axios.defaults.headers.common['Authorization'] = 'Bearer' + localStorage.getItem('token')
         try{
