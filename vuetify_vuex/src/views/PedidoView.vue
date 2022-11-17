@@ -90,6 +90,59 @@
                             </template>
                             <span class="white--text">Carregar um Pedido</span>
                           </v-tooltip>
+                          <v-tooltip bottom v-if="editMode">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    color="purple lighten-1"
+                                    class="ml-3"
+                                    dark
+                                    
+                                    icon 
+                                >
+                                    <v-icon color="red accent-2" @click="deletePedidoMod = true">mdi-close</v-icon>
+                                </v-btn>
+                            </template> 
+                            <span>Excluir Pedido</span>
+                            <v-dialog
+                                v-model="deletePedidoMod"
+                                persistent
+                                max-width="450"
+                                @keydown.escape="deletePedidoMod = false"
+                            >
+                                <v-card dark>
+                                    <v-card-actions>
+                                        <v-btn
+                                            icon
+                                            class="ml-n2 mt-n1"
+                                            @click="deletePedidoMod = false"
+                                        >
+                                        <v-icon small color="red accent-2">mdi-close</v-icon>
+                                        </v-btn>
+                                    </v-card-actions>
+                                    <v-card-text class="white--text">
+                                        Deseja mesmo excluir esse pedido ? Essa ação não terá volta.
+                                    </v-card-text>
+                                    <v-card-actions class="d-flex justify-end">
+                                        <v-btn
+                                        text
+                                        @click="deletePedidoMod = false"
+                                        color="red accent-2"
+                                        >
+                                            Fechar
+                                        </v-btn>
+                                        <v-btn
+                                        text
+                                        color="teal accent-2"
+                                        @click="deletePed"
+                                        >
+                                            Salvar
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>   
+                          </v-tooltip>
                     </v-card-title>
                     <v-row>
                         <v-col cols="11" md="8" sm="12">
@@ -249,35 +302,6 @@
                 
                 <ListaGenerica :key="restart" :headers="headers" :route="'estoques'" :opcao="'Disponivel para venda'"></ListaGenerica>
             </v-card>
-            
-        </v-dialog>
-        <v-dialog
-        @keydown.escape="confirmModal = false"
-        v-model="confirmModal"
-        persistent
-        max-width="400px"
-        >
-                <v-card class="white--text" dark>
-                    <v-card-text class="mt-2">
-                            Deseja enviar o arquivo para o e-mail do cliente ? 
-                    </v-card-text>
-                    <v-card-actions>
-                            <v-btn
-                                text
-                                color="red accent-2"
-                                @click="confirmModal = false"
-                            >
-                                Não
-                            </v-btn>
-                            <v-btn
-                                text
-                                color="teal accent-2" 
-                                @click="sendEmailToUser"
-                            >
-                                Sim
-                            </v-btn>
-                    </v-card-actions>
-                </v-card>
         </v-dialog>
     </v-container>
 </template>
@@ -314,6 +338,7 @@ export default {
             color : '',
             sucessFind : false,
             editMode : false,
+            deletePedidoMod : false,
             listaRapida : false,
             restart : 0,
         };
@@ -349,9 +374,9 @@ export default {
     },
     methods: {
         ...mapActions('pedidoMod', ['disableListaPedidos', 'saveValorTotal', 'activeListaPedidos', 'activeListaRapidaProdutos', 'limpaPedido', 'limparValorTotal']),
-        ...mapActions('pedidoMod', ['findProduto', 'geraVenda', 'findPedido' , 'editarPedido']),
+        ...mapActions('pedidoMod', ['findProduto', 'geraVenda', 'findPedido' , 'editarPedido', 'deletePedido']),
         ...mapActions('userMod', ['getEmpresaFromUser']),
-        ...mapActions('clienteMod', ['clearClient', 'sendEmail']),
+        ...mapActions('clienteMod', ['clearClient']),
         buscaLista() {
             this.restart += 1
             this.listaRapida = true 
@@ -418,6 +443,7 @@ export default {
                     this.msg = 'Produto Adicionado a Lista com successo !'
                     this.color = 'green darken-3'
                     this.hideSucess()
+                    this.clear()
                 }else{
                     this.registro = true 
                     this.msg = 'Quantidade em estoque insuficiente !'
@@ -432,6 +458,19 @@ export default {
             this.produto.nome = null
             this.produto.quantidade = 1
             
+        },
+        deletePed(){
+            console.log(this.pedidoAtual)
+            this.deletePedido(this.pedidoAtual.codigo) 
+            this.deletePedidoMod = false
+            this.registro = true 
+            this.msg = 'Pedido Excluido com sucesso !'
+            this.color = 'green darken-3'
+            this.editMode = false
+            this.clear()
+            this.clearPayment()
+            this.limpaPedido()
+            this.clearClient()
         },
         async gerarVenda(){
             await this.getEmpresaFromUser()
@@ -448,7 +487,7 @@ export default {
                         this.escolhaSituacao = 'F'
                     }
                     let payload = null
-                    if(this.cliente.id != null){
+                    if(this.cliente.id != null || this.cliente.id != 0){
                         payload = {METODO_PAGAMENTO : this.escolhaPagamento, produtos : this.pedidos, aprovado : this.escolhaSituacao, ID_CLIENTE : this.cliente.id}
                     }else{
                         payload = {METODO_PAGAMENTO : this.escolhaPagamento, produtos : this.pedidos, aprovado : this.escolhaSituacao}
@@ -461,13 +500,15 @@ export default {
                         this.color = 'green darken-3'
                         this.clear()
                         this.clearPayment()
-                        this.loading = false
                         this.limpaPedido()
+                        this.clearClient()
+                        this.loading = false
                     }else{
                         this.clear()
                         this.clearPayment()
                         this.loading = false
                         this.limpaPedido()
+                        this.clearClient()
                     }       
                 }
             }else{
@@ -514,11 +555,7 @@ export default {
             pdf.setFontSize(8);
             pdf.text('------------------------------------', 15, 155) 
             pdf.text('Assinatura do Cliente', 18, 158)
-            let saved = pdf.save('pedido.pdf'); 
-            if(this.cliente.id != null && saved){
-                this.guardCodPedido = pedido.codigo
-                this.confirmModal = true
-            }
+            pdf.save('pedido.pdf'); 
         },
         hideSucess : function (){
             if(this.sucesso){
@@ -528,13 +565,6 @@ export default {
                 setInterval(interval);
                 this.clear()
             }      
-        },
-        sendEmailToUser(){
-            console.log(this.cliente)
-            let payload =  {ID : this.cliente.id, cod : this.guardCodPedido}
-            this.sendEmail(payload)
-            this.confirmModal = false
-            this.clearClient()
         },
 
         clearIntervalo : function (interaval){

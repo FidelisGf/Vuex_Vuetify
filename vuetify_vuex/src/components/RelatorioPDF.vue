@@ -69,14 +69,16 @@ export default {
             if(this.route == 'vendas'){
                 if(this.filtro == 'Lucros e Gastos por dias'){
                     console.log('Entrou no filtro ! ')
+                    let gastosMaterial = this.subTraiGastos(this.itens.Lucro_Vendas, this.itens.Total)
                     this.itens.Despesas = parseFloat(this.itens.Despesas)
                     pdf.text('Total de Vendas : ' + this.itens.Total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 20, 50)
                     pdf.text('Total de Lucros nas Vendas : ' + this.itens.Lucro_Vendas.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 95, 50)
                     pdf.text('Total de gastos com Despesa : ' + this.itens.Despesas.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 20, 58)
+                    pdf.text('Total de gastos com Material : ' + gastosMaterial.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) , 95, 58 )
                     if(this.itens.Saldo_Final < 0 ){
                         pdf.setTextColor(225,51,36)
                     }
-                    pdf.text('Saldo Final : ' + this.itens.Saldo_Final.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 95, 58 )
+                    pdf.text('Saldo Final : ' + this.itens.Saldo_Final.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 20, 68 )
                 }else{
                     pdf.text('Valor Total : ' + this.itens.vlTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 20, 100)
                     pdf.text('Lucros : ' + this.itens.vlReal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 65, 100)
@@ -91,11 +93,20 @@ export default {
                     element.VALOR = element.VALOR.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
                 }else{
                     element.VALOR_TOTAL = element.VALOR_TOTAL.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
-                }
-               
+                }   
             });
             return values
         },
+        subTraiGastos(a,b){
+            let result = 0
+            if(a > b){
+               result = a - b
+            }else{
+                result = b - a
+            }
+            return result
+
+        }
     },
 
     async created(){

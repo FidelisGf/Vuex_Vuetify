@@ -7,8 +7,4 @@ export default{
     getById($id){
         return axios.get("/clientes/" + $id)
     },
-    sendEmailPdf(payload){
-        console.log(payload)
-        return axios.post("/test/" + payload.ID, { params: { COD: payload.cod }})
-    }
 }

@@ -118,6 +118,17 @@ export default{
                     return edit
                 }) 
         },
+        async deletePedido(context, payload){
+            let gera = false
+                try {
+                    await pedidoService.destroy(payload).then(()=>{
+                        gera = true
+                    })
+                    return gera
+                } catch (error) {
+                    return gera
+                }
+        },
         async findProduto(context ,payload){
             let getProduto = false
             try {
@@ -145,6 +156,7 @@ export default{
             }
         },
         async geraVenda(context, payload){
+            console.log(payload)
             let gera = false
             try {
                 gera = await pedidoService.save(payload).then((res)=>{
@@ -157,7 +169,7 @@ export default{
                 return gera
             } catch (error) {
                 alert('Falha ao Gerar Venda')
-                return error
+                return gera
             }
         },
         async findPedido(context, payload){
@@ -168,6 +180,7 @@ export default{
                     await pedidoService.findById(payload).then((res)=>{
                         if(res.status == 200){
                             context.commit("setListaPedidos", res.data.PRODUTOS)
+                            context.commit("setPedidoAtual", res.data)
                             context.commit("saveValorTotal", parseFloat(res.data.VALOR_TOTAL))
                             if(res.data.ID_CLIENTE != null){
                                 context.dispatch("clienteMod/getCliente", res.data.ID_CLIENTE, { root: true })

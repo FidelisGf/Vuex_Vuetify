@@ -3,7 +3,7 @@ export default{
     namespaced: true,
     state: {
         client : {
-            id : 0,
+            id : null,
             nome : null,
             cpf : null,
             endereco : null,
