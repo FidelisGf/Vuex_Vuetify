@@ -1,5 +1,22 @@
 <template>
     <div>
+        <v-snackbar
+            v-model="registro"
+            :timeout="timeout"
+        >
+            {{this.text}}
+            <template v-slot:action="{ attrs }">
+            <v-btn
+                color="red"
+                dark
+                icon
+                v-bind="attrs"
+                @click="registro = false"
+                >
+                <v-icon small>mdi-close</v-icon>
+            </v-btn>
+            </template>
+        </v-snackbar>
         <v-dialog
             v-model="active"
             persistent
@@ -45,12 +62,15 @@
     </div>
 </template>
 <script>
-import axios from 'axios'
 import { mapActions, mapGetters } from 'vuex'
 export default {
    data(){
       return{
         active : false,
+        text : '',
+        registro : false, 
+        timeout : 2000,
+
       }
    },
    props:{
@@ -59,14 +79,13 @@ export default {
    },
    methods:{
         ...mapActions('produtoMod', ['deleteInList']),
-        deleteItem(route){
-            axios.delete("http://127.0.0.1:8000/api/" + route  + "/"+ this.id ).then((res)=>{
-                if(res.status == 200){
-                    alert('Item Deletado com sucesso')
-                    this.deleteInList(this.id)
-                    this.active = false
-                }
-            })
+        ...mapActions('utilMod', ['delete']),
+        async deleteItem(route){
+            let payload = {id : this.id, route : route}
+            this.text = await this.delete(payload)
+            this.deleteInList(this.id)
+            this.registro = true
+            this.active = false
         }
    },
    computed:{

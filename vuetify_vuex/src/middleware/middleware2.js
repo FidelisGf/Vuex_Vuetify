@@ -8,6 +8,7 @@ axios.interceptors.response.use(
       const access_token = localStorage.getItem("token");
       if (error.response.status === 401 && access_token) {
         localStorage.setItem('token', error.response.data)
+        window.location.reload();
         return error;
       }
       return Promise.reject(error);

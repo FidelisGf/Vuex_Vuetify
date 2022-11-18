@@ -35,7 +35,19 @@ export default{
         saveGenerico(context, payload){
             context.commit('saveGenerico', payload)
         },
-         
+       async  delete(context,payload){
+        let text = ""
+        try {
+            await Service.destroy(payload).then(()=>{
+                text = "Item Deletado com sucesso !"
+            })
+            return text
+        } catch (error) {
+            text = error.response.data.message
+            return text
+        }
+            
+        },
         
        async getList(context , payload){
             let resposta = {current_page : null, totalPage : null, perPage : null}
