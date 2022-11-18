@@ -4,7 +4,6 @@ export default{
     state: {
         materiais : [],
         custo_total : 0
-       
     },
     getters: {
        getMateriais(state){
@@ -66,7 +65,6 @@ export default{
            
             let msg = {text : '', type : ''}
             if(check){
-               
                 msg.type = "success"
                 msg.text = "Quantidade Alterada com sucesso !"
                 payload.check = true
@@ -89,7 +87,6 @@ export default{
             try {
                 await materiaService.post(payload).then((res)=>{
                     payload.ID = res.data.ID
-                    context.commit("saveMaterialInList", payload)
                     text = "Sucesso : Materia Prima cadastrada !"
                 })
                 return text

@@ -18,7 +18,7 @@
             </template>
         </v-snackbar>
         <v-row class="d-flex flex-md-row flex-lg-row justify-center mt-8 ml-md-10 ml-lg-0  mt-lg-0">
-            <v-col cols="9" lg="2" sm="5" md="2" ><DespesaModal class="mt-0 mt-md-0"></DespesaModal></v-col>
+            <v-col cols="9" lg="2" sm="5" md="2" ><DespesaModal @atualizar="atualizarTable" class="mt-0 mt-md-0"></DespesaModal></v-col>
             <v-col cols="9" lg="3" sm="4" md="3" ><TagModal class="mt-0 mt-md-0" ></TagModal></v-col>
             <v-col cols="8" sm="5" lg="3" md="3" class="mt-0 mt-md-3" >
                 
@@ -202,7 +202,10 @@ export default {
         forceRerender (){
             this.renicializar += this.renicializar + 1;
         },
-        
+        atualizarTable(e){
+            console.log(e)
+            this.forceRerender()
+        },  
         makeValibleData(data, hora){
             const[day, month, year] = data.split('-')
             const[hours, minutes] = hora.split(':')

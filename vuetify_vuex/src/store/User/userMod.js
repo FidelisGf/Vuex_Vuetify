@@ -75,6 +75,28 @@ export default{
                 return check
             }
         },
+        async sendEmail(context, payload){
+            let respo = false
+            try {
+                await userService.enviarEmailRecuperacao(payload).then(()=>{
+                    respo = true
+                })
+                return respo
+            } catch (error) {
+                return respo
+            }
+        },
+        async changeSenha(context, payload){
+            let respo = false 
+            try {
+                await userService.mudarSenhaUser(payload).then(()=>{
+                    respo = true
+                })
+                return respo
+            } catch (error) {
+                return respo
+            }
+        },
         async checkEmpresa(context, payload){
             let check = false
             try {

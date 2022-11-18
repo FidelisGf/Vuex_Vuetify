@@ -504,9 +504,13 @@ export default {
                         this.clearClient()
                         this.loading = false
                     }else{
+                        this.$store.commit('setLoading', false)
+                        this.loading = false
+                        this.registro = true 
+                        this.msg = 'Erro ao gerar Pedido !'
+                        this.color = 'red darken-3'
                         this.clear()
                         this.clearPayment()
-                        this.loading = false
                         this.limpaPedido()
                         this.clearClient()
                     }       

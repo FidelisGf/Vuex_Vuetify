@@ -19,10 +19,9 @@ export default{
            let text = null
            let Id = null
            try {
-                Id = await despesaService.save(payload).then((res)=>{
-                    context.dispatch("despesasMes")
+                Id = await despesaService.save(payload).then(async ()=>{
+                   await context.dispatch("despesasMes")
                     text = "Sucesso : Despesa cadastrada com sucesso !"
-                    return res.data.ID
                })
                let info = {text : text, Id : Id}
                return info

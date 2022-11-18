@@ -189,11 +189,15 @@ export default {
                 this.registro = true
                 this.msg = 'Data Invalida'
             }
+            this.atualizarLista()
             this.clear()
         },
         saveHoraFinal(){
             let tmp = this.DATA
             this.DTFINAL = tmp + ' ' + this.HORA
+        },
+        atualizarLista(){
+            this.$emit('atualizar', false)
         },
         clear(){
             this.DESC = ''

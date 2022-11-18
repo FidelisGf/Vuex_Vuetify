@@ -19,5 +19,11 @@ export default{
     checkEmpresa(payload){
         axios.defaults.headers.common['Authorization'] = 'Bearer' + payload
         return axios.get("/checaEmpUser")
+    },
+    enviarEmailRecuperacao(payload){
+        return axios.post("/auth/sendMailResetPassword", payload)
+    },
+    mudarSenhaUser(payload){
+        return axios.post("/auth/resetPassword", payload)
     }
 }

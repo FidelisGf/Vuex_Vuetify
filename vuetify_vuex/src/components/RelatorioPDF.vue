@@ -91,8 +91,10 @@ export default {
             values.forEach(element => {
                 if(this.route == 'products' || this.route == 'estoques'){
                     element.VALOR = element.VALOR.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
-                }else{
+                }else if (this.route != 'despesas'){
                     element.VALOR_TOTAL = element.VALOR_TOTAL.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
+                }else{
+                    element.CUSTO = element.CUSTO.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
                 }   
             });
             return values
@@ -105,7 +107,6 @@ export default {
                 result = b - a
             }
             return result
-
         }
     },
 

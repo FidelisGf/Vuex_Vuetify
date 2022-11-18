@@ -192,7 +192,6 @@
 
 import RespostaRelatorio from '@/components/ModalComponents/RespostaRelatorio.vue';
 import RespostaRelatorioEstoque from '../components/ModalComponents/RespostaRelatorioEstoque.vue';
-import {mapGetters, mapActions} from 'vuex'
 import RelatorioPDF from '@/components/RelatorioPDF.vue';
 export default {
     data() {
@@ -212,13 +211,10 @@ export default {
             relatorioDespesaList : ["Despesas entre duas datas"],
             relatorioLucrosList: ["Lucros e Gastos por dias"],
             number_per_pages: null,
-            activeRelatorio: false,
             end : null, // dataFinal (dia,mes,ano)
             tmpIni : null, //HorarioInicial
             start : null,// dataInicial (dia,mes,ano)
             tmpFina : null,//HorarioFinal
-            modHrIni : false,//Modal para escolher Horario
-            modHrFin : false,
             startData : '', //dataInicial Formatada (dia,mes,ano,hora,minuto)
             endData : '', //dataFinal Formatada (dia,mes,ano,hora,minuto) //Habilita a seleção de data Final,
             relatorio : false,
@@ -233,8 +229,7 @@ export default {
             pdf : false,
         };
     },
-    computed:{
-        ...mapGetters({active : 'estoqueMod/getRelatorioEstoque'}),    
+    computed:{ 
                              
           //todas computed nessa view servem para retornar nos v-if
         filledStart: function() {  //verifica se a data inicial foi inserida
@@ -306,7 +301,6 @@ export default {
         forceRerender (){
             this.renicializar += this.renicializar + 1;
         },
-        ...mapActions('estoqueMod', ['saveFiltroEstoque','activeRelatorioEstoque']),
         makeRelatorio() {
             this.filtro = this.relatorioEscolha
             this.loading = true
@@ -346,7 +340,7 @@ export default {
                             this.route = 'vendas'
                             break
                         case 'Relatorio de Despesas':    
-                            this.pdfColumn = ['CODIGO', 'CUSTO', 'DESCRIÇÃO', 'TIPO']
+                            this.pdfColumn = ['CODIGO', 'CUSTO', 'DESCRIÇÃO','TIPO','DATA']
                             this.route = 'despesas'
                             break 
                         case 'Relatorios de Lucros' :
@@ -398,7 +392,6 @@ export default {
             this.relatorioEscolhaLista = null // Escolha de uma das listas
             this.relatorioEscolha = ''
             this.closeRelatorio(false)
-            this.disableNotTableFiltro()
         },
         compareDates(){
             let inicio = this.makeValibleData(this.start, this.tmpIni)
