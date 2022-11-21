@@ -356,10 +356,10 @@ export default {
             this.registro = true
             this.dialog = false 
             this.e1 = 1
-            this.clearMateriais()
-            this.cleanProduct()
             this.Categoria = null
             this.loading = false
+            this.clearMateriais()
+            this.cleanProduct()
         },
         proximaEtapa(){
             this.e1 = 2

@@ -25,6 +25,21 @@
             max-width="600px"
             @keydown.escape="close"
           >
+          <v-overlay
+            :value="$store.state.loading"
+            >
+              <div class="d-flex flex-column justify-center">
+                <span>Enviando email...</span>
+                <v-progress-circular
+                  indeterminate
+                  color="white"
+                  class="mt-7 ml-8"
+                  >
+                 
+                </v-progress-circular>   
+              </div>
+               
+            </v-overlay>
             <v-stepper dark class="stepper" v-model="e1">
               <v-stepper-header  class="white--text" >
                   <v-stepper-step

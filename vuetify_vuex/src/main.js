@@ -4,7 +4,7 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import VueMask from 'v-mask';
-
+import '@/service/Service'
 import '@/plugins/axios'
 Vue.config.productionTip = false
 Vue.use(VueMask);

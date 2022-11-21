@@ -27,7 +27,7 @@ export default{
          
         },
         clearMateriais(state){
-            state.materiais = null
+            state.materiais = []
             state.custo_total = 0
         },
         somaCustoTotal(state, payload){
@@ -112,6 +112,7 @@ export default{
             try {
                 await materiaService.findById(payload.ID).then((res)=>{
                     let obj = {ID : res.data.ID,  NOME : res.data.NOME, CUSTO : parseFloat(res.data.CUSTO), QUANTIDADE : payload.QUANTIDADE}
+                    console.log(obj)
                     if(res.data.QUANTIDADE >= parseInt(payload.QUANTIDADE * payload.QNTD_PROD)){
                         context.commit("saveMaterialInList", obj)
                         context.commit("somaCustoTotal", parseFloat(res.data.CUSTO * payload.QUANTIDADE))
@@ -124,6 +125,7 @@ export default{
                 })
                 return payload2
             } catch (error) {
+                console.log(error)
                 payload2.text = 'Falha ao adicionar Item !'
                 payload2.type = 'danger'
                 return payload2

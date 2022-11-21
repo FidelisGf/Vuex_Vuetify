@@ -283,6 +283,9 @@ export default {
       },
       relatorioEscolhaLista: function(val){
         if(val){
+            if(val == 'Relatorios de Lucros'){
+                this.relatorioEscolhaModelo = 'PDF'
+            }
             this.relatorioEscolha = ''
             this.tmpFina = null
             this.tmpIni = null
@@ -290,7 +293,7 @@ export default {
             this.end = null
             this.filledStart = false
         }
-      }
+      },
     },
     methods: {
         closeRelatorio(e){
@@ -321,6 +324,7 @@ export default {
             if(!validado){
                 alert('Preencha todos os campos necessários')
             }else{
+               
                 if(this.relatorioEscolhaModelo == 'PDF'){ 
                     switch (this.relatorioEscolhaLista) {
                         case 'Relatorios de Produtos':
@@ -353,6 +357,7 @@ export default {
                     this.pdf = true
                     this.renicializarPdf += 1
                 }else{
+                   
                     if(this.relatorioEscolhaLista == 'Relatorios do Estoque'){
                         this.relatorioE = true
                     }else{

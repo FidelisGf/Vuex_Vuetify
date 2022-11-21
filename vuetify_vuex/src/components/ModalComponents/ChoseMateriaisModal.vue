@@ -175,6 +175,7 @@ export default {
             this.msg = await this.findMateria(payload)
             this.notification = true
             this.hideSucess()
+            this.clear()
         },
         clear(){ 
             this.CODIGO = undefined
