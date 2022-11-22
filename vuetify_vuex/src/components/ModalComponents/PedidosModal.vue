@@ -79,8 +79,8 @@
                             </v-card-title>
                             <v-card-text class="white--text">
                                 <v-row>
-                                    <v-col sm="6">
-                                        <label class="ml-3">Quantidade do Produto</label>
+                                    <v-col sm="10">
+                                        <label class="ml-3">Quantidade do Produto (Estoque atual do produto : {{parseFloat(qntdDisponivelProduto)}})</label>
                                         <v-text-field
                                         class="ml-3 w-25"
                                         outlined
@@ -133,6 +133,7 @@ export default {
     data(){
         return{
             manipulaQuantidade : false,
+            qntdDisponivelProduto : 0,
             valorTotal : 0,
             temp : {
                 id: null,
@@ -149,11 +150,12 @@ export default {
      , vlTotal : 'pedidoMod/getValorTotal'})
     },
     methods:{
-        ...mapActions('pedidoMod', ['saveValorTotal', 'removeQntdPedido', 'removePedido']),
+        ...mapActions('pedidoMod', ['saveValorTotal', 'removeQntdPedido', 'removePedido', 'getQuantidadeDisponivelProduto']),
         ...mapActions('utilMod', ['setHeader']),
        
-        ativaManipulaQuantidade(item){
+        async ativaManipulaQuantidade(item){
             this.manipulaQuantidade = true
+            this.qntdDisponivelProduto = await this.getQuantidadeDisponivelProduto(item.id)
             this.temp.id = item.id
             this.temp.nome = item.nome
             this.temp.quantidade = item.quantidade
@@ -162,7 +164,8 @@ export default {
         disableManipulaQuantidade(){
             this.manipulaQuantidade = false
         },
-        removeFromList(item){
+        async removeFromList(item){
+            let temp = item
             if(parseInt(item.quantidade) <= 0){
                 this.removePedido(item)
                 let pedidos = this.pedidos
@@ -173,13 +176,19 @@ export default {
                 this.saveValorTotal(parseFloat( this.valorTotal ))
                 this.disableManipulaQuantidade()
             }else{
-                this.removeQntdPedido(item)
-                this.valorTotal = 0
-                this.pedidos.forEach(element => {
-                   this.valorTotal += parseFloat(element.quantidade * element.valor)
-                });
-                this.saveValorTotal(parseFloat( this.valorTotal ))
-                this.disableManipulaQuantidade()
+                let check = await this.removeQntdPedido(temp)
+                if(check == true){
+                    this.valorTotal = 0
+                    this.pedidos.forEach(element => {
+                    this.valorTotal += parseFloat(element.quantidade * element.valor)
+                    });
+                    this.saveValorTotal(parseFloat( this.valorTotal ))
+                    item = temp
+                    this.disableManipulaQuantidade()
+                }else{
+                    this.$emit('failAddQntdProduto', 'Quantidade em estoque insuficiente')
+                }
+                
             }
         }
     }

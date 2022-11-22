@@ -199,7 +199,7 @@
                                             </template>
                                             <span>Adicionar a lista</span>
                                         </v-tooltip>
-                                        <PedidosModal class="pl-sm-0 pl-3" ></PedidosModal>
+                                        <PedidosModal @failAddQntdProduto="listen" class="pl-sm-0 pl-3" ></PedidosModal>
                                         <ClientModalVue class="pl-sm-3 pl-5 ml-n3 mt-n3"></ClientModalVue>
                                   </div>
                             </form>
@@ -381,6 +381,11 @@ export default {
             this.restart += 1
             this.listaRapida = true 
         },
+        listen(e){
+            this.registro = true 
+            this.msg = e
+            this.color = 'red darken-3'
+        },
         fechar(){
             this.listaRapida = false
         },  
@@ -388,14 +393,21 @@ export default {
            let pedido = null
            pedido = await this.findPedido(this.id)
            if(pedido != null){
-            this.registro = true 
-            this.msg = 'Pedido carregado com sucesso !'
-            this.color = 'green darken-3'
-            this.escolhaPagamento = pedido.METODO_PAGAMENTO
-            this.escolhaSituacao = pedido.APROVADO == "T" ? "Pago" : "Pagamento pendente"
-            this.editMode = true
-            this.btn_msg = 'Alterar Pedido'
-            this.findBy = false
+                this.registro = true 
+                this.msg = 'Pedido carregado com sucesso !'
+                this.color = 'green darken-3'
+                this.escolhaPagamento = pedido.METODO_PAGAMENTO
+                this.escolhaSituacao = pedido.APROVADO == "T" ? "Pago" : "Pagamento pendente"
+                this.editMode = true
+                this.btn_msg = 'Alterar Pedido'
+                this.findBy = false
+           }else{
+                this.registro = true 
+                this.msg = 'Pedido não encontrado !'
+                this.color = 'red darken-3'
+                this.btn_msg = 'Alterar Pedido'
+                this.findBy = false
+                this.editMode = false
            }
         },
        async  editPedido(){
@@ -446,7 +458,7 @@ export default {
                     this.clear()
                 }else{
                     this.registro = true 
-                    this.msg = 'Quantidade em estoque insuficiente !'
+                    this.msg = 'Produto não existe ou Quantidade Insuficiente !'
                     this.color = 'red darken-3'
                     this.hideSucess()
                 }

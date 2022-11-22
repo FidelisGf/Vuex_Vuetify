@@ -1,3 +1,4 @@
+import estoqueService from "@/service/estoqueService"
 import pedidoService from "@/service/pedidoService"
 import productService from "@/service/productService"
 export default{
@@ -102,8 +103,20 @@ export default{
         removePedido(context, payload){
             context.commit('removePedido', payload)
         },
-        removeQntdPedido(context, payload){
-            context.commit('removeQntdPedido', payload)
+        async removeQntdPedido(context, payload){ //pode adicionar alem de remover
+            try {
+                let check = null
+                await pedidoService.checkQuantidadeProduto(payload).then((res2)=>{
+                    check = res2.data
+                    if(check == true){
+                        context.commit('removeQntdPedido', payload)
+                    }
+                });
+                return check
+            } catch (error) {
+                console.log(error)
+            }
+            
         },
        async editarPedido(context , payload){
             let edit = false
@@ -137,6 +150,7 @@ export default{
                         this.fail = false
                         let check = null
                         await pedidoService.checkQuantidadeProduto(payload).then((res2)=>{
+                            console.log(res2.data)
                             check = res2.data
                         });
                         if(check == true){
@@ -189,7 +203,19 @@ export default{
                 })
                 return pedido
             } catch (error) {
-                alert('Pedido não encontrado')
+                console.log(error)
+            }
+        },
+        async getQuantidadeDisponivelProduto(context, payload){
+            let Quantidade = 0
+            try {
+                await estoqueService.getQuantidadeFromProduto(payload).then((res)=>{
+                    console.log(res.data)
+                    Quantidade = res.data
+                })
+                return Quantidade
+            } catch (error) {
+                console.log(error)
             }
         }
     },

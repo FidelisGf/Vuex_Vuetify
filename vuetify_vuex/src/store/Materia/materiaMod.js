@@ -142,6 +142,19 @@ export default{
             }catch(error){
                 return flag
             }
+       },
+       async getQuantidadeDisponivelMateria(context, payload){
+            let Quantidade = 0
+            try {
+                await materiaService.findById(payload).then((res)=>{
+                    console.log(res.data)
+                    Quantidade = res.data.QUANTIDADE
+
+                })   
+                return Quantidade
+            } catch (error) {
+                console.log(error)
+            }
        }
     },
 }

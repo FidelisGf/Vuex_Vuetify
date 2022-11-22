@@ -24,7 +24,7 @@ export default function execute(){
           const access_token = localStorage.getItem("token");
           if (error.response.status === 401 && access_token) {
             localStorage.setItem('token', error.response.data)
-            return 
+            axios.defaults.headers.common['Authorization'] = 'Bearer' + localStorage.getItem('token');
           }else{
             return Promise.reject(error);
           }

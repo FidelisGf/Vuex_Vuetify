@@ -1,5 +1,25 @@
 <template>
     <v-container fluid grid-list-md>
+        <v-snackbar
+                v-model="registro"
+                :timeout="timeout"
+                :color="color"
+                bottom
+                right
+            >
+                {{this.msg}}
+                <template v-slot:action="{ attrs }">
+                    <v-btn
+                        color="red"
+                        dark
+                        icon
+                        v-bind="attrs"
+                        @click="registro = false"
+                        >
+                        <v-icon small>mdi-close</v-icon>
+                    </v-btn>
+                </template>
+        </v-snackbar>
         <v-row dense class="mt-8 mt-md-10 mt-lg-0">
             <v-col cols="12">
                 <v-tooltip bottom>
@@ -196,6 +216,10 @@ import RelatorioPDF from '@/components/RelatorioPDF.vue';
 export default {
     data() {
         return {
+            registro : false,
+            timeout : 2000,
+            msg : '',
+            color : '',
             relatoriosList: ["Relatorios de Produtos", 
                             "Relatorio de Despesas", "Relatorios do Estoque", 
                             "Relatorios de Pedidos", "Relatorio de Vendas",
@@ -317,12 +341,16 @@ export default {
                         this.notTable = true
                     }
                 }else{
-                        alert('Data Inicial maior que data Final')
+                        this.registro = true 
+                        this.msg = "Data inicial mair que a data final !"
+                        this.color = "red darken-3"
                         return 
                     }
             }
             if(!validado){
-                alert('Preencha todos os campos necessários')
+                this.registro = true 
+                this.msg = "Preencha todos os campos necessários !"
+                this.color = "yellow darken-3"
             }else{
                
                 if(this.relatorioEscolhaModelo == 'PDF'){ 

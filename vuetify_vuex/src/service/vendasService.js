@@ -2,6 +2,6 @@ import axios from "axios"
 
 export default{
     getVendasByMes(){
-        return axios.get("/getVendasPorMes")
+        return axios.get("/getVendasPorDia")
     }
 }

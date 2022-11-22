@@ -45,9 +45,9 @@
                             max-width="550"
                             @keydown.escape="manipulaQuantidade = false"
                         >
-                            <v-card>
+                            <v-card dark>
                                 <v-card-title>
-                                    <p v-if="!notification">Manipule a quantidade do Item #{{temp.NOME}}</p>
+                                    <p v-if="!notification" class="white--text">Manipule a quantidade do Item #{{temp.NOME}}</p>
                                     <v-alert v-if="notification && msg.type == 'success'" type="success" v-model="notification" 
                                     dismissible dense shaped
                                     outlined class="not" >
@@ -61,16 +61,18 @@
                                 </v-card-title>
                                 <v-card-text>
                                     <v-row>
-                                        <v-col sm="6">
-                                            <label class="ml-3">Quantidade do Produto</label>
+                                        <v-col sm="10">
+                                            <label class="ml-3">Quantidade do Produto (Estoque atual do material : {{qntdDisponivel}})</label>
                                             <v-text-field
-                                            class="ml-3 w-25"
-                                            outlined
-                                            dense 
-                                            required
-                                            v-model="temp.QUANTIDADE"
-                                            single-line
-                                            type="number"
+                                                class="ml-3 w-25"
+                                                outlined
+                                                dark
+                                                
+                                                dense 
+                                                required
+                                                v-model="temp.QUANTIDADE"
+                                                single-line
+                                                type="number"
                                             ></v-text-field>
                                         </v-col>
                                     </v-row>
@@ -80,7 +82,7 @@
                                         <v-btn
                                             color="red darken-1"
                                             text
-                                            
+                                            @click="manipulaQuantidade = false"
                                         >
                                             Fechar
                                         </v-btn>
@@ -109,6 +111,7 @@ export default {
         return{
             manipulaQuantidade : false,
             temp : null,
+            qntdDisponivel : 0,
             notification : false,
             msg : {
                 text : '',
@@ -118,9 +121,11 @@ export default {
         }
    },
    methods:{
-        ...mapActions('materiaMod', ['removeMateria', 'removeQntdMateria', 'saveCustoTotal', 'checkQuantidade']),
-        activeManipula(item){
+        ...mapActions('materiaMod', ['removeMateria', 'removeQntdMateria'
+        , 'saveCustoTotal', 'checkQuantidade', 'getQuantidadeDisponivelMateria']),
+        async activeManipula(item){
             this.temp = item
+            this.qntdDisponivel =  await this.getQuantidadeDisponivelMateria(this.temp.ID)
             this.oldQntd = item.QUANTIDADE
             this.manipulaQuantidade = true
         },

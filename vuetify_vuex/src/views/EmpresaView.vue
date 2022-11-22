@@ -25,20 +25,24 @@
                         <v-row>
                             <v-col class="d-flex justify-center">
                                 <div class="grafico ">
-                                    <p class="text-subtitle-1 font-italic white--text titulo-grafico">Vendas no mes atual</p>
-                                    <v-sheet color="green">
+                                    <p class="text-subtitle-1 font-italic white--text titulo-grafico">Vendas no dia atual (Até 23h:00min)</p>
+                                    <v-sheet color="#1e1e1e">
                                         <v-sparkline
                                           :value="values"
                                           color="rgba(255, 255, 255, .7)"
                                           height="100"
                                           smooth="10"
-                                          padding="10"
+                                          padding="20"
+                                          
                                           stroke-linecap="round"
                                           auto-draw
                                           :auto-draw-duration="4000"
                                         >
-                                           
+                                        <template v-slot:label="item">
+                                            {{parseFloat(item.value).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) }}
+                                        </template>
                                         </v-sparkline>
+                                      
                                     </v-sheet>
                                 </div>
                                 
@@ -90,7 +94,7 @@ export default {
 
 <style lang="scss" scoped>
     .grafico{
-        width: 50%;
+        width: 85%;
     }
     .titulo-grafico{
         text-decoration: underline !important;
