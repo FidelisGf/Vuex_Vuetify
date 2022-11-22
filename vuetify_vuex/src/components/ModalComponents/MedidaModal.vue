@@ -72,9 +72,11 @@ export default {
    },
    methods:{
         ...mapActions('medidaMod', ['post']),
-        postMedida(){
+        async postMedida(){
             let payload = {NOME : this.NOME}
-            this.post(payload)
+            let text = await this.post(payload)
+            this.$emit('insertMedida', text)
+            
         }
    }
 }

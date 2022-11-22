@@ -1,8 +1,7 @@
 import categoryService from "@/service/categoryService"
 export default {
     namespaced: true,
-    state: {
-       
+    state: {       
         Categorias : [],
     },
     getters: {
@@ -24,14 +23,21 @@ export default {
     actions: {
         beginListCategoria(context){
             categoryService.get().then((res)=>{
-                context.commit("beginListCategoria",res.data.data)
+                context.commit("beginListCategoria",res.data)
             })
         },
-        saveListCategoria(context, payload){
-            categoryService.postCategory(payload).then(() => {
-                alert('Categoria criada com sucesso ! ')
-            })
-            context.dispatch('beginListCategoria')
+        async saveListCategoria(context, payload){
+            let text = ""
+            try {
+              await categoryService.postCategory(payload).then(async (res) => {
+                    text = await res.data.message
+                    context.dispatch('beginListCategoria')
+                }) 
+            return text      
+            }catch(error) {
+                text = "Erro :" + error.response.data.message
+                return text
+            }
         }
-    },
-}
+    } 
+}       

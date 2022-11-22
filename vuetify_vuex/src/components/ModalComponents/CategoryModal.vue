@@ -75,9 +75,10 @@ export default {
    },
    methods:{
         ...mapActions('categoryMod', ['saveListCategoria']),
-        postCategory(){
+        async postCategory(){
             let payload = {NOME_C : this.NOME}
-            this.saveListCategoria(payload)
+            let text = await this.saveListCategoria(payload)
+            this.$emit('insertCategory', text)
         }
    }
 }

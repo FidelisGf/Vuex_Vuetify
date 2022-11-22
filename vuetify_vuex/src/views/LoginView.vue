@@ -219,6 +219,7 @@
    },
    methods: {
     ...mapActions('userMod', ['setUser', 'profile', 'checkEmpresa', 'login', 'sendEmail', 'changeSenha']),
+    ...mapActions(['setLoading']),
     async logar(){
          let payload = {NAME : this.username, PASSWORD: this.password}
          let res = await this.login(payload)
@@ -231,6 +232,7 @@
           }
         }else{
           alert("Dados Invalidos")
+          this.setLoading(false)
         }
     },
     close(){

@@ -32,7 +32,7 @@ export default{
                 return text
             } catch (error) {
                context.commit("disableModalCadastro")
-               return  text = "Erro: " + error.response.data.message
+               return  text = "Error : " + error.response.data.message
             }
        },
       

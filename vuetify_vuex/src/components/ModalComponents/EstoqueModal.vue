@@ -17,7 +17,7 @@
                             required
                             single-line
                             type="number"
-                            min="0"
+                            min="1"
                             v-bind="attrs"
                             v-on="on"
                         ></v-text-field>
@@ -28,10 +28,12 @@
                     v-model="quantidade"
                     label="Quantidade"
                     required
+                    value="1"
                     color="teal lighten-1"
                     type="number"
                     dark
-                    min="0"
+                    min="1"
+                    
                 ></v-text-field>
                 <small class="white--text">Atenção ao escolher o produto</small>
             </v-card-text>

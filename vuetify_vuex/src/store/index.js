@@ -13,6 +13,7 @@ import utilMod from './Utils/utilMod'
 import medidaMod from './Medida/medidaMod'
 import materiaMod from './Materia/materiaMod'
 import empresaMod from './Empresa/empresaMod'
+import vendaMod from './Venda/vendaMod'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -28,7 +29,8 @@ export default new Vuex.Store({
     despesaMod,
     utilMod,
     medidaMod,
-    materiaMod
+    materiaMod,
+    vendaMod
   },
   state: {
     loading : false

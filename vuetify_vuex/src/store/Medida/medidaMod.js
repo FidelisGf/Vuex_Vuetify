@@ -21,12 +21,17 @@ export default{
             })
         },
         async post(context, payload){
+            let text = ""
             try {
-                await medidaService.post(payload).then(()=>{
+                await medidaService.post(payload).then(async (res)=>{
+                    text = await res.data.message
+                    console.log(text)
                     context.dispatch("getAll");
                 })
+                return text
             } catch (error) {
-                alert('Falha ao Cadastrar Medida')
+                text = "Erro ao cadastrar Medida"
+                return text
             }          
         } 
     },

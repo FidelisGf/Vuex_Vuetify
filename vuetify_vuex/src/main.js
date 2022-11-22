@@ -6,9 +6,10 @@ import vuetify from './plugins/vuetify'
 import VueMask from 'v-mask';
 import '@/service/Service'
 import '@/plugins/axios'
+import execute from '@/plugins/axios'
 Vue.config.productionTip = false
 Vue.use(VueMask);
-
+execute()
 new Vue({
   router,
   store,

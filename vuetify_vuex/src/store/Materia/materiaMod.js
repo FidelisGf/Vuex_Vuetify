@@ -24,7 +24,6 @@ export default{
             }else{
               state.materiais.push(payload)
             }
-         
         },
         clearMateriais(state){
             state.materiais = []
@@ -71,7 +70,6 @@ export default{
                 context.commit('removeQntdMateria', payload)
                 return msg
             }else{
-               
                 msg.type = "danger"
                 msg.text = "Quantidade Insuficiente !"
                 context.commit("removeQntdMateria", payload)
@@ -134,11 +132,9 @@ export default{
        async checkQuantidade(context, payload){
             let flag = false
             try {
-                
                 await materiaService.findById(payload.ID).then((res)=>{
                     if(res.data.QUANTIDADE >= payload.QUANTIDADE){
                         flag = true
-                        
                     }
                 })
                 return flag

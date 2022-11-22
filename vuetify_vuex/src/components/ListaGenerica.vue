@@ -27,6 +27,9 @@
                 <template v-slot:[`item.CUSTO`]="{item}">
                     <span>R$ {{item.CUSTO.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</span>
                 </template>
+                <template v-slot:[`item.DATA`]="{item}">
+                    <span>{{convertDate(item.DATA)}}</span>
+                </template>
                 <template v-slot:[`item.VALOR`]="{item}">
                     <span>R$ {{item.VALOR.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</span>
                 </template>
@@ -42,7 +45,7 @@
                                 <v-text-field 
                                     v-model="search"
                                     color="teal lighten-1"
-                                    label="Search (APENAS COM CAPS)"
+                                    label="Pesquise"
                                     class="mx-5 w-25"
                                     >   
                                 </v-text-field>
@@ -185,6 +188,10 @@ export default {
         closeEdits(e){
             this.edit = e
         },
+        convertDate(data){
+            let obj = new Date(data)
+            return obj.toLocaleString()       
+        },
         closeDetail(e){
             this.detail = e
         },
@@ -223,7 +230,7 @@ export default {
             return value != null &&
                 search != null &&
                 typeof value === "string" &&
-                value.toString().toLocaleUpperCase().indexOf(search) !== -1;
+                value.toString().toLocaleLowerCase().indexOf(search) !== -1;
         },  
         async findAllByTags(){
             if(this.tempCurrent != 1){

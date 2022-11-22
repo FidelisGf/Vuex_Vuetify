@@ -37,7 +37,7 @@
                 persistent
                 max-width="720px"
                 @keydown.escape="dialog = false"
-                :fullscreen="$vuetify.breakpoint.mobile"
+                
             >
                 <template v-if="!miniatura" v-slot:activator="{ on, attrs }">
                     <v-btn
@@ -163,7 +163,7 @@
                                                             transition="fab-transition"
                                                             required
                                                     ></v-select>
-                                                    <CategoryModal :miniatura="true"  class="mt-4 ml-2 "></CategoryModal>
+                                                    <CategoryModal @insertCategory="listenMsg" :miniatura="true"  class="mt-4 ml-2 "></CategoryModal>
                                                 </v-col>
                                                 <v-col
                                                     cols="12"
@@ -180,7 +180,7 @@
                                                         return-object
                                                         required
                                                     ></v-select>
-                                                    <MedidaModal></MedidaModal>
+                                                    <MedidaModal @insertMedida="listenMsg"></MedidaModal>
                                                 </v-col>
                                             </v-row>
                                         </v-card-text>  
@@ -321,6 +321,10 @@ export default {
         ...mapActions('estoqueMod', ['activeAdicionaEstoque']),
         ...mapActions('medidaMod', ['getAll']),
         ...mapActions('materiaMod', ['clearMateriais']),
+        listenMsg(e){
+            this.msg = e
+            this.registro = true
+        },
         closeEstoqueMod(e){
             
             this.estoqueMod = e
