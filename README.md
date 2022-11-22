@@ -1,5 +1,6 @@
-# Front-end do projeto Laravel-FDB , utilizando as tecnologias : Vue 2, Vuetify (2.6.12) e Vuex. Atualmente está em um estado estável , futuramente será adicionado 
-mixins e refatorações dos códigos existentes.
+# Front-end do projeto Laravel-FDB , utilizando as tecnologias : Vue 2, Vuetify (2.6.12) e Vuex. 
+
+Atualmente está em um estado estável , futuramente será adicionado mixins e refatorações dos códigos existentes.
 
 #Funcionalidades : Gestão de estoque de produtos : cadastro de máteria prima, adicionar estoque a máteria prima, cadastro de unidade de medidas, cadastro de categorias
 para os produtos, cadastro de produtos compostos por máterias primas, uma unidade de medida e uma categoria, conta tambem com um estoque para o próprio. 
