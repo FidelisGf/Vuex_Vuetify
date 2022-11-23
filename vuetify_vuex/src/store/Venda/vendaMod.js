@@ -17,13 +17,19 @@ export default{
     },
     actions: {
         async getVendas(context){
+            let qntd = 0
             try {
                 await vendasService.getVendasByMes().then((res)=>{
                     console.log(res)
-                    context.commit("setValuesPerMes", res.data)
+                    context.commit("setValuesPerMes", res.data.values)
+                    qntd = res.data.quantidade
+
+
                 })
+                return qntd
             } catch (error) {
                 console.log(error)
+                return qntd
             }
         }
     },

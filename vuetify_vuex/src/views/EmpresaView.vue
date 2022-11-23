@@ -25,7 +25,7 @@
                         <v-row>
                             <v-col class="d-flex justify-center">
                                 <div class="grafico ">
-                                    <p class="text-subtitle-1 font-italic white--text titulo-grafico">Grafico de vendas no dia atual (Até 23h:00min, minimo duas vendas)</p>
+                                    <p class="text-subtitle-1 font-italic white--text titulo-grafico">Grafico de vendas no dia atual (Até 23h:00min, minimo duas vendas). Quantidade de vendas hoje : {{qntd}}</p>
                                     <v-sheet color="#1e1e1e">
                                         <v-sparkline
                                           :value="values"
@@ -62,6 +62,7 @@ export default {
             showEmpresa : false,
             data : [],
             valores : [],
+            qntd : 0
         }
     },
     methods:{
@@ -71,7 +72,7 @@ export default {
             const res =  await this.checkEmpresa()
             if(res == 1){
                 this.getEmpresaByUser();
-                await this.getVendas()
+                this.qntd = await this.getVendas()
                 this.showEmpresa = true;
             }else{
                 this.showEmpresa = false;
