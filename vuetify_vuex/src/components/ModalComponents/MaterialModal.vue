@@ -63,8 +63,8 @@
                                                 Cadastro de Materia Prima
                                             </v-card-title>
                                             <v-card-text>
-                                                <v-row >
-                                                    <v-col cols="12">
+                                                <v-row class="d-flex flex-row" >
+                                                    <v-col cols="8">
                                                         <v-text-field
                                                             dark
                                                             label="Nome da Materia"
@@ -75,7 +75,7 @@
                                                             color="teal lighten-1"
                                                         ></v-text-field>
                                                     </v-col>
-                                                    <v-col cols="12">
+                                                    <v-col cols="4">
                                                         <v-text-field
                                                             dark
                                                             label="Custo da Materia"
@@ -86,7 +86,7 @@
                                                             type="number"
                                                         ></v-text-field>
                                                     </v-col>
-                                                    <v-col cols="12">
+                                                    <v-col cols="8">
                                                         <v-text-field
                                                             dark
                                                             label="Quantidade Inicial"
@@ -100,7 +100,7 @@
                                                     </v-col>
                                                 </v-row>
                                             </v-card-text>
-                                            <v-card-actions class="d-flex justify-center">
+                                            <v-card-actions class="d-flex justify-end">
                                                 
                                                 <v-btn
                                                     text 
@@ -148,8 +148,8 @@
                                             Adicionar Quantidade para Matéria 
                                         </v-card-title>
                                         <v-card-text>
-                                            <v-row>
-                                                <v-col cols="12">
+                                            <v-row class="d-flex flex-row mt-2">
+                                                <v-col cols="7">
                                                     <v-text-field
                                                         dark
                                                         label="Codigo do Material"
@@ -162,7 +162,7 @@
                                                         @keydown.f2="listaRapida = true"
                                                     ></v-text-field>
                                                 </v-col>
-                                                <v-col cols="12">
+                                                <v-col cols="4">
                                                     <v-text-field
                                                         dark
                                                         label="Quantidade a ser adicionada"
@@ -206,7 +206,7 @@
                                                 </v-col>
                                             </v-row>
                                         </v-card-text>
-                                        <v-card-actions class="d-flex justify-center">
+                                        <v-card-actions class="d-flex justify-end mt-n2">
                                             <v-btn
                                                 text 
                                                 color="red accent-1"

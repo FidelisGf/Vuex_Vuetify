@@ -36,6 +36,7 @@
                     <v-col 
                         cols="12"
                         sm="6"
+                        md="8"
                            
                     >
                         <v-text-field
@@ -68,7 +69,7 @@
                     <v-col 
                         cols="12"
                         sm="6"
-                        md="4"
+                        md="8"
                     >
                         <v-text-field
                             v-model="DATA"
@@ -102,6 +103,7 @@
                     <v-col
                             cols="12"
                             sm="6"
+                            md="8"
                             class="d-flex"
                     >  
                         <v-select
@@ -119,7 +121,14 @@
             </v-card-text>
             <v-card-actions class="mt-n4 d-flex justify-end">
                 <v-btn 
-                    color="green accent-3"
+                    color="red lighten-1"
+                    text
+                    @click="closeEdit"
+                >
+                 Fechar
+                </v-btn>
+                <v-btn 
+                    color="teal lighten-1"
                     text
                     @click="editDespesa"
                 >

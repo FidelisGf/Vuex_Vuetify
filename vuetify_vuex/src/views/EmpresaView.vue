@@ -29,7 +29,7 @@
                                     <v-sheet color="#1e1e1e">
                                         <v-sparkline
                                           :value="values"
-                                          color="rgba(255, 255, 255, .7)"
+                                          color="green accent-2"
                                           height="80"
                                           smooth="10"
                                           padding="20"

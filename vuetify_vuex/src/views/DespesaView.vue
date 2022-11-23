@@ -24,13 +24,13 @@
                 
                 
                 <v-btn v-if="!hasFilter"
-                    color="teal accent-1"
+                    color="teal accent-3"
                     class=" ml-n0 mt-5 mt-md-1 ml-sm-n3 ml-lg-n0  ml-md-n0 font-weight-medium"
                     dark
                     @click="active = true"
                     text
                     >
-                    <v-icon  dark color="teal accent-1" left>mdi-calendar</v-icon>
+                    <v-icon  dark color="teal accent-3" left>mdi-calendar</v-icon>
                             Ver despesas por data
                 </v-btn>
                 <v-btn v-if="hasFilter"
@@ -139,7 +139,14 @@
                         <v-card-actions class="d-flex justify-end">
                             <v-btn
                                 text 
-                                color="teal accent-2"
+                                color="red lighten-1"
+                                @click="active = false"
+                            >
+                                Fechar 
+                            </v-btn>
+                            <v-btn
+                                text 
+                                color="teal lighten-1"
                                 type="submit"
                             >
                                 Listar 
