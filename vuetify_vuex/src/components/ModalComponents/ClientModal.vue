@@ -24,6 +24,7 @@
                 @keydown.escape="fechar"
             >
             <template v-slot:activator="{ on, attrs }">
+                <div class="d-flex flex-column">
                     <v-btn
                     color="teal accent-3"
                     dark
@@ -34,6 +35,15 @@
                     >
                         <v-icon aria-hidden="false" color="teal accent-1" >mdi-account</v-icon>
                     </v-btn>
+                    <v-badge
+                        v-show="vinculado"
+                        class="mt-1 mr-3"
+                        color="#757575"
+                        content="V"
+                    >
+                    </v-badge>
+                </div>
+                    
             </template>
             <v-card v-if="!vinculado" class="cards-colors">
                 <v-card-title>
@@ -277,6 +287,7 @@ export default {
             codigo : null,
             active : false,
             registro : false,
+
             msg : '',
             timeout : 2000,
         };

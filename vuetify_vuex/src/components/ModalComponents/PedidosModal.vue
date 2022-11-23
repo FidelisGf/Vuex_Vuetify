@@ -6,19 +6,30 @@
             max-width="650"
             @keydown.escape="active = false"
             :fullscreen="$vuetify.breakpoint.mobile"
+            
         >                                    
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                        v-bind="attrs"
-                        v-on="on"
-                        color="purple lighten-1"
-                        class="ml-3"
-                        dark
-                        icon
-                        @click="active = true" 
-                    >
-                        <v-icon aria-hidden="false" dark color="teal accent-1">mdi-cart</v-icon>
-                    </v-btn>
+                    <div class="d-flex flex-column">
+                        <v-btn
+                            v-bind="attrs"
+                            v-on="on"
+                            color="purple lighten-1"
+                            class="ml-3"
+                            dark
+                            icon
+                            @click="active = true" 
+                        >
+                            <v-icon aria-hidden="false" dark color="teal accent-1">mdi-cart</v-icon>
+                        </v-btn>
+                        <v-badge
+                            v-show="countProd > 0"
+                            class="mt-1 mr-3"
+                            color="#757575"
+                            :content="countProd"
+                        >
+                        </v-badge>
+                    </div>
+                    
                 </template>
             <v-card class="cards-colors">
                 <v-card-actions>
@@ -64,10 +75,9 @@
                            
                             <v-divider class="mt-n3 " color="white"></v-divider>
                         </v-card>
-                       
-                        </v-list-item-title>
-                   
-                        <v-dialog v-if="manipulaQuantidade"
+                    </v-list-item-title>
+                    <v-dialog v-if="manipulaQuantidade"
+                            
                             v-model="manipulaQuantidade"
                             persistent 
                             max-width="550"
@@ -147,7 +157,7 @@ export default {
     },
     computed:{
         ...mapGetters({ pedidos : 'pedidoMod/getPedidos'
-     , vlTotal : 'pedidoMod/getValorTotal'})
+     , vlTotal : 'pedidoMod/getValorTotal', countProd : 'pedidoMod/getCounterProd'})
     },
     methods:{
         ...mapActions('pedidoMod', ['saveValorTotal', 'removeQntdPedido', 'removePedido', 'getQuantidadeDisponivelProduto']),

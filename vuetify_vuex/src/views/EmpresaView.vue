@@ -25,7 +25,7 @@
                         <v-row>
                             <v-col class="d-flex justify-center">
                                 <div class="grafico ">
-                                    <p class="text-subtitle-1 font-italic white--text titulo-grafico">Vendas no dia atual (Até 23h:00min)</p>
+                                    <p class="text-subtitle-1 font-italic white--text titulo-grafico">Grafico de vendas no dia atual (Até 23h:00min, minimo duas vendas)</p>
                                     <v-sheet color="#1e1e1e">
                                         <v-sparkline
                                           :value="values"

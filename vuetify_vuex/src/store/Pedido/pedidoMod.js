@@ -4,6 +4,7 @@ import productService from "@/service/productService"
 export default{
     namespaced: true,
     state: {
+        counterProdInList : 0,
         pedidos: [],
         valor_Total_Pedidos : 0,
         cod : null,
@@ -16,6 +17,9 @@ export default{
         }
     },
     getters: {
+        getCounterProd(state){
+            return state.counterProdInList
+        },
         getCodigo(state){
             return state.cod
         },
@@ -30,15 +34,17 @@ export default{
         }
     },
     mutations: {
+        resetCountProd(state){
+            state.counterProdInList = 0
+        },
         setPedidoAtual(state, payload){
-            state.pedidoAtual.codigo = payload.ID
+            state.pedidoAtual.codigo = payload.ID 
             state.pedidoAtual.metodo_pagamento = payload.METODO_PAGAMENTO
             state.pedidoAtual.valor_total = payload.VALOR_TOTAL
             state.pedidoAtual.produtos = payload.PRODUTOS
             state.pedidoAtual.aprovado = payload.APROVADO == 'T' ? "PAGO" : "PENDENTE"  
         },
         saveValorTotal(state,payload){
-            
             state.valor_Total_Pedidos = parseFloat(payload)
         },
         saveCod(state ,payload){
@@ -48,16 +54,18 @@ export default{
             const exist = state.pedidos.find(o => o.id == payload.id)
             if(exist){
               exist.quantidade += parseInt(payload.quantidade)
-            }else{
+            }else{ 
+              state.counterProdInList += 1                                           
               state.pedidos.push(payload)
             }
         },
         setListaPedidos(state, payload){
             state.pedidos = payload
         },
-        removePedido(state, payload){
+        removePedido(state, payload){                   
             state.valor_Total_Pedidos -= parseFloat(payload.valor)
             state.pedidos = state.pedidos.filter(o => o.id !== payload.id)
+            state.counterProdInList -= 1 
         },
         limpaPedido(state){
             state.pedidos = []
@@ -177,6 +185,7 @@ export default{
                     if(res.status == 201){
                         context.commit("setPedidoAtual", res.data)
                         context.commit("limparValorTotal")
+                        context.commit("resetCountProd")
                         return true
                     }
                 })
@@ -192,6 +201,7 @@ export default{
                 context.commit("limparValorTotal")
                     await pedidoService.findById(payload).then((res)=>{
                         if(res.status == 200){
+                            
                             context.commit("setListaPedidos", res.data.PRODUTOS)
                             context.commit("setPedidoAtual", res.data)
                             context.commit("saveValorTotal", parseFloat(res.data.VALOR_TOTAL))
