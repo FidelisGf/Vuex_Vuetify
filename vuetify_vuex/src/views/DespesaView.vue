@@ -49,13 +49,16 @@
                 <v-sheet
                     color="cyan lighten-5"
                     elevation="8"
-                    height="55px"
+                    height="58px"
                     width="170px"
                     class="mt-md-n3 mt-0   exibeGasto"
 
                 >
-                    <p style="font-size: 16px;" class="ml-2 mt-4 font-weight-bold">Despesas do Mês</p>
-                    <p class="mt-n4 ml-10 font-weight-bold">{{despesasValor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>
+                    <div>
+                        <p style="font-size: 16px;" class="ml-2 mt-3 font-weight-bold"><v-icon class="ml-n1 mt-n1" color="teal lighten-1">mdi-currency-usd-off</v-icon>Despesas do Mês</p>
+                    <p class="mt-n4 ml-11 font-weight-bold">{{despesasValor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>
+                    </div>
+                    
                 </v-sheet>
             </v-col>
             <v-dialog
@@ -267,7 +270,7 @@ export default {
 <style lang="scss" scoped>
     .exibeGasto{
         border-color: aqua !important;
-        box-shadow: 0px 2px 25px 2px #E0F2F1 !important;
+        box-shadow: 0px 2px 10px 2px #E0F2F1 !important;
         border-radius: 10px !important;
       
     }
@@ -279,6 +282,6 @@ export default {
     .exibeGasto:hover::after{
         transform: translate(2px, +2.10px);
         transition: 1.5s;
-        box-shadow: 0px 2px 25px 2px #E0F2F1 !important;
+        box-shadow: 2px 2px 25px 2px #E0F2F1 !important;
     }
 </style>

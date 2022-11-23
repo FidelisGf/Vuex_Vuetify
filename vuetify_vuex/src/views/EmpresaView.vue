@@ -30,16 +30,15 @@
                                         <v-sparkline
                                           :value="values"
                                           color="rgba(255, 255, 255, .7)"
-                                          height="100"
+                                          height="80"
                                           smooth="10"
                                           padding="20"
-                                          
                                           stroke-linecap="round"
                                           auto-draw
                                           :auto-draw-duration="4000"
                                         >
                                         <template v-slot:label="item">
-                                            {{parseFloat(item.value).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) }}
+                                            {{parseFloat(item.value).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
                                         </template>
                                         </v-sparkline>
                                       
@@ -62,6 +61,7 @@ export default {
         return{
             showEmpresa : false,
             data : [],
+            valores : [],
         }
     },
     methods:{
@@ -87,7 +87,6 @@ export default {
     },
     created(){
         this.checkUserHaveOffice();
-        console.log(this.values)
     }
 }
 </script>

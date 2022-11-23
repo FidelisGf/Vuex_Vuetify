@@ -198,10 +198,10 @@
         </v-row>
         <v-row>
             <v-col>
-                <v-btn color="green accent-1" class="btns" @click="makeRelatorio">
+                <v-btn color="teal accent-2" class="btns" @click="makeRelatorio">
                     Gerar
                 </v-btn>
-                <v-btn color="lime lighten-4" class=" btns ml-3" @click="clear">
+                <v-btn color="light-blue accent-2" class=" btns ml-3" @click="clear">
                     Limpar
                 </v-btn>
             </v-col>

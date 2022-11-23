@@ -82,7 +82,7 @@
                                                     text
                                                     @click="findPedidoById"
                                                     >
-                                                    Buscar
+                                                        Buscar
                                                 </v-btn>
                                             </v-card-actions>   
                                         </v-card> 
@@ -98,10 +98,9 @@
                                     color="purple lighten-1"
                                     class="ml-3"
                                     dark
-                                    
                                     icon 
                                 >
-                                    <v-icon color="red accent-2" @click="deletePedidoMod = true">mdi-close</v-icon>
+                                    <v-icon color="red accent-2" @click="deletePedidoMod = true">mdi-delete</v-icon>
                                 </v-btn>
                             </template> 
                             <span>Excluir Pedido</span>
@@ -143,6 +142,21 @@
                                 </v-card>
                             </v-dialog>   
                           </v-tooltip>
+                          <v-tooltip bottom v-if="editMode">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    color="purple lighten-1"
+                                    class="ml-3"
+                                    dark
+                                    icon 
+                                >
+                                    <v-icon color="yellow accent-2" @click="clearAll">mdi-arrow-u-left-top-bold</v-icon>
+                                </v-btn>
+                            </template> 
+                            <span>Voltar</span>
+                          </v-tooltip>   
                     </v-card-title>
                     <v-row>
                         <v-col cols="11" md="8" sm="12">
@@ -430,8 +444,20 @@ export default {
             this.clearPayment()
             this.limpaPedido()
             this.limparValorTotal()
-            
             this.loading = false
+        },
+        clearAll(){
+            this.clearClient()
+            this.clear()
+            this.clearPayment()
+            this.limpaPedido()
+            this.limparValorTotal()
+            this.registro = true 
+            this.msg = 'Alteração de pedido cancelada !'
+            this.color = 'green darken-3'
+            this.btn_msg = 'Gerar Venda'
+            this.findBy = false
+            this.editMode = false
         },
         listaPedidos(){
             this.fail = false
@@ -571,7 +597,7 @@ export default {
             pdf.setFontSize(8);
             pdf.text('------------------------------------', 15, 155) 
             pdf.text('Assinatura do Cliente', 18, 158)
-            pdf.save('pedido.pdf'); 
+            pdf.save('pedido_' + pedido.codigo +  '.pdf'); 
         },
         hideSucess : function (){
             if(this.sucesso){

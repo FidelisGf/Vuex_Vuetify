@@ -230,8 +230,8 @@
                 width="200px"
                 class=" exibeGasto ml-lg-10 ml-md-3  mt-n5 "
             >
-                <p style="font-size: 16px;" class="ml-3 mt-2 font-weight-medium">Produtos Ativos</p>
-                <p style="font-size : 14px;" class="mt-n4 ml-5 font-weight-bold">Quantidade Atual : {{countProdutos}}</p>
+                <p style="font-size: 16px;" class="ml-3 mt-2 font-weight-medium"><v-icon class="ml-n2 mt-n3" color="teal lighten-1">mdi-checkbox-marked-circle</v-icon>Produtos Ativos</p>
+                <p style="font-size : 14px;" class="mt-n4 ml-8 font-weight-bold">Quantidade Atual : {{countProdutos}}</p>
             </v-sheet>
         </v-col>
     </v-row>
@@ -404,6 +404,6 @@ export default {
     .exibeGasto:hover::after{
         transform: translate(2px, +2.10px);
         transition: 1.5s;
-        box-shadow: 0px 2px 25px 2px #E0F2F1 !important;
+        box-shadow: 2px 2px 25px 2px #09d163 !important;
     }
 </style>

@@ -37,12 +37,16 @@ export default{
         resetCountProd(state){
             state.counterProdInList = 0
         },
+        setNewValorCountProd(state, payload){
+            state.counterProdInList = payload
+        },
         setPedidoAtual(state, payload){
             state.pedidoAtual.codigo = payload.ID 
             state.pedidoAtual.metodo_pagamento = payload.METODO_PAGAMENTO
             state.pedidoAtual.valor_total = payload.VALOR_TOTAL
             state.pedidoAtual.produtos = payload.PRODUTOS
             state.pedidoAtual.aprovado = payload.APROVADO == 'T' ? "PAGO" : "PENDENTE"  
+           
         },
         saveValorTotal(state,payload){
             state.valor_Total_Pedidos = parseFloat(payload)
@@ -91,6 +95,7 @@ export default{
             context.commit('limparValorTotal')
         },
         limpaPedido(context){
+            context.commit('resetCountProd')
             context.commit('limpaPedido')
         },
         setListaPedidos(context, payload){
@@ -196,6 +201,7 @@ export default{
         },
         async findPedido(context, payload){
             try {
+                let newVlCount = 0
                 let pedido = null
                 context.commit("limpaPedido")
                 context.commit("limparValorTotal")
@@ -205,6 +211,10 @@ export default{
                             context.commit("setListaPedidos", res.data.PRODUTOS)
                             context.commit("setPedidoAtual", res.data)
                             context.commit("saveValorTotal", parseFloat(res.data.VALOR_TOTAL))
+                            res.data.PRODUTOS.forEach(() => {
+                                    newVlCount++
+                            });
+                            context.commit("setNewValorCountProd", newVlCount)
                             if(res.data.ID_CLIENTE != null){
                                 context.dispatch("clienteMod/getCliente", res.data.ID_CLIENTE, { root: true })
                             }

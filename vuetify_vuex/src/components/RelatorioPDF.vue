@@ -51,7 +51,7 @@ export default {
             pdf.text("Relatorio : " + this.filtro, 15, 35)
             pdf.setFontSize(10);
             if(this.starterDate != undefined || this.starterDate != null){
-                pdf.text("Data Inicial : " + this.starterDate + "  Data Final : " + this.endDate, 20, 42)
+                pdf.text("Data Inicial : " + this.convertStartandEndDates(this.starterDate) + "  Data Final : " + this.convertStartandEndDates(this.endDate), 20, 42)
             }
             if(this.columns != undefined || this.columns != null){
                 autoTable(pdf,
@@ -85,7 +85,7 @@ export default {
                     pdf.text('Gastos : ' + this.itens.vlDiff.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 105, 100)
                 }
             }
-            pdf.save('relatorio.pdf'); 
+            pdf.save('relatorio_' +  this.filtro + '.pdf'); 
         },
         toCurrency(values){
             values.forEach(element => {
@@ -107,6 +107,10 @@ export default {
                 result = b - a
             }
             return result
+        },
+        convertStartandEndDates(data){
+            data = new Date()
+            return data.toLocaleString()
         }
     },
 
