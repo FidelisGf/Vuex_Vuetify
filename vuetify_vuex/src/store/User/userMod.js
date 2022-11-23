@@ -40,26 +40,28 @@ export default{
             })
         },
         async vinculaEmpresa(context, payload){
-            let tmp = false
+            let text = ''
             try {
                 await userService.vinculaEmpresa(payload).then((res)=>{
-                    console.log(res.data)
-                    tmp = true
+                    text = res.data.message
                 })
-                return tmp
+                return text 
             } catch (error) {
-                tmp = false
-                return tmp
+                text = "Error : " + error.response.data.message
+                return text
             }
         },
         async register(context, payload){
+            let text = ""
             try {
-                await userService.register(payload).then(()=>{
-                    alert('Usuario Criado com sucesso !')
-                    
+                await userService.register(payload).then((res)=>{
+                    console.log(res)
+                    text = res.data.message
                 })
+                return text
             } catch (error) {
-                alert("Dados Invalidos");
+                text = "Error : " + error.response.data.message
+                return text
             }
         },
         async login(context, payload){

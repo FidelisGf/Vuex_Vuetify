@@ -331,10 +331,11 @@ export default {
                 this.mostraLista = true 
             }
         },
-        insert(){
+        async insert(){
             let payload = {NOME : this.client.nome, CPF : this.client.cpf, ENDERECO: this.client.endereco, TELEFONE : this.client.telefone, EMAIL : this.client.email}
-            this.saveCliente(payload)
+            this.msg = await this.saveCliente(payload)
             this.cadastroRapido = false
+            this.registro = true 
         },
         async setClient(){
             let text = await this.getCliente(this.codigo)

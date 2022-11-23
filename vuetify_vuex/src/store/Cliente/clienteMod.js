@@ -57,15 +57,17 @@ export default{
             console.log(res)
           })
        },
-       saveCliente(context, payload){
+       async saveCliente(context, payload){
+        let text = ''
         try {
-          clienteService.save(payload).then(() =>{
-            alert('Cliente cadastrado com sucesso !')
+          await clienteService.save(payload).then(() =>{
+            text = 'Cliente cadastrado com sucesso !'
           })
+          return text
         } catch (error) {
-          alert('Não foi possivel cadastrar o cliente')
+          text = "Error : " + error.response.data.message
+          return text
         }
-         
        },
        async getCliente(context, payload){
         let text = null
@@ -77,7 +79,7 @@ export default{
             })
             return text
           } catch (error) {
-            text = "Erro : " + error.response.data.message
+            text = "Error : " + error.response.data.message
             return text
           }
           

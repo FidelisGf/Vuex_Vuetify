@@ -2,6 +2,23 @@
     <v-app >
         <v-main>
            <v-container fluid fill-height>
+            <v-snackbar
+               v-model="registro"
+               :timeout="timeout"
+            >
+               {{this.msg}}
+                  <template v-slot:action="{ attrs }">
+                     <v-btn
+                        color="red"
+                        dark
+                        icon
+                        v-bind="attrs"
+                        @click="registro = false"
+                     >
+                        <v-icon small>mdi-close</v-icon>
+                     </v-btn>
+                  </template>
+              </v-snackbar>
               <v-layout align-center justify-center>
                  <v-flex xs12 sm8 md4>
                     <v-card class="elevation-16" color="grey darken-2">
@@ -63,15 +80,19 @@ export default {
             username : '',
             password : '',
             email : '',
+            registro : false,
+            timeout : 2000,
+            msg : '',
         }
     },
     methods:{
         ...mapActions('userMod', ['register']),
         async makeRegister(){
            let payload = {NAME : this.username, PASSWORD: this.password, EMAIL : this.email}
-           await this.register(payload)
-           this.$router.push({name : 'login'})
-        }
+           this.msg = await this.register(payload)
+           this.registro = true 
+           //this.$router.push({name : 'login'})
+        },
     },
     async created(){
     

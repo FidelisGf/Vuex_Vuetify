@@ -1,6 +1,7 @@
 <template>
     <v-app >
         <v-main>
+
            <v-container fluid fill-height>
               <v-layout align-center justify-center>
                  <v-flex xs12 sm8 md5>
@@ -31,7 +32,7 @@
                               <v-text-field
                                 v-model="INC_ESTADUAL"
                                 name="inc_estadual"
-                                type="text"
+                                type="number"
                                 placeholder="Inscrição Estadual"
                                 required
                                 prepend-inner-icon="mdi-text-box"
@@ -140,6 +141,7 @@ export default {
          ENDERECO : '',
          EMAIL : '',
          INC_ESTADUAL : '',
+         msg : '',
       }
     },
     methods:{
@@ -148,13 +150,11 @@ export default {
          var data = { NOME: this.NOME, CNPJ: this.CNPJ, NOME_FANTASIA : 
          this.NOME_FANTASIA, EMAIL : this.EMAIL, INC_ESTADUAL : this.INC_ESTADUAL,
          ENDERECO : this.ENDERECO }
-         const res = await this.vinculaEmpresa(data)
-         if(res){
-            alert('Empresa cadastrada e vinculada com sucesso !')
-            this.$router.push('/')
-         }else{
-            alert('Dados Invalidos')
-         }
+         this.msg = await this.vinculaEmpresa(data)
+         alert(this.msg)
+         if(!this.msg.includes("Error")){
+            this.$router.push('/empresa')
+         } 
       }
     }
 }

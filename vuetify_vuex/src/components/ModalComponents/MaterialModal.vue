@@ -198,11 +198,8 @@
                                                             <v-card-text>
                                                                 <ListaGenerica :route="'materiais'" :headers="headers"></ListaGenerica>
                                                             </v-card-text>
-                                                            
                                                         </v-card>
-                                                      
                                                     </v-dialog>
-                                                    
                                                 </v-col>
                                             </v-row>
                                         </v-card-text>
