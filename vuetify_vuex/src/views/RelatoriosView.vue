@@ -20,7 +20,7 @@
                     </v-btn>
                 </template>
         </v-snackbar>
-        <v-row dense class="mt-8 mt-md-10 mt-lg-0">
+        <v-row dense class="mt-8 mt-md-10 mt-lg-0" v-if="userLevel > 2">
             <v-col cols="12">
                 <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
@@ -213,6 +213,7 @@
 import RespostaRelatorio from '@/components/ModalComponents/RespostaRelatorio.vue';
 import RespostaRelatorioEstoque from '../components/ModalComponents/RespostaRelatorioEstoque.vue';
 import RelatorioPDF from '@/components/RelatorioPDF.vue';
+import { mapGetters } from 'vuex';
 export default {
     data() {
         return {
@@ -254,7 +255,7 @@ export default {
         };
     },
     computed:{ 
-                             
+        ...mapGetters({userLevel : 'userMod/getUserLevel'}),                     
           //todas computed nessa view servem para retornar nos v-if
         filledStart: function() {  //verifica se a data inicial foi inserida
             let flag = false

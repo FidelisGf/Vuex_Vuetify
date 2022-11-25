@@ -33,7 +33,7 @@
                 </v-list-item-icon>
                 <v-list-item-title>Registrar Venda</v-list-item-title>
             </v-list-item>
-            <v-list-item @click="$router.push('/empresa')" link>
+            <v-list-item @click="$router.push('/empresa')" v-if="userLevel > 2" link>
               <v-list-item-icon>
                 <v-icon>mdi-domain</v-icon>
               </v-list-item-icon>
@@ -45,7 +45,7 @@
               </v-list-item-icon >
               <v-list-item-title>Gestão do Estoque</v-list-item-title>
             </v-list-item>
-            <v-list-item link @click="$router.push('/relatorio')">
+            <v-list-item link @click="$router.push('/relatorio')" v-if="userLevel > 2">
               <v-list-item-icon>
                 <v-icon>mdi-printer</v-icon>
               </v-list-item-icon>
@@ -86,7 +86,7 @@ export default {
     }
   },
     computed:{
-      ...mapGetters({name : 'userMod/getUser' }),
+      ...mapGetters({name : 'userMod/getUser', userLevel : 'userMod/getUserLevel' }),
       mini(){
         switch (this.$vuetify.breakpoint.name) {
           case 'xs': return true
@@ -97,9 +97,6 @@ export default {
         }
       return this.$vuetify.breakpoint.mdAndDown;
     }
-  },
-  methods:{
-     
   },
   created(){
     

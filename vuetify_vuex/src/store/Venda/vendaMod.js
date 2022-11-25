@@ -19,17 +19,26 @@ export default{
         async getVendas(context){
             let qntd = 0
             try {
-                await vendasService.getVendasByMes().then((res)=>{
+                await vendasService.getVendasByDia().then((res)=>{
                     console.log(res)
                     context.commit("setValuesPerMes", res.data.values)
                     qntd = res.data.quantidade
-
-
                 })
                 return qntd
             } catch (error) {
                 console.log(error)
                 return qntd
+            }
+        },
+        async getVendasUltimosTresMeses(){
+            let values = []
+            try {
+                await vendasService.getTotalVendasUltimosTresMeses().then((res)=>{
+                      values = res.data.valores  
+                })
+                return values
+            } catch (error) {
+                console.log(error)
             }
         }
     },

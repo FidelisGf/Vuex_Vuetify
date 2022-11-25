@@ -3,9 +3,13 @@ export default{
     namespaced: true,
     state: {
         empresa: null,
-        user : null
+        user : null,
+        userLevel : 2,
     },
     getters: {
+       getUserLevel(state){
+            return state.userLevel
+       }, 
        getUser(state){
             return state.user
        },
@@ -17,7 +21,10 @@ export default{
         saveUser(state, payload){
             state.user = payload
         },
-
+        setUserLevel(state, payload){
+            state.userLevel = payload
+            console.log(state.userLevel)
+        },
         saveEmpresa(state, payload){
             state.empresa = payload
         },
@@ -72,6 +79,9 @@ export default{
                     check.login = true
                     check.vinculado = await context.dispatch("checkEmpresa", res.data.access_token)
                 })
+                await userService.profile().then(async (res)=>{
+                    context.commit("setUserLevel", res.data)
+                })
                 return check
             } catch (error) {
                 return check
@@ -86,6 +96,18 @@ export default{
                 return respo
             } catch (error) {
                 return respo
+            }
+        },
+        async avaibleRoles(){
+            let roles = null
+            try {
+                await userService.showAvailableRoles().then((res)=>{
+                    
+                    roles = res.data
+                })
+                return roles
+            } catch (error) {
+                return error
             }
         },
         async changeSenha(context, payload){
@@ -115,6 +137,15 @@ export default{
                 return check
             }
            
+        },
+        async logoutUser(){
+            try {
+                await userService.logout.then((res)=>{
+                    console.log(res)
+                })
+            } catch (error) {
+                console.log(error)
+            }
         }
     },
 }

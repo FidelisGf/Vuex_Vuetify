@@ -83,19 +83,24 @@ export default {
             registro : false,
             timeout : 2000,
             msg : '',
+            role : null
         }
     },
     methods:{
-        ...mapActions('userMod', ['register']),
+        ...mapActions('userMod', ['register', 'avaibleRoles', 'logoutUser']),
         async makeRegister(){
-           let payload = {NAME : this.username, PASSWORD: this.password, EMAIL : this.email}
+           let roles = await this.avaibleRoles()
+           this.role = roles[0]
+           console.log(this.role)
+           let payload = {NAME : this.username, PASSWORD: this.password, EMAIL : this.email, ID_ROLE : this.role.ID}
            this.msg = await this.register(payload)
            this.registro = true 
            //this.$router.push({name : 'login'})
         },
+        
     },
     async created(){
-    
+      await this.logoutUser()
     }
 }
 </script>

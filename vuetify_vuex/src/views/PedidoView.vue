@@ -497,13 +497,12 @@ export default {
             this.produto.quantidade = 1
             
         },
-        deletePed(){
+        async deletePed(){
             console.log(this.pedidoAtual)
-            this.deletePedido(this.pedidoAtual.codigo) 
+            this.msg = await this.deletePedido(this.pedidoAtual.codigo) 
             this.deletePedidoMod = false
             this.registro = true 
-            this.msg = 'Pedido Excluido com sucesso !'
-            this.color = 'green darken-3'
+            this.color = 'grey darken-3'
             this.editMode = false
             this.clear()
             this.clearPayment()

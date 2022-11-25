@@ -7,6 +7,9 @@ export default{
     login(payload){
         return axios.post("/auth/login", payload)
     },
+    logout(){
+        return axios.get("/auth/logout")
+    },
     profile(){
         return axios.get("/profile")
     },
@@ -25,5 +28,8 @@ export default{
     },
     mudarSenhaUser(payload){
         return axios.post("/auth/resetPassword", payload)
+    },
+    showAvailableRoles(){
+        return axios.get("/auth/showAvalibleRoles");
     }
 }

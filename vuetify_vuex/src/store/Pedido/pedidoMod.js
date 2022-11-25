@@ -145,14 +145,15 @@ export default{
                 }) 
         },
         async deletePedido(context, payload){
-            let gera = false
+            let text = ""
                 try {
-                    await pedidoService.destroy(payload).then(()=>{
-                        gera = true
+                    await pedidoService.destroy(payload).then((res)=>{
+                        text = res.data.message
                     })
-                    return gera
+                    return text
                 } catch (error) {
-                    return gera
+                    text = "Error : " + error.response.data.message
+                    return text
                 }
         },
         async findProduto(context ,payload){

@@ -35,7 +35,7 @@
               </v-list-item-icon>
               <v-list-item-title class="white--text" color="teal lighten-1">Registrar Venda</v-list-item-title>
           </v-list-item>
-          <v-list-item @click="$router.push('/empresa')" @click.native="dialog = false" link >
+          <v-list-item @click="$router.push('/empresa')" v-if="userLevel > 2" @click.native="dialog = false" link >
             <v-list-item-icon>
               <v-icon color="white">mdi-domain</v-icon>
             </v-list-item-icon>
@@ -47,7 +47,7 @@
             </v-list-item-icon>
             <v-list-item-title class="white--text">Gestão do Estoque</v-list-item-title>
           </v-list-item>
-          <v-list-item link @click="$router.push('/relatorio')" @click.native="dialog = false">
+          <v-list-item link @click="$router.push('/relatorio') " v-if="userLevel > 2" @click.native="dialog = false">
             <v-list-item-icon>
               <v-icon color="white">mdi-printer</v-icon>
             </v-list-item-icon>
@@ -69,7 +69,7 @@
       </v-card>
     </v-dialog>
   </v-app-bar>
-    <v-main class="info" >
+    <v-main class="info" > 
       <v-container fluid >
         <Dicas v-if="['home'].includes($route.name)" ></Dicas>
         <router-view></router-view>
@@ -83,7 +83,7 @@
   import HelloWorld from '../components/HelloWorld'
 import SideBar from '@/components/SideBar.vue';
 import Dicas from '@/components/DicasSistema.vue';
-
+import { mapGetters } from 'vuex';
   export default {
     name: 'Home',
 
@@ -97,6 +97,9 @@ import Dicas from '@/components/DicasSistema.vue';
         dialog: false,
       }
     },
+    computed:{
+        ...mapGetters({userLevel : 'userMod/getUserLevel'})
+    }
   
 
   }

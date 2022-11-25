@@ -83,9 +83,14 @@ export default {
         async deleteItem(route){
             let payload = {id : this.id, route : route}
             this.text = await this.delete(payload)
-            this.deleteInList(this.id)
-            this.registro = true
-            this.active = false
+            if(this.text != "Sem autorização !"){
+              this.deleteInList(this.id)
+              this.registro = true
+              this.active = false
+            }else{
+              this.registro = true
+              this.active = false
+            }
         }
    },
    computed:{
