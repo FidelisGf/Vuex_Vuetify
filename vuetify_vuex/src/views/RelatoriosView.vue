@@ -20,7 +20,7 @@
                     </v-btn>
                 </template>
         </v-snackbar>
-        <v-row dense class="mt-8 mt-md-10 mt-lg-0" v-if="userLevel > 2">
+        <v-row dense class="mt-8 mt-md-10 mt-lg-0" v-if="userLevel > 3">
             <v-col cols="12">
                 <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">
