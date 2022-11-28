@@ -1,15 +1,22 @@
 import userService from "@/service/userService"
+
 export default{
     namespaced: true,
+    
     state: {
         empresa: null,
         user : null,
         userLevel : 2,
+        userCargo : null,
     },
+    
     getters: {
        getUserLevel(state){
             return state.userLevel
        }, 
+       getUserCargo(state){
+        return state.userCargo
+       },
        getUser(state){
             return state.user
        },

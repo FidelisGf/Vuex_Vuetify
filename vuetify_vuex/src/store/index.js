@@ -14,6 +14,7 @@ import medidaMod from './Medida/medidaMod'
 import materiaMod from './Materia/materiaMod'
 import empresaMod from './Empresa/empresaMod'
 import vendaMod from './Venda/vendaMod'
+import createPersistedState from "vuex-persistedstate";
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -32,6 +33,7 @@ export default new Vuex.Store({
     materiaMod,
     vendaMod
   },
+  plugins: [createPersistedState()],
   state: {
     loading : false
   },

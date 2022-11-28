@@ -262,6 +262,7 @@
     }
    },
    created(){
+      sessionStorage.clear();
       localStorage.clear();
    }
  };
