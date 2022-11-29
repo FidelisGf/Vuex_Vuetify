@@ -80,9 +80,9 @@ export default {
                     }
                     pdf.text('Saldo Final : ' + this.itens.Saldo_Final.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 20, 68 )
                 }else{
-                    pdf.text('Valor Total : ' + this.itens.vlTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 20, 100)
-                    pdf.text('Lucros : ' + this.itens.vlReal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 65, 100)
-                    pdf.text('Gastos : ' + this.itens.vlDiff.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 105, 100)
+                    pdf.text('Valor Total : ' + this.itens.vlTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 20, 150)
+                    pdf.text('Lucros : ' + this.itens.vlReal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 65, 150)
+                    pdf.text('Gastos : ' + this.itens.vlDiff.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 105, 150)
                 }
             }
             pdf.save('relatorio_' +  this.filtro + '.pdf'); 
