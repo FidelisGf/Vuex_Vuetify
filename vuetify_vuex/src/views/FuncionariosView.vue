@@ -20,10 +20,7 @@
         <v-row class="d-flex mt-11 mt-lg-0 justify-center justify-lg-start  ">
             <v-col cols="12" lg="4" md="4" class="d-flex justify-center" ><FuncionarioModal @Cadastrado="attLista" :mini="false"></FuncionarioModal></v-col>
             <v-col cols="12" lg="4" md="4" class="d-flex justify-center" >
-                <v-btn text color="teal accent-2">
-                    <v-icon color="teal accent-2">mdi-account-minus</v-icon>
-                    <span class="ml-2">Registrar Penalidade</span>
-                </v-btn>
+               <PenalidadeModal></PenalidadeModal>
             </v-col>
             <v-col 
             cols="12" 
@@ -48,13 +45,13 @@
         <v-row class="d-flex justify-center mt-10">
             <ListaGenerica :key="renicializar" :route="'usuarios'" :headers="headers"></ListaGenerica>
         </v-row>
-        
     </v-container>
 </template>
 
 <script>
 import ListaGenerica from '@/components/ListaGenerica.vue';
 import FuncionarioModal from '@/components/ModalComponents/FuncionarioModal.vue';
+import PenalidadeModal from '@/components/ModalComponents/PenalidadeModal.vue';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
@@ -67,7 +64,7 @@ export default {
             renicializar : 0
         }
     },
-    components: { FuncionarioModal, ListaGenerica },
+    components: { FuncionarioModal, ListaGenerica, PenalidadeModal },
     methods:{
         ...mapActions('userMod', ['getActiveUsers']),
         async setCountAtivos(){
