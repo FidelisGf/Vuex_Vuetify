@@ -1,5 +1,4 @@
 import userService from "@/service/userService"
-
 export default{
     namespaced: true,
     
@@ -150,6 +149,17 @@ export default{
                 await userService.logout.then((res)=>{
                     console.log(res)
                 })
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async getActiveUsers(){
+            let count = 0
+            try {
+                await userService.getActiveUsers().then((res)=>{
+                    count = res.data
+                })
+                return count
             } catch (error) {
                 console.log(error)
             }

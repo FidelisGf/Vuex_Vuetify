@@ -162,28 +162,17 @@ export default {
             this.dtStart = this.starterDate
             this.dtFinal = this.endDate
             this.loading = true;
-            //this.clearListProduct()
-            if(this.dtStart != undefined && this.dtFinal != undefined){
-                axios.get("http://127.0.0.1:8000/api/" + route + "?page=" + this.current_page, { params: { opcao: this.opcao, start : this.dtStart, end : this.dtFinal} }).then((response) => {
-                    this.beginListProduct(response.data.data)
-                    this.per_page = response.data.per_page
-                    this.loading = false;
-                    this.current_page = response.data.current_page
-                    this.tempCurrent = this.current_page
-                    this.totalPage = response.data.last_page
-                    this.setLoad(false)
-                });
-            }else{
-                axios.get("http://127.0.0.1:8000/api/" + route + "?page=" + this.current_page, { params: { opcao: this.opcao} }).then((response) => {
-                    this.beginListProduct(response.data.data)
-                    this.per_page = response.data.per_page
-                    this.loading = false;
-                    this.current_page = response.data.current_page
-                    this.tempCurrent = this.current_page
-                    this.totalPage = response.data.last_page
-                    this.setLoad(false)
-                });
-            }  
+            axios.get("http://127.0.0.1:8000/api/" + route + "?page=" + this.current_page, { params: { opcao: this.opcao, start : this.dtStart, end : this.dtFinal} }).then((response) => {
+                this.beginListProduct(response.data.data)
+                this.per_page = response.data.per_page
+                this.loading = false;
+                this.current_page = response.data.current_page
+                this.tempCurrent = this.current_page
+                this.totalPage = response.data.last_page
+                this.setLoad(false)
+            });
+            
+              
         },
         closeEdits(e){
             this.edit = e

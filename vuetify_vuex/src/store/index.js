@@ -33,10 +33,15 @@ export default new Vuex.Store({
     materiaMod,
     vendaMod
   },
-  plugins: [createPersistedState()],
+  
   state: {
     loading : false
   },
+  plugins: [
+    createPersistedState({
+      paths: ['userMod'],
+    }),
+  ],
   getters: {
       loading(state){
         return state.loading

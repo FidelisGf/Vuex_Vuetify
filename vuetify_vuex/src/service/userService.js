@@ -31,5 +31,8 @@ export default{
     },
     showAvailableRoles(){
         return axios.get("/auth/showAvalibleRoles");
+    },
+    getActiveUsers(){
+        return axios.get("/getActiveUsers");
     }
 }
