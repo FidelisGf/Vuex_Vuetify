@@ -179,6 +179,7 @@ export default {
             if(parseInt(item.QUANTIDADE) <= 0){
                 this.removePedido(item)
                 let pedidos = this.pedidos
+                console.log(pedidos)
                 this.valorTotal = 0
                 pedidos.forEach(element => {
                    this.valorTotal += parseFloat(element.QUANTIDADE * element.VALOR)

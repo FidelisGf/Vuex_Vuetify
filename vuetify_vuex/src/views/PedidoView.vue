@@ -458,6 +458,7 @@ export default {
             this.btn_msg = 'Gerar Venda'
             this.findBy = false
             this.editMode = false
+            this.loading = false
         },
         listaPedidos(){
             this.fail = false
@@ -590,7 +591,7 @@ export default {
                 styles: { fillColor: [211, 211, 211] },
                 theme : 'striped',
                 margin: { top: 10 },
-                head: [['CODIGO', 'NOME', 'VALOR', 'QUANTIDADE', 'MEDIDA']],
+                head: [['CODIGO', 'NOME', 'VALOR', 'MEDIDA', 'QUANTIDADE']],
                 body: values,
             }) 
             pdf.setFontSize(8);

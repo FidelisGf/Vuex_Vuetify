@@ -39,6 +39,18 @@ export default{
         setUser(context, payload){
             context.commit('saveUser', payload)
         },
+        async showUser(context, payload){
+            let data = null 
+            try {
+                await userService.show(payload).then((res)=>{
+                    console.log(res.data)
+                    data = res.data
+                })
+                return data
+            } catch (error) {
+                console.log(error)      
+            }
+        },
         setEmpresa(context, payload){
             context.commit('saveEmpresa', payload)
         },

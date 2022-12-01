@@ -20,7 +20,7 @@
         <v-row class="d-flex mt-11 mt-lg-0 justify-center justify-lg-start  ">
             <v-col cols="12" lg="4" md="4" class="d-flex justify-center" ><FuncionarioModal @Cadastrado="attLista" :mini="false"></FuncionarioModal></v-col>
             <v-col cols="12" lg="4" md="4" class="d-flex justify-center" >
-               <PenalidadeModal></PenalidadeModal>
+               <PenalidadeModal @Cadastrado="setMsg"></PenalidadeModal>
             </v-col>
             <v-col 
             cols="12" 
@@ -73,6 +73,10 @@ export default {
         async attLista(){
             this.count = await this.getActiveUsers()
             this.renicializar += 1
+        },
+        setMsg(e){
+            this.msg = e
+            this.registro = true
         }
     },
     created() {
@@ -81,6 +85,7 @@ export default {
     computed:{
         headers() {
             return [
+                { text: "Detalhes", value: "info", sortable: false },
                 { text: "Cod", value: "ID",},
                 {
                     text: "Nome",

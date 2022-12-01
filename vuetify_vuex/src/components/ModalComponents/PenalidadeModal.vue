@@ -37,8 +37,7 @@
                             required 
                             dark
                             color="teal lighten-1"
-                            v-bind="attrs"
-                            v-on="on"     
+                           
                         >  
                         </v-select>
                     </v-col>
@@ -46,6 +45,7 @@
                         cols="6"
                     >
                         <v-text-field
+                            v-model="desc"
                             label="Descrição"
                             persistent-hint
                             required
@@ -58,6 +58,7 @@
                         cols="6"
                     >
                         <v-text-field
+                            v-model="data"
                             label="Data"
                             persistent-hint
                             required
@@ -70,6 +71,7 @@
                         cols="5"
                     >
                         <v-text-field
+                            v-model="id_funcionário"
                             label="Codigo do Funcionario"
                             persistent-hint
                             required
@@ -88,6 +90,7 @@
                     color="red lighten-1"
                 >Fechar</v-btn>
                 <v-btn
+                    @click="post"
                     text 
                     color="teal lighten-1"
                 >Salvar </v-btn>
@@ -97,12 +100,26 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
     data(){
         return{
             active : false,
             tipos : ['Falta' , 'Atraso', 'Outros'],
-            tipo : ''
+            tipo : '',
+            data : '',
+            desc : '',
+            id_funcionário : '',
+        }
+    },
+    methods:{
+        ...mapActions('penalidadeMod', ['postPenalidade']),
+        async post(){
+            let payload = {DATA : this.data, DESC : this.desc, TIPO : this.tipo, ID_USER : this.id_funcionário}
+            let text = await this.postPenalidade(payload)
+            this.$emit('Cadastrado', text)
+            this.active = false
         }
     }
 }

@@ -34,5 +34,8 @@ export default{
     },
     getActiveUsers(){
         return axios.get("/getActiveUsers");
+    },
+    async show($id){
+        return axios.get("/usuarios/" + $id)
     }
 }

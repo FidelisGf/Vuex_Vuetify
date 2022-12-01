@@ -67,7 +67,10 @@ export default{
             state.pedidos = payload
         },
         removePedido(state, payload){                   
-            state.valor_Total_Pedidos -= parseFloat(payload.valor)
+            state.valor_Total_Pedidos -= parseFloat(payload.VALOR * payload.QUANTIDADE)
+            if(state.valor_Total_Pedidos <= 0 || isNaN(state.valor_Total_Pedidos)){
+                state.valor_Total_Pedidos = 0
+            }
             state.pedidos = state.pedidos.filter(o => o.ID !== payload.ID)
             state.counterProdInList -= 1 
         },
@@ -136,9 +139,9 @@ export default{
             context.commit("limpaPedido")
              await pedidoService.edit(payload.ID, payload).then((res)=>{
                     if(res.status ===  200){
-                        context.commit("setPedidoAtual", res.data)
-                        context.commit("setListaPedidos", res.data.PRODUTOS)
-                        context.commit("saveValorTotal", res.data.VALOR_TOTAL)
+                        context.commit("setPedidoAtual", payload.PRODUTOS)
+                        context.commit("setListaPedidos", res.data.produtos)
+                        context.commit("saveValorTotal", res.data.pedido.VALOR_TOTAL)
                         edit = true
                     }
                     return edit
