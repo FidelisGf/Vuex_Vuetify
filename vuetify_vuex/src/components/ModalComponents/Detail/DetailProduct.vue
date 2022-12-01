@@ -73,7 +73,7 @@
                             <b class="font-italic titulo pl-5">Matérias Primas necessárias : </b>
                         </p>
                         <v-row class="flex-column ml-3 ml-md-10 mt-6"> 
-                            <v-col v-for="materia in produto.MATERIAIS" :key="materia.ID"  class="white--text subtitle-1 font-italic">
+                            <v-col v-for="materia in produto.MATERIAS" :key="materia.ID"  class="white--text subtitle-1 font-italic">
                                 <p class="pl-0 pl-md-5 mt-n10"><b class="titulo">Nome :</b> {{materia.NOME}}   
                                     <b class="titulo">/ Quantidade :</b> {{materia.QUANTIDADE}}   <b class="titulo">/ Custo :</b> {{materia.CUSTO.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>
                             </v-col>
