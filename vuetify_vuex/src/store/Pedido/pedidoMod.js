@@ -55,9 +55,9 @@ export default{
             state.cod = payload
         },
         savePedidos(state, payload){
-            const exist = state.pedidos.find(o => o.id == payload.id)
+            const exist = state.pedidos.find(o => o.ID == payload.ID)
             if(exist){
-              exist.quantidade += parseInt(payload.quantidade)
+              exist.QUANTIDADE += parseInt(payload.QUANTIDADE)
             }else{ 
               state.counterProdInList += 1                                           
               state.pedidos.push(payload)
@@ -68,7 +68,7 @@ export default{
         },
         removePedido(state, payload){                   
             state.valor_Total_Pedidos -= parseFloat(payload.valor)
-            state.pedidos = state.pedidos.filter(o => o.id !== payload.id)
+            state.pedidos = state.pedidos.filter(o => o.ID !== payload.ID)
             state.counterProdInList -= 1 
         },
         limpaPedido(state){
@@ -81,9 +81,9 @@ export default{
             state.valor_Total_Pedidos += parseFloat(payload)
         },
         removeQntdPedido(state, payload){
-            const exist = state.pedidos.find(o => o.id == payload.id)
+            const exist = state.pedidos.find(o => o.ID == payload.ID)
             if(exist){
-              exist.quantidade = payload.quantidade
+              exist.QUANTIDADE = payload.QUANTIDADE
             }
         },
     },
@@ -159,7 +159,7 @@ export default{
         async findProduto(context ,payload){
             let getProduto = false
             try {
-                getProduto = await productService.findProdutoById(payload.id).then(async (res)=>{
+                getProduto = await productService.findProdutoById(payload.ID).then(async (res)=>{
                     if(res.status == 200){
                         this.fail = false
                         let check = null
@@ -168,8 +168,8 @@ export default{
                             check = res2.data
                         });
                         if(check == true){
-                            let payload2 = {id : res.data.ID, nome : res.data.NOME, valor : res.data.VALOR, quantidade : payload.quantidade, medida : res.data.medida.NOME}
-                            context.commit('somaItens', parseFloat(res.data.VALOR * payload.quantidade))
+                            let payload2 = {ID : res.data.ID, NOME : res.data.NOME, VALOR : res.data.VALOR, QUANTIDADE : payload.QUANTIDADE, MEDIDA : res.data.medida.NOME}
+                            context.commit('somaItens', parseFloat(res.data.VALOR * payload.QUANTIDADE))
                             context.commit('saveCod', res.data.ID)
                             context.commit("savePedidos", payload2) 
                             return true
@@ -208,18 +208,18 @@ export default{
                 context.commit("limparValorTotal")
                     await pedidoService.findById(payload).then((res)=>{
                         if(res.status == 200){
-                            
-                            context.commit("setListaPedidos", res.data.PRODUTOS)
-                            context.commit("setPedidoAtual", res.data)
-                            context.commit("saveValorTotal", parseFloat(res.data.VALOR_TOTAL))
-                            res.data.PRODUTOS.forEach(() => {
+                            context.commit("setListaPedidos", res.data.produtos)
+                            context.commit("setPedidoAtual", res.data.pedido)
+                            console.log(res.data.pedido.VALOR_TOTAL)
+                            context.commit("saveValorTotal", parseFloat(res.data.pedido.VALOR_TOTAL))
+                            res.data.produtos.forEach(() => {
                                     newVlCount++
                             });
                             context.commit("setNewValorCountProd", newVlCount)
-                            if(res.data.ID_CLIENTE != null){
-                                context.dispatch("clienteMod/getCliente", res.data.ID_CLIENTE, { root: true })
+                            if(res.data.pedido.ID_CLIENTE != null){
+                                context.dispatch("clienteMod/getCliente", res.data.pedido.ID_CLIENTE, { root: true })
                             }
-                            pedido = res.data
+                            pedido = res.data.pedido
                     }
                 })
                 return pedido

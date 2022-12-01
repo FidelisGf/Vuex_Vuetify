@@ -57,20 +57,20 @@
                             <v-divider color="white"></v-divider>
                             <v-card-title class="white--text">
                                <p class="white--text">
-                                <b class="ml-n1 white--text text-h6">Nome do Produto : </b >{{ item.nome}}
+                                <b class="ml-n1 white--text text-h6">Nome do Produto : </b >{{ item.NOME}}
                                 <v-icon color="blue accent-3"  class="ml-1 mt-n1" @click="ativaManipulaQuantidade(item)">mdi-pencil</v-icon>
                                 <v-icon color="red accent-2"  class="ml-1 mt-n1" @click="removePedido(item)">mdi-close</v-icon>
                                </p>      
                             </v-card-title>
                             <v-card-subtitle class="mt-n5 white--text">
                                 <p class="mt-n2 info_prod">
-                                    <b class="white--text font-weight-regular">Valor : </b>R$ {{item.valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}     
+                                    <b class="white--text font-weight-regular">Valor : </b>R$ {{item.VALOR.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}     
                                     
                                 </p>
                                 <p class="mt-n2 info_prod">
-                                    <b class="white--text font-weight-regular"> Quantidade :</b> {{item.quantidade}}  {{item.medida}}
+                                    <b class="white--text font-weight-regular"> Quantidade :</b> {{item.QUANTIDADE}}  {{item.medida}}
                                 </p>
-                                <p class="mt-n2 info_prod font-weight-regular"><b class="white--text">Sub total  : </b>{{(item.valor * item.quantidade).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>
+                                <p class="mt-n2 info_prod font-weight-regular"><b class="white--text">Sub total  : </b>{{(item.VALOR * item.QUANTIDADE).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>
                             </v-card-subtitle>
                            
                             <v-divider class="mt-n3 " color="white"></v-divider>
@@ -85,7 +85,7 @@
                         >
                          <v-card class="cards-colors">
                             <v-card-title class="white--text">
-                                Manipule a quantidade do Item #{{temp.nome}}
+                                Manipule a quantidade do Item #{{temp.NOME}}
                             </v-card-title>
                             <v-card-text class="white--text">
                                 <v-row>
@@ -97,7 +97,7 @@
                                         dense 
                                         dark
                                         required
-                                        v-model="temp.quantidade"
+                                        v-model="temp.QUANTIDADE"
                                         single-line
                                         type="number"
                                         ></v-text-field>
@@ -146,10 +146,10 @@ export default {
             qntdDisponivelProduto : 0,
             valorTotal : 0,
             temp : {
-                id: null,
-                valor: null,
-                nome: null,
-                quantidade: null,
+                ID: null,
+                VALOR: null,
+                NOME: null,
+                QUANTIDADE: null,
                 
             },
             active : false,
@@ -165,23 +165,23 @@ export default {
        
         async ativaManipulaQuantidade(item){
             this.manipulaQuantidade = true
-            this.qntdDisponivelProduto = await this.getQuantidadeDisponivelProduto(item.id)
-            this.temp.id = item.id
-            this.temp.nome = item.nome
-            this.temp.quantidade = item.quantidade
-            this.temp.valor = item.valor
+            this.qntdDisponivelProduto = await this.getQuantidadeDisponivelProduto(item.ID)
+            this.temp.ID = item.ID
+            this.temp.NOME = item.NOME
+            this.temp.QUANTIDADE = item.QUANTIDADE
+            this.temp.VALOR = item.VALOR
         },
         disableManipulaQuantidade(){
             this.manipulaQuantidade = false
         },
         async removeFromList(item){
             let temp = item
-            if(parseInt(item.quantidade) <= 0){
+            if(parseInt(item.QUANTIDADE) <= 0){
                 this.removePedido(item)
                 let pedidos = this.pedidos
                 this.valorTotal = 0
                 pedidos.forEach(element => {
-                   this.valorTotal += parseFloat(element.quantidade * element.valor)
+                   this.valorTotal += parseFloat(element.QUANTIDADE * element.VALOR)
                 });
                 this.saveValorTotal(parseFloat( this.valorTotal ))
                 this.disableManipulaQuantidade()
@@ -190,8 +190,9 @@ export default {
                 if(check == true){
                     this.valorTotal = 0
                     this.pedidos.forEach(element => {
-                    this.valorTotal += parseFloat(element.quantidade * element.valor)
+                    this.valorTotal += parseFloat(element.QUANTIDADE * element.VALOR)
                     });
+                    console.log(this.valorTotal)
                     this.saveValorTotal(parseFloat( this.valorTotal ))
                     item = temp
                     this.disableManipulaQuantidade()

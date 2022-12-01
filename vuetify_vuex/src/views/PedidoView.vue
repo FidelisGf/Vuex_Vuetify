@@ -474,7 +474,7 @@ export default {
                 this.msg = 'Quantidade não pode ser zero e nem o produto pode ser vazio !'
                 this.color = 'yellow darken-4'
             }else{
-                let payload = {quantidade : this.produto.quantidade, id : parseInt(this.produto.id)}
+                let payload = {QUANTIDADE : this.produto.quantidade, ID : parseInt(this.produto.id)}
                 let getProd = await this.findProduto(payload)
                 if(getProd){
                     this.registro = true 
