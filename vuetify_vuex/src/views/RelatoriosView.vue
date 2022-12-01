@@ -278,7 +278,7 @@ export default {
         hasDateInput: function(){ //verifica se o relátorio vai possuir input de datas 
             let flag = false   
 
-            if(this.relatorioEscolha.includes("datas") || this.relatorioEscolha.includes("dias")){
+            if(this.relatorioEscolha.includes("datas") || this.relatorioEscolha.includes("dias") || this.relatorioEscolha.includes("Pagamento")){
                 flag = true
                 return flag
             }
