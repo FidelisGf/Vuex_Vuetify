@@ -23,7 +23,6 @@
                 color="teal lighten-1"
                 dark
                 large
-                @click="openCadFuncionario"
                 class="ml-2"
                 v-bind="attrs"
                 v-on="on"

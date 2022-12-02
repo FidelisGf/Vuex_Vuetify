@@ -32,14 +32,14 @@ export default{
         },
         async getVendasUltimosTresMeses(){
             let values = []
-            try {
-                await vendasService.getTotalVendasUltimosTresMeses().then((res)=>{
-                      values = res.data.valores  
-                })
-                return values
-            } catch (error) {
-                console.log(error)
-            }
+          
+            await vendasService.getTotalVendasUltimosTresMeses().then((res)=>{
+                values = res.data[0]
+            })
+            return values
+          
+           
+            
         }
     },
 }

@@ -54,6 +54,7 @@
                                           auto-draw
                                           :auto-draw-duration="4000"
                                         >
+
                                         <template v-slot:label="item">
                                             {{parseFloat(item.value).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
                                         </template>
@@ -70,8 +71,9 @@
                             <v-col class="d-flex justify-center">
                                 <div class="grafico ">
                                     <p class="text-subtitle-1 font-italic white--text titulo-grafico">Grafico do total de vendas dos ultimos três meses (inicio da esquerda para direita)</p>
-                                    <v-sheet color="#1e1e1e">
+                                    <v-sheet color="#1e1e1e" :key="renicializar">
                                         <v-sparkline
+                                          :key="renicializar"
                                           :value="valoresUltimosMeses"
                                           color="#FB8C00"
                                           height="80"
@@ -85,8 +87,9 @@
                                             {{parseFloat(item.value).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
                                         </template>
                                         </v-sparkline>
-                                      
+                                        
                                     </v-sheet>
+                                    
                                 </div>
                             </v-col>
                         </v-row>
@@ -108,7 +111,7 @@ export default {
             valores: [],
             qntd: 0,
             active: false,
-            valoresUltimosMeses: [],
+            valoresUltimosMeses: null,
             registro: false,
             timeout: 2000,
             msg: "",
@@ -118,9 +121,8 @@ export default {
 
         };
     },
-    computed:{
-        ...mapGetters({ values: "vendaMod/getValuesPerMes", userLevel: "userMod/getUserLevel" }),
-    },
+   
+    
     methods: {
         ...mapActions("empresaMod", ["getByUser", "checkEmpresa"]),
         ...mapActions("vendaMod", ["getVendas", "getVendasUltimosTresMeses"]),
@@ -128,10 +130,12 @@ export default {
         async checkUserHaveOffice() {
             const res = await this.checkEmpresa();
             if (res == 1) {
+                this.valoresUltimosMeses = await this.getVendasUltimosTresMeses();
                 this.getEmpresaByUser();
                 this.qntd = await this.getVendas();
-                this.valoresUltimosMeses = await this.getVendasUltimosTresMeses();
                 this.showEmpresa = true;
+                console.log(this.values)
+               
             }
             else {
                 this.showEmpresa = false;
@@ -152,9 +156,16 @@ export default {
             this.registro = true;
         }
     },
-    created() {
+   async created() {
         this.checkUserHaveOffice();
+       
+       
     },
+    computed:{
+        ...mapGetters({ values: "vendaMod/getValuesPerMes", userLevel: "userMod/getUserLevel" }),
+    },
+
+    
     components: { FuncionarioModal }
 }
 </script>
