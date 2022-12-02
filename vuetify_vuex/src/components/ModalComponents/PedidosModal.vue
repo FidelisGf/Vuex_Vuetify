@@ -22,10 +22,10 @@
                             <v-icon aria-hidden="false" dark color="teal accent-1">mdi-cart</v-icon>
                         </v-btn>
                         <v-badge
-                            v-show="countProd > 0"
+                            v-show="(Object.keys(pedidos).length > 0)"
                             class="mt-1 mr-3"
                             color="#757575"
-                            :content="countProd"
+                            :content="Object.keys(pedidos).length"
                         >
                         </v-badge>
                     </div>
@@ -178,23 +178,11 @@ export default {
             let temp = item
             if(parseInt(item.QUANTIDADE) <= 0){
                 this.removePedido(item)
-                let pedidos = this.pedidos
-                console.log(pedidos)
-                this.valorTotal = 0
-                pedidos.forEach(element => {
-                   this.valorTotal += parseFloat(element.QUANTIDADE * element.VALOR)
-                });
-                this.saveValorTotal(parseFloat( this.valorTotal ))
                 this.disableManipulaQuantidade()
             }else{
                 let check = await this.removeQntdPedido(temp)
                 if(check == true){
                     this.valorTotal = 0
-                    this.pedidos.forEach(element => {
-                    this.valorTotal += parseFloat(element.QUANTIDADE * element.VALOR)
-                    });
-                    console.log(this.valorTotal)
-                    this.saveValorTotal(parseFloat( this.valorTotal ))
                     item = temp
                     this.disableManipulaQuantidade()
                 }else{

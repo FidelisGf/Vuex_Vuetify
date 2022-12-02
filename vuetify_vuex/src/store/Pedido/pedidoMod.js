@@ -4,7 +4,6 @@ import productService from "@/service/productService"
 export default{
     namespaced: true,
     state: {
-        counterProdInList : 0,
         pedidos: [],
         valor_Total_Pedidos : 0,
         cod : null,
@@ -17,13 +16,13 @@ export default{
         }
     },
     getters: {
-        getCounterProd(state){
-            return state.counterProdInList
-        },
         getCodigo(state){
             return state.cod
         },
         getValorTotal(state){
+            state.valor_Total_Pedidos = state.pedidos.reduce((accumulator, object)=>{
+                return parseFloat(accumulator) + parseFloat(object.VALOR * object.QUANTIDADE)
+            },0)
             return state.valor_Total_Pedidos
         },
         getPedidos(state){
@@ -34,12 +33,6 @@ export default{
         }
     },
     mutations: {
-        resetCountProd(state){
-            state.counterProdInList = 0
-        },
-        setNewValorCountProd(state, payload){
-            state.counterProdInList = payload
-        },
         setPedidoAtual(state, payload){
             state.pedidoAtual.codigo = payload.ID 
             state.pedidoAtual.metodo_pagamento = payload.METODO_PAGAMENTO
@@ -48,9 +41,6 @@ export default{
             state.pedidoAtual.aprovado = payload.APROVADO == 'T' ? "PAGO" : "PENDENTE"  
            
         },
-        saveValorTotal(state,payload){
-            state.valor_Total_Pedidos = parseFloat(payload)
-        },
         saveCod(state ,payload){
             state.cod = payload
         },
@@ -58,8 +48,7 @@ export default{
             const exist = state.pedidos.find(o => o.ID == payload.ID)
             if(exist){
               exist.QUANTIDADE += parseInt(payload.QUANTIDADE)
-            }else{ 
-              state.counterProdInList += 1                                           
+            }else{                                      
               state.pedidos.push(payload)
             }
         },
@@ -72,16 +61,9 @@ export default{
                 state.valor_Total_Pedidos = 0
             }
             state.pedidos = state.pedidos.filter(o => o.ID !== payload.ID)
-            state.counterProdInList -= 1 
         },
         limpaPedido(state){
             state.pedidos = []
-        },
-        limparValorTotal(state){
-            state.valor_Total_Pedidos = 0
-        },
-        somaItens(state, payload){
-            state.valor_Total_Pedidos += parseFloat(payload)
         },
         removeQntdPedido(state, payload){
             const exist = state.pedidos.find(o => o.ID == payload.ID)
@@ -91,14 +73,7 @@ export default{
         },
     },
     actions: {
-        somaItens(context){
-            context.commit('somaItens')
-        },
-        limparValorTotal(context){
-            context.commit('limparValorTotal')
-        },
         limpaPedido(context){
-            context.commit('resetCountProd')
             context.commit('limpaPedido')
         },
         setListaPedidos(context, payload){
@@ -109,9 +84,6 @@ export default{
         },
         setPedidoAtual(context, payload){
             context.commit('setPedidoAtual', payload)
-        },
-        saveValorTotal(context, payload){
-            context.commit('saveValorTotal',payload)
         },
         savePedidos(context, payload){
             context.commit('savePedidos', payload)
@@ -132,7 +104,6 @@ export default{
             } catch (error) {
                 console.log(error)
             }
-            
         },
        async editarPedido(context , payload){
             let edit = false
@@ -141,7 +112,6 @@ export default{
                     if(res.status ===  200){
                         context.commit("setPedidoAtual", payload.PRODUTOS)
                         context.commit("setListaPedidos", res.data.produtos)
-                        context.commit("saveValorTotal", res.data.pedido.VALOR_TOTAL)
                         edit = true
                     }
                     return edit
@@ -172,7 +142,6 @@ export default{
                         });
                         if(check == true){
                             let payload2 = {ID : res.data.ID, NOME : res.data.NOME, VALOR : res.data.VALOR, QUANTIDADE : payload.QUANTIDADE, MEDIDA : res.data.medida.NOME}
-                            context.commit('somaItens', parseFloat(res.data.VALOR * payload.QUANTIDADE))
                             context.commit('saveCod', res.data.ID)
                             context.commit("savePedidos", payload2) 
                             return true
@@ -193,8 +162,6 @@ export default{
                 gera = await pedidoService.save(payload).then((res)=>{
                     if(res.status == 201){
                         context.commit("setPedidoAtual", res.data)
-                        context.commit("limparValorTotal")
-                        context.commit("resetCountProd")
                         return true
                     }
                 })
@@ -205,20 +172,14 @@ export default{
         },
         async findPedido(context, payload){
             try {
-                let newVlCount = 0
+               
                 let pedido = null
                 context.commit("limpaPedido")
-                context.commit("limparValorTotal")
                     await pedidoService.findById(payload).then((res)=>{
                         if(res.status == 200){
                             context.commit("setListaPedidos", res.data.produtos)
                             context.commit("setPedidoAtual", res.data.pedido)
                             console.log(res.data.pedido.VALOR_TOTAL)
-                            context.commit("saveValorTotal", parseFloat(res.data.pedido.VALOR_TOTAL))
-                            res.data.produtos.forEach(() => {
-                                    newVlCount++
-                            });
-                            context.commit("setNewValorCountProd", newVlCount)
                             if(res.data.pedido.ID_CLIENTE != null){
                                 context.dispatch("clienteMod/getCliente", res.data.pedido.ID_CLIENTE, { root: true })
                             }

@@ -6,11 +6,11 @@
                     v-if="loading == true" class="black" :loading="loading" transition="fade-transition" type="card"
                 >
                 </v-skeleton-loader>
-                    <v-list color="#1e1e1e">
+                    <v-list color="#1e1e1e" class="mt-n3 mt-md-0">
                         <v-list-item >
-                            <v-list-item-content>
-                                <v-list-item-title class="ml-0 ml-sm-2 mt-n5  teal--text">
-                                    <p><b class="text-caption text-sm-h6">Recebimento Total : {{total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</b></p>
+                            <v-list-item-content  >
+                                <v-list-item-title class="ml-0 ml-sm-2  mt-md-n3   teal--text">
+                                    <p><b class="text-caption text-md-h6 text-body-1 ">Recebimento Total : {{total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</b></p>
                                 </v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>

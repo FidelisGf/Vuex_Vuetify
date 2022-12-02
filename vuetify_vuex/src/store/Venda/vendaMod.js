@@ -30,7 +30,7 @@ export default{
                 return qntd
             }
         },
-        async getVendasUltimosTresMeses(){
+        async  getVendasUltimosTresMeses(){
             let values = []
           
             await vendasService.getTotalVendasUltimosTresMeses().then((res)=>{
