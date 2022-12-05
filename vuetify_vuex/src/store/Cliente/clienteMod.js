@@ -22,7 +22,7 @@ export default{
       }
     },
     mutations: {
-      saveClient(state, payload){
+      SAVE_CLIENT(state, payload){
         state.client.id = parseInt(payload.ID) 
         state.client.nome = payload.NOME
         state.client.cpf = payload.CPF 
@@ -30,13 +30,13 @@ export default{
         state.client.telefone = payload.TELEFONE
         state.client.email = payload.EMAIL
       },
-      activeClienteVinculado(state){
+      ACTIVE_CLIENTE_VINCULADO(state){
         state.clienteVinculado = true
       },
-      disableClienteVinculado(state){
+      DISABLE_CLIENTE_VINCULADO(state){
         state.clienteVinculado = false
       },
-      clearClient(state){
+      CLEAR_CLIENT(state){
         state.client.id = null
         state.client.nome = null
         state.clienteVinculado = false
@@ -44,11 +44,11 @@ export default{
     },
     actions: {
         clearClient(context){
-          context.commit("clearClient")
+          context.commit("CLEAR_CLIENT")
         },
        desvincularCliente(context){
-          context.commit("clearClient")
-          context.commit("disableClienteVinculado")
+          context.commit("CLEAR_CLIENT")
+          context.commit("DISABLE_CLIENTE_VINCULADO")
           let text = 'Sucesso : Cliente desvinculado do pedido !'
           return text
        },
@@ -62,8 +62,8 @@ export default{
        },
        async getCliente(context, payload){
           const text = clienteService.getById(payload).then((res)=>{
-              context.commit("saveClient", res.data)
-              context.commit("activeClienteVinculado")
+              context.commit("SAVE_CLIENT", res.data)
+              context.commit("ACTIVE_CLIENTE_VINCULADO")
               return 'Sucesso : Cliente vinculado ao pedido !'
           }).catch((error)=>{
               return "Error : " + error.response.data.message

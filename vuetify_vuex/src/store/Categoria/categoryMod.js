@@ -13,31 +13,24 @@ export default {
         },
     },
     mutations: {
-        beginListCategoria(state, payload){
+        BEGIN_LIST_CATEGORIA(state, payload){
             state.Categorias = payload
-        },
-        clearListCategoria(state){
-            state.Categorias.length = 0
         },
     },
     actions: {
         beginListCategoria(context){
             categoryService.get().then((res)=>{
-                context.commit("beginListCategoria",res.data)
+                context.commit("BEGIN_LIST_CATEGORIA",res.data)
             })
         },
         async saveListCategoria(context, payload){
-            let text = ""
-            try {
-              await categoryService.postCategory(payload).then(async (res) => {
-                    text = await res.data.message
-                    context.dispatch('beginListCategoria')
-                }) 
-            return text      
-            }catch(error) {
-                text = "Erro :" + error.response.data.message
-                return text
-            }
+            const text = categoryService.postCategory(payload).then((res)=>{
+                context.dispatch('beginListCategoria')
+                return res.data.message
+            }).catch((error)=>{
+                return "Erro :" + error.response.data.message
+            })
+            return text
         }
     } 
 }       
