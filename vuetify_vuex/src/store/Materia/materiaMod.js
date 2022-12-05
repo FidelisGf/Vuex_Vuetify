@@ -8,16 +8,24 @@ export default{
     getters: {
        getMateriais(state){
             return state.materiais
+            
        },
        getCustoTotal(state){
+            if(state.materiais != null || state.materiais != undefined){
+                state.custo_total = state.materiais.reduce((accumulator, object)=>{
+                    return parseFloat(accumulator) + parseFloat(object.CUSTO * object.QUANTIDADE)
+                },0)
+            }else{
+                state.custo_total = 0
+            }
             return state.custo_total
        }
     },
     mutations: {
-        setMateriais(state, payload){
+        SET_MATERIAS(state, payload){
             state.materiais = payload
         },
-        saveMaterialInList(state, payload){
+        SAVE_MATERIAL_IN_LIST(state, payload){
             const exist = state.materiais.find(o => o.ID == payload.ID)
             if(exist){
              exist.QUANTIDADE += parseInt(payload.QUANTIDADE)
@@ -25,18 +33,14 @@ export default{
               state.materiais.push(payload)
             }
         },
-        clearMateriais(state){
+        CLEAR_MATERIAIS(state){
             state.materiais = []
             state.custo_total = 0
         },
-        somaCustoTotal(state, payload){
-            state.custo_total += parseFloat(payload)
-        },
-        removeMateria(state, payload){
-            state.custo_total = parseFloat(state.custo_total - (payload.QUANTIDADE * payload.CUSTO))
+        REMOVE_MATERIA(state, payload){
             state.materiais = state.materiais.filter(o => o.ID !== payload.ID)
         },
-        async removeQntdMateria(state, payload){
+        async REMOVE_QUANTIDADE_MATERIA(state, payload){
             if(payload.check == true){
                 const exist = state.materiais.find(o => o.ID == payload.ID)
                 if(exist){
@@ -44,19 +48,13 @@ export default{
                 }
             }
         },
-        saveCustoTotal(state, payload){
-            state.custo_total = payload
-        }
     },
     actions: {
         clearMateriais(context){
-            context.commit("clearMateriais")
-        },
-        saveCustoTotal(context, payload){
-            context.commit("saveCustoTotal", payload)
+            context.commit("CLEAR_MATERIAIS")
         },
         removeMateria(context, payload){
-            context.commit('removeMateria', payload)
+            context.commit('REMOVE_MATERIA', payload)
         },
         async removeQntdMateria(context, payload){
             payload.check = false
@@ -67,94 +65,79 @@ export default{
                 msg.type = "success"
                 msg.text = "Quantidade Alterada com sucesso !"
                 payload.check = true
-                context.commit('removeQntdMateria', payload)
+                context.commit('REMOVE_QUANTIDADE_MATERIA', payload)
                 return msg
             }else{
                 msg.type = "danger"
                 msg.text = "Quantidade Insuficiente !"
-                context.commit("removeQntdMateria", payload)
+                context.commit("REMOVE_QUANTIDADE_MATERIA", payload)
                 return msg
             }
+
            
         },
        setMateriais(context, payload){
-            context.commit("setMateriais", payload)
+            context.commit("SET_MATERIAS", payload)
        },
        async post(context , payload){
-            let text = ""
-            try {
-                await materiaService.post(payload).then((res)=>{
-                    payload.ID = res.data.ID
-                    text = "Sucesso : Materia Prima cadastrada !"
-                })
-                return text
-            } catch (error) {
-                text = "Erro :" + error.response.data.message
-                return text
-            }
+            const text = materiaService.post(payload).then(()=>{
+                return  "Sucesso : Materia Prima cadastrada !"
+            }).catch((error)=>{
+                return "Erro :" + error.response.data.message
+            })  
+            return text
        },
        async adicionaMaterial(context, payload){
-            let text = ""
-            try {
-                await materiaService.aumentaQuantidade(payload).then((res)=>{
-                    text = res.data.message
-                })
-                return text
-            } catch (error) {
-                text = "Erro :" + error.response.data.message
-                return text
-            }
+            const text = materiaService.aumentaQuantidade(payload).then((res)=>{
+                return res.data.message
+            }).catch((error)=>{
+                return "Erro :" + error.response.data.message
+            })
+            return text
        },
        async findMateria(context, payload){
             let payload2 = {text : '', type : ''} 
-            try {
-                await materiaService.findById(payload.ID).then((res)=>{
-                    let obj = {ID : res.data.ID,  NOME : res.data.NOME, CUSTO : parseFloat(res.data.CUSTO), QUANTIDADE : payload.QUANTIDADE}
-                    console.log(obj)
-                    if(res.data.QUANTIDADE >= parseInt(payload.QUANTIDADE * payload.QNTD_PROD)){
-                        context.commit("saveMaterialInList", obj)
-                        context.commit("somaCustoTotal", parseFloat(res.data.CUSTO * payload.QUANTIDADE))
-                        payload2.text = "Item adicionado com sucesso !"
-                        payload2.type = "success"
-                    }else{
-                        payload2.text = "Quantidade Insuficiente !"
-                        payload2.type = "danger"
-                    }
-                })
+            const vl = materiaService.findById(payload.ID).then((res)=>{
+                let obj = {ID : res.data.ID,  NOME : res.data.NOME, CUSTO : parseFloat(res.data.CUSTO), 
+                QUANTIDADE : payload.QUANTIDADE}
+                if(res.data.QUANTIDADE >= parseInt(payload.QUANTIDADE * payload.QNTD_PROD)){
+                    context.commit("SAVE_MATERIAL_IN_LIST", obj)
+                    payload2.text = "Item adicionado com sucesso !"
+                    payload2.type = "success"
+                }else{
+                    payload2.text = "Quantidade Insuficiente !"
+                    payload2.type = "danger"
+                }
                 return payload2
-            } catch (error) {
-                console.log(error)
+            }).catch(()=>{
                 payload2.text = 'Falha ao adicionar Item !'
                 payload2.type = 'danger'
                 return payload2
-            }
+            })
+            return vl
+
+
        },
        async checkQuantidade(context, payload){
-            let flag = false
-            try {
-                await materiaService.findById(payload.ID).then((res)=>{
-                    if(res.data.QUANTIDADE >= payload.QUANTIDADE){
-                        flag = true
-                    }
-                })
-                return flag
-               
-            }catch(error){
-                return flag
-            }
+            const flag = materiaService.findById(payload.ID).then((res)=>{
+                if(res.data.QUANTIDADE >= payload.QUANTIDADE){
+                    return true
+                }else{
+                    return false
+                }
+            }).catch(()=>{
+                return false
+            })
+            return flag
        },
        async getQuantidadeDisponivelMateria(context, payload){
-            let Quantidade = 0
-            try {
-                await materiaService.findById(payload).then((res)=>{
-                    console.log(res.data)
-                    Quantidade = res.data.QUANTIDADE
-
-                })   
-                return Quantidade
-            } catch (error) {
+            const Quantidade = materiaService.findById(payload).then((res)=>{
+                return res.data.QUANTIDADE
+            }).catch((error)=>{
                 console.log(error)
-            }
+
+            })
+            return Quantidade
        }
     },
 }

@@ -12,26 +12,20 @@ export default{
     },
     actions: {
         async checkEmpresa(){
-            let resp = null
-            try {
-                await empresaService.checaEmpresa().then((res)=>{
-                    resp = res.data                    
-                })
-                return resp
-            } catch (error) {
-                return resp
-            }
+            const resp = empresaService.checaEmpresa().then((res)=>{
+                return res.data
+            }).catch((error)=>{
+                return error
+            })
+            return resp
         },
         async getByUser(){
-            let data = null
-            try {
-                await empresaService.findByUser().then((res)=>{
-                   data = res.data[0]
-                })
-                return data
-            } catch (error) {
-                return data
-            }
+            const data = empresaService.findByUser().then((res)=>{
+                return res.data[0]
+            }).catch((error)=>{
+                return error
+            })
+            return data
         }
     },
 }

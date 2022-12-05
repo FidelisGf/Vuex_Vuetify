@@ -10,31 +10,26 @@ export default{
         }
     },
     mutations: {
-        setListMedidas(state , payload){
+        SET_LISTA_MEDIDAS(state , payload){
             state.listaMedidas = payload
         }
     },
     actions: {
         async getAll(context){
             medidaService.get().then((res)=>{
-                context.commit("setListMedidas", res.data.data)
+                context.commit("SET_LISTA_MEDIDAS", res.data.data)
             }).catch((error)=>{
                 console.log(error)
             })
         },
         async post(context, payload){
-            let text = ""
-            try {
-                await medidaService.post(payload).then(async (res)=>{
-                    text = await res.data.message
-                    console.log(text)
-                    context.dispatch("getAll");
-                })
-                return text
-            } catch (error) {
-                text = "Erro ao cadastrar Medida"
-                return text
-            }          
+            const text = medidaService.post(payload).then((res)=>{
+                context.dispatch("getAll");
+                return res.data.message
+            }).catch((error)=>{
+                return "Erro :" + error.response.data.message  
+            })
+            return text
         } 
     },
 }

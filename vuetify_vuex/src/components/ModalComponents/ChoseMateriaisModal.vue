@@ -84,7 +84,16 @@
                                     icon 
                                     @click="materiaisMod = true"
                                 >
-                                    <v-icon>mdi-list-box-outline</v-icon>
+                                    <div>
+                                        <v-badge
+                                        v-show="(Object.keys(materias).length > 0)"
+                                        class="mt-1 mr-3"
+                                        color="green lighten-2"
+                                        :content="Object.keys(materias).length"
+                                                >
+                                        </v-badge>
+                                        <v-icon>mdi-list-box-outline</v-icon>
+                                    </div>
                                 </v-btn>
                             </template>
                             <span>Ver lista de matérias adicionadas</span>
@@ -95,6 +104,7 @@
                                 @keydown.escape="materiaisMod = false"
                             
                             >
+                                
                                 <ListMateriaisModal @fechar-Lista="fecharLista"></ListMateriaisModal>
                             </v-dialog>
                         </v-tooltip>
@@ -202,7 +212,7 @@ export default {
         },
     },
     computed: {
-        ...mapGetters({qntdProd : 'produtoMod/getQntdProd'}),
+        ...mapGetters({qntdProd : 'produtoMod/getQntdProd', materias : 'materiaMod/getMateriais',}),
         headers() {
             return [
                 {

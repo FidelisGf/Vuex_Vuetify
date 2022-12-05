@@ -60,7 +60,7 @@
 
 <script>
 
-import {mapGetters, mapActions} from 'vuex'
+import {mapActions} from 'vuex'
 export default {
     data() {
         return {
@@ -75,7 +75,6 @@ export default {
     },
     methods: {
         ...mapActions('estoqueMod', ['saveQuantidade']),
-        ...mapActions('estoqueMod', ['desativateAdicionaEstoque']),
         closeAdicionaEstoque() {
             this.$emit('closeEstoque', false)
         },
@@ -87,9 +86,7 @@ export default {
             this.quantidade = null
         },
     },
-    computed:{
-        ...mapGetters({active : 'estoqueMod/getAdicionaEstoque'}),  
-    }
+   
 }
 </script>
 

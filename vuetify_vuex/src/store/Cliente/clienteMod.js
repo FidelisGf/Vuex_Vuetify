@@ -52,37 +52,23 @@ export default{
           let text = 'Sucesso : Cliente desvinculado do pedido !'
           return text
        },
-       async sendEmail(context, payload){
-          await clienteService.sendEmailPdf(payload).then((res)=>{
-            console.log(res)
-          })
-       },
        async saveCliente(context, payload){
-        let text = ''
-        try {
-          await clienteService.save(payload).then(() =>{
-            text = 'Cliente cadastrado com sucesso !'
+          const text = clienteService.save(payload).then(()=>{
+              return 'Cliente cadastrado com sucesso !'
+          }).catch((error)=>{
+              return "Error : " + error.response.data.message
           })
           return text
-        } catch (error) {
-          text = "Error : " + error.response.data.message
-          return text
-        }
        },
        async getCliente(context, payload){
-        let text = null
-          try {
-            await clienteService.getById(payload).then((res)=>{
+          const text = clienteService.getById(payload).then((res)=>{
               context.commit("saveClient", res.data)
               context.commit("activeClienteVinculado")
-              text = 'Sucesso : Cliente vinculado ao pedido !'
-            })
-            return text
-          } catch (error) {
-            text = "Error : " + error.response.data.message
-            return text
-          }
-          
+              return 'Sucesso : Cliente vinculado ao pedido !'
+          }).catch((error)=>{
+              return "Error : " + error.response.data.message
+          })
+          return text
        }
     },
 }

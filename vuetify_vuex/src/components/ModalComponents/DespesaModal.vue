@@ -179,14 +179,15 @@ export default {
             custo = custo.toFixed(2)
             if(this.DTFINAL != ''){
                 let payload = {DESC : this.DESC, CUSTO : custo, DATA : this.DTFINAL, ID_TAG : this.TAG.ID}
-                let info  = await this.save(payload)
+                let info = await this.save(payload)
                 if(info.Id != null){
                     let payload2 = {ID : info.Id, DESC : this.DESC, CUSTO : custo, DATA : this.DTFINAL, tags : this.TAG}
                     this.saveList(payload2)
                     this.active = false
                 } 
-                this.registro = true
                 this.msg = info.text
+                this.registro = true
+                
             }else{
                 this.registro = true
                 this.msg = 'Data Invalida'

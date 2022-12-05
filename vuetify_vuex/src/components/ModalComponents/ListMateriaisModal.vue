@@ -122,7 +122,7 @@ export default {
    },
    methods:{
         ...mapActions('materiaMod', ['removeMateria', 'removeQntdMateria'
-        , 'saveCustoTotal', 'checkQuantidade', 'getQuantidadeDisponivelMateria']),
+        , 'checkQuantidade', 'getQuantidadeDisponivelMateria']),
         async activeManipula(item){
             this.temp = item
             this.qntdDisponivel =  await this.getQuantidadeDisponivelMateria(this.temp.ID)
@@ -136,22 +136,12 @@ export default {
             let tmp = this.temp
             if(parseInt(tmp.QUANTIDADE) <= 0){
                 await this.removeMateria(tmp)
-                this.valorTotal = 0
-                this.materias.forEach(element => {
-                   this.valorTotal += parseFloat(element.QUANTIDADE * element.CUSTO)
-                });
-                this.saveCustoTotal(parseFloat( this.valorTotal ))
                 this.manipulaQuantidade = false
             }else{
                 this.msg = await this.removeQntdMateria(tmp)
                 if(this.msg.type == 'danger'){
                     this.temp.QUANTIDADE = this.oldQntd
                 }
-                this.valorTotal = 0
-                this.materias.forEach(element => {
-                this.valorTotal += parseFloat(element.QUANTIDADE * element.CUSTO)
-                });
-                this.saveCustoTotal(parseFloat( this.valorTotal ))
                 this.notification = true
             }
         }
