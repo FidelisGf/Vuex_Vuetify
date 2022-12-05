@@ -156,8 +156,7 @@ export default {
     },
    
     methods: {
-        ...mapActions('produtoMod', ['saveProduct', 'beginListProduct', 'saveListProduct', 
-        'editListProduct', 'clearListProduct', 'findByAllCategory', 'activeEdit']),
+        ...mapActions('produtoMod', ['saveProduct', 'beginListProduct', 'findByAllCategory', 'activeEdit']),
         ...mapActions('despesaMod', ['activeEditDespesa', 'allByTag']),
         ...mapActions('utilMod' , ['saveGenerico', 'setLoad', 'getList']),
         getLista(route) {

@@ -32,138 +32,115 @@ export default{
         }
     },
     mutations: {
-        setQntdProd(state, payload){
+        SET_QUANTIDADE_PRODUTO(state, payload){
             state.qntdProd = payload
         },
-        saveProduct(state, payload){
+        SAVE_PRODUTO(state, payload){
             state.product = payload
         },
-        saveCount(state, payload){
+        SAVE_COUNT(state, payload){
             state.countProduto = payload
         },
-        beginListProduct(state, payload){
-           
+        BEGIN_LIST_PRODUCTS(state, payload){
             state.Products = payload
         },
-        clearListProduct(state){
+        CLEAR_LIST_PRODUCTS(state){
             state.Products.length = 0
         },
-        saveListProduct(state, payload){
+        SAVE_IN_LIST_PRODUCTS(state, payload){
             state.Products.push(payload)
         },
-        editListProduct(state, payload){
+        EDIT_IN_LIST_PRODUCTS(state, payload){
             state.Products =  state.Products.filter(item => item.ID !== payload.ID)
             state.Products.push(payload)
         },
-        deleteInListProduct(state, payload){
+        DELETE_IN_LIST_PRODUCTS(state, payload){
             state.Products =  state.Products.filter(item => item.ID !== payload)
         },
     },
     actions: {
         setQntdProd(context, payload){
-            context.commit("setQntdProd", payload)
+            context.commit("SET_QUANTIDADE_PRODUTO", payload)
         },
         saveCount(context ,payload){
-            context.commit("saveCount", payload)
-        },
-        disableEdit(context){
-            context.commit('disableEdit')
+            context.commit("SAVE_COUNT", payload)
         },
         clearListProduct(context){
-            context.commit('clearListProduct')
+            context.commit('CLEAR_LIST_PRODUCTS')
         },
         saveProduct(context, payload){
-            context.commit('saveProduct', payload)
+            context.commit('SAVE_PRODUTO', payload)
         },
         async editProduct(context, payload){
-            let text = ""
-            try {
-                await productService.editProduct(payload, payload.ID).then((res) => {
-                    if (res.status == 200) {
-                        context.commit("editListProduct", payload)
-                        text = "Sucesso : Produto editado !"
-                    }
-                    
-                });
-                return text
-            } catch (error) {
-                text = "Error : " + error.response.data.message   
-                return text
-            }
+            const text = productService.editProduct(payload, payload.ID).then((res)=>{
+                if(res.status == 200){
+                    context.commit("EDIT_IN_LIST_PRODUCTS", payload)
+                    return "Sucesso : Produto editado !"
+                }
+            }).catch((error)=>{
+                return "Error : " + error.response.data.message
+            })
+            return text
         },
         beginListProduct(context, payload){
-            context.commit('clearListProduct')
-            context.commit('beginListProduct', payload)
+            context.dispatch('clearListProduct')
+            context.commit('BEGIN_LIST_PRODUCTS', payload)
         },
         saveList(context, payload){
-            context.commit('saveListProduct', payload)
+            context.commit('SAVE_IN_LIST_PRODUCTS', payload)
         },
         deleteInList(context, payload){
-            context.commit('deleteInListProduct', payload)
+            context.commit('DELETE_IN_LIST_PRODUCTS', payload)
         },
         async findByAllCategory(context, payload){
-            try {
-                let resposta = {current_page : null, totalPage : null}
-                await productService.findAllProductByCategory(payload.ID, payload.current_page).then((res) => {
-                    context.commit("beginListProduct",res.data.data)
+                const query = productService.findAllProductByCategory(payload.ID, payload.current_page).then((res) => {
+                    let resposta = {current_page : null, totalPage : null}
+                    context.dispatch("beginListProduct",res.data.data)
                     resposta.current_page = res.data.current_page;
                     resposta.totalPage = res.data.last_page;
+                    return resposta
+                }).catch(()=>{
+                    alert('Falha ao filtrar por Categoria !')
                 });
-                return resposta
-            } catch (error) {
-                alert('Falha ao filtrar por Categoria !')
-            }
+                return query
         },
         async countProd(context){
-            try {
-                await productService.countProduto().then((res)=>{
-                        context.commit("saveCount", res.data)
-                })
-            } catch (error) {
-                return error  
-            }
+            productService.countProduto().then((res)=>{
+                context.dispatch("saveCount", res.data)
+            }).catch((error)=>{
+                return error
+            })
         },
         async findById(context, payload){
-            try {
-                let data = await productService.findProdutoById(payload).then((res)=>{
-                    return res.data
-                })
-                return data
-            } catch (error) {
+            const data = productService.findProdutoById(payload).then((res)=>{
+                return res.data
+            }).catch(()=>{
                 alert('Não foi possivel identificar esse produto !')
-            }
+            })
+            return data
            
         },
         async post(context, payload){
-            let text = null
-            try {
-                
-                await productService.postProduto(payload).then((res) => {
-                    if (res.status == 200) {
-                        payload.ID = res.data.ID
-                        payload.QUANTIDADE = payload.quantidade_inicial
-                        context.commit("saveListProduct",payload) 
-                        context.dispatch("countProd") 
-                        text = "Sucesso : Produto cadastrado com sucesso !"
-                    }
-                });
-                return text;
-            } catch (error) {
-                text = "Error : " + error.response.data.message
-                return await text
-            }
-            
+            const text = productService.postProduto(payload).then((res)=>{
+                if(res.status == 200){
+                    payload.ID = res.data.ID
+                    payload.QUANTIDADE = payload.quantia_inicial
+                    context.dispatch("saveListProduct",payload) 
+                    context.dispatch("countProd") 
+                    return "Sucesso : Produto cadastrado com sucesso !"
+                }
+            }).catch((error)=>{
+                return "Error : " + error.response.data.message
+            })
+            return text
         },
         async getLucroByProd(context, payload){
-            try {
-                let lucro = 0
-                await productService.getLucroByProduct(payload).then((res) =>{
-                    lucro = res.data
-                })
-                return lucro
-            } catch (error) {
+            const lucro = productService.getLucroByProduct(payload).then((res)=>{
+                return res.data
+            }).catch((error)=>{
                 return error
-            }
+            })
+            return lucro
         }
 
     }  

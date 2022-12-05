@@ -359,7 +359,7 @@ export default {
     },
     computed: {
         ...mapGetters({active : 'pedidoMod/ListaPedidos', pedidos : 'pedidoMod/getPedidos', ValorTotal : 'pedidoMod/getValorTotal', 
-         cod : 'pedidoMod/getCodigo', pedidoAtual : 'pedidoMod/getPedidoAtual', empresaUser : 'userMod/getEmpresa', cliente : 'clienteMod/getCliente'}),
+        pedidoAtual : 'pedidoMod/getPedidoAtual', empresaUser : 'userMod/getEmpresa', cliente : 'clienteMod/getCliente'}),
         troco: function () {
             let resultado = this.ValorTotal - this.dinheiroPago;
             if (resultado > 0) {
@@ -387,7 +387,7 @@ export default {
          },
     },
     methods: {
-        ...mapActions('pedidoMod', ['disableListaPedidos', 'saveValorTotal', 'activeListaPedidos', 'activeListaRapidaProdutos', 'limpaPedido', 'limparValorTotal']),
+        ...mapActions('pedidoMod', ['disableListaPedidos', 'saveValorTotal', 'activeListaPedidos', 'activeListaRapidaProdutos', 'limpaPedido']),
         ...mapActions('pedidoMod', ['findProduto', 'geraVenda', 'findPedido' , 'editarPedido', 'deletePedido']),
         ...mapActions('userMod', ['getEmpresaFromUser']),
         ...mapActions('clienteMod', ['clearClient']),
@@ -432,26 +432,32 @@ export default {
                 this.escolhaSituacao = 'F'
             }
             let payload = {ID : this.id, METODO_PAGAMENTO : this.escolhaPagamento, PRODUTOS : this.pedidos, 
-            APROVADO : this.escolhaSituacao, ID_CLIENTE : this.cliente.id}
-            await this.editarPedido(payload)
-            this.editMode = false
-            this.registro = true 
-            this.msg = 'Pedido Editado com sucesso !'
-            this.color = 'green darken-3'
-            this.btn_msg = 'Gerar Venda'
-            this.down(this.pedidoAtual)
-            this.clear()
-            this.clearPayment()
-            this.limpaPedido()
-            this.limparValorTotal()
-            this.loading = false
+            APROVADO : this.escolhaSituacao, ID_CLIENTE : this.cliente.id, VALOR_TOTAL : this.ValorTotal}
+            let checado = await this.editarPedido(payload)
+            if(checado){
+                
+                this.registro = true 
+                this.msg = 'Pedido Editado com sucesso !'
+                this.color = 'green darken-3'
+                this.btn_msg = 'Gerar Venda'
+                this.down(this.pedidoAtual)
+                this.editMode = false
+                this.clear()
+                this.clearPayment()
+                this.limpaPedido()
+                this.loading = false
+            }else{
+                this.registro = true 
+                this.msg = 'Falha ao Editar pedido !'
+                this.color = 'red darken-3'
+                this.loading = false
+            }         
         },
         clearAll(){
             this.clearClient()
             this.clear()
             this.clearPayment()
             this.limpaPedido()
-            this.limparValorTotal()
             this.registro = true 
             this.msg = 'Alteração de pedido cancelada !'
             this.color = 'green darken-3'
@@ -562,7 +568,12 @@ export default {
        async down(pedido){ 
             let Nome_Empresa = this.empresaUser.NOME
             let pdf = new jsPdf()
-            let produtos = this.pedidos
+            let produtos = null
+            if(this.editMode == true ){
+                produtos = this.pedidoAtual.produtos
+            }else{
+                produtos = this.pedidos
+            }
             let nomeClatura = pedido.aprovado == "PAGO" ? 'Pedido' : 'Orçamento'
             let values = produtos.map( (elemento) => Object.values(elemento));
             pdf.setFontSize(26)

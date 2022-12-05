@@ -218,7 +218,7 @@
      };
    },
    methods: {
-    ...mapActions('userMod', ['setUser', 'profile', 'checkEmpresa', 'login', 'sendEmail', 'changeSenha']),
+    ...mapActions('userMod', ['setUser', 'profile', 'checkEmpresa', 'login', 'sendEmail', 'changeSenha', 'logoutUser']),
     ...mapActions(['setLoading']),
     async logar(){
          let payload = {NAME : this.username, PASSWORD: this.password}
@@ -262,8 +262,8 @@
     }
    },
    created(){
+      this.logoutUser()
       sessionStorage.clear();
-      localStorage.clear();
    }
  };
  </script>

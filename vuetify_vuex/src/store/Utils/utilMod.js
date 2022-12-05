@@ -54,7 +54,7 @@ export default{
             try {
                 await Service.get(payload).then(async (res)=>{
                     console.log(res.data)
-                    await context.commit("produtoMod/beginListProduct", res.data.data , { root: true })
+                    await context.dispatch("produtoMod/beginListProduct", res.data.data , { root: true })
                     resposta.current_page = res.data.current_page
                     resposta.totalPage = res.data.last_page
                     resposta.perPage = res.data.per_page

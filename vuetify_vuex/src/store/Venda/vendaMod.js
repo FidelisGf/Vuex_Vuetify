@@ -11,35 +11,29 @@ export default{
         }
     },
     mutations: {
-        setValuesPerMes(state, payload){
+        SET_VALUE_PER_MES(state, payload){
             state.valuesPerMes = payload
         }
     },
     actions: {
         async getVendas(context){
             let qntd = 0
-            try {
-                await vendasService.getVendasByDia().then((res)=>{
-                    console.log(res)
-                    context.commit("setValuesPerMes", res.data.values)
-                    qntd = res.data.quantidade
-                })
-                return qntd
-            } catch (error) {
+            const res = vendasService.getVendasByDia().then((res)=>{
+                    context.commit("SET_VALUE_PER_MES", res.data.values)
+                    return res.data
+            }).catch((error)=>{
                 console.log(error)
-                return qntd
-            }
+            }) 
+            qntd = res.quantidade
+            return qntd
         },
         async  getVendasUltimosTresMeses(){
-            let values = []
-          
-            await vendasService.getTotalVendasUltimosTresMeses().then((res)=>{
-                values = res.data[0]
+            const res = vendasService.getTotalVendasUltimosTresMeses().then((res)=>{
+                return res.data[0]
+            }).catch((error)=>{
+                console.log(error)
             })
-            return values
-          
-           
-            
+            return res
         }
     },
 }

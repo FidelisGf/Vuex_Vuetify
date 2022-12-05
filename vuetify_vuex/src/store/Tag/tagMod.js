@@ -10,43 +10,35 @@ export default{
        }
     },
     mutations: {
-       setTags(state, payload){
+       SET_TAGS(state, payload){
           state.tags = payload
        },
-       addTag(state, payload){
+       ADD_TAG(state, payload){
           state.tags.push(payload)
        }
     },
     actions: {
        setTags(context, payload){
-            context.commit('setTags', payload)
+            context.commit('SET_TAGS', payload)
        },
        async post(context, payload){
-            let text = null
-            try {
-               await tagService.save(payload).then((res)=>{
-                    context.commit("addTag", res.data)
-                    context.commit("disableModalCadastro")
-                    text = "Sucesso : Tipo de Despesa cadastrada com sucesso !"
-                })
-                return text
-            } catch (error) {
-               context.commit("disableModalCadastro")
-               return  text = "Error : " + error.response.data.message
-            }
+            const text = tagService.save(payload).then((res)=>{
+               context.commit("ADD_TAG", res.data)
+               return "Sucesso : Tipo de Despesa cadastrada com sucesso !"
+            }).catch((error)=>{
+               return "Error : " + error.response.data.message
+            })
+            return text
        },
       
        async findAll(context){
-          try {
-             let tags = null   
-             await tagService.get().then((res)=>{
-                    tags = res.data
-                    context.commit('setTags', res.data)
-             })
-             return tags
-          } catch (error) {
+          const tags = tagService.get().then((res)=>{
+               context.commit('SET_TAGS', res.data)
+               return res.data
+          }).catch(()=>{
                alert('Nao foi possivel carregar as Tags')
-          }         
+          })   
+          return tags   
        }
     },
 }

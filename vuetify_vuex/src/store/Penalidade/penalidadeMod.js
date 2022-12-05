@@ -13,16 +13,12 @@ export default{
     },
     actions: {
         async postPenalidade(context, payload){
-            let text = ''
-            try {
-                await penalidadeService.post(payload).then((res)=>{
-                    text = res.data.message
-                })
-                return text
-            } catch (error) {
-                text = "Error : " + error.response.data.message
-                return text
-            }
+            const text = penalidadeService.post(payload).then((res)=>{
+                return res.data.message
+            }).catch((error)=>{
+                return "Error : " + error.response.data.message
+            })
+            return text
         }
     },
 }

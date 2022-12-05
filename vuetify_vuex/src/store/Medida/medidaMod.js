@@ -16,8 +16,10 @@ export default{
     },
     actions: {
         async getAll(context){
-            await medidaService.get().then((res)=>{
+            medidaService.get().then((res)=>{
                 context.commit("setListMedidas", res.data.data)
+            }).catch((error)=>{
+                console.log(error)
             })
         },
         async post(context, payload){

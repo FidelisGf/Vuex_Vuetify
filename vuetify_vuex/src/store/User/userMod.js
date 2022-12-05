@@ -24,70 +24,59 @@ export default{
        }
     },
     mutations: {
-        saveUser(state, payload){
+        SAVE_USER(state, payload){
             state.user = payload
         },
-        setUserLevel(state, payload){
+        SET_USER_LEVEL(state, payload){
             state.userLevel = payload
             console.log(state.userLevel)
         },
-        saveEmpresa(state, payload){
+        SAVE_EMPRESA(state, payload){
             state.empresa = payload
         },
     },
     actions: {
         setUser(context, payload){
-            context.commit('saveUser', payload)
+            context.commit('SAVE_USER', payload)
         },
         async showUser(context, payload){
-            let data = null 
-            try {
-                await userService.show(payload).then((res)=>{
-                    console.log(res.data)
-                    data = res.data
-                })
-                return data
-            } catch (error) {
-                console.log(error)      
-            }
+            const res = userService.show(payload).then((res)=>{
+                return res.data
+            }).catch((error)=>{
+                console.log(error) 
+            })
+            return res
         },
         setEmpresa(context, payload){
-            context.commit('saveEmpresa', payload)
+            context.commit('SAVE_EMPRESA', payload)
         },
         async getEmpresaFromUser(context){
-            await userService.getEmpresaFromUser().then((res) =>{
+            userService.getEmpresaFromUser().then((res) =>{
                 context.dispatch('setEmpresa', res.data)
-            })   
+            }).catch((error)=>{
+                console.log(error)
+            })            
         },
         profile(context){
             userService.profile().then((res)=>{
-                context.commit('saveUser', res.data.NAME)
+                context.commit('SAVE_USER', res.data.NAME)
             })
         },
         async vinculaEmpresa(context, payload){
-            let text = ''
-            try {
-                await userService.vinculaEmpresa(payload).then((res)=>{
-                    text = res.data.message
-                })
-                return text 
-            } catch (error) {
-                text = "Error : " + error.response.data.message
-                return text
-            }
+            const res = userService.vinculaEmpresa(payload).then((res)=>{
+                return res.data.message
+            }).catch((error)=>{
+                return "Error : " + error.response.data.message 
+            })
+            return res
         },
         async register(context, payload){
-            let text = ""
-            try {
-                await userService.register(payload).then((res)=>{
-                    console.log(res)
-                    text = res.data.message
-                })
-                return text
-            } catch (error) {
-                text = "Error : " + error.response.data.message
-                return text
-            }
+            const text = userService.register(payload).then((res)=>{
+                return res.data.message
+            }).catch((error)=>{
+                return "Error : " + error.response.data.message
+            })
+            return text
         },
         async login(context, payload){
             let check = {login : false, vinculado : false}
@@ -98,83 +87,65 @@ export default{
                     check.vinculado = await context.dispatch("checkEmpresa", res.data.access_token)
                 })
                 await userService.profile().then(async (res)=>{
-                    context.commit("setUserLevel", res.data)
+                    context.commit("SET_USER_LEVEL", res.data)
                 })
                 return check
             } catch (error) {
                 return check
             }
+            
         },
         async sendEmail(context, payload){
-            let respo = false
-            try {
-                await userService.enviarEmailRecuperacao(payload).then(()=>{
-                    respo = true
-                })
-                return respo
-            } catch (error) {
-                return respo
-            }
+            const respo = userService.enviarEmailRecuperacao(payload).then(()=>{
+                return true
+            }).catch(()=>{
+                return false
+            })
+            return respo
         },
         async avaibleRoles(){
-            let roles = null
-            try {
-                await userService.showAvailableRoles().then((res)=>{
-                    
-                    roles = res.data
-                })
-                return roles
-            } catch (error) {
+            const roles = userService.showAvailableRoles().then((res)=>{
+                return res.data
+            }).catch((error)=>{
                 return error
-            }
+            })
+            return roles
         },
         async changeSenha(context, payload){
-            let respo = false 
-            try {
-                await userService.mudarSenhaUser(payload).then(()=>{
-                    respo = true
-                })
-                return respo
-            } catch (error) {
-                return respo
-            }
+            const respo = userService.mudarSenhaUser(payload).then(()=>{
+                return true
+            }).catch(()=>{
+                return false
+            })
+            return respo
         },
         async checkEmpresa(context, payload){
-            let check = false
-            try {
-                 await userService.checkEmpresa(payload).then((res)=>{
-                    if(res.data != 0){
-                        check = true
-                    }else {
-                        check =  false
-                    }
-                })
-                return check
-            } catch (error) {
-                check = false
-                return check
-            }
-           
+            const check = userService.checkEmpresa(payload).then((res)=>{
+                if(res.data != 0){
+                    return true
+                }else{
+                    return false
+                }
+            }).catch(()=>{
+                return false
+            })
+            return check
         },
         async logoutUser(){
-            try {
-                await userService.logout.then((res)=>{
-                    console.log(res)
-                })
-            } catch (error) {
+            userService.logout().then((res)=>{
+                console.log(res)
+                localStorage.clear();
+            }).catch((error)=>{
                 console.log(error)
-            }
+            })
         },
         async getActiveUsers(){
-            let count = 0
-            try {
-                await userService.getActiveUsers().then((res)=>{
-                    count = res.data
-                })
-                return count
-            } catch (error) {
+            const count = userService.getActiveUsers().then((res)=>{
+                return res.data
+            }).catch((error)=>{
                 console.log(error)
-            }
+            })
+            return count
         }
     },
 }

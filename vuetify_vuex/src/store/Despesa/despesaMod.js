@@ -35,7 +35,7 @@ export default{
           try {
                let resposta = {current_page : null, totalPage : null}
                await despesaService.despesasByTag(payload.ID_TAG, payload.current_page).then((res)=>{
-                    context.commit("produtoMod/beginListProduct",res.data.data, { root: true })
+                    context.dispatch("produtoMod/beginListProduct",res.data.data, { root: true })
                     resposta.current_page = res.data.current_page;
                     resposta.totalPage = res.data.last_page;
                })

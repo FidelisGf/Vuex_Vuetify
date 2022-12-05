@@ -100,7 +100,7 @@ export default {
         
     },
     async created(){
-      await this.logoutUser()
+     
     }
 }
 </script>
