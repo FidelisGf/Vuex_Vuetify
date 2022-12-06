@@ -144,7 +144,7 @@
                                     @keydown.escape="qntdModal = false"
                                 >
                                     <v-card class="cards-colors">
-                                        <v-card-title class="white--text">
+                                        <v-card-title class="white--text text-subtitle-1 text-md-h6 ">
                                             Adicionar Quantidade para Matéria 
                                         </v-card-title>
                                         <v-card-text>
@@ -158,6 +158,8 @@
                                                         color="teal lighten-1"
                                                         type="number"
                                                         value="1"
+                                                        append-icon="mdi-list-box"
+                                                        @click:append="(listaRapida = true)"
                                                         min="1"
                                                         @keydown.f2="listaRapida = true"
                                                     ></v-text-field>

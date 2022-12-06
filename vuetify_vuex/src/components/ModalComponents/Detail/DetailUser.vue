@@ -55,7 +55,7 @@
                 <v-row class="d-flex flex-column flex-md-row mt-n5">
                     <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
                         <p>
-                            <b class="font-italic titulo pl-11 pt-1">Total Vendio : </b>{{totalVendido.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
+                            <b class="font-italic titulo pl-11 pt-1">Total Vendido : </b>{{totalVendido.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
                         </p>
                     </v-col> 
                 </v-row> 

@@ -13,10 +13,10 @@
                     @click="close"
                 ><v-icon color="red accent-2 " >mdi-close</v-icon></v-btn>
             </v-card-actions>
-            <v-card-title class="white--text text-h5 mt-n4">
+            <v-card-title class="white--text text-md-h5 text-subtitle-1  mt-n4">
                 <p class="pl-5">Detalhes do Produto : # {{produto.NOME}} [{{produto.ID}}] </p>
             </v-card-title>
-            <v-card-text class="mt-n7">
+            <v-card-text class="mt-n7 ml-0 ml-md-0">
                 <v-row class="d-flex flex-column flex-md-row">
                     <v-col class="white--text  text-subtitle-1 text-md-h6  font-italic">
                         <p>
@@ -60,7 +60,7 @@
                         </p>
                     </v-col>
                 </v-row>
-                <v-row class="mt-n3 ml-8">
+                <v-row class="mt-n3 ml-md-8 ml-0">
                     <v-col cols="11" >
                         <div class="d-flex justify-center mt-n2">
                             <v-divider class="linha" ></v-divider>
@@ -80,7 +80,7 @@
                         </v-row>
                     </v-col>
                 </v-row>
-                <v-row class="mt-n4 ml-8">
+                <v-row class="mt-n4 ml-0 ml-md-8">
                     <v-col cols="11" >
                         <div class="d-flex justify-center mt-n2">
                             <v-divider class="linha" ></v-divider>

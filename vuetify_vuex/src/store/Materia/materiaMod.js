@@ -98,7 +98,7 @@ export default{
        async findMateria(context, payload){
             let payload2 = {text : '', type : ''} 
             const vl = materiaService.findById(payload.ID).then((res)=>{
-                let obj = {ID : res.data.ID,  NOME : res.data.NOME, CUSTO : parseFloat(res.data.CUSTO), 
+                let obj = {ID : res.data.ID,  NOME : res.data.NOME, CUSTO : res.data.CUSTO, 
                 QUANTIDADE : payload.QUANTIDADE}
                 if(res.data.QUANTIDADE >= parseInt(payload.QUANTIDADE * payload.QNTD_PROD)){
                     context.commit("SAVE_MATERIAL_IN_LIST", obj)

@@ -317,7 +317,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('produtoMod', ['saveList', 'post', 'countProd', 'setQntdProd']),
+        ...mapActions('produtoMod', ['post', 'countProd', 'setQntdProd']),
         ...mapActions('estoqueMod', ['activeAdicionaEstoque']),
         ...mapActions('medidaMod', ['getAll']),
         ...mapActions('materiaMod', ['clearMateriais']),

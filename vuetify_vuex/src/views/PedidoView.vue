@@ -71,6 +71,7 @@
                                                     dark
                                                     clearable
                                                     dense 
+                                                   
                                                     required
                                                     type="number"
                                                     min="0"
@@ -170,7 +171,9 @@
                                             clearable
                                             dense 
                                             dark
+                                            append-icon="mdi-list-box"
                                             required
+                                            @click:append="buscaLista"
                                             color="teal accent-2"
                                             @keydown.f2="buscaLista"
                                             type="number"
@@ -179,7 +182,7 @@
                                             v-on="on"
                                         ></v-text-field>
                                     </template>
-                                    <span>Tecle f2 para ver os disponiveis</span>
+                                    <span>Tecle f2 ou clique no icone para ver os disponiveis</span>
                                   </v-tooltip>
                                     <v-text-field
                                     class="ml-0 ml-sm-3 w-25"

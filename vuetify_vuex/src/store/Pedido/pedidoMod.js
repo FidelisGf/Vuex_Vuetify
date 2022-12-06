@@ -18,9 +18,9 @@ export default{
     getters: {
        
         getValorTotal(state){
-            if(state.pedidos != null || state.pedidos != undefined){
+            if(state.pedidos != null && state.pedidos != undefined){
                 state.valor_Total_Pedidos = state.pedidos.reduce((accumulator, object)=>{
-                    return parseFloat(accumulator) + parseFloat(object.VALOR * object.QUANTIDADE)
+                    return parseFloat(accumulator) + parseFloat(object.VALOR * object.QUANTIDADE) // separa parseFloat
                 },0)
             }else{
                 state.valor_Total_Pedidos = 0
@@ -88,7 +88,7 @@ export default{
         },
         async removeQntdPedido(context, payload){ //pode adicionar alem de remover
             const check = pedidoService.checkQuantidadeProduto(payload).then((res2)=>{
-                if(res2.data == true){
+                if(res2.data){
                     context.commit('REMOVE_QUANTIDADE_PEDIDO', payload)
                 }
                 return res2.data

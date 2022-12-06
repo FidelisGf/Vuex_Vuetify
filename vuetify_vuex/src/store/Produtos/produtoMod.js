@@ -47,9 +47,6 @@ export default{
         CLEAR_LIST_PRODUCTS(state){
             state.Products.length = 0
         },
-        SAVE_IN_LIST_PRODUCTS(state, payload){
-            state.Products.push(payload)
-        },
         EDIT_IN_LIST_PRODUCTS(state, payload){
             state.Products =  state.Products.filter(item => item.ID !== payload.ID)
             state.Products.push(payload)
@@ -125,7 +122,6 @@ export default{
                 if(res.status == 200){
                     payload.ID = res.data.ID
                     payload.QUANTIDADE = payload.quantia_inicial
-                    context.dispatch("saveListProduct",payload) 
                     context.dispatch("countProd") 
                     return "Sucesso : Produto cadastrado com sucesso !"
                 }

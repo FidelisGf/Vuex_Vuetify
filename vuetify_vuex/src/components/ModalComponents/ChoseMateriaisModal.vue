@@ -26,6 +26,8 @@
                                     persistent-hint
                                     required
                                     outlined
+                                    append-icon="mdi-list-box"
+                                    @click:append="buscaLista"
                                     @keydown.f2="buscaLista"
                                     clearable
                                     dense 

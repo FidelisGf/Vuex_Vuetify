@@ -119,7 +119,14 @@ export default {
             let payload = {DATA : this.data, DESC : this.desc, TIPO : this.tipo, ID_USER : this.id_funcionário}
             let text = await this.postPenalidade(payload)
             this.$emit('Cadastrado', text)
+            this.clear()
             this.active = false
+        },
+        clear(){
+            this.tipo = ''
+            this.data = ''
+            this.desc = ''
+            this.id_funcionário = ''
         }
     }
 }
