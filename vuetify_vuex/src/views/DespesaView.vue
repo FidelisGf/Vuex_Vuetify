@@ -52,7 +52,6 @@
                     height="58px"
                     width="170px"
                     class="mt-md-n3 mt-0   exibeGasto"
-
                 >
                     <div>
                         <p style="font-size: 16px;" class="ml-2 mt-3 font-weight-bold"><v-icon class="ml-n1 mt-n1" color="teal lighten-1">mdi-currency-usd-off</v-icon>Despesas do Mês</p>
@@ -66,7 +65,6 @@
                 persistent
                 max-width="720"
                 @keydown.escape="active = false"
-                
             >
                 <form ref="form" @submit.prevent="getTwoDates">
                     <v-card class="cards-colors">
@@ -77,7 +75,6 @@
                             <v-row>
                                 <v-col 
                                     cols="6"
-                                    
                                     >
                                     <v-text-field
                                         v-model="DATA_INI"

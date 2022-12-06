@@ -570,7 +570,8 @@ export default {
             let pdf = new jsPdf()
             let produtos = null
             if(this.editMode == true ){
-                produtos = this.pedidoAtual.produtos
+                console.log(this.pedidoAtual.produtos)
+                produtos = await  this.transformValuesForPdfInEditMode()
             }else{
                 produtos = this.pedidos
             }
@@ -627,6 +628,19 @@ export default {
         clearPayment(){
             this.dinheiroPago = 0
             this.escolhaPagamento = ""
+        },
+       async  transformValuesForPdfInEditMode(){
+            let values = this.pedidoAtual
+           
+            values.produtos.forEach(element => {
+                delete element.DESC
+                delete element.ID_CATEGORIA
+                delete element.CREATED_AT
+                delete element.UPDATED_AT
+                delete element.DELETED_AT
+            });
+            console.log(values.produtos)
+            return values.produtos
         },
 
 

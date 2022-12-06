@@ -67,7 +67,6 @@ export default {
                     { text: "METODO PAGAMENTO", value: "METODO_PAGAMENTO" },
                     { text: "VALOR TOTAL", value: "VALOR_TOTAL" },
                     { text: "PAGAMENTO", value: "APROVADO" },
-                    { text: "PRODUTOS", value: "PRODUTOS" },
                 ];
             }else if(this.vendas == true){
                 return [

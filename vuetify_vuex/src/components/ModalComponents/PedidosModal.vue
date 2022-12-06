@@ -68,7 +68,7 @@
                                     
                                 </p>
                                 <p class="mt-n2 info_prod">
-                                    <b class="white--text font-weight-regular"> Quantidade :</b> {{item.QUANTIDADE}}  {{item.medida}}
+                                    <b class="white--text font-weight-regular"> Quantidade :</b> {{item.QUANTIDADE}}  
                                 </p>
                                 <p class="mt-n2 info_prod font-weight-regular"><b class="white--text">Sub total  : </b>{{(item.VALOR * item.QUANTIDADE).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>
                             </v-card-subtitle>
