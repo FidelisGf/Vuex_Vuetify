@@ -1,5 +1,5 @@
 <template>
-   <v-container>
+   <v-container >
         <v-row dense>
             <v-col cols="12">
                 <v-data-table
@@ -116,7 +116,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+//import axios from 'axios'
 import DeleteGeneric from './ModalComponents/Delete/DeleteGeneric.vue'
 import EditProduct from './ModalComponents/Edit/EditProduct.vue'
 import EditDespesaVue from './ModalComponents/Edit/EditDespesa.vue'
@@ -152,6 +152,7 @@ export default {
             tempTag: '',
             filtroTag : false,
             edit : false,
+            reniciar : '',
         };
     },
    
@@ -159,21 +160,21 @@ export default {
         ...mapActions('produtoMod', ['saveProduct', 'beginListProduct', 'findByAllCategory', 'activeEdit']),
         ...mapActions('despesaMod', ['activeEditDespesa', 'allByTag']),
         ...mapActions('utilMod' , ['saveGenerico', 'setLoad', 'getList']),
-        getLista(route) {
+        async getLista(route) {
             this.dtStart = this.starterDate
             this.dtFinal = this.endDate
             this.loading = true;
-            axios.get("http://127.0.0.1:8000/api/" + route + "?page=" + this.current_page, { params: { opcao: this.opcao, start : this.dtStart, end : this.dtFinal} }).then((response) => {
-                this.beginListProduct(response.data.data)
-                this.per_page = response.data.per_page
+            let payload = {current_page : this.current_page, route: route, opcao: this.opcao, 
+            start : this.dtStart, end : this.dtFinal}
+            this.reniciar += 1
+            let response = await this.getList(payload)
+            if(response){
+                this.per_page = response.per_page
                 this.loading = false;
-                this.current_page = response.data.current_page
+                this.current_page = response.current_page
                 this.tempCurrent = this.current_page
-                this.totalPage = response.data.last_page
-                this.setLoad(false)
-            });
-            
-              
+                this.totalPage = response.totalPage
+            }
         },
         closeEdits(e){
             this.edit = e
@@ -275,11 +276,11 @@ export default {
     computed:{
         ...mapGetters({listCategorias : 'categoryMod/listCategorias', listaProdutos : 'produtoMod/listProducts', 
         editDespesa: 'despesaMod/getEditDespesa', 
-        del: 'utilMod/delete', loadCom : 'utilMod/getLoad', generico : 'utilMod/getGenerico', listTags : 'tagMod/getTags'}),
-
-    
+        del: 'utilMod/delete', loadCom : 'utilMod/getLoad', 
+        generico : 'utilMod/getGenerico', listTags : 'tagMod/getTags'}),
     },  
     created() {
+        console.log('CRIADO')
         this.clearPages();
         this.getLista(this.route);
     },

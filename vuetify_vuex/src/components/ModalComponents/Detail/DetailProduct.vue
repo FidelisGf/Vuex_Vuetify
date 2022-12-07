@@ -126,7 +126,7 @@ export default {
         async getProduct() {
             this.produto = await this.findById(this.generico.ID)
             this.lucro = await this.getLucroByProd(this.generico.ID)
-            if(this.produto != null || this.produto != undefined){
+            if(this.produto != null && this.produto != undefined){
                 this.produto.CREATED_AT = await this.formatDate(this.produto.CREATED_AT)
                 this.produto.UPDATED_AT = await this.formatDate(this.produto.UPDATED_AT)
                 this.loading = false
@@ -142,6 +142,7 @@ export default {
         },
         getPercent(){
             this.percent = Math.round((this.lucro / this.produto.VALOR) * 100);
+            console.log(this.percent)
         },
         formatDate(date){
             let obj = new Date(date)

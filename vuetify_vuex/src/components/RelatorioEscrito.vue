@@ -10,7 +10,7 @@
                         <v-list-item >
                             <v-list-item-content  >
                                 <v-list-item-title class="ml-0 ml-sm-2  mt-md-n3   teal--text">
-                                    <p><b class="text-caption text-md-h6 text-body-1 ">Recebimento Total : {{total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</b></p>
+                                    <p><b class="text-caption text-sm-h6 text-body-1 ">Recebimento Total : {{total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</b></p>
                                 </v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
@@ -31,6 +31,13 @@
                         <v-list-item >
                             <v-list-item-content>
                                 <v-list-item-title class="ml-0 white--text ml-sm-2">
+                                    <p><b class="text-caption text-sm-body-1">Pagamento Por Cartao de Débito : {{cartaoDebito}}</b></p>
+                                </v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-list-item >
+                            <v-list-item-content>
+                                <v-list-item-title class="ml-0 white--text ml-sm-2">
                                     <p><b class="text-caption text-sm-body-1">Pagamento Por Dinheiro: {{dinheiro}}</b></p>
                                 </v-list-item-title>
                             </v-list-item-content>
@@ -42,7 +49,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import { mapActions } from 'vuex';
 export default {
     props:{
@@ -53,10 +59,11 @@ export default {
     },
     data(){
         return{
-            pix : null,
-            dinheiro : null,
-            cartao : null,
-            total : null,
+            pix : 0,
+            dinheiro : 0,
+            cartao : 0,
+            total : 0,
+            cartaoDebito: 0,
             lucro : null,
             gasto : null,
             dtStart : '',
@@ -65,27 +72,36 @@ export default {
         }
     },
     methods:{
-        ...mapActions('utilMod' , ['setLoad']),
+        ...mapActions('utilMod' , ['setLoad', 'setListaItens']),
         async getDados(route){
             this.dtStart = this.starterDate
             this.dtFinal = this.endDate
-            await axios.get("http://127.0.0.1:8000/api/" + route, 
-            { params: { opcao: this.opcao, start : this.dtStart, end : this.dtFinal} }).then((response) => {
-                if(this.route  == 'vendas'){
-                    this.dinheiro = response.data[2].VALORES
-                    this.cartao = response.data[0].VALORES
-                    this.pix = response.data[3].VALORES
-                    this.loading = false
-                }
-            })
+            let payload = {route: route, opcao : this.opcao, dtStart : this.dtStart, dtFinal : this.dtFinal}
+            let data = await this.setListaItens(payload)
+            console.log(data)
+            if(data[2] !== undefined){
+                this.dinheiro = parseFloat(data[2].VALORES)
+            }
+            if(data[0] !== undefined ){
+                this.cartao = parseFloat(data[0].VALORES)
+            }
+            if(data[1] !== undefined ){
+                this.cartaoDebito = parseFloat(data[1].VALORES)
+            } 
+            if(data[3] !== undefined ){
+                this.pix = parseFloat(data[3].VALORES)
+            }
+            this.loading = false
             this.total += parseFloat(this.pix)
             this.total += parseFloat(this.dinheiro)
             this.total += parseFloat(this.cartao)
+            this.total += parseFloat(this.cartaoDebito)
             this.pix = this.pix.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
             this.cartao = this.cartao.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
+            this.cartaoDebito = this.cartaoDebito.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
             this.dinheiro = this.dinheiro.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
             this.setLoad(false)
-        }
+        },
     },
     created(){
         this.getDados(this.route)

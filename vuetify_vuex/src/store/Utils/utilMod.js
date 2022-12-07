@@ -46,7 +46,7 @@ export default{
         
        async getList(context , payload){
             let resposta = {current_page : null, totalPage : null, perPage : null}
-            const resp = Service.get(payload).then(async (res)=>{
+            const resp = Service.getPaginado(payload).then(async (res)=>{
                 await context.dispatch("produtoMod/beginListProduct", res.data.data , { root: true })
                 resposta.current_page = res.data.current_page
                 resposta.totalPage = res.data.last_page
@@ -55,6 +55,7 @@ export default{
             }).catch((error)=>{
                 return error
             })
+            console.log(resposta)
             return resp
         },
 
@@ -63,7 +64,7 @@ export default{
             return obj.toLocaleString()
         },
         async setListaItens(context, payload){
-            await Service.get(payload).then(async(response)=>{
+            const SetLista =  Service.get(payload).then(async(response)=>{
                 if(payload.route == 'pedidos'){
                     response.data.forEach(async element => {
                         element.CREATED_AT = await context.dispatch('refactorDates', element.CREATED_AT)
@@ -85,10 +86,13 @@ export default{
                     }
                 }else{
                     context.commit('SET_LISTA_ITENS', response.data) 
-                } 
+                    
+                }
+                return response.data 
             }).catch((error)=>{
                 return error
             })
+            return SetLista
         },
         setLoad(context, payload){
             context.commit('SET_LOAD', payload)
