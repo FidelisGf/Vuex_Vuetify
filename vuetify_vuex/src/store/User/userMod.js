@@ -1,4 +1,5 @@
 import userService from "@/service/userService"
+import CryptoJS from 'crypto-js';
 export default{
     namespaced: true,
     
@@ -11,10 +12,11 @@ export default{
     
     getters: {
        getUserLevel(state){
-            return state.userLevel
+            var level  = CryptoJS.AES.decrypt(state.userLevel.toString(), 'chave').toString(CryptoJS.enc.Utf8);
+            return parseInt(level)
        }, 
        getUserCargo(state){
-        return state.userCargo
+         return state.userCargo
        },
        getUser(state){
             return state.user
@@ -28,8 +30,9 @@ export default{
             state.user = payload
         },
         SET_USER_LEVEL(state, payload){
-            state.userLevel = payload
-            console.log(state.userLevel)
+            var level  = CryptoJS.AES.encrypt(payload.level.toString(), 'chave').toString();
+            state.userCargo = payload.cargo
+            state.userLevel = level
         },
         SAVE_EMPRESA(state, payload){
             state.empresa = payload
@@ -80,20 +83,20 @@ export default{
         },
         async login(context, payload){
             let check = {login : false, vinculado : false}
-            try {
-                await userService.login(payload).then(async (res)=>{
-                    localStorage.setItem('token', res.data.access_token)
-                    check.login = true
-                    check.vinculado = await context.dispatch("checkEmpresa", res.data.access_token)
-                })
-                await userService.profile().then(async (res)=>{
+            const respo = userService.login(payload).then(async (res)=>{
+                localStorage.setItem('token', res.data.access_token)
+                check.login = true
+                check.vinculado = await context.dispatch("checkEmpresa", res.data.access_token)
+                userService.profile().then(async (res) =>{
                     context.commit("SET_USER_LEVEL", res.data)
+                }).catch((error)=>{
+                    console.log(error)
                 })
                 return check
-            } catch (error) {
-                return check
-            }
-            
+            }).catch((error)=>{
+                return error
+            })
+            return respo
         },
         async sendEmail(context, payload){
             const respo = userService.enviarEmailRecuperacao(payload).then(()=>{

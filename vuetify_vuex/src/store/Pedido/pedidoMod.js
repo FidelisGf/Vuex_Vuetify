@@ -6,7 +6,6 @@ export default{
     state: {
         pedidos: [],
         valor_Total_Pedidos : 0,
-        cod : null,
         pedidoAtual : {
             codigo : null,
             metodo_pagamento : null,

@@ -2,15 +2,14 @@ import axios from "axios";
 export default{
     async auth(to, from, next){
         axios.defaults.headers.common['Authorization'] = 'Bearer' + localStorage.getItem('token')
-        try{
-            const res = await axios.get("/auth/validateTkn")
+        axios.get("/auth/validateTkn").then((res)=>{
             if(res.status === 200){
                 next()
             }
-        }catch(e){
+        }).catch((e)=>{
             if(e.response.status == 401){
-                next({name: 'login'})
+                    next({name: 'login'})
             }
-        }
+        })
     }
 }

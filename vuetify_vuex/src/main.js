@@ -7,8 +7,10 @@ import VueMask from 'v-mask';
 import '@/service/Service'
 import '@/plugins/axios'
 import execute from '@/plugins/axios'
-Vue.config.productionTip = false
+import VueCryptojs from 'vue-cryptojs'
+Vue.use(VueCryptojs);
 Vue.use(VueMask);
+Vue.config.productionTip = false
 execute()
 new Vue({
   router,

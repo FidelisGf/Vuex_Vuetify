@@ -12,7 +12,7 @@
     <v-app-bar class="hidden-lg-and-up cards-colors"
       fixed
       v-if="$vuetify.breakpoint.mobile"
-      scroll-target="#scrolling-techniques-3"
+    
       
     
     >

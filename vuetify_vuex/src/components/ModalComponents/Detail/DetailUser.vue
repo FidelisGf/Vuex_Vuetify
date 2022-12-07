@@ -22,6 +22,7 @@
                         <p>
                             <b class="font-italic titulo pl-11 pt-1">Email : </b>{{usuario.EMAIL}}...
                         </p>
+                      
                     </v-col>
                 </v-row>
                 <v-row class="d-flex flex-column flex-md-row mt-n5">

@@ -26,7 +26,6 @@ export default function execute(){
             localStorage.setItem('token', error.response.data)
             axios.defaults.headers.common['Authorization'] = 'Bearer' + localStorage.getItem('token');
           } 
-          return Promise.reject(error);
-          
+          return Promise.reject(error); 
       })
 }

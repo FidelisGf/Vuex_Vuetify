@@ -4,7 +4,7 @@
         >
           <v-list-item class="px-5">
             <v-list-item-content>
-              <v-list-item-subtitle >Admin</v-list-item-subtitle>
+              <v-list-item-subtitle >{{userCargo}}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-list-item class="px-2">
@@ -92,7 +92,7 @@ export default {
     }
   },
     computed:{
-      ...mapGetters({name : 'userMod/getUser', userLevel : 'userMod/getUserLevel' }),
+      ...mapGetters({name : 'userMod/getUser', userLevel : 'userMod/getUserLevel', userCargo : 'userMod/getUserCargo'}),
       mini(){
         switch (this.$vuetify.breakpoint.name) {
           case 'xs': return true

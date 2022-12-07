@@ -16,7 +16,9 @@ import empresaMod from './Empresa/empresaMod'
 import vendaMod from './Venda/vendaMod'
 import createPersistedState from "vuex-persistedstate"
 import penalidadeMod from './Penalidade/penalidadeMod'
+
 Vue.use(Vuex)
+
 
 export default new Vuex.Store({
   modules: {
@@ -40,12 +42,15 @@ export default new Vuex.Store({
     loading : false
   },
   plugins: [
+    
     createPersistedState({
+    
       paths: ['userMod'],
     }),
   ],
   getters: {
       loading(state){
+        
         return state.loading
       }
     

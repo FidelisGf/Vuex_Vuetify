@@ -55,7 +55,7 @@
                 <v-row class="d-flex flex-column flex-md-row mt-n5">
                     <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
                         <p>
-                            <b class="font-italic titulo pl-4 pl-md-5">Lucro encima do custo :</b> {{lucro.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
+                            <b class="font-italic titulo pl-4 pl-md-5">Lucro encima da venda :</b> {{lucro.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
                             <span v-if="percent >= 50" class="green--text">({{percent}}%) de lucro</span><span class="red--text" v-else>({{percent}}%) de lucro</span>
                         </p>
                     </v-col>
