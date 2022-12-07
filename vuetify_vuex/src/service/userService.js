@@ -37,5 +37,8 @@ export default{
     },
     async show($id){
         return axios.get("/usuarios/" + $id)
+    },
+    getPenalidades($id){
+        return axios.get("/getPenalidades/" + $id)
     }
 }

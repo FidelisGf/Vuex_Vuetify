@@ -1,10 +1,10 @@
 <template>
     <div>
         <v-skeleton-loader
-            v-if="loading == true" class="black" :loading="loading" transition="fade-transition" type="card"
+            v-if="LoaderOptionsPlugin" class="black" :loading="loading" transition="fade-transition" type="card"
         >
         </v-skeleton-loader>
-        <v-card class="cards-colors" :elevation="6" v-if="loading == false" >
+        <v-card class="cards-colors" :elevation="6" v-else >
             <v-card-actions>
                 <v-btn
                     icon 
@@ -17,42 +17,42 @@
                 <p class="pl-5">Detalhes do Produto : # {{produto.NOME}} [{{produto.ID}}] </p>
             </v-card-title>
             <v-card-text class="mt-n7 ml-0 ml-md-0">
-                <v-row class="d-flex flex-column flex-md-row">
+                <v-row class="d-flex flex-column flex-md-row pl-6">
                     <v-col class="white--text  text-subtitle-1 text-md-h6  font-italic">
                         <p>
-                            <b class="font-italic titulo pl-5">Descriçao : </b>{{produto.DESC}}...
+                            <b class="font-italic titulo ">Descriçao : </b>{{produto.DESC}}...
                         </p>
                     </v-col>
                 </v-row>
-                <v-row class="d-flex flex-column flex-md-row mt-n5">
+                <v-row class="d-flex flex-column flex-md-row mt-n3">
                     <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
                         <p>
                             <b class="font-italic titulo pl-5">Valor do Produto : </b>R$ {{produto.VALOR.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
                         </p>
                     </v-col>
                 </v-row> 
-                <v-row class="d-flex flex-column flex-md-row mt-n5">
+                <v-row class="d-flex flex-column flex-md-row mt-n3">
                     <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
                         <p>
                             <b class="font-italic titulo pl-5">Quantidade em Estoque : </b> {{generico.QUANTIDADE}}
                         </p>
                     </v-col>
                 </v-row>   
-                <v-row class="d-flex flex-column flex-md-row mt-n5">
+                <v-row class="d-flex flex-column flex-md-row mt-n3">
                     <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
                         <p>
                             <b class="font-italic titulo pl-5">Categoria do Produto : </b>{{produto.category.NOME_C}} [{{produto.category.ID_CATEGORIA}}]
                         </p>
                     </v-col>
                 </v-row>  
-                <v-row class="d-flex flex-column flex-md-row mt-n5">
+                <v-row class="d-flex flex-column flex-md-row mt-n3">
                     <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
                         <p>
                             <b class="font-italic titulo pl-5">Unidade de Medida : </b>{{produto.medida.NOME}} [{{produto.medida.ID}}]
                         </p>
                     </v-col>
                 </v-row> 
-                <v-row class="d-flex flex-column flex-md-row mt-n5">
+                <v-row class="d-flex flex-column flex-md-row mt-n3">
                     <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
                         <p>
                             <b class="font-italic titulo pl-4 pl-md-5">Lucro encima da venda :</b> {{lucro.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
@@ -115,7 +115,6 @@ export default {
     data(){
         return{
             produto : null,
-            NOME : '',
             lucro : 0,
             percent : null,
             loading : true

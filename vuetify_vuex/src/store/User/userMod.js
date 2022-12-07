@@ -149,6 +149,14 @@ export default{
                 console.log(error)
             })
             return count
+        },
+        async getPenalidade(context, payload){
+            const data = userService.getPenalidades(payload).then((res)=>{
+                return res.data
+            }).catch((error)=>{
+                return error
+            })
+            return data
         }
     },
 }

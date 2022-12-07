@@ -20,7 +20,7 @@
         <v-dialog
             v-model="active"
             persistent
-            max-width="600px"
+            max-width="720px"
             @keydown.escape="active = false"
         >
             <template v-slot:activator="{ on, attrs }">
@@ -38,29 +38,33 @@
             </template>
             <form ref="form" @submit.prevent="insert">
                 <v-card class="cards-colors">
-                    <v-card-title class="white--text">
+                    <v-card-title class="white--text text-md-h5 text-subtitle-1">
                         Registrar uma despesa
                     </v-card-title>
                     <v-card-text>
                        <v-row>
-                                <v-col 
+                           
+                            <v-col
                                 cols="12"
                                 sm="6"
-                                md="8"
-                               
-                            >
-                                <v-text-field
-                                    dark
-                                    label="Descrição da despesa"
-                                    required
-                                    v-model="DESC"
+                                md="6"
+                                class="d-flex"
+                            >  
+                                <v-select
+                                    :items="TAGS"
+                                    label="Tipo da despesa"
+                                    v-model="TAG"
                                     color="teal lighten-1"
-                                ></v-text-field>
+                                    item-text="NOME"
+                                    required 
+                                    return-object
+                                    dark
+                                ></v-select>       
                             </v-col>
                             <v-col 
                                 cols="12"
                                 sm="6"
-                                md="4"
+                                md="5"
                             >
                                 <v-text-field
                                     dark
@@ -72,12 +76,13 @@
                                     type="number"
                                     min="0"
                                     prefix="R$"
+                                    
                                 ></v-text-field>
                             </v-col>
                             <v-col 
                                 cols="12"
                                 sm="6"
-                                md="8"
+                                md="7"
                             >
                                 <v-text-field
                                     v-model="DATA"
@@ -87,6 +92,7 @@
                                     color="teal lighten-1"
                                     type="date"
                                     dark
+                                    
                         
                                 ></v-text-field>
                                
@@ -104,27 +110,27 @@
                                 color="teal lighten-1"
                                 type="time"
                                 dark
+                                
                             ></v-text-field>
-                           
+                            
                             </v-col>
-                           
-                            <v-col
+                            <v-col 
                                 cols="12"
-                                sm="6"
-                                md="8"
-                                class="d-flex"
-                            >  
-                                <v-select
-                                    :items="TAGS"
-                                    label="Tipo da despesa"
-                                    v-model="TAG"
-                                    color="teal lighten-1"
-                                    item-text="NOME"
-                                    required 
-                                    return-object
+                               
+                           
+                            >
+                                <v-textarea
+                                    v-model="DESC"
+                                    label="Descrição da despesa"
+                                    hint="Descreva a situação"
+                                    required
+                                    color="yellow lighten-1"
                                     dark
-                                ></v-select>       
+                                    counter="300"
+                                    outlined
+                                ></v-textarea>
                             </v-col>
+                           
                        </v-row>
                     </v-card-text>
                     <v-card-actions class="mt-n4 d-flex justify-end">

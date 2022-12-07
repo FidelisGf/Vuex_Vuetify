@@ -33,21 +33,24 @@
         </v-card-title>
             <v-card-text>
                 <v-row>
-                    <v-col 
+                    <v-col
                         cols="12"
                         sm="6"
                         md="8"
-                           
-                    >
-                        <v-text-field
-                            label="Descrição da despesa"
-                            required
-                            v-model="DESC"
+                        class="d-flex"
+                    >  
+                        <v-select
+                            :items="TAGS"
+                            label="Tipo da despesa"
+                            v-model="TAG"
                             color="teal lighten-1"
+                            item-text="NOME" 
+                            return-object
                             :loading="loading"
                             dark
-                        ></v-text-field>
+                        ></v-select>       
                     </v-col>
+                  
                     <v-col 
                         cols="12"
                         sm="6"
@@ -100,22 +103,18 @@
                         ></v-text-field>
                        
                     </v-col>
-                    <v-col
-                            cols="12"
-                            sm="6"
-                            md="8"
-                            class="d-flex"
-                    >  
-                        <v-select
-                            :items="TAGS"
-                            label="Tipo da despesa"
-                            v-model="TAG"
-                            color="teal lighten-1"
-                            item-text="NOME" 
-                            return-object
-                            :loading="loading"
-                            dark
-                        ></v-select>       
+                    <v-col 
+                        cols="12"
+                    >
+                        <v-textarea
+                                v-model="DESC"
+                                label="Descrição"
+                                required
+                                color="teal lighten-1"
+                                dark
+                                outlined
+                                counter="300"
+                        ></v-textarea>
                     </v-col>
                 </v-row>
             </v-card-text>

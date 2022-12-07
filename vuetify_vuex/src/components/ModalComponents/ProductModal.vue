@@ -79,15 +79,15 @@
                                     <v-stepper-content  step="1">
                                         <v-card class="cards-colors">
                                             <v-card-title class="white--text">
-                                                        <span class="text-h5">Informações do Produto</span>
+                                                        <span class="text-h5 mt-n4">Informações do Produto</span>
                                             </v-card-title>
-                                            <form ref="form" @submit.prevent="proximaEtapa">
+                                            <form ref="form" @submit.prevent="proximaEtapa" class="mt-n4">
                                                 <v-card-text>
                                                     <v-row>
                                                         <v-col
                                                             cols="12"
                                                             sm="6"
-                                                            md="4"
+                                                            md="8"
                                                         >
                                                         <v-text-field
                                                             label="Nome do produto"
@@ -98,21 +98,7 @@
                                                             color="teal lighten-1"
                                                         ></v-text-field>
                                                     </v-col>
-                                                    <v-col
-                                                        cols="12"
-                                                        sm="6"
-                                                        md="4"
-                                                        
-                                                    >
-                                                        <v-text-field
-                                                            v-model="DESC"
-                                                            dark
-                                                            label="Desc do produto"
-                                                            counter="120"
-                                                            required
-                                                            color="teal lighten-1"
-                                                        ></v-text-field>
-                                                    </v-col>
+                                                   
                                                     <v-col
                                                         cols="12"
                                                         sm="6"
@@ -182,10 +168,25 @@
                                                     ></v-select>
                                                     <MedidaModal @insertMedida="listenMsg"></MedidaModal>
                                                 </v-col>
+                                                <v-col
+                                                    cols="12"
+                                                    sm="11"
+                                                    md="11"
+                                                    class="mt-n2"
+                                                >
+                                                    <v-textarea
+                                                        v-model="DESC"
+                                                        label="Descrição"
+                                                        required
+                                                        color="yellow lighten-1"
+                                                        dark
+                                                        outlined
+                                                    ></v-textarea>
+                                                </v-col>
                                             </v-row>
                                         </v-card-text>  
-                                        <small class="ml-3" >*Os produtos criados serão adicionados ao seu estoque.</small>  
-                                        <v-card-actions>
+                                        <small class="ml-3 mt-n6" >*Os produtos criados serão adicionados ao seu estoque.</small>  
+                                        <v-card-actions class="mt-0 mt-md-n6">
                                             <v-spacer></v-spacer>
                                             <v-btn
                                                 color="red lighten-1"

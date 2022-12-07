@@ -20,9 +20,9 @@
         </template>
         <v-card dark>
             <v-card-actions>
-                <v-icon small class="ml-n2 mt-n1" color="red accent-2" @click="active = false">mdi-close</v-icon>
+                <v-icon  class="ml-n2 " color="red accent-2" @click="active = false">mdi-close</v-icon>
             </v-card-actions>
-            <v-card-text class="white--text text-subtitle-1">
+            <v-card-text class="white--text text-subtitle-1 text-md-h5">
                 Novo tipo de Penalidade
             </v-card-text>
             <v-card-text>
@@ -40,19 +40,6 @@
                            
                         >  
                         </v-select>
-                    </v-col>
-                    <v-col 
-                        cols="6"
-                    >
-                        <v-text-field
-                            v-model="desc"
-                            label="Descrição"
-                            persistent-hint
-                            required
-                            color="teal lighten-1"
-                            type="text"
-                            dark
-                        ></v-text-field>
                     </v-col>
                     <v-col 
                         cols="6"
@@ -79,6 +66,20 @@
                             type="number"
                             dark
                         ></v-text-field>
+                    </v-col>
+                    <v-col 
+                    cols="6"
+                    >
+                        <v-textarea
+                            v-model="desc"
+                            label="Descrição"
+                            hint="Descreva a situação"
+                            required
+                            color="yellow lighten-1"
+                            dark
+                            counter="300"
+                            outlined
+                        ></v-textarea>
                     </v-col>
 
                 </v-row>        

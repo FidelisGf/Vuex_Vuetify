@@ -250,13 +250,12 @@ export default {
         ...mapGetters({despesasValor : 'despesaMod/getDespesasMes'}),
         headers (){
             return [
+                    { text: "Detalhes", value: "info", sortable: false },
                     {
                         text: "CODIGO",
-                        align: "start",
                         value: "ID",
                     },
                     { text: "CUSTO", value: "CUSTO" },
-                    { text: "DESCRIÇÂO", value: "DESC" },
                     { text: "DATA", value: "DATA" },
                     { text: "Tipo", value: "tags.NOME"},
                     { text: "Actions", value: "actions", sortable: false },

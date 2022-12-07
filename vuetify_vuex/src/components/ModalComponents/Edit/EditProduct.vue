@@ -35,7 +35,7 @@
                     <v-col
                         cols="12"
                         sm="6"
-                        md="4"
+                        md="8"
                     >
                         <v-text-field
                             label="Nome do produto"
@@ -43,20 +43,6 @@
                             dark
                             v-model="NOME"
                             counter="60"
-                            color="teal lighten-1"
-                            :loading="loading"
-                        ></v-text-field>
-                    </v-col>
-                    <v-col
-                        cols="12"
-                        sm="6"
-                        md="4"    
-                    >
-                        <v-text-field
-                            v-model="DESC"
-                            dark
-                            label="Desc do produto"
-                            counter="120"
                             color="teal lighten-1"
                             :loading="loading"
                         ></v-text-field>
@@ -110,8 +96,25 @@
                                 item-text="NOME" 
                                 return-object
                                 required
+                                :loading="loading"
                             ></v-select>
                             <MedidaModal></MedidaModal>
+                        </v-col>
+                        <v-col
+                            cols="12"
+                            sm="11"
+                            md="11"
+                            class="mt-n2"
+                        >
+                            <v-textarea
+                                v-model="DESC"
+                                label="Descrição"
+                                required
+                                color="teal lighten-1"
+                                dark
+                                outlined
+                                :loading="loading"
+                            ></v-textarea>
                         </v-col>
                 </v-row>
             </v-container>

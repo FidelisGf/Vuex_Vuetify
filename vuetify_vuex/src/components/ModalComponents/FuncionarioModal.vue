@@ -33,7 +33,7 @@
         </template>
         <v-card dark>
             <v-card-actions>
-                <v-icon small class="ml-n2 mt-n1" color="red accent-2" @click="active = false">mdi-close</v-icon>
+                <v-icon class="ml-n2 " color="red accent-2" @click="active = false">mdi-close</v-icon>
             </v-card-actions>
             <v-card-text class="white--text text-subtitle-1">
                 Cadastro de novo Funcionario
@@ -95,7 +95,7 @@
                     <v-col>
                         <v-select
                             :items="roles"
-                            label="Cargos"
+                            label="Cargo do Funcionario"
                             v-model="role"
                             color="teal lighten-1"
                             item-text="NOME" 

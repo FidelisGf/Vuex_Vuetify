@@ -110,6 +110,7 @@
             >
                 <DetailProduct @close="closeDetail" v-if="route == 'products'"></DetailProduct>
                 <DetailUser @close="closeDetail" v-else-if="route == 'usuarios'"></DetailUser>
+                <DetailDespesa @close="closeDetail" v-else-if="route == 'despesas'"></DetailDespesa>
             </v-dialog>
         </v-row>
    </v-container>
@@ -123,6 +124,7 @@ import EditDespesaVue from './ModalComponents/Edit/EditDespesa.vue'
 import { mapActions, mapGetters} from 'vuex';
 import DetailProduct from './ModalComponents/Detail/DetailProduct.vue'
 import DetailUser from './ModalComponents/Detail/DetailUser.vue';
+import DetailDespesa from './ModalComponents/Detail/DetailDespesa.vue';
 export default {
     props: {
         route: String,
@@ -284,7 +286,7 @@ export default {
         this.clearPages();
         this.getLista(this.route);
     },
-    components: { DeleteGeneric, EditProduct, EditDespesaVue, DetailProduct, DetailUser }
+    components: { DeleteGeneric, EditProduct, EditDespesaVue, DetailProduct, DetailUser, DetailDespesa }
 }
 </script>
 

@@ -260,17 +260,16 @@
                                 dark
                                 min="-0.01"
                                 color="teal accent-2"
-                                prefix="R$"
+                                
                             ></v-text-field>
                             <v-text-field
                                 class="ml-3"
-                                v-model="ValorTotal"
+                                v-model="valor_total"
                                 small
                                 label="Valor Total"
                                 outlined
                                 readonly
                                 dark
-                                prefix="R$"
                                 color="teal accent-2"
                             ></v-text-field>
                         </v-col>
@@ -311,7 +310,7 @@
             @keydown.escape="fechar"
             v-model="listaRapida"
             persistent
-            max-width="860px"
+            max-width="620px"
             :fullscreen="$vuetify.breakpoint.mobile"
         >   
             <v-card color="#1e1e1e">
@@ -366,11 +365,14 @@ export default {
         troco: function () {
             let resultado = this.ValorTotal - this.dinheiroPago;
             if (resultado > 0) {
-                return "Falta : " + resultado;
+                return "Falta : " +  resultado.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
             }
             else {
-                return resultado;
+                return resultado.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
             }
+        },
+        valor_total : function(){
+            return this.ValorTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
         },
         headers() {
             return [
@@ -383,7 +385,6 @@ export default {
                     text: "Produto",
                     value: "product[0].NOME",
                 },
-                { text: "Descrição", value: "product[0].DESC" },
                 { text: "Valor", value: "product[0].VALOR" },
                 { text: "Quantidade", value: "QUANTIDADE" },
             ];
