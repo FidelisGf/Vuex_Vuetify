@@ -19,7 +19,7 @@ export default{
         getValorTotal(state){
             if(state.pedidos != null && state.pedidos != undefined){
                 state.valor_Total_Pedidos = state.pedidos.reduce((accumulator, object)=>{
-                    return parseFloat(accumulator) + parseFloat(object.VALOR * object.QUANTIDADE) // separa parseFloat
+                    return parseFloat(accumulator) + (parseFloat(object.VALOR) * parseFloat(object.QUANTIDADE)) // separa parseFloat
                 },0)
             }else{
                 state.valor_Total_Pedidos = 0

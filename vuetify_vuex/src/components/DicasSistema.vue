@@ -300,7 +300,7 @@
       <v-fab-transition class="align-self-end">
         <v-btn
           v-show="true"
-          color="blue accent-2"
+          color="grey accent-2"
           dark
           class="mr-0 mt-0 mr-md-10 mt-md-16"
           right
@@ -310,7 +310,7 @@
           icon
           fab
         >
-          <v-icon>mdi-arrow-up-drop-circle</v-icon>
+          <v-icon >mdi-arrow-up-drop-circle</v-icon>
         </v-btn>
       </v-fab-transition>  
     </div>

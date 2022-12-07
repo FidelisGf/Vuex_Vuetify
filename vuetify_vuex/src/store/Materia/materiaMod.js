@@ -13,7 +13,7 @@ export default{
        getCustoTotal(state){
             if(state.materiais != null || state.materiais != undefined){
                 state.custo_total = state.materiais.reduce((accumulator, object)=>{
-                    return parseFloat(accumulator) + parseFloat(object.CUSTO * object.QUANTIDADE)
+                    return parseFloat(accumulator) + (parseFloat(object.CUSTO) * parseFloat(object.QUANTIDADE))
                 },0)
             }else{
                 state.custo_total = 0

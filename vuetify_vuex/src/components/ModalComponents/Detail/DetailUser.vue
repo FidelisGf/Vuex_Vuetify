@@ -14,35 +14,35 @@
                 ><v-icon color="red accent-2 " >mdi-close</v-icon></v-btn>
             </v-card-actions>
             <v-card-title class="white--text text-sm-h5 text-body-1  mt-n4">
-                <p class="pl-5">Detalhes do Usuario : # {{usuario.NAME}} [{{usuario.ID}}] </p>
+                <p class="pl-0 pl-md-5">Detalhes do Usuario : # {{usuario.NAME}} [{{usuario.ID}}] </p>
             </v-card-title>
             <v-card-text class="mt-n7">
-                <v-row class="d-flex flex-column flex-md-row">
+                <v-row class="d-flex flex-column flex-md-row pl-5 pl-md-10">
                     <v-col class="white--text  text-subtitle-1 text-md-h6  font-italic">
                         <p>
-                            <b class="font-italic titulo pl-11 pt-1">Email : </b>{{usuario.EMAIL}}...
+                            <b class="font-italic titulo  pt-1">Email : </b>{{usuario.EMAIL}}...
                         </p>
                       
                     </v-col>
                 </v-row>
-                <v-row class="d-flex flex-column flex-md-row mt-n5">
+                <v-row class="d-flex flex-column flex-md-row mt-n5 pl-5 pl-md-10">
                     <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
                         <p>
-                            <b class="font-italic titulo pl-11 pt-1">Cpf : </b> {{usuario.CPF}}
+                            <b class="font-italic titulo  pt-1">Cpf : </b> {{usuario.CPF}}
                         </p>
                     </v-col>
                 </v-row> 
-                <v-row class="d-flex flex-column flex-md-row mt-n5">
+                <v-row class="d-flex flex-column flex-md-row mt-n5 pl-5 pl-md-10">
                     <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
                         <p>
-                            <b class="font-italic titulo pl-11 pt-1">Cargo : </b> {{cargo}}
+                            <b class="font-italic titulo pt-1">Cargo : </b> {{cargo}}
                         </p>
                     </v-col>
                 </v-row>   
-                <v-row class="d-flex flex-column flex-md-row mt-n5">
+                <v-row class="d-flex flex-column flex-md-row mt-n5 pl-5 pl-md-10">
                     <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5 d-flex flex-row">
                         <p>
-                            <b class="font-italic titulo pl-11 pt-1">Penalidades Tomadas : </b> 
+                            <b class="font-italic titulo pt-1">Penalidades Tomadas : </b> 
                             {{qntdPenalidades}}
                         </p> 
                         <v-btn icon class="ml-2" @click="getPenalidades">
@@ -53,17 +53,17 @@
                         </v-btn>
                     </v-col>
                 </v-row>  
-                <v-row class="d-flex flex-column flex-md-row mt-n5">
+                <v-row class="d-flex flex-column flex-md-row mt-n5 pl-5 pl-md-10">
                     <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
                         <p>
-                            <b class="font-italic titulo pl-11 pt-1">Vendas Realizadas : </b>{{qntdVendas}}
+                            <b class="font-italic titulo  pt-1">Vendas Realizadas : </b>{{qntdVendas}}
                         </p>
                     </v-col>
                 </v-row> 
-                <v-row class="d-flex flex-column flex-md-row mt-n5">
+                <v-row class="d-flex flex-column flex-md-row mt-n5 pl-5 pl-md-10">
                     <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
                         <p>
-                            <b class="font-italic titulo pl-11 pt-1">Total Vendido : </b>{{totalVendido.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
+                            <b class="font-italic titulo pt-1">Total Vendido : </b>{{totalVendido.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
                         </p>
                     </v-col> 
                 </v-row> 
@@ -128,11 +128,8 @@
                     </v-card-text>
                 </v-card>
             </v-dialog>
-
         </v-card>
     </div>
-  
-
 </template>
 
 <script>

@@ -180,6 +180,7 @@
                                                         required
                                                         color="yellow lighten-1"
                                                         dark
+                                                        counter="300"
                                                         outlined
                                                     ></v-textarea>
                                                 </v-col>
