@@ -47,17 +47,23 @@
                         </p> 
                         <v-btn icon class="ml-2" @click="getPenalidades">
                             <v-icon v-if="!$vuetify.breakpoint.smAndDown"  
-                            color="grey lighten-1">mdi-magnify-expand</v-icon>
+                            color="grey lighten-2">mdi-magnify-expand</v-icon>
                             <v-icon v-else small class="ml-n2 mt-n2" 
-                            color="grey lighten-1">mdi-magnify-expand</v-icon>
+                            color="grey lighten-2">mdi-magnify-expand</v-icon>
                         </v-btn>
                     </v-col>
                 </v-row>  
                 <v-row class="d-flex flex-column flex-md-row mt-n5 pl-5 pl-md-10">
-                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
+                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5 d-flex flex-row">
                         <p>
                             <b class="font-italic titulo  pt-1">Vendas Realizadas : </b>{{qntdVendas}}
                         </p>
+                        <v-btn icon class="ml-2" @click="getVendasByUser">
+                            <v-icon v-if="!$vuetify.breakpoint.smAndDown"  
+                            color="grey lighten-2">mdi-magnify-expand</v-icon>
+                            <v-icon v-else small class="ml-n2 mt-n2" 
+                            color="grey lighten-2">mdi-magnify-expand</v-icon>
+                        </v-btn>
                     </v-col>
                 </v-row> 
                 <v-row class="d-flex flex-column flex-md-row mt-n5 pl-5 pl-md-10">
@@ -67,6 +73,13 @@
                         </p>
                     </v-col> 
                 </v-row> 
+                <v-row class="d-flex flex-column flex-md-row mt-n5 pl-5 pl-md-10">
+                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
+                        <p>
+                            <b class="font-italic titulo pt-1">Media de Venda no ano : </b>{{mediaValorAno.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
+                        </p>
+                    </v-col> 
+                </v-row>
                 <v-row class="mt-n3 ml-0 ml-md-8">
                     <v-col cols="11" >
                         <div class="d-flex justify-center mt-n2">
@@ -128,6 +141,41 @@
                     </v-card-text>
                 </v-card>
             </v-dialog>
+            <v-dialog
+                v-model="dialogVendas"
+                persistent
+                max-width="620px"
+                @keydown.escape="(dialogVendas = false)"
+            >   
+                <v-card class="cards-colors" :elevation="6">
+                    <v-card-actions class="d-flex justify-start ml-n2 ">
+                        <v-btn @click="(dialogVendas = false)" icon color="red accent-2">
+                            <v-icon color="red accent-2">mdi-close</v-icon>
+                        </v-btn>
+                    </v-card-actions>
+                    <v-card-title class="white--text mt-n3" >
+                        <p>Vendas Realizadas</p>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-row class="d-flex flex-column white--text ml-0 ml-md-5" v-for="item in pedidos" :key="item.ID">
+                            <v-col>
+                                <p class="font-italic text-subtitle-1"><b>Codigo do Pedido : #{{item.ID}} </b></p>
+                            </v-col>
+                            <v-col>
+                                <p class="font-italic text-subtitle-1"><b>Valor da Venda : {{item.VALOR_TOTAL.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</b> </p>
+                            </v-col>
+                            <v-col>
+                                <p class="font-italic text-subtitle-1"><b>Data do Pagamento : {{formatDate(item.DT_PAGAMENTO)}}</b> </p>
+                            </v-col>
+                            <v-col cols="11" >
+                                <div class="d-flex justify-center mt-n2">
+                                    <v-divider class="linha" ></v-divider>
+                                </div>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                </v-card>
+            </v-dialog>
         </v-card>
     </div>
 </template>
@@ -141,14 +189,17 @@ export default {
            qntdVendas : 0,
            qntdPenalidades : 0,
            totalVendido : 0,
+           dialogVendas : false,
            cargo : '',
            loading : false,
            dialog : false,
            penalidades : [],
+           mediaValorAno : 0,
+           pedidos : [],
         }
     },
     methods:{
-        ...mapActions('userMod', ['showUser', 'getPenalidade']),
+        ...mapActions('userMod', ['showUser', 'getPenalidade', 'getVendasUser', 'getUserMediaVendasAno']),
         async getUser() {
             let data  = await this.showUser(this.generico.ID)
             this.usuario =  data.usuario
@@ -156,6 +207,7 @@ export default {
             this.qntdPenalidades =  data.qntdPenalidades
             this.cargo = data.cargo
             this.totalVendido = data.totalVendido
+            this.mediaValorAno = await this.getUserMediaVendasAno(this.generico.ID)
             console.log(this.usuario)
             if(this.usuario != null || this.usuario != undefined){
                 this.usuario.CREATED_AT = await this.formatDate(this.usuario.CREATED_AT)
@@ -178,6 +230,14 @@ export default {
             this.penalidades = await this.getPenalidade(this.generico.ID);
             this.dialog = true
             console.log(this.penalidades)
+        },
+        async getVendasByUser(){
+            this.pedidos = await this.getVendasUser(this.generico.ID)
+            this.dialogVendas = true
+        },
+        async getUserMediaAno(){
+            
+           
         }
     },
     computed:{
@@ -194,6 +254,7 @@ export default {
     },
     created(){
         this.getUser()
+        this.getUserMediaAno()
     }
 }
 </script>

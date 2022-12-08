@@ -81,6 +81,15 @@ export default{
             })
             return text
         },
+        async edit (context, payload) {
+            const text = userService.editUser(payload, payload.ID).then((res)=>{
+                context.commit("produtoMod/EDIT_IN_LIST_PRODUCTS", payload, { root: true })
+                return res.data.message 
+            }).catch((error)=>{
+                return "Error : " + error.response.data.message
+            })
+            return text
+        },
         async login(context, payload){
             let check = {login : false, vinculado : false}
             const respo = userService.login(payload).then(async (res)=>{
@@ -157,6 +166,24 @@ export default{
                 return error
             })
             return data
+        },
+        getVendasUser(context, payload){
+            const data = userService.getVendasByUser(payload).then((res)=>{
+                return res.data
+            }).catch((error)=>{
+                return error
+            })
+            return data
+        },
+        getUserMediaVendasAno(context, payload){
+            console.log(payload)
+            const data = userService.getUserMediaVendasByAno(payload).then((res)=>{
+                return res.data
+            }).catch((error)=>{
+                return error
+            })
+            return data
         }
+
     },
 }

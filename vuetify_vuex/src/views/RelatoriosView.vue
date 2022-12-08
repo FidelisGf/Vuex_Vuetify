@@ -373,7 +373,7 @@ export default {
                             this.route = 'vendas'
                             break
                         case 'Relatorio de Despesas':    
-                            this.pdfColumn = ['CODIGO', 'CUSTO', 'DESCRIÇÃO','TIPO','DATA']
+                            this.pdfColumn = ['CODIGO', 'CUSTO','TIPO','DATA']
                             this.route = 'despesas'
                             break 
                         case 'Relatorios de Lucros' :

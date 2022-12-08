@@ -100,7 +100,8 @@
                 @keydown.escape="edit = false"
             >
                 <EditProduct @close-edit="closeEdits" v-if="route == 'products'"></EditProduct>
-                <EditDespesaVue @close-edit-despesa="closeEdits"  v-if="route == 'despesas'"></EditDespesaVue>   
+                <EditDespesaVue @close-edit-despesa="closeEdits"  v-else-if="route == 'despesas'"></EditDespesaVue>
+                <EditUsuario @close-edit-usuario="closeEdits" v-else-if="route == 'usuarios'"></EditUsuario>   
             </v-dialog>
             <v-dialog
                 v-model="detail"
@@ -125,6 +126,7 @@ import { mapActions, mapGetters} from 'vuex';
 import DetailProduct from './ModalComponents/Detail/DetailProduct.vue'
 import DetailUser from './ModalComponents/Detail/DetailUser.vue';
 import DetailDespesa from './ModalComponents/Detail/DetailDespesa.vue';
+import EditUsuario from './ModalComponents/Edit/EditUsuario.vue';
 export default {
     props: {
         route: String,
@@ -286,7 +288,7 @@ export default {
         this.clearPages();
         this.getLista(this.route);
     },
-    components: { DeleteGeneric, EditProduct, EditDespesaVue, DetailProduct, DetailUser, DetailDespesa }
+    components: { DeleteGeneric, EditProduct, EditDespesaVue, DetailProduct, DetailUser, DetailDespesa, EditUsuario }
 }
 </script>
 

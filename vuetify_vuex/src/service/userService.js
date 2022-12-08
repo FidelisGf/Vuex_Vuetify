@@ -40,5 +40,14 @@ export default{
     },
     getPenalidades($id){
         return axios.get("/getPenalidades/" + $id)
+    },
+    getVendasByUser($id){
+        return axios.get("/getVendasByUser/" + $id)
+    },
+    getUserMediaVendasByAno($id){
+        return axios.get("/getUserMediaVendasByAno/" + $id)
+    },
+    editUser(payload, $id){
+        return axios.put("/usuarios/" + $id, payload)
     }
 }
