@@ -435,8 +435,8 @@ export default {
             }else{
                 this.escolhaSituacao = 'F'
             }
-            let payload = {ID : this.id, METODO_PAGAMENTO : this.escolhaPagamento, PRODUTOS : this.pedidos, 
-            APROVADO : this.escolhaSituacao, ID_CLIENTE : this.cliente.id, VALOR_TOTAL : this.ValorTotal}
+            let payload = {ID : this.id, METODO_PAGAMENTO : this.escolhaPagamento, produtos : this.pedidos, 
+            aprovado : this.escolhaSituacao, ID_CLIENTE : this.cliente.id, VALOR_TOTAL : this.ValorTotal}
             let checado = await this.editarPedido(payload)
             if(checado){
                 
@@ -540,23 +540,21 @@ export default {
                     }else{
                         payload = {METODO_PAGAMENTO : this.escolhaPagamento, produtos : this.pedidos, aprovado : this.escolhaSituacao}
                     }
-                    let gerarVenda = await this.geraVenda(payload)
-                    if(gerarVenda){
+                    this.msg = await this.geraVenda(payload)
+                    if(this.msg == "Pedido Registrado com sucesso"){
                         this.down(this.pedidoAtual)
-                        this.registro = true 
-                        this.msg = 'Pedido Gerado com sucesso !'
                         this.color = 'green darken-3'
+                        this.registro = true 
                         this.clear()
                         this.clearPayment()
                         this.limpaPedido()
                         this.clearClient()
                         this.loading = false
                     }else{
+                        this.color = 'red darken-3'
                         this.$store.commit('setLoading', false)
                         this.loading = false
                         this.registro = true 
-                        this.msg = 'Erro ao gerar Pedido !'
-                        this.color = 'red darken-3'
                         this.clear()
                         this.clearPayment()
                         this.limpaPedido()
@@ -578,6 +576,7 @@ export default {
                 produtos = await  this.transformValuesForPdfInEditMode()
             }else{
                 produtos = this.pedidos
+                console.log(this.pedidos)
             }
             let nomeClatura = pedido.aprovado == "PAGO" ? 'Pedido' : 'Orçamento'
             let values = produtos.map( (elemento) => Object.values(elemento));
@@ -607,7 +606,7 @@ export default {
                 styles: { fillColor: [211, 211, 211] },
                 theme : 'striped',
                 margin: { top: 10 },
-                head: [['CODIGO', 'NOME', 'VALOR', 'MEDIDA', 'QUANTIDADE']],
+                head: this.editMode == true ? [['CODIGO', 'NOME', 'VALOR', 'QUANTIDADE', 'MEDIDA']] :  [['CODIGO', 'NOME', 'VALOR', 'MEDIDA', 'QUANTIDADE']],
                 body: values,
             }) 
             pdf.setFontSize(8);
@@ -624,7 +623,6 @@ export default {
                 this.clear()
             }      
         },
-
         clearIntervalo : function (interaval){
             clearInterval(interaval)
         },
@@ -635,6 +633,7 @@ export default {
         },
        async  transformValuesForPdfInEditMode(){
             let values = this.pedidoAtual
+            
            
             values.produtos.forEach(element => {
                 delete element.DESC

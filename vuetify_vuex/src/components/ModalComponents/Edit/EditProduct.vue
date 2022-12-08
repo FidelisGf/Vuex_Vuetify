@@ -187,7 +187,7 @@ export default {
         },
         async editP() {
             var payload = {ID : this.ID, NOME: this.NOME, VALOR: this.VALOR, DESC: this.DESC, ID_CATEGORIA: this.Categoria.ID_CATEGORIA, 
-                NOME_C : this.Categoria.NOME_C, QUANTIDADE : this.quantidade, ID_MEDIDA : this.Medida.ID}
+                NOME_C : this.Categoria.NOME_C, QUANTIDADE : this.quantidade, ID_MEDIDA : this.Medida.ID, edit : 'aa'}
             this.msg = await this.editProduct(payload)
             this.registro = true
         },

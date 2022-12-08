@@ -35,7 +35,7 @@
                 <v-row class="d-flex flex-column flex-md-row mt-n5 pl-5 pl-md-10">
                     <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
                         <p>
-                            <b class="font-italic titulo pt-1">Cargo : </b> {{cargo}}
+                            <b class="font-italic titulo pt-1">Cargo : </b> {{cargo.NOME}}
                         </p>
                     </v-col>
                 </v-row>   

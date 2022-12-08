@@ -38,7 +38,7 @@ export default{
             state.pedidoAtual.codigo = payload.ID 
             state.pedidoAtual.metodo_pagamento = payload.METODO_PAGAMENTO
             state.pedidoAtual.valor_total = payload.VALOR_TOTAL
-            state.pedidoAtual.produtos = payload.PRODUTOS
+            state.pedidoAtual.produtos = payload.produtos
             state.pedidoAtual.aprovado = payload.APROVADO == 'T' ? "PAGO" : "PENDENTE"  
         },
         SAVE_PEDIDOS(state, payload){
@@ -140,14 +140,12 @@ export default{
         },
         async geraVenda(context, payload){
             const gera = pedidoService.save(payload).then((res)=>{
-                if(res.status == 201){
-                    context.dispatch("setPedidoAtual", res.data)
-                    return true
-                }else{
-                    return false
+                if(res.status == 200){
+                    context.dispatch("setPedidoAtual", res.data.pedido)
+                    return res.data.message
                 }
-            }).catch(()=>{
-                return false
+            }).catch((error)=>{
+                return "Erro :" + error.response.data.message
             })
             return gera
         },

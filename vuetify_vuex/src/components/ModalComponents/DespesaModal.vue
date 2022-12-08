@@ -184,15 +184,22 @@ export default {
             let custo = parseFloat(this.CUSTO)
             custo = custo.toFixed(2)
             if(this.DTFINAL != ''){
-                let payload = {DESC : this.DESC, CUSTO : custo, DATA : this.DTFINAL, ID_TAG : this.TAG.ID}
-                let info = await this.save(payload)
-                if(info.Id != null){
-                    let payload2 = {ID : info.Id, DESC : this.DESC, CUSTO : custo, DATA : this.DTFINAL, tags : this.TAG}
-                    this.saveList(payload2)
-                    this.active = false
-                } 
-                this.msg = info.text
-                this.registro = true
+                if(this.TAG == null){
+                    //this.TAG.ID = 0
+                    this.msg = 'Insira uma Tag !'
+                    this.registro = true
+                }else{
+                    let payload = {DESC : this.DESC, CUSTO : custo, DATA : this.DTFINAL, ID_TAG : this.TAG.ID}
+                    let info = await this.save(payload)
+                    if(info.Id != null){
+                        let payload2 = {ID : info.Id, DESC : this.DESC, CUSTO : custo, DATA : this.DTFINAL, tags : this.TAG}
+                        this.saveList(payload2)
+                        this.active = false
+                    } 
+                    this.msg = info.text
+                    this.registro = true
+                }
+                
                 
             }else{
                 this.registro = true
