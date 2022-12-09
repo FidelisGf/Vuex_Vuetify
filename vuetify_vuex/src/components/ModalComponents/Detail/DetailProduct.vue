@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-skeleton-loader
-            v-if="LoaderOptionsPlugin" class="black" :loading="loading" transition="fade-transition" type="card"
+            v-if="loading" class="black" :loading="loading" transition="fade-transition" type="card"
         >
         </v-skeleton-loader>
         <v-card class="cards-colors" :elevation="6" v-else >

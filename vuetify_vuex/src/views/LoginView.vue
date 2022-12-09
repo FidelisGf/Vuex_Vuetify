@@ -244,19 +244,17 @@
     },
     async enviarEmailRecuperacao(){
         let payload = {EMAIL : this.email}
-        let check = await this.sendEmail(payload)
-        if(check){
-            this.register = true
-            this.msg = 'Email enviado com sucesso !'
-            this.e1 = 2
+        this.msg = await this.sendEmail(payload)
+        this.register = true 
+        if(this.msg == "Email enviado com sucesso !"){
+          this.e1 = 2
         }
     },
     async mudarSenha(){
       let payload = {PW : this.newPw, token : this.token}
-      let check = await this.changeSenha(payload)
-      if(check){
-          this.register = true
-          this.msg = 'Senha alterada com sucesso !'
+      this.msg = await this.changeSenha(payload)
+      this.register = true
+      if(this.msg == 'Senha Alterada com sucesso !'){
           this.close()
       }
     }

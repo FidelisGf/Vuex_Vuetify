@@ -126,7 +126,9 @@ export default{
                     return "Sucesso : Produto cadastrado com sucesso !"
                 }
             }).catch((error)=>{
+                console.log(error.response.data.errors)
                 return "Error : " + error.response.data.message
+
             })
             return text
         },
@@ -134,7 +136,7 @@ export default{
             const lucro = productService.getLucroByProduct(payload).then((res)=>{
                 return res.data
             }).catch((error)=>{
-                return error
+                return error 
             })
             return lucro
         }

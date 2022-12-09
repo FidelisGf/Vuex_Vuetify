@@ -108,10 +108,10 @@ export default{
             return respo
         },
         async sendEmail(context, payload){
-            const respo = userService.enviarEmailRecuperacao(payload).then(()=>{
-                return true
-            }).catch(()=>{
-                return false
+            const respo = userService.enviarEmailRecuperacao(payload).then((res)=>{
+                return res.data.message
+            }).catch((error)=>{
+                return "Erro :" + error.response.data.message
             })
             return respo
         },
@@ -124,10 +124,10 @@ export default{
             return roles
         },
         async changeSenha(context, payload){
-            const respo = userService.mudarSenhaUser(payload).then(()=>{
-                return true
-            }).catch(()=>{
-                return false
+            const respo = userService.mudarSenhaUser(payload).then((res)=>{
+                return res.data.message
+            }).catch((error)=>{
+                return "Erro :" + error.response.data.message
             })
             return respo
         },

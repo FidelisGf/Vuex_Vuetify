@@ -284,7 +284,7 @@ export default {
             registro : false,
             fracasso : false,
             msg : '',
-            timeout : 2000,
+            timeout : 4000,
             estoqueMod : false,
             e1 : 1,
             quantidade_inicial : 0,

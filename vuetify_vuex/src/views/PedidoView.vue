@@ -143,7 +143,7 @@
                                 </v-card>
                             </v-dialog>   
                           </v-tooltip>
-                          <v-tooltip bottom v-if="editMode">
+                          <v-tooltip bottom v-if="Object.keys(pedidos).length > 0">
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn
                                     v-bind="attrs"
@@ -463,7 +463,7 @@ export default {
             this.clearPayment()
             this.limpaPedido()
             this.registro = true 
-            this.msg = 'Alteração de pedido cancelada !'
+            this.msg = 'Alterações no pedido canceladas !'
             this.color = 'green darken-3'
             this.btn_msg = 'Gerar Venda'
             this.findBy = false

@@ -25,13 +25,13 @@
                     <span color="red" v-if="item.APROVADO == 'F'">PENDENTE</span>
                 </template>
                 <template v-slot:[`item.CUSTO`]="{item}">
-                    <span>R$ {{item.CUSTO.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</span>
+                    <span>R$ {{parseFloat(item.CUSTO).toFixed(2)}}</span>
                 </template>
                 <template v-slot:[`item.DATA`]="{item}">
                     <span>{{convertDate(item.DATA)}}</span>
                 </template>
                 <template v-slot:[`item.VALOR`]="{item}">
-                    <span>R$ {{item.VALOR.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</span>
+                    <span>R$ {{parseFloat(item.VALOR).toFixed(2)}}</span>
                 </template>
                 <template v-slot:[`item.PRODUTOS`]="{ item }">
                     <span v-for="prod in item.PRODUTOS" :key="prod.id">
@@ -185,7 +185,7 @@ export default {
         },
         convertDate(data){
             let obj = new Date(data)
-            return obj.toLocaleString()       
+            return obj.toLocaleString()  
         },
         closeDetail(e){
             this.detail = e
@@ -202,6 +202,7 @@ export default {
             this.saveGenerico(item)
             this.edit = true
         },
+       
         onPageChange() {
             if(this.filtroCategory){
                 this.findAllByCategory()
