@@ -1,7 +1,10 @@
 import axios from "axios";
+import CryptoJS from "crypto-js";
 export default{
     async auth(to, from, next){
-        axios.defaults.headers.common['Authorization'] = 'Bearer' + localStorage.getItem('token')
+        axios.defaults.headers.common['Authorization'] = 'Bearer' + CryptoJS.AES.decrypt(localStorage.getItem('token'), 
+        'chave_token')
+        .toString(CryptoJS.enc.Utf8);
         axios.get("/auth/validateTkn").then((res)=>{
             if(res.status === 200){
                 next()
@@ -10,7 +13,9 @@ export default{
             const access_token = localStorage.getItem("token");
             if(e.response.status == 401 && access_token){
                 localStorage.setItem('token', e.response.data)
-                axios.defaults.headers.common['Authorization'] = 'Bearer' + localStorage.getItem('token');
+                axios.defaults.headers.common['Authorization'] = 'Bearer' + CryptoJS.AES.decrypt(localStorage.getItem('token'), 
+                'chave_token')
+                .toString(CryptoJS.enc.Utf8);
                 next()
             }else{
                 next({name: 'login'})

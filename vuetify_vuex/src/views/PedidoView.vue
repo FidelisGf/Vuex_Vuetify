@@ -419,6 +419,7 @@ export default {
                 this.editMode = true
                 this.btn_msg = 'Alterar Pedido'
                 this.findBy = false
+                
            }else{
                 this.registro = true 
                 this.msg = 'Pedido não encontrado !'
@@ -430,11 +431,6 @@ export default {
         },
        async  editPedido(){
             this.loading = true
-            if(this.escolhaSituacao == "Pago"){
-                this.escolhaSituacao = 'T'
-            }else{
-                this.escolhaSituacao = 'F'
-            }
             let payload = {ID : this.id, METODO_PAGAMENTO : this.escolhaPagamento, produtos : this.pedidos, 
             aprovado : this.escolhaSituacao, ID_CLIENTE : this.cliente.id, VALOR_TOTAL : this.ValorTotal}
             let checado = await this.editarPedido(payload)
@@ -509,7 +505,6 @@ export default {
             
         },
         async deletePed(){
-            console.log(this.pedidoAtual)
             this.msg = await this.deletePedido(this.pedidoAtual.codigo) 
             this.deletePedidoMod = false
             this.registro = true 
@@ -522,6 +517,11 @@ export default {
         },
         async gerarVenda(){
             await this.getEmpresaFromUser()
+            if(this.escolhaSituacao == "Pago"){
+                this.escolhaSituacao = 'T'
+            }else{
+                this.escolhaSituacao = 'F'
+            }
             let validate = this.validate()
             if(validate){
                 if(this.editMode){
@@ -529,11 +529,7 @@ export default {
                 }else{
                     this.loading = true
                     this.fail = false
-                    if(this.escolhaSituacao == "Pago"){
-                        this.escolhaSituacao = 'T'
-                    }else{
-                        this.escolhaSituacao = 'F'
-                    }
+                   
                     let payload = null
                     if(this.cliente.id != null || this.cliente.id != 0){
                         payload = {METODO_PAGAMENTO : this.escolhaPagamento, produtos : this.pedidos, aprovado : this.escolhaSituacao, ID_CLIENTE : this.cliente.id}
@@ -572,11 +568,9 @@ export default {
             let pdf = new jsPdf()
             let produtos = null
             if(this.editMode == true ){
-                console.log(this.pedidoAtual.produtos)
                 produtos = await  this.transformValuesForPdfInEditMode()
             }else{
                 produtos = this.pedidos
-                console.log(this.pedidos)
             }
             let nomeClatura = pedido.aprovado == "PAGO" ? 'Pedido' : 'Orçamento'
             let values = produtos.map( (elemento) => Object.values(elemento));
@@ -642,7 +636,6 @@ export default {
                 delete element.UPDATED_AT
                 delete element.DELETED_AT
             });
-            console.log(values.produtos)
             return values.produtos
         },
 

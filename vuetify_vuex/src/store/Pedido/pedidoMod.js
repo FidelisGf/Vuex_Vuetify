@@ -39,7 +39,11 @@ export default{
             state.pedidoAtual.metodo_pagamento = payload.METODO_PAGAMENTO
             state.pedidoAtual.valor_total = payload.VALOR_TOTAL
             state.pedidoAtual.produtos = payload.produtos
-            state.pedidoAtual.aprovado = payload.APROVADO == 'T' ? "PAGO" : "PENDENTE"  
+            if(payload.aprovado == null || payload.aprovado == undefined){
+                state.pedidoAtual.aprovado = payload.APROVADO == "T" ? "PAGO" : "PENDENTE"  
+            }else{
+                state.pedidoAtual.aprovado = payload.aprovado == "T" ? "PAGO" : "PENDENTE" 
+            }
         },
         SAVE_PEDIDOS(state, payload){
             const exist = state.pedidos.find(o => o.ID == payload.ID)
