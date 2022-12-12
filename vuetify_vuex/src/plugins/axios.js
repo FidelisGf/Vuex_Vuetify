@@ -3,7 +3,11 @@ import axios from "axios";
 import $store from '../store/index';
 import CryptoJS from "crypto-js";
 axios.defaults.baseURL = 'http://127.0.0.1:8000/api';
-axios.defaults.headers.common['Authorization'] = 'Bearer' + CryptoJS.AES.decrypt(localStorage.getItem('token').toString(), 'chave_token').toString(CryptoJS.enc.Utf8);
+if(localStorage.getItem('token') !== null){
+  axios.defaults.headers.common['Authorization'] = 'Bearer' + CryptoJS.AES.decrypt(localStorage.getItem('token')
+  .toString(), 'chave_token').toString(CryptoJS.enc.Utf8);
+}
+
 Vue.use({
     install(Vue){
         Vue.prototype.$http = axios

@@ -5,10 +5,8 @@ export default{
         axios.defaults.headers.common['Authorization'] = 'Bearer' + CryptoJS.AES.decrypt(localStorage.getItem('token'), 
         'chave_token')
         .toString(CryptoJS.enc.Utf8);
-        axios.get("/auth/validateTkn").then((res)=>{
-            if(res.status === 200){
-                next()
-            }
+        axios.get("/auth/validateTkn").then(()=>{
+            next()
         }).catch((e)=>{
             const access_token = localStorage.getItem("token");
             if(e.response.status == 401 && access_token){

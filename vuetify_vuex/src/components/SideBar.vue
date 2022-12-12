@@ -57,7 +57,7 @@
               </v-list-item-icon>
               <v-list-item-title>Despesas</v-list-item-title>
             </v-list-item>
-            <v-list-item @click="$router.push('/funcionarios')" link v-if="userLevel > 2">
+            <v-list-item @click="$router.push('/funcionarios')" link v-if="userLevel > 8">
               <v-list-item-icon>
                 <v-icon>mdi-account</v-icon>
               </v-list-item-icon>

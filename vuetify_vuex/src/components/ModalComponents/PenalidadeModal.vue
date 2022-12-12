@@ -68,7 +68,20 @@
                         ></v-text-field>
                     </v-col>
                     <v-col 
-                    cols="6"
+                        cols="6"
+                    >
+                        <v-text-field
+                            v-model="desconto_salario"
+                            label="Desconto no Salário"
+                            persistent-hint
+                            required
+                            color="teal lighten-1"
+                            type="number"
+                            dark
+                        ></v-text-field>
+                    </v-col>
+                    <v-col 
+                    cols="11"
                     >
                         <v-textarea
                             v-model="desc"
@@ -112,12 +125,13 @@ export default {
             data : '',
             desc : '',
             id_funcionário : '',
+            desconto_salario : '',
         }
     },
     methods:{
         ...mapActions('penalidadeMod', ['postPenalidade']),
         async post(){
-            let payload = {DATA : this.data, DESC : this.desc, TIPO : this.tipo, ID_USER : this.id_funcionário}
+            let payload = {DATA : this.data, DESC : this.desc, TIPO : this.tipo, ID_USER : this.id_funcionário, DESCONTO : this.desconto_salario}
             let text = await this.postPenalidade(payload)
             this.$emit('Cadastrado', text)
             this.clear()

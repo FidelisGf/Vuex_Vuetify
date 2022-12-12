@@ -70,9 +70,11 @@ export default {
         async setCountAtivos(){
             this.count = await this.getActiveUsers()
         },
-        async attLista(){
+        async attLista(e){
             this.count = await this.getActiveUsers()
             this.renicializar += 1
+            this.msg = e
+            this.registro = true
         },
         setMsg(e){
             this.msg = e

@@ -57,6 +57,20 @@
                         cols="6"
                         >
                         <v-text-field
+                            v-model="user.salario"
+                            label="Salário do Funcionario"
+                            persistent-hint
+                            required
+                            color="teal lighten-1"
+                            type="text"
+                            dark
+                            :loading="loading"
+                        ></v-text-field>
+                    </v-col>
+                    <v-col 
+                        cols="6"
+                        >
+                        <v-text-field
                             v-model="user.email"
                             label="Email do Funcionario"
                             persistent-hint
@@ -113,6 +127,7 @@ export default {
                 email: "",
                 cpf: "",
                 pw: "",
+                salario : ""
             },
             roles : [],
             role : null,
@@ -128,7 +143,8 @@ export default {
             this.user.cpf = ''
             this.user.email = ''
             this.user.name = ''
-            this.user.pw = ''
+            this.user.pw = '',
+            this.user.salario = ''
             this.getUser()
         },
         closeMod(){
@@ -139,12 +155,13 @@ export default {
             this.user.cpf = data.usuario.CPF 
             this.user.email = data.usuario.EMAIL 
             this.user.name = data.usuario.NAME 
+            this.user.salario = data.usuario.SALARIO
             this.role = data.cargo
             this.roles = await this.avaibleRoles();
             this.loading = false
         },
         async editUser(){
-            let payload = {ID : this.generico.ID,  NAME : this.user.name, EMAIL : this.user.email, CPF : this.user.cpf, ID_ROLE : this.role.ID, role : this.role}
+            let payload = {ID : this.generico.ID,  NAME : this.user.name, EMAIL : this.user.email, CPF : this.user.cpf,  ID_ROLE : this.role.ID, role : this.role, SALARIO : this.user.salario}
             this.msg = await this.edit(payload)
             this.registro = true 
         }

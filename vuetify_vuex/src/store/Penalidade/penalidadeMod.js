@@ -19,6 +19,14 @@ export default{
                 return "Error : " + error.response.data.message
             })
             return text
+        },
+        async getTotalDescontoMes(context , payload){
+            const total = penalidadeService.getValorDescontoMes(payload).then((res)=>{
+                return res.data
+            }).catch((error)=>{
+                return error
+            })
+            return total
         }
     },
 }

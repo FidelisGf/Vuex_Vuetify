@@ -49,5 +49,11 @@ export default{
     },
     editUser(payload, $id){
         return axios.put("/usuarios/" + $id, payload)
+    },
+    getUserTotalVendasByMes($id){
+        return axios.get("/getUserTotalVendasByMes/" + $id)
+    },
+    getHistoricoSalario($id){
+        return axios.get("/getHistoricoSalarioUser/" + $id)
     }
 }

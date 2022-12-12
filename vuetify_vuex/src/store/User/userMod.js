@@ -22,7 +22,6 @@ export default{
             return state.user
        },
        getEmpresa(state){
-            state.empresa = CryptoJS.AES.decrypt(state.empresa.toString(), 'chave_empresa').toString(CryptoJS.enc.Utf8);
             return state.empresa
        }
     },
@@ -36,8 +35,7 @@ export default{
             state.userLevel = level
         },
         SAVE_EMPRESA(state, payload){
-            var empresa  = CryptoJS.AES.encrypt(payload.toString(), 'chave_empresa').toString();
-            state.empresa = empresa
+            state.empresa = payload
         },
     },
     actions: {
@@ -145,6 +143,22 @@ export default{
                 return false
             })
             return check
+        },
+        async getTotalVendasMes(context, payload){
+            const total = userService.getUserTotalVendasByMes(payload).then((res)=>{
+                return res.data
+            }).catch((error)=>{
+                return error
+            })
+            return total
+        },
+        async getHistoricoSalarios(context, payload){
+            const historico = userService.getHistoricoSalario(payload).then((res)=>{
+                return res.data[0]
+            }).catch((error)=>{
+                return error
+            })
+            return historico
         },
         async logoutUser(){
             userService.logout().then((res)=>{

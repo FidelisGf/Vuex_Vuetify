@@ -61,6 +61,7 @@
                             label="Cpf do Funcionario"
                             persistent-hint
                             required
+                            counter="11"
                             color="teal lighten-1"
                             type="text"
                             dark
@@ -105,6 +106,17 @@
                             required
                         ></v-select>
                     </v-col>
+                    <v-col>
+                        <v-text-field
+                            v-model="user.salario"
+                            label="Salário Líquido"
+                            persistent-hint
+                            required
+                            color="teal lighten-1"
+                            type="number"
+                            dark
+                        ></v-text-field>
+                    </v-col>
                 </v-row>        
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
@@ -139,6 +151,7 @@ export default {
                 email: "",
                 cpf: "",
                 pw: "",
+                salario : 0,
             },
             roles : [],
             role : null,
@@ -148,9 +161,9 @@ export default {
     methods:{
         ...mapActions("userMod", ["register", "avaibleRoles"]),
         async cadNewFuncionario() {
-            let payload = { NAME: this.user.name, PASSWORD: this.user.pw, EMAIL: this.user.email, CPF: this.user.cpf, ID_ROLE: this.role.ID };
+            let payload = { NAME: this.user.name, PASSWORD: this.user.pw, EMAIL: this.user.email, CPF: this.user.cpf, ID_ROLE: this.role.ID, SALARIO : this.user.salario };
             this.msg = await this.register(payload);
-            this.$emit('Cadastrado')
+            this.$emit('Cadastrado', this.msg)
             this.active = false 
             this.clear()
         },
