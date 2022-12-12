@@ -103,13 +103,17 @@
                 <v-row class="d-flex flex-column flex-md-row mt-n2 justify-lg-start">
                     <v-col class="white--text text-subtitle-1  font-italic mt-n2">
                         <v-timeline>
-                            <v-timeline-item color="blue accent-2"
+                            <v-timeline-item color="blue accent-2" 
+                                class="text-body-1 text-md-subtitle-1"
                                 fill-dot
                                 small
                             >
                                 Criado em : {{usuario.CREATED_AT}}
                             </v-timeline-item>
-                            <v-timeline-item class="text-right" fill-dot small color="teal accent-3">
+                            <v-timeline-item 
+                                class="text-right text-body-1 text-md-subtitle-1" 
+                                fill-dot small color="teal accent-3" 
+                            >
                                 Atualizado em : {{usuario.UPDATED_AT}}
                             </v-timeline-item>
                         </v-timeline>
@@ -350,7 +354,6 @@ export default {
     },
     created() {
         this.getUser();
-        this.getUserMediaAno();
     },
     components: { DeleteGeneric }
 }

@@ -116,6 +116,14 @@ export default{
             })
             return respo
         },
+        async getFolhaSalario(){
+            const data = userService.getFolhaSalarioUsers().then((res)=>{
+                return res.data
+            }).catch((error)=>{
+                return error
+            })
+            return data
+        },
         async avaibleRoles(){
             const roles = userService.showAvailableRoles().then((res)=>{
                 return res.data

@@ -55,5 +55,8 @@ export default{
     },
     getHistoricoSalario($id){
         return axios.get("/getHistoricoSalarioUser/" + $id)
+    },
+    getFolhaSalarioUsers(){
+        return axios.get("/getFolhaSalarioUsers")
     }
 }

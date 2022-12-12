@@ -42,6 +42,20 @@
                 </v-sheet>
             </v-col>
         </v-row>
+        <v-row>
+            <v-col cols="12" lg="4" md="4" class="d-flex justify-center">
+                <v-btn text color="teal accent-2" @click="downLoadFolhaSalario">
+                    <v-icon
+                        left
+                        
+                    >
+                        mdi-cloud-download
+                    </v-icon> 
+                    Baixar Folha Salarial
+                    
+                </v-btn>
+            </v-col>
+        </v-row>
         <v-row class="d-flex justify-center mt-10">
             <ListaGenerica :key="renicializar" :route="'usuarios'" :headers="headers"></ListaGenerica>
         </v-row>
@@ -53,7 +67,8 @@ import ListaGenerica from '@/components/ListaGenerica.vue';
 import FuncionarioModal from '@/components/ModalComponents/FuncionarioModal.vue';
 import PenalidadeModal from '@/components/ModalComponents/PenalidadeModal.vue';
 import { mapActions, mapGetters } from 'vuex';
-
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
 export default {
     data(){
         return{
@@ -61,12 +76,13 @@ export default {
             timeout : 2000,
             msg : '',
             count : 0,
-            renicializar : 0
+            renicializar : 0,
+            columns : ['CODIGO', 'NOME', 'CPF', 'DESCONTOS', 'SALARIO_BASE', 'SALARIO_FINAL']
         }
     },
     components: { FuncionarioModal, ListaGenerica, PenalidadeModal },
     methods:{
-        ...mapActions('userMod', ['getActiveUsers']),
+        ...mapActions('userMod', ['getActiveUsers', 'getEmpresaFromUser', 'getFolhaSalario']),
         async setCountAtivos(){
             this.count = await this.getActiveUsers()
         },
@@ -79,10 +95,46 @@ export default {
         setMsg(e){
             this.msg = e
             this.registro = true
-        }
+        },
+        async downLoadFolhaSalario(){
+            
+            let pdf = new jsPDF()
+            let values = await this.getFolhaSalario()
+            values = values.map( (elemento) => Object.values(elemento));
+            const nameOfMonth = new Date().toLocaleString(
+                'default', {month: 'long'}
+            );
+            pdf.setFontSize(26)
+            pdf.text(this.empresaUser.NOME + ' Relatorio'  , 15, 15)
+            pdf.setFontSize(10)
+            pdf.text('CNPJ :  ' + this.empresaUser.CNPJ, 15, 22)
+            pdf.text('ENDEREÇO : '  + this.empresaUser.ENDERECO, 70, 22)
+            pdf.text('EMAIL : ' + this.empresaUser.EMAIL, 140, 22)
+            pdf.setFontSize(26)
+            pdf.text('-------------------------------------------------------------------', 2, 28)
+            pdf.setFontSize(22)
+            pdf.text("Relatorio : Folha Salarial de" + " " + nameOfMonth, 15, 35)
+            pdf.setFontSize(10);
+            pdf.text("Sempre utilize como base a coluna : SALARIO_FINAL ", 15, 42)
+            if(this.columns != undefined || this.columns != null){
+                autoTable(pdf,
+                {
+                    startY: 48,
+                    cellWidth: 'auto',
+                    headStyles: {fillColor: [128,128,128]},
+                    styles: { fillColor: [211, 211, 211], overflow: 'linebreak' },
+                    theme : 'striped',
+                    margin: { top: 10 },
+                    head: [this.columns],
+                    body: values,
+                }) 
+            }
+            pdf.save('FolhaSalarial'); 
+        },
     },
-    created() {
+    async created() {
         this.setCountAtivos()
+        await this.getEmpresaFromUser()
     },
     computed:{
         headers() {
@@ -99,7 +151,7 @@ export default {
                 { text: "Actions", value: "actions", sortable: false },
             ];
         },
-        ...mapGetters({ userLevel: "userMod/getUserLevel" }),
+        ...mapGetters({ userLevel: "userMod/getUserLevel", empresaUser : 'userMod/getEmpresa' }),
     }
     
 }
