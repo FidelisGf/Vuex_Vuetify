@@ -27,6 +27,14 @@ export default{
                 return error
             })
             return total
+        },
+        async deletePenalidade(context , payload){
+            const text = penalidadeService.delete(payload).then((res)=>{
+                return res.data.message
+            }).catch((error)=>{
+                return "Error : " + error.response.data.message
+            })
+            return text
         }
     },
 }

@@ -25,7 +25,7 @@
                 class="elevation-5"
                 >
                     <v-card-title class="ml-2 text-h4 white--text ">
-                        {{data.NOME}} <FuncionarioModal v-if="(userLevel > 3)" :mini="true"></FuncionarioModal>
+                        {{data.NOME}}
                     </v-card-title>
                     <v-card-text class="ml-3 white--text text-body-1">
                         <p >CNPJ : {{data.CNPJ}}</p>
@@ -101,7 +101,6 @@
 </template>
 
 <script>
-import FuncionarioModal from '@/components/ModalComponents/FuncionarioModal.vue';
 import { mapActions, mapGetters } from 'vuex';
 export default {
     data() {
@@ -166,7 +165,7 @@ export default {
     },
 
     
-    components: { FuncionarioModal }
+   
 }
 </script>
 

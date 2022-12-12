@@ -136,7 +136,13 @@
                     </v-card-subtitle>
                     <v-card-text>
                         <v-row class="d-flex flex-column white--text ml-0 ml-md-5" v-for="item in penalidades" :key="item.ID">
-                            <v-col>
+                            <v-col cols="11" >
+                                <div class="d-flex justify-center mt-n2">
+                                    <v-divider class="linha" ></v-divider>
+                                    <DeleteGeneric @atualizar="deletePenal" class="mt-n3" :id="item.ID" small :route="'penalidades'"></DeleteGeneric>  
+                                </div>
+                            </v-col>
+                            <v-col class="mt-n3">
                                 <p class="font-italic text-subtitle-1"><b>Codigo da Penalidade : #{{item.ID}} </b></p>
                             </v-col>
                             <v-col>
@@ -151,11 +157,7 @@
                             <v-col>
                                 <p class="font-italic text-subtitle-1"><b>Data da Penalidade : {{formatDate( item.DATA)}}</b> </p>
                             </v-col>
-                            <v-col cols="11" >
-                                <div class="d-flex justify-center mt-n2">
-                                    <v-divider class="linha" ></v-divider>
-                                </div>
-                            </v-col>
+                            
                         </v-row>
                     </v-card-text>
                 </v-card>
@@ -255,94 +257,102 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import DeleteGeneric from '../Delete/DeleteGeneric.vue';
 export default {
-    data(){
-        return{
-           usuario : null ,
-           qntdVendas : 0,
-           qntdPenalidades : 0,
-           totalVendido : 0,
-           totalVendaMes : 0,
-           totalDescontoPenalidade : 0,
-           dialogVendas : false,
-           cargo : '',
-           loading : false,
-           dialogHistorico : false,
-           dialog : false,
-           penalidades : [],
-           historicoSalarios : [],
-           mediaValorAno : 0,
-           pedidos : [],
-        }
+    data() {
+        return {
+            usuario: null,
+            qntdVendas: 0,
+            qntdPenalidades: 0,
+            totalVendido: 0,
+            totalVendaMes: 0,
+            totalDescontoPenalidade: 0,
+            dialogVendas: false,
+            cargo: "",
+            loading: false,
+            dialogHistorico: false,
+            dialog: false,
+            penalidades: [],
+            historicoSalarios: [],
+            mediaValorAno: 0,
+            pedidos: [],
+        };
     },
-    methods:{
-        ...mapActions('userMod', ['showUser', 'getPenalidade', 'getVendasUser', 
-        'getUserMediaVendasAno', 'getTotalVendasMes', 'getHistoricoSalarios']),
-        ...mapActions('penalidadeMod', ['getTotalDescontoMes']),
+    methods: {
+        ...mapActions("userMod", ["showUser", "getPenalidade", "getVendasUser", "getUserMediaVendasAno", "getTotalVendasMes", "getHistoricoSalarios"]),
+        ...mapActions("penalidadeMod", ["getTotalDescontoMes", "deletePenalidade"]),
         async getUser() {
-            let data  = await this.showUser(this.generico.ID)
-            this.usuario =  data.usuario
-            this.qntdVendas =  data.qntdVendas
-            this.qntdPenalidades =  data.qntdPenalidades
-            this.cargo = data.cargo
-            this.totalVendido = data.totalVendido
-            
-            if(this.usuario != null || this.usuario != undefined){
-                this.usuario.CREATED_AT = await this.formatDate(this.usuario.CREATED_AT)
-                this.usuario.UPDATED_AT = await this.formatDate(this.usuario.UPDATED_AT)
-                this.loading = false
+            let data = await this.showUser(this.generico.ID);
+            this.usuario = data.usuario;
+            this.qntdVendas = data.qntdVendas;
+            this.qntdPenalidades = data.qntdPenalidades;
+            this.cargo = data.cargo;
+            this.totalVendido = data.totalVendido;
+            if (this.usuario != null || this.usuario != undefined) {
+                this.usuario.CREATED_AT = await this.formatDate(this.usuario.CREATED_AT);
+                this.usuario.UPDATED_AT = await this.formatDate(this.usuario.UPDATED_AT);
+                this.loading = false;
             }
         },
-        clear(){
-            this.produto = null
-            this.getUser()
-        },
-        close(){
-            this.$emit('close', false)
-        },
-        formatDate(data){
-            data = new Date(data)
-            return data.toLocaleString()
-        },
-        async getPenalidades(){
-            this.loading = true
+        async deletePenal(e) {
+            this.loading = e;
+            this.dialog = false;
             this.penalidades = await this.getPenalidade(this.generico.ID);
-            this.totalDescontoPenalidade = await this.getTotalDescontoMes(this.generico.ID)
-            this.dialog = true
-            this.loading = false
+            this.totalDescontoPenalidade = await this.getTotalDescontoMes(this.generico.ID);
+            this.loading = false;
+            this.dialog = true;
         },
-        async getHistorico(){
-            this.loading = true
-            this.historicoSalarios = await this.getHistoricoSalarios(this.generico.ID)
-            console.log(this.historicoSalarios)
-            this.loading = false
-            this.dialogHistorico = true
+        clear() {
+            this.produto = null;
+            this.getUser();
         },
-        async getVendasByUser(){
-            this.loading = true
-            this.pedidos = await this.getVendasUser(this.generico.ID)
-            this.mediaValorAno = await this.getUserMediaVendasAno(this.generico.ID)
-            this.totalVendaMes = await this.getTotalVendasMes(this.generico.ID)
-            this.dialogVendas = true
-            this.loading = false
+        close() {
+            this.$emit("close", false);
+        },
+        formatDate(data) {
+            data = new Date(data);
+            return data.toLocaleString();
+        },
+        async getPenalidades() {
+            this.loading = true;
+            this.penalidades = await this.getPenalidade(this.generico.ID);
+            this.totalDescontoPenalidade = await this.getTotalDescontoMes(this.generico.ID);
+            this.dialog = true;
+            this.loading = false;
+        },
+        async getHistorico() {
+            this.loading = true;
+            this.historicoSalarios = await this.getHistoricoSalarios(this.generico.ID);
+            console.log(this.historicoSalarios);
+            this.loading = false;
+            this.dialogHistorico = true;
+        },
+        async getVendasByUser() {
+            this.loading = true;
+            this.pedidos = await this.getVendasUser(this.generico.ID);
+            this.mediaValorAno = await this.getUserMediaVendasAno(this.generico.ID);
+            this.totalVendaMes = await this.getTotalVendasMes(this.generico.ID);
+            this.dialogVendas = true;
+            this.loading = false;
         },
     },
-    computed:{
-        ...mapGetters({generico : 'utilMod/getGenerico'})
+    computed: {
+        ...mapGetters({ generico: "utilMod/getGenerico" })
     },
     watch: {
-        generico : function(val) {
-          if (val) {
-            this.loading = true
-             this.clear()
-          }
-          this.generico = val
-        }  
+        generico: function (val) {
+            if (val) {
+                this.loading = true;
+                this.clear();
+            }
+            this.generico = val;
+        }
     },
-    created(){
-        this.getUser()
-        this.getUserMediaAno()
-    }
+    created() {
+        this.getUser();
+        this.getUserMediaAno();
+    },
+    components: { DeleteGeneric }
 }
 </script>
 

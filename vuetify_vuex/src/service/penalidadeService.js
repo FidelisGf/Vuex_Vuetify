@@ -6,6 +6,8 @@ export default{
     },
     getValorDescontoMes($id){
         return axios.get("/getDescontoMensalByUser/" + $id)
+    },
+    delete($id){
+        return axios.delete("/penalidades/" + $id)
     }
-  
 }
