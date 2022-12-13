@@ -110,7 +110,7 @@
                 @keydown.escape="detail = false"
             >
                 <DetailProduct @close="closeDetail" v-if="route == 'products'"></DetailProduct>
-                <DetailUser @close="closeDetail" v-else-if="route == 'usuarios'"></DetailUser>
+                <DetailUser @deleted="emitDeletePenalidade" @close="closeDetail" v-else-if="route == 'usuarios'"></DetailUser>
                 <DetailDespesa @close="closeDetail" v-else-if="route == 'despesas'"></DetailDespesa>
             </v-dialog>
         </v-row>
@@ -186,6 +186,9 @@ export default {
         convertDate(data){
             let obj = new Date(data)
             return obj.toLocaleString()  
+        },
+        emitDeletePenalidade(e){
+          this.$emit('deletedPenalidade', e)  
         },
         closeDetail(e){
             this.detail = e

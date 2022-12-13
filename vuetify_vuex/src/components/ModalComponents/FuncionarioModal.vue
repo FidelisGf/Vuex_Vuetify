@@ -41,7 +41,8 @@
             <v-card-text>
                 <v-row>
                     <v-col 
-                        cols="6"
+                        cols="12"
+                        md="6"
                         >
                         <v-text-field
                             v-model="user.name"
@@ -54,7 +55,8 @@
                         ></v-text-field>
                     </v-col>
                     <v-col 
-                        cols="6"
+                    cols="12"
+                    md="6"
                         >
                         <v-text-field
                             v-model="user.cpf"
@@ -68,7 +70,8 @@
                         ></v-text-field>
                     </v-col>
                     <v-col 
-                        cols="6"
+                    cols="12"
+                    md="6"
                         >
                         <v-text-field
                             v-model="user.email"
@@ -81,7 +84,8 @@
                         ></v-text-field>
                     </v-col>
                     <v-col 
-                        cols="6"
+                    cols="12"
+                    md="6"
                     >
                         <v-text-field
                             v-model="user.pw"

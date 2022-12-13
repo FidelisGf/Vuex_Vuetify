@@ -85,7 +85,7 @@ export default {
             this.text = await this.delete(payload)
             if(this.text != "Sem autorização !"){
               this.deleteInList(this.id)
-              this.$emit('atualizar', true)
+              this.$emit('atualizar', this.text)
               this.registro = true
               this.active = false
             }else{

@@ -299,11 +299,12 @@ export default {
             }
         },
         async deletePenal(e) {
-            this.loading = e;
+            this.loading = true;
             this.dialog = false;
             this.penalidades = await this.getPenalidade(this.generico.ID);
             this.totalDescontoPenalidade = await this.getTotalDescontoMes(this.generico.ID);
             this.loading = false;
+            this.$emit('deleted', e)
             this.dialog = true;
         },
         clear() {

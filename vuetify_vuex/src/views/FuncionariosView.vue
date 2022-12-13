@@ -57,7 +57,7 @@
             </v-col>
         </v-row>
         <v-row class="d-flex justify-center mt-10">
-            <ListaGenerica :key="renicializar" :route="'usuarios'" :headers="headers"></ListaGenerica>
+            <ListaGenerica @deletedPenalidade="setMsg" :key="renicializar" :route="'usuarios'" :headers="headers"></ListaGenerica>
         </v-row>
     </v-container>
 </template>
