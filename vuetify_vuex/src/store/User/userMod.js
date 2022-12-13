@@ -208,6 +208,23 @@ export default{
                 return error
             })
             return data
+        },
+        setAjustesFolha(context, payload){
+            const data = userService.setAjustesFolhaFuncionarios(payload).then((res)=>{
+                return res.data.message 
+            }).catch((error)=>{
+                return "Error : " + error.response.data.message
+            })
+            return data
+        },
+        showAjusteFolha(){
+            const data = userService.showAjuste().then((res)=>{
+                console.log(res.data)
+                return res.data
+            }).catch((error)=>{
+                return error
+            }) 
+            return data
         }
 
     },

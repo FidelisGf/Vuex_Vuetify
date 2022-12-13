@@ -7,14 +7,14 @@
     >
         <template  v-slot:activator="{ on, attrs }">
             <v-btn
-                color="yellow accent-2"
+                color="teal accent-2"
                 dark
                 class="ml-1  font-weight-medium"
                 v-bind="attrs"
                 v-on="on"
                 text 
             >
-                <v-icon dark color="yellow accent-2">mdi-alert-plus</v-icon>
+                <v-icon dark color="teal accent-2">mdi-alert-plus</v-icon>
                     <span class="ml-2">Registrar Penalidade</span>
             </v-btn>
         </template>

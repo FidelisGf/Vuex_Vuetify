@@ -58,5 +58,11 @@ export default{
     },
     getFolhaSalarioUsers(){
         return axios.get("/getFolhaSalarioUsers")
+    },
+    setAjustesFolhaFuncionarios(payload){
+        return axios.post("/setAjustes", payload)
+    },
+    showAjuste(){
+        return axios.get("/showAjuste")
     }
 }

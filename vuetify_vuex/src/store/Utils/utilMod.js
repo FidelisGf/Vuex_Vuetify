@@ -78,6 +78,7 @@ export default{
                         payload.Lucro_Vendas =  response.data.Lucro_Vendas 
                         payload.Total = response.data.Total
                         payload.Saldo_Final =  response.data.Saldo_Final
+                        payload.Funcionarios = response.data.Funcionarios
                         context.commit('SET_LISTA_ITENS', payload)
                     }else{
                         response.data.dados.vlTotal = response.data.vlTotal

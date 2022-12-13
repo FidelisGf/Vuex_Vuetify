@@ -68,13 +68,13 @@ export default {
             }
             if(this.route == 'vendas'){
                 if(this.filtro == 'Lucros e Gastos por dias'){
-                    console.log('Entrou no filtro ! ')
                     let gastosMaterial = this.subTraiGastos(this.itens.Lucro_Vendas, this.itens.Total)
                     this.itens.Despesas = parseFloat(this.itens.Despesas)
                     pdf.text('Total de Vendas : ' + this.itens.Total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 20, 50)
                     pdf.text('Total de Lucros nas Vendas : ' + this.itens.Lucro_Vendas.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 95, 50)
                     pdf.text('Total de gastos com Despesa : ' + this.itens.Despesas.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}), 20, 58)
                     pdf.text('Total de gastos com Material : ' + gastosMaterial.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) , 95, 58 )
+                    pdf.text('Total de gastos com Funcionários : ' + this.itens.Funcionarios.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) , 95, 68 )
                     if(this.itens.Saldo_Final < 0 ){
                         pdf.setTextColor(225,51,36)
                     }
