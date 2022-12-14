@@ -14,8 +14,8 @@
                     class="elevation-2 mt-n5"
                 >
                 <template v-slot:[`item.actions`]="{ item }" >
-                    <v-icon small color="teal accent-3" class="mr-2 ml-2" @click="editItem(item)">mdi-pencil</v-icon>
-                    <DeleteGeneric :id="item.ID" small :route="route"></DeleteGeneric>        
+                    <v-icon v-if="route != 'pagamentos' " small color="teal accent-3" class="mr-2 ml-2" @click="editItem(item)">mdi-pencil</v-icon>
+                    <DeleteGeneric @atualizar="emitDeletePenalidade" :id="item.ID" small :route="route"></DeleteGeneric>        
                 </template>
                 <template v-slot:[`item.info`]="{ item }">
                     <v-icon color="blue accent-1"  @click="info(item)">mdi-alpha-i-circle</v-icon>

@@ -49,7 +49,7 @@
                 <v-row class="d-flex flex-column flex-md-row mt-n5 pl-5 pl-md-10">
                     <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5 d-flex flex-row">
                         <p>
-                            <b class="font-italic titulo pt-1">Penalidades Tomadas : </b> 
+                            <b class="font-italic titulo pt-1">Penalidades Atuais : </b> 
                             {{qntdPenalidades}}
                         </p> 
                         <v-btn icon class="ml-2" @click="getPenalidades">
@@ -86,6 +86,19 @@
                             <b class="font-italic titulo pt-1">Historico Salarial</b>
                         </p>
                         <v-btn icon class="ml-2" @click="getHistorico">
+                            <v-icon v-if="!$vuetify.breakpoint.smAndDown"  
+                            color="grey lighten-2">mdi-magnify-expand</v-icon>
+                            <v-icon v-else small class="ml-n2 mt-n2" 
+                            color="grey lighten-2">mdi-magnify-expand</v-icon>
+                        </v-btn>
+                    </v-col> 
+                </v-row>
+                <v-row class="d-flex flex-column flex-md-row mt-n5 pl-5 pl-md-10">
+                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5 d-flex flex-row">
+                        <p>
+                            <b class="font-italic titulo pt-1">Historico Penal</b>
+                        </p>
+                        <v-btn icon class="ml-2" @click="getHistoricoPenal">
                             <v-icon v-if="!$vuetify.breakpoint.smAndDown"  
                             color="grey lighten-2">mdi-magnify-expand</v-icon>
                             <v-icon v-else small class="ml-n2 mt-n2" 
@@ -156,10 +169,10 @@
                                 <p class="font-italic text-subtitle-1"><b>Descrição da Penalidade : {{item.DESC}}</b></p>
                             </v-col>
                             <v-col>
-                                <p class="font-italic text-subtitle-1"><b>Desconto no salário : R$ {{item.DESCONTO.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</b> </p>
+                                <p class="font-italic text-subtitle-1"><b>Desconto no salário : R$ {{parseFloat(item.DESCONTO)}}</b> </p>
                             </v-col>
                             <v-col>
-                                <p class="font-italic text-subtitle-1"><b>Data da Penalidade : {{formatDate( item.DATA)}}</b> </p>
+                                <p class="font-italic text-subtitle-1"><b>Data da Penalidade : {{formatDate(item.DATA)}}</b> </p>
                             </v-col>
                             
                         </v-row>
@@ -255,6 +268,67 @@
                     </v-card-text>
                 </v-card>
             </v-dialog>
+            <v-dialog
+                v-model="dialogHistoricoPenalidades"
+                persistent
+                max-width="650px"
+                @keydown.escape="(dialogHistoricoPenalidades = false)"
+            >
+                <v-card dark>
+                    <v-card-actions class="d-flex justify-start ml-n2 ">
+                        <v-btn @click="(dialogHistoricoPenalidades = false)" icon color="red accent-2">
+                            <v-icon color="red accent-2">mdi-close</v-icon>
+                        </v-btn>
+                    </v-card-actions>
+                    <v-card-title class="mt-n4">
+                        Historico de Penalidades Completo
+                    </v-card-title>
+                    <v-card-subtitle  class="d-flex flex-column mt-2">
+                        <p>
+                            <b class="font-italic titulo pt-1">Quantidade de Penalidades : 
+                                {{quantidadePenalidadeHistorico}}
+                            </b>
+                        </p>
+                        <p>
+                            <b class="font-italic titulo pt-1">Total Devido :  
+                            {{valorDevidoPenalidadeHistorico.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</b>
+                        </p>
+                        <p>
+                            <b class="font-italic titulo pt-1">Desconto total já aplicado :  
+                            {{valorPenalidadeHistorico.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</b>
+                        </p>
+                    </v-card-subtitle>
+
+                    <v-card-text>
+                        <v-row class="d-flex flex-column white--text ml-0 ml-md-5" v-for="item in penalidades" :key="item.ID">
+                            <v-col cols="11" >
+                                <div class="d-flex justify-center mt-n2">
+                                    <v-divider class="linha" ></v-divider>
+                                </div>
+                            </v-col>
+                            <v-col class="mt-n3">
+                                <p class="font-italic text-subtitle-1"><b>Codigo da Penalidade : #{{item.ID}} </b></p>
+                            </v-col>
+                            <v-col>
+                                <p class="font-italic text-subtitle-1"><b>Tipo da Penalidade : {{item.TIPO}}</b> </p>
+                            </v-col>
+                            <v-col>
+                                <p class="font-italic text-subtitle-1"><b>Descrição da Penalidade : {{item.DESC}}</b></p>
+                            </v-col>
+                            <v-col>
+                                <p class="font-italic text-subtitle-1"><b>Desconto atual no salário : R$ {{item.DESCONTO.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</b> </p>
+                            </v-col>
+                            <v-col>
+                                <p class="font-italic text-subtitle-1"><b>Desconto original no salário : R$ {{item.ORIGINAL.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</b> </p>
+                            </v-col>
+                            <v-col>
+                                <p class="font-italic text-subtitle-1"><b>Data da Penalidade : {{formatDate( item.DATA)}}</b> </p>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                </v-card>
+
+            </v-dialog>
         </v-card>
     </div>
 </template>
@@ -265,7 +339,13 @@ import DeleteGeneric from '../Delete/DeleteGeneric.vue';
 export default {
     data() {
         return {
-            usuario: null,
+            usuario: {
+                ID : 0,
+                NOME : '',
+                CPF : '',
+                EMAIL : '',
+                SALARIO : '',
+            },
             qntdVendas: 0,
             qntdPenalidades: 0,
             totalVendido: 0,
@@ -275,15 +355,20 @@ export default {
             cargo: "",
             loading: false,
             dialogHistorico: false,
+            dialogHistoricoPenalidades : false, 
             dialog: false,
             penalidades: [],
             historicoSalarios: [],
             mediaValorAno: 0,
+            quantidadePenalidadeHistorico : 0,
+            valorPenalidadeHistorico : 0,
+            valorDevidoPenalidadeHistorico : 0,
             pedidos: [],
         };
     },
     methods: {
-        ...mapActions("userMod", ["showUser", "getPenalidade", "getVendasUser", "getUserMediaVendasAno", "getTotalVendasMes", "getHistoricoSalarios"]),
+        ...mapActions("userMod", ["showUser", "getPenalidade", "getVendasUser", "getUserMediaVendasAno", 
+        "getTotalVendasMes", "getHistoricoSalarios", 'getHistoricoPenalidades']),
         ...mapActions("penalidadeMod", ["getTotalDescontoMes", "deletePenalidade"]),
         async getUser() {
             let data = await this.showUser(this.generico.ID);
@@ -319,11 +404,23 @@ export default {
             return data.toLocaleString();
         },
         async getPenalidades() {
-            this.loading = true;
+            //this.loading = true;
+            this.penalidades = null
             this.penalidades = await this.getPenalidade(this.generico.ID);
             this.totalDescontoPenalidade = await this.getTotalDescontoMes(this.generico.ID);
             this.dialog = true;
-            this.loading = false;
+            //this.loading = false;
+        },
+        async getHistoricoPenal(){
+            this.loading = true 
+            this.penalidades = null 
+            this.penalidades = await this.getHistoricoPenalidades(this.generico.ID)
+            this.valorPenalidadeHistorico = this.penalidades.valorTotal 
+            this.quantidadePenalidadeHistorico = this.penalidades.quantidade
+            this.valorDevidoPenalidadeHistorico = this.penalidades.valorDevido
+            this.penalidades = this.penalidades.penalidades
+            this.dialogHistoricoPenalidades = true 
+            this.loading = false
         },
         async getHistorico() {
             this.loading = true;

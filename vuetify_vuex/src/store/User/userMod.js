@@ -168,6 +168,14 @@ export default{
             })
             return historico
         },
+        async getHistoricoPenalidades(context, payload){
+            const historico = userService.getHistoricoPenalidades(payload).then((res)=>{
+                return res.data
+            }).catch((error)=>{
+                return "Erro :" + error.response.data.message
+            })
+            return historico
+        },
         async logoutUser(){
             userService.logout().then((res)=>{
                 console.log(res)

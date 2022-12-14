@@ -30,7 +30,8 @@ export default function execute(){
           if (error.response.status === 401 && access_token) {
             let chaveToken = CryptoJS.AES.encrypt(error.response.data, 'chave_token').toString();
             localStorage.setItem('token', chaveToken)
-            axios.defaults.headers.common['Authorization'] = 'Bearer' + CryptoJS.AES.decrypt(localStorage.getItem('token'), 
+            axios.defaults.headers.common['Authorization'] = 'Bearer' + CryptoJS.AES.decrypt(
+            localStorage.getItem('token').toString(), 
             'chave_token')
             .toString(CryptoJS.enc.Utf8);
           } 

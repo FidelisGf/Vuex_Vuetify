@@ -71,5 +71,8 @@ export default{
     checkIfSalarioFoiPago(payload){
         console.log(payload)
         return axios.post("/checkIfWageWasPayed", payload)
+    },
+    getHistoricoPenalidades($id){
+        return axios.get("/getCompleteHistoryPenalidades/" + $id)
     }
 }

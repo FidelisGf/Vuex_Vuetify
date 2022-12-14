@@ -52,9 +52,7 @@
                     >
                         mdi-cloud-download
                     </v-icon> 
-                    <span class="ml-2">Baixar Folha Salarial</span>
-                    
-                    
+                    <span class="ml-2">Baixar Folha Salarial</span>   
                 </v-btn>
             </v-col>
             <v-col cols="12" lg="4" md="4" class="d-flex justify-center">
@@ -66,6 +64,18 @@
                         mdi-account-cog
                     </v-icon> 
                     <span class="ml-2">Ajustar Folha Salario</span>
+                    
+                </v-btn>
+            </v-col>
+            <v-col cols="12" lg="4" md="4" class="d-flex justify-center">
+                <v-btn text color="indigo accent-1" class="ml-1  font-weight-medium" @click="listPayments = true">
+                    <v-icon
+                        
+                        class="ml-1"
+                    >
+                        mdi-list-box
+                    </v-icon> 
+                    <span class="ml-2">Ver Salarios Pagos</span>
                     
                 </v-btn>
             </v-col>
@@ -201,6 +211,26 @@
                 </v-card>
            </v-dialog>
         </v-row>
+        <v-row>
+            <v-dialog
+                v-model="listPayments"
+                persistent
+                max-width="720"
+                @keydown.escape="closePayment"
+            >
+                <v-card dark>
+                    <v-card-actions>
+                        <v-icon small  class="ml-n2 " color="red accent-2" @click="closePayment">mdi-close</v-icon>
+                    </v-card-actions>
+                    <v-card-title>
+                        Lista de Pagamentos Realizados... 
+                    </v-card-title>
+                    <v-card-text>
+                        <ListaGenerica v-if="listPayments" @deletedPenalidade="setMsg" :key="renicializar" :route="'pagamentos'" :headers="headersPayment"></ListaGenerica>
+                    </v-card-text>
+                </v-card>
+            </v-dialog>
+        </v-row>
         <v-row class="d-flex justify-center mt-10">
             <ListaGenerica @deletedPenalidade="setMsg" :key="renicializar" :route="'usuarios'" :headers="headers"></ListaGenerica>
         </v-row>
@@ -232,6 +262,7 @@ export default {
             filtroTmp : null,
             folhabaixada : false,
             chooseModal : false,
+            listPayments : false, 
         }
     },
     components: { FuncionarioModal, ListaGenerica, PenalidadeModal },
@@ -256,6 +287,10 @@ export default {
           this.escolhaFolha = null  
           this.folhabaixada = false
           this.chooseModal = false
+        },
+        closePayment(){
+            this.listPayments = false 
+            this.renicializar += 1
         },
         async chooseFolha(){
             let obj = await this.showAjusteFolha()
@@ -391,6 +426,18 @@ export default {
             ];
         },
         ...mapGetters({ userLevel: "userMod/getUserLevel", empresaUser : 'userMod/getEmpresa' }),
+        headersPayment() {
+            return [
+                { text: "Cod", value: "ID",},
+                {
+                    text: "Valor Pago",
+                    value: "VALOR_PAGO",
+                },
+                { text: "Tipo", value: "TIPO" },
+                { text: "Data", value: "DATA" },
+                { text: "Actions", value: "actions", sortable: false },
+            ];
+        },
     }
     
 }

@@ -50,7 +50,7 @@
                             persistent-hint
                             required
                             color="teal lighten-1"
-                            type="date"
+                            type="datetime-local"
                             dark
                         ></v-text-field>
                     </v-col>
