@@ -56,13 +56,20 @@ export default{
     getHistoricoSalario($id){
         return axios.get("/getHistoricoSalarioUser/" + $id)
     },
-    getFolhaSalarioUsers(){
-        return axios.get("/getFolhaSalarioUsers")
+    getFolhaSalarioUsers(payload){
+        return axios.post("/getFolhaSalarioUsers", payload)
     },
     setAjustesFolhaFuncionarios(payload){
         return axios.post("/setAjustes", payload)
     },
     showAjuste(){
         return axios.get("/showAjuste")
+    },
+    pagarSalarioFuncionario(payload){
+        return axios.post("/makeWagePayment", payload)
+    },
+    checkIfSalarioFoiPago(payload){
+        console.log(payload)
+        return axios.post("/checkIfWageWasPayed", payload)
     }
 }

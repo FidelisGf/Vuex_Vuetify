@@ -155,13 +155,14 @@
            >
                 <v-card dark>
                     <v-card-actions>
-                        <v-icon  class="ml-n2 " color="red accent-2" @click="chooseModal = false">mdi-close</v-icon>
+                        <v-icon small  class="ml-n2 " color="red accent-2" @click="chooseModal = false">mdi-close</v-icon>
                     </v-card-actions>
                     <v-card-title class="mt-n5">
-                            Escolha a Folha salarial... 
+                        <span v-if="!folhabaixada">Escolha a Folha salarial... </span>
+                        <span v-else class="text-subtitle-1">Deseja Marcar como paga essa folha ?</span>   
                     </v-card-title>
                     <v-card-text class="mt-2">
-                            <v-row class="d-flex justify-center">
+                            <v-row class="d-flex justify-center" v-if="!folhabaixada">
                                 <v-col cols="12" class="d-flex justify-center">
                                     <v-btn  text color="indigo lighten-3" @click="setFolha('Adiantamento')">
                                         <v-icon
@@ -182,6 +183,18 @@
                                             </v-icon> 
                                             <span class="ml-2">Folha Salário</span>
                                         </v-btn>
+                                </v-col>
+                            </v-row>
+                            <v-row v-else>
+                                <v-col cols="12" class="d-flex justify-center">
+                                    <v-btn text @click="pagarFolha" color="indigo lighten-2">
+                                        Marcar {{this.escolhaFolha}} como Pago
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="12" class="d-flex justify-center" >
+                                    <v-btn text @click="chooseModal = false" color="red lighten-2">
+                                        Cancelar
+                                    </v-btn>
                                 </v-col>
                             </v-row>
                     </v-card-text>
@@ -216,13 +229,15 @@ export default {
             dtPagamentoAdiantamento : '',
             loading : false,
             escolhaFolha : null,
+            filtroTmp : null,
+            folhabaixada : false,
             chooseModal : false,
         }
     },
     components: { FuncionarioModal, ListaGenerica, PenalidadeModal },
     methods:{
         ...mapActions('userMod', ['getActiveUsers', 'getEmpresaFromUser', 'getFolhaSalario', 
-        'setAjustesFolha', 'showAjusteFolha']),
+        'setAjustesFolha', 'showAjusteFolha', 'pagarFuncionarios', 'checkIfSalario']),
         async setCountAtivos(){
             this.count = await this.getActiveUsers()
         },
@@ -236,44 +251,60 @@ export default {
             this.msg = e
             this.registro = true
         },
+        clearFiltros(){
+          this.filtroTmp = null
+          this.escolhaFolha = null  
+          this.folhabaixada = false
+          this.chooseModal = false
+        },
         async chooseFolha(){
             let obj = await this.showAjusteFolha()
             if(obj.DT_ADIANTAMENTO !== null){
                 this.chooseModal = true
             }else{
-                this.downLoadFolhaSalario()
+                this.filtroTmp = "SALARIO"
+                this.folhabaixada = true
+                this.chooseModal = true 
+                this.downLoadFolhaSalario("Salario")
             }
+        },
+        async pagarFolha(){
+            let flag = false
+            if(this.filtroTmp != null){
+                this.escolhaFolha = this.filtroTmp
+                flag = true
+            }
+            let pay = {TIPO : this.escolhaFolha}
+            const check = await this.checkIfSalario(pay)
+            console.log(check)
+            if(!check){
+               let payload = {TIPO : this.escolhaFolha, FLAG : flag}
+               this.msg = await this.pagarFuncionarios(payload)
+               this.registro = true
+            }else{
+               this.msg = "Folha " + this.escolhaFolha + " já foi paga nesse mês"
+               this.registro = true
+            }
+            this.clearFiltros()
         },
         async setFolha(filtro){
             this.escolhaFolha = filtro
-            this.downLoadFolhaSalario()
-            this.chooseModal = false
+            this.downLoadFolhaSalario(filtro)
+            this.folhabaixada = true
         },
-        async downLoadFolhaSalario(){
-            
+        async downLoadFolhaSalario(filtro){
+            let flag = false
             let pdf = new jsPDF()
-            let values = await this.getFolhaSalario()
-            if(this.escolhaFolha != null){
-                if(this.escolhaFolha == 'Salario'){
-                    values.forEach(element => {
-                        element.FINAL  = parseFloat((element.FINAL * 60) / 100).toFixed(2)
-                        element.DESPESATOTAL = parseFloat((element.DESPESATOTAL * 60) / 100).toFixed(2)
-                    });
-                }else{
-                    values.forEach(element => {
-                        element.FINAL  = parseFloat((element.FINAL * 40) / 100).toFixed(2)
-                        element.DESPESATOTAL = parseFloat((element.DESPESATOTAL * 40) / 100).toFixed(2)
-                    });
-                }
+            if(this.filtroTmp != null){
+                flag = true
             }
-            let valorTotal = values.reduce((accumulator, object)=>{
-                    return parseFloat(accumulator) + parseFloat(object.FINAL) // separa parseFloat
-            },0)
-            values = values.map( (elemento) => Object.values(elemento));
+            let payload = {FILTRO : filtro, FLAG : flag}
+            let values = await this.getFolhaSalario(payload)
+            let valorTotal = values.vlTotal
+            values = values.data.map( (elemento) => Object.values(elemento));
             const nameOfMonth = new Date().toLocaleString(
                 'default', {month: 'long'}
             );
-            
             pdf.setFontSize(26)
             pdf.text(this.empresaUser.NOME + ' Relatorio'  , 15, 15)
             pdf.setFontSize(10)
@@ -283,9 +314,9 @@ export default {
             pdf.setFontSize(26)
             pdf.text('-------------------------------------------------------------------', 2, 28)
             pdf.setFontSize(22)
-            pdf.text("Relatorio : Folha Salarial de" + " " + nameOfMonth, 15, 35)
+            pdf.text("Relatorio : Folha " + filtro + " de" + " " + nameOfMonth, 15, 35)
             pdf.setFontSize(10);
-            pdf.text("Sempre utilize como base a coluna : SALARIO_FINAL ", 15, 42)
+            pdf.text("Sempre utilize como base a coluna : A RECEBER ", 15, 42)
             pdf.text("Valor Total da Folha  R$ " + valorTotal.toFixed(2), 15, 48)
             if(this.columns != undefined || this.columns != null){
                 autoTable(pdf,

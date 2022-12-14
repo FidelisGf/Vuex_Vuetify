@@ -116,8 +116,8 @@ export default{
             })
             return respo
         },
-        async getFolhaSalario(){
-            const data = userService.getFolhaSalarioUsers().then((res)=>{
+        async getFolhaSalario(context, payload){
+            const data = userService.getFolhaSalarioUsers(payload).then((res)=>{
                 return res.data
             }).catch((error)=>{
                 return error
@@ -224,6 +224,22 @@ export default{
             }).catch((error)=>{
                 return error
             }) 
+            return data
+        },
+        pagarFuncionarios(context, payload){
+           const text =  userService.pagarSalarioFuncionario(payload).then((res)=>{
+                return res.data.message
+            }).catch((error)=>{
+                return "Error : " + error.response.data.message
+            })
+            return text
+        },
+        checkIfSalario(context,payload){
+            const data = userService.checkIfSalarioFoiPago(payload).then((res)=>{
+                return res.data
+            }).catch((error)=>{
+                return error
+            })
             return data
         }
 
