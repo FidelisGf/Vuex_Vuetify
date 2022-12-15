@@ -5,7 +5,9 @@
             persistent
             max-width="650"
             @keydown.escape="active = false"
-            :fullscreen="$vuetify.breakpoint.mobile"
+            fullscreen
+            hide-overlay
+            transition="dialog-bottom-transition"
             
         >                                    
                 <template v-slot:activator="{ on, attrs }">

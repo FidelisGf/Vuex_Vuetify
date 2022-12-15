@@ -4,7 +4,10 @@
         >
           <v-list-item class="px-5">
             <v-list-item-content>
-              <v-list-item-subtitle >{{userCargo}}</v-list-item-subtitle>
+              <v-list-item-subtitle class="d-flex flex-row">
+                  <ConfigModal class="ml-n5" ></ConfigModal>
+                  <p class="mt-3 white--text">{{userCargo}}</p>
+              </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-list-item class="px-2">
@@ -82,33 +85,33 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import ConfigModal from './ConfigModal.vue'
 /* eslint-disable */
 export default {
-  data(){
-    return {
-      dialog: false,
-      one : false,
-      user : null,
-    }
-  },
-    computed:{
-      ...mapGetters({name : 'userMod/getUser', userLevel : 'userMod/getUserLevel', userCargo : 'userMod/getUserCargo'}),
-      mini(){
-        switch (this.$vuetify.breakpoint.name) {
-          case 'xs': return true
-          case 'sm': return true
-          case 'md': return false
-          case 'lg': return false
-          case 'xl': return false
+    data() {
+        return {
+            dialog: false,
+            one: false,
+            user: null,
+        };
+    },
+    computed: {
+        ...mapGetters({ name: "userMod/getUser", userLevel: "userMod/getUserLevel", userCargo: "userMod/getUserCargo" }),
+        mini() {
+            switch (this.$vuetify.breakpoint.name) {
+                case "xs": return true;
+                case "sm": return true;
+                case "md": return false;
+                case "lg": return false;
+                case "xl": return false;
+            }
+            return this.$vuetify.breakpoint.mdAndDown;
         }
-      return this.$vuetify.breakpoint.mdAndDown;
-    }
-  },
-  created(){
-    
-    this.user = localStorage.getItem('user')
-  },
-
+    },
+    created() {
+        this.user = localStorage.getItem("user");
+    },
+    components: { ConfigModal }
 }
 </script>
 

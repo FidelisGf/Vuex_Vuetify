@@ -55,7 +55,7 @@
                 <v-row class="d-flex flex-column flex-md-row mt-n3">
                     <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
                         <p>
-                            <b class="font-italic titulo pl-4 pl-md-5">Lucro encima da venda :</b> {{lucro.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
+                            <b class="font-italic titulo pl-4 pl-md-5">Lucro encima do custo : </b> {{lucro.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
                             <span v-if="percent >= 50" class="green--text">({{percent}}%) de lucro</span><span class="red--text" v-else>({{percent}}%) de lucro</span>
                         </p>
                     </v-col>
@@ -125,12 +125,14 @@ export default {
         async getProduct() {
             this.produto = await this.findById(this.generico.ID)
             this.lucro = await this.getLucroByProd(this.generico.ID)
+            this.percent = this.lucro.porcentagem
+            this.lucro = this.lucro.lucro
             if(this.produto != null && this.produto != undefined){
                 this.produto.CREATED_AT = await this.formatDate(this.produto.CREATED_AT)
                 this.produto.UPDATED_AT = await this.formatDate(this.produto.UPDATED_AT)
                 this.loading = false
             }
-            await this.getPercent()
+            
         },
         clear(){
             this.produto = null
@@ -138,10 +140,6 @@ export default {
         },
         close(){
             this.$emit('close', false)
-        },
-        getPercent(){
-            this.percent = Math.round((this.lucro / this.produto.VALOR) * 100);
-            console.log(this.percent)
         },
         formatDate(date){
             let obj = new Date(date)

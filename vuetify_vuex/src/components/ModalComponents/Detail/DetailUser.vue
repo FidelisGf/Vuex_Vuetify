@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-skeleton-loader
-            v-if="loading" class="black" :loading="loading" transition="fade-transition" type="card"
+            v-if="loading" class="black" fullscreen :loading="loading" transition="dialog-bottom-transition" type="card"
         >
         </v-skeleton-loader>
         <v-card class="cards-colors" :elevation="6" v-else>
@@ -138,6 +138,9 @@
                 persistent
                 max-width="620px"
                 @keydown.escape="dialog = false"
+                fullscreen
+                hide-overlay
+                transition="dialog-bottom-transition"
             >   
                 <v-card class="cards-colors" :elevation="6">
                     <v-card-actions class="d-flex justify-start ml-n2 ">
@@ -184,6 +187,9 @@
                 persistent
                 max-width="620px"
                 @keydown.escape="(dialogVendas = false)"
+                fullscreen
+                hide-overlay
+                transition="dialog-bottom-transition"
             >   
                 <v-card class="cards-colors" :elevation="6">
                     <v-card-actions class="d-flex justify-start ml-n2 ">
@@ -233,6 +239,9 @@
                 persistent
                 max-width="620px"
                 @keydown.escape="(dialogHistorico = false)"
+                fullscreen
+                hide-overlay
+                transition="dialog-bottom-transition"
             >   
                 <v-card class="cards-colors" :elevation="6">
                     <v-card-actions class="d-flex justify-start ml-n2 ">
@@ -273,6 +282,9 @@
                 persistent
                 max-width="650px"
                 @keydown.escape="(dialogHistoricoPenalidades = false)"
+                fullscreen
+                hide-overlay
+                transition="dialog-bottom-transition"
             >
                 <v-card dark>
                     <v-card-actions class="d-flex justify-start ml-n2 ">
@@ -300,11 +312,26 @@
                     </v-card-subtitle>
 
                     <v-card-text>
-                        <v-row class="d-flex flex-column white--text ml-0 ml-md-5" v-for="item in penalidades" :key="item.ID">
+                        <v-row class="d-flex flex-column white--text ml-0 ml-md-5" v-for="item in historicoPenalidades" :key="item.ID">
                             <v-col cols="11" >
                                 <div class="d-flex justify-center mt-n2">
                                     <v-divider class="linha" ></v-divider>
+                                    <v-icon v-if="item.DESCONTO <= 0" color="green" class="ml-2 mt-n3">
+                                        mdi-checkbox-marked-circle
+                                    </v-icon>
+                                    <v-icon v-else color="red" class="ml-2 mt-n3">
+                                        mdi-alert-circle
+                                    </v-icon>
+                                    
                                 </div>
+                            </v-col>
+                            <v-col class="mt-n3">
+                                <p class="font-italic text-subtitle-1">
+                                    <b>
+                                        <span  v-if="parseFloat(item.DESCONTO) <= 0" class="green--text">Pago</span>
+                                        <span v-else class="red--text">Pendente</span>
+                                    </b>
+                                </p>
                             </v-col>
                             <v-col class="mt-n3">
                                 <p class="font-italic text-subtitle-1"><b>Codigo da Penalidade : #{{item.ID}} </b></p>
@@ -360,6 +387,7 @@ export default {
             penalidades: [],
             historicoSalarios: [],
             mediaValorAno: 0,
+            historicoPenalidades : null,
             quantidadePenalidadeHistorico : 0,
             valorPenalidadeHistorico : 0,
             valorDevidoPenalidadeHistorico : 0,
@@ -404,21 +432,20 @@ export default {
             return data.toLocaleString();
         },
         async getPenalidades() {
-            //this.loading = true;
+            this.loading = true;
             this.penalidades = null
             this.penalidades = await this.getPenalidade(this.generico.ID);
             this.totalDescontoPenalidade = await this.getTotalDescontoMes(this.generico.ID);
             this.dialog = true;
-            //this.loading = false;
+            this.loading = false;
         },
         async getHistoricoPenal(){
             this.loading = true 
-            this.penalidades = null 
-            this.penalidades = await this.getHistoricoPenalidades(this.generico.ID)
-            this.valorPenalidadeHistorico = this.penalidades.valorTotal 
-            this.quantidadePenalidadeHistorico = this.penalidades.quantidade
-            this.valorDevidoPenalidadeHistorico = this.penalidades.valorDevido
-            this.penalidades = this.penalidades.penalidades
+            this.historicoPenalidades = await this.getHistoricoPenalidades(this.generico.ID)
+            this.valorPenalidadeHistorico = this.historicoPenalidades.valorTotal 
+            this.quantidadePenalidadeHistorico = this.historicoPenalidades.quantidade
+            this.valorDevidoPenalidadeHistorico = this.historicoPenalidades.valorDevido
+            this.historicoPenalidades = this.historicoPenalidades.penalidades
             this.dialogHistoricoPenalidades = true 
             this.loading = false
         },

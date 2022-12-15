@@ -108,6 +108,7 @@
                 persistent
                 max-width="780px"
                 @keydown.escape="detail = false"
+                transition="dialog-bottom-transition"
             >
                 <DetailProduct @close="closeDetail" v-if="route == 'products'"></DetailProduct>
                 <DetailUser @deleted="emitDeletePenalidade" @close="closeDetail" v-else-if="route == 'usuarios'"></DetailUser>

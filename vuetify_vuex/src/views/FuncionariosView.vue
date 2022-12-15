@@ -217,6 +217,9 @@
                 persistent
                 max-width="720"
                 @keydown.escape="closePayment"
+                fullscreen
+                hide-overlay
+                transition="dialog-bottom-transition"
             >
                 <v-card dark>
                     <v-card-actions>
