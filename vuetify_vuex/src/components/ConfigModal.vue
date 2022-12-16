@@ -21,7 +21,10 @@
                     <v-icon aria-hidden="false" dark color="grey lighten-2">mdi-cog</v-icon>
                 </v-btn>
             </template>
-            <v-card dark class="cardi">
+            <v-skeleton-loader
+            v-if="loading" class="black"  :loading="loading"  type="card"
+            ></v-skeleton-loader>
+            <v-card dark class="cardi" v-else>
                 <v-sheet color="grey darken-3" :elevation="4">
                             <v-card-title >
                                 <p>Configurações Gerais do Sistema</p>
@@ -116,13 +119,26 @@
             </v-card>
             <v-footer  fixed color="transparent">
                 <v-row>
-                    <v-col class="d-flex justify-end" >
+                    <v-col cols="12" class="d-flex justify-center">
+                        <v-alert
+                            v-model="alert"
+                            border="left"
+                            close-text="Fechar"
+                            color="green darken-3"
+                            dark
+                            dismissible
+                            transition="scale-transition"
+                        >
+                           <span>{{msg}}</span>
+                        </v-alert>
+                    </v-col>
+                    <v-col class="d-flex justify-end" v-if="!alert" >
                         <v-btn icon fab>
-                            <v-icon x-large color="red darken-2">
+                            <v-icon x-large @click="dialog = false" color="red darken-2">
                                 mdi-arrow-u-left-top-bold
                              </v-icon>
                         </v-btn>
-                        <v-btn icon fab @click="test">
+                        <v-btn icon fab @click="setConfigs">
                             <v-icon x-large color="teal darken-2">
                                mdi-content-save
                              </v-icon>
@@ -147,11 +163,17 @@ export default {
             comissao : false, 
             porcentagemComissao : 0.01,
             tabelaVirtual : false,
+            alert: false,
+            msg : '',
+            loading : false,
+            flag : false,
         }
     },
     methods:{
         ...mapActions('userMod', ['setAjustesFolha', 'showAjusteFolha']),
+        ...mapActions('utilMod', ['setConfig', 'getConfig']),
         async openAjustes(){
+            this.loading = true
             let obj = await this.showAjusteFolha()
             if(obj.DT_ADIANTAMENTO !== null && obj.DT_ADIANTAMENTO !== undefined){
                 this.adiantamento = true
@@ -165,18 +187,47 @@ export default {
             if(!compararData){
                 let payload = {DT_PAGAMENTO : this.dtPagamentoSalario, 
                     DT_ADIANTAMENTO : this.dtPagamentoAdiantamento, FLAG : this.adiantamento}
-                this.msg = await this.setAjustesFolha(payload)
-                this.registro = true
-                this.active = false
+                let msg = await this.setAjustesFolha(payload)
+                return msg
             }
         },
         formatDatas(obj){
             obj = new Date(obj).toLocaleDateString('en-CA');
             return obj
         },
-        test(){
-            this.porcentagemComissao = parseFloat(this.porcentagemComissao)
-            console.log(this.porcentagemComissao)
+        async setConfigs(){
+            let payload = this.makePayload("Comissao", this.comissao, this.porcentagemComissao)
+            let msg1 = await this.setConfig(payload)
+            let payload2 = this.makePayload("Tabela_Virtual", this.tabelaVirtual, "1") 
+            let msg2 = await this.setConfig(payload2)
+            let msg3 = await this.setAjustes()
+            this.msg = msg1 + "; " + msg2 + "; " + msg3
+            this.alert = true
+            console.log(this.msg)
+        },
+        async getConfigsGeneric(nome){
+            let payload = this.makeGetPayload(nome)
+            let data = await this.getConfig(payload)
+            return data            
+        },
+        async getAllConfigs(){
+            let porcentagemDt = await this.getConfigsGeneric("Comissao")
+            this.comissao = porcentagemDt.ESTADO 
+            this.porcentagemComissao = parseFloat(porcentagemDt.PARAMETRO) 
+            let tabelaDt = await this.getConfigsGeneric("Tabela_Virtual")
+            this.tabelaVirtual = tabelaDt.ESTADO
+        },
+        makePayload(nome, estado, parametro){
+            let payload = {ESTADO : estado, 
+                PARAMETRO : parametro, NOME : nome}
+            return payload
+        },
+        makeGetPayload(nome){
+            let payload = {NOME : nome}
+            return payload
+        },
+        comparaDatas(obj1, obj2){
+         return obj1 == obj2 ? true : false 
         }
 
     },
@@ -194,11 +245,16 @@ export default {
             if(val >= 99.99){
                 this.porcentagemComissao = 99.99
             }
+        },
+        dialog : function(val) {
+            if(val == true && this.flag == false){
+                this.openAjustes()
+                this.getAllConfigs()
+                this.loading = false
+                this.flag = true
+            }
         }
-    },
-   
-    async created() {
-        await this.openAjustes()
+    
     },
 }
 </script>

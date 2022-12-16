@@ -56,21 +56,8 @@
                 </v-btn>
             </v-col>
             <v-col cols="12" lg="4" md="4" class="d-flex justify-center">
-                <v-btn text color="teal accent-2" class="ml-1  font-weight-medium" @click="openAjustes">
-                    <v-icon
-                        
-                        class="ml-1"
-                    >
-                        mdi-account-cog
-                    </v-icon> 
-                    <span class="ml-2">Ajustar Folha Salario</span>
-                    
-                </v-btn>
-            </v-col>
-            <v-col cols="12" lg="4" md="4" class="d-flex justify-center">
                 <v-btn text color="indigo accent-1" class="ml-1  font-weight-medium" @click="listPayments = true">
                     <v-icon
-                        
                         class="ml-1"
                     >
                         mdi-list-box
@@ -79,82 +66,6 @@
                     
                 </v-btn>
             </v-col>
-        </v-row>
-        <v-row>
-            <v-dialog
-                v-model="active"
-                persistent
-                max-width="400"
-                @keydown.escape="active = false"
-            
-            
-            >
-                <v-skeleton-loader
-                    v-if="loading" class="black" :loading="loading" transition="fade-transition" type="card"
-                >
-                </v-skeleton-loader>
-                <v-card dark v-else>
-                    <v-card-actions>
-                        <v-icon  class="ml-n2 " color="red accent-2" @click="active = false">mdi-close</v-icon>
-                    </v-card-actions>
-                    <v-card-title>
-                        Ajustes da Folha...
-                    </v-card-title>
-                    <v-card-subtitle>
-                        <small>Somente o dia é considerado nas datas !</small>
-                        <v-switch
-                            v-model="adiantamento"
-                            label="Utilizar Adiantamento..."
-                            color="green darken-3"
-                            hide-details
-                        ></v-switch>
-                    </v-card-subtitle>
-                    <form ref="form" @submit.prevent="setAjustes" class="mt-n4">
-                        <v-card-text>
-                            <v-row>
-                                <v-col cols="12">
-                                    <v-text-field
-                                        v-model="dtPagamentoSalario"
-                                        label="Data de Pagamento do Salário"
-                                        persistent-hint
-                                        required
-                                        color="teal lighten-1"
-                                        type="date"
-                                        dark
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col cols="12" v-if="adiantamento">
-                                    <v-text-field
-                                        v-model="dtPagamentoAdiantamento"
-                                        label="Data de Pagamento do Adiantamento"
-                                        persistent-hint
-                                        required
-                                        color="teal lighten-1"
-                                        type="date"
-                                        dark
-                                    ></v-text-field>
-                                </v-col>
-                            </v-row>
-                        </v-card-text>
-                        <v-card-actions class="d-flex justify-end">
-                            <v-btn
-                                text 
-                                @click="active = false"
-                                color="red accent-2"
-                            >
-                                Fechar
-                            </v-btn>
-                            <v-btn
-                                text 
-                                type="submit"
-                                color="teal accent-2"
-                            >
-                                Salvar
-                            </v-btn>
-                        </v-card-actions>
-                    </form>
-                </v-card>
-            </v-dialog>
         </v-row>
         <v-row>
            <v-dialog
@@ -257,9 +168,6 @@ export default {
             renicializar : 0,
             columns : ['CODIGO', 'NOME', 'CPF', 'DESCONTOS', 'SALARIO_BASE', 'A RECEBER'],
             active : false,
-            adiantamento : false,
-            dtPagamentoSalario : '',
-            dtPagamentoAdiantamento : '',
             loading : false,
             escolhaFolha : null,
             filtroTmp : null,
@@ -371,35 +279,6 @@ export default {
             }
             pdf.save('FolhaSalarial'); 
         },
-        async openAjustes(){
-            this.loading = true
-            this.active = true
-            let obj = await this.showAjusteFolha()
-            if(obj.DT_ADIANTAMENTO !== null && obj.DT_ADIANTAMENTO !== undefined){
-                this.adiantamento = true
-                this.dtPagamentoAdiantamento = this.formatDatas(obj.DT_ADIANTAMENTO) 
-                console.log(this.dtPagamentoAdiantamento)
-            }
-            this.dtPagamentoSalario = this.formatDatas(obj.DT_SALARIO)
-            this.loading = false
-        },
-        async setAjustes(){
-            let compararData = this.comparaDatas(this.dtPagamentoSalario, this.dtPagamentoAdiantamento)
-            if(!compararData){
-                let payload = {DT_PAGAMENTO : this.dtPagamentoSalario, 
-                    DT_ADIANTAMENTO : this.dtPagamentoAdiantamento, FLAG : this.adiantamento}
-                this.msg = await this.setAjustesFolha(payload)
-                this.registro = true
-                this.active = false
-            }
-        },
-        formatDatas(obj){
-            obj = new Date(obj).toLocaleDateString('en-CA');
-            return obj
-        },
-        comparaDatas(obj1, obj2){
-         return obj1 == obj2 ? true : false 
-        }
     },
     watch: {
         adiantamento: function (val) {

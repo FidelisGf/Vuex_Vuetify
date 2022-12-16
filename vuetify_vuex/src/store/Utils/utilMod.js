@@ -97,6 +97,24 @@ export default{
         },
         setLoad(context, payload){
             context.commit('SET_LOAD', payload)
+        },
+        setConfig(context, payload){
+            payload.ESTADO == true ? "T" : "F"
+           const data = Service.setConfig(payload).then((res)=>{
+                return res.data.message
+           }).catch((error)=>{
+                return "Error : " + error.response.data.message
+           })
+           return data
+        },
+        getConfig(context, payload){
+            const data = Service.getConfig(payload).then((res)=>{
+                res.data.ESTADO == "1" ? true : false
+                return res.data
+            }).catch((error) =>{
+                return error
+            })
+            return data
         }
     },
 }
