@@ -59,6 +59,12 @@
             </v-list-item-icon>
             <v-list-item-title class="white--text">Despesas</v-list-item-title>
           </v-list-item>
+          <v-list-item link @click="$router.push('/funcionarios')" @click.native="dialog = false">
+            <v-list-item-icon>
+              <v-icon color="white">mdi-account</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="white--text">Funcionarios</v-list-item-title>
+          </v-list-item>
           <v-list-item  @click="$router.push('/')" link>
             <v-list-item-icon>
               <v-icon color="white">mdi-arrow-left</v-icon>
