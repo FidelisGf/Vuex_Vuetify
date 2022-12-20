@@ -81,7 +81,7 @@
                                             <v-card-title class="white--text">
                                                         <span class="text-h5 mt-n4">Informações do Produto</span>
                                             </v-card-title>
-                                            <form ref="form" @submit.prevent="proximaEtapa" class="mt-n4">
+                                            <form ref="form" @submit.prevent="proximaEtapa" class="mt-n4" enctype="multipart/form-data">
                                                 <v-card-text>
                                                     <v-row>
                                                         <v-col
@@ -168,10 +168,11 @@
                                                     ></v-select>
                                                     <MedidaModal @insertMedida="listenMsg"></MedidaModal>
                                                 </v-col>
+                                                
                                                 <v-col
                                                     cols="12"
-                                                    sm="11"
-                                                    md="11"
+                                                    sm="12"
+                                                    md="12"
                                                     class="mt-n2"
                                                 >
                                                     <v-textarea
@@ -183,6 +184,20 @@
                                                         counter="300"
                                                         outlined
                                                     ></v-textarea>
+                                                </v-col>
+                                                <v-col cols="6" md="6" class="mt-n2">
+                                                    <label class="arqv" for="arqv">Anexar Foto</label>
+                                                    <input
+                                                        type="file"
+                                                        ref="image"
+                                                        label="Add Image"
+                                                        
+                                                        @change="uploadImage"
+                                                        id="arqv"
+                                                    >
+                                                </v-col>
+                                                <v-col cols="12">
+                                                    <img :src="image_url" height="150" v-if="image_url"/>
                                                 </v-col>
                                             </v-row>
                                         </v-card-text>  
@@ -263,6 +278,7 @@ import { mapGetters,mapActions } from 'vuex';
 import MedidaModal from './MedidaModal.vue';
 import MaterialModal from './MaterialModal.vue';
 import ChoseMateriaisModal from './ChoseMateriaisModal.vue';
+
 export default {
     props: {
         miniatura: Boolean
@@ -289,6 +305,9 @@ export default {
             e1 : 1,
             quantidade_inicial : 0,
             renicializar : 0,
+            image_product : null,
+            image_url : null,
+            image_file : null,
            
         };
     },
@@ -352,10 +371,12 @@ export default {
         },  
         
        async postProduto() {
+            
+            console.log(this.image_file)
             var payload = { NOME: this.NOME, VALOR: this.VALOR, DESC: this.DESC,
                  quantidade_inicial: this.quantidade_inicial,
                   ID_CATEGORIA: this.Categoria.ID_CATEGORIA
-                  , NOME_C : this.Categoria.NOME_C, ID_MEDIDA : this.Medida.ID, MATERIAIS : this.materias };
+                  , NOME_C : this.Categoria.NOME_C, ID_MEDIDA : this.Medida.ID, MATERIAIS : this.materias, file : this.image_url };
             this.msg = await this.post(payload)
             this.loading = true
             await this.forceRerender()      
@@ -367,7 +388,30 @@ export default {
             this.clearMateriais()
             this.cleanProduct()
         },
+        uploadImage(e){
+            //this.image_product = this.$refs.file.files[0]
+            this.image_product = e.target.files
+            console.log(this.image_product[0])
+            if(this.image_product[0] !== undefined){
+                let name = this.image_product[0].name 
+                console.log(name)
+            }
+            const fr = new FileReader()
+            fr.readAsDataURL(this.image_product[0])
+            fr.addEventListener('load', ()=>{
+                this.image_url = fr.result
+                this.image_file = this.image_product[0]
+            })
+            console.log(this.image_url)
+            console.log(this.image_file)
+        },
         proximaEtapa(){
+            console.log(this.image_product)
+            if(this.image_product){
+                let formImage = new FormData()
+                formImage.append('image', this.image_product.name)
+                console.log(formImage)
+            }
             this.e1 = 2
         },
         cleanProduct(){
@@ -407,5 +451,18 @@ export default {
         transform: translate(2px, +2.10px);
         transition: 1.5s;
         box-shadow: 2px 2px 25px 2px #09d163 !important;
+    }
+    input[type="file"] {
+        display: none;
+    }
+    .arqv {
+        padding: 20px 10px;
+        width: 150px;
+        background-color: rgb(59, 59, 59);
+        color: #FFF;
+        text-align: center;
+        display: block;
+        margin-top: 5px;
+        cursor: pointer;
     }
 </style>
