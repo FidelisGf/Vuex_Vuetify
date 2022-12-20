@@ -81,7 +81,7 @@
                                             <v-card-title class="white--text">
                                                         <span class="text-h5 mt-n4">Informações do Produto</span>
                                             </v-card-title>
-                                            <form ref="form" @submit.prevent="proximaEtapa" class="mt-n4" enctype="multipart/form-data">
+                                            <form ref='myform' @submit.prevent="proximaEtapa" class="mt-n4" enctype="multipart/form-data">
                                                 <v-card-text>
                                                     <v-row>
                                                         <v-col
@@ -185,7 +185,7 @@
                                                         outlined
                                                     ></v-textarea>
                                                 </v-col>
-                                                <v-col cols="6" md="6" class="mt-n2">
+                                                <v-col cols="12" md="12" class="mt-n2 d-flex justify-space-between  flex-sm-row flex-column">
                                                     <label class="arqv" for="arqv">Anexar Foto</label>
                                                     <input
                                                         type="file"
@@ -195,10 +195,15 @@
                                                         @change="uploadImage"
                                                         id="arqv"
                                                     >
+                                                    
+                                                    <v-img   
+                                                        class="mt-2 mt-sm-0" 
+                                                        max-height="350"
+                                                        max-width="450"
+                                                        :src="image_url"
+                                                    ></v-img>
                                                 </v-col>
-                                                <v-col cols="12">
-                                                    <img :src="image_url" height="150" v-if="image_url"/>
-                                                </v-col>
+                                               
                                             </v-row>
                                         </v-card-text>  
                                         <small class="ml-3 mt-n6" >*Os produtos criados serão adicionados ao seu estoque.</small>  
@@ -308,6 +313,7 @@ export default {
             image_product : null,
             image_url : null,
             image_file : null,
+            binary : Blob
            
         };
     },
@@ -371,13 +377,18 @@ export default {
         },  
         
        async postProduto() {
-            
-            console.log(this.image_file)
-            var payload = { NOME: this.NOME, VALOR: this.VALOR, DESC: this.DESC,
-                 quantidade_inicial: this.quantidade_inicial,
-                  ID_CATEGORIA: this.Categoria.ID_CATEGORIA
-                  , NOME_C : this.Categoria.NOME_C, ID_MEDIDA : this.Medida.ID, MATERIAIS : this.materias, file : this.image_url };
-            this.msg = await this.post(payload)
+            let fomr = new FormData()
+            fomr.append('NOME', this.NOME)
+            fomr.append('VALOR', this.VALOR)
+            fomr.append('DESC', this.DESC)
+            fomr.append('quantidade_inicial', this.quantidade_inicial)
+            fomr.append('ID_CATEGORIA', this.Categoria.ID_CATEGORIA)
+            fomr.append('NOME_C', this.Categoria.NOME_C)
+            fomr.append('ID_MEDIDA', this.Medida.ID)
+            let materias = JSON.stringify(this.materias)
+            fomr.append('MATERIAIS', materias)
+            fomr.append('IMAGE', this.image_file, this.image_file.name)
+            this.msg = await this.post(fomr)
             this.loading = true
             await this.forceRerender()      
             this.registro = true
@@ -389,29 +400,17 @@ export default {
             this.cleanProduct()
         },
         uploadImage(e){
-            //this.image_product = this.$refs.file.files[0]
             this.image_product = e.target.files
-            console.log(this.image_product[0])
-            if(this.image_product[0] !== undefined){
-                let name = this.image_product[0].name 
-                console.log(name)
-            }
+           
             const fr = new FileReader()
             fr.readAsDataURL(this.image_product[0])
             fr.addEventListener('load', ()=>{
                 this.image_url = fr.result
                 this.image_file = this.image_product[0]
             })
-            console.log(this.image_url)
-            console.log(this.image_file)
+           
         },
         proximaEtapa(){
-            console.log(this.image_product)
-            if(this.image_product){
-                let formImage = new FormData()
-                formImage.append('image', this.image_product.name)
-                console.log(formImage)
-            }
             this.e1 = 2
         },
         cleanProduct(){
@@ -457,7 +456,9 @@ export default {
     }
     .arqv {
         padding: 20px 10px;
-        width: 150px;
+        max-width: 160px;
+        height: 60px;
+        max-height: 60px;
         background-color: rgb(59, 59, 59);
         color: #FFF;
         text-align: center;

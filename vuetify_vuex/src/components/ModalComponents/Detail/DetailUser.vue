@@ -392,6 +392,7 @@ export default {
             valorPenalidadeHistorico : 0,
             valorDevidoPenalidadeHistorico : 0,
             pedidos: [],
+            
         };
     },
     methods: {
@@ -405,6 +406,7 @@ export default {
             this.qntdPenalidades = data.qntdPenalidades;
             this.cargo = data.cargo;
             this.totalVendido = data.totalVendido;
+            
             if (this.usuario != null || this.usuario != undefined) {
                 this.usuario.CREATED_AT = await this.formatDate(this.usuario.CREATED_AT);
                 this.usuario.UPDATED_AT = await this.formatDate(this.usuario.UPDATED_AT);

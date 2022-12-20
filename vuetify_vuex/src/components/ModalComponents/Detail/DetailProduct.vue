@@ -13,50 +13,56 @@
                     @click="close"
                 ><v-icon color="red accent-2 " >mdi-close</v-icon></v-btn>
             </v-card-actions>
-            <v-card-title class="white--text text-md-h5 text-subtitle-1  mt-n4">
-                <p class="pl-5">Detalhes do Produto : # {{produto.NOME}} [{{produto.ID}}] </p>
+            <v-card-title class="white--text text-md-h5 text-subtitle-1  mt-n4 d-flex justify-center flex-column">
+                <p >Detalhes do Produto : # {{produto.NOME}} [{{produto.ID}}] </p>
+                <v-img   
+                    class="mt-2 mt-sm-0" 
+                    max-height="250"
+                    max-width="250"
+                    :src="url"
+                ></v-img>
             </v-card-title>
-            <v-card-text class="mt-n7 ml-0 ml-md-0">
-                <v-row class="d-flex flex-column flex-md-row pl-6">
-                    <v-col class="white--text  text-subtitle-1 text-md-h6  font-italic">
+            <v-card-text class="mt-n2 ml-0 ml-md-0">
+                <v-row class="d-flex flex-column flex-md-row justify-center">
+                    <v-col class="white--text  text-subtitle-1 text-md-h6 d-flex justify-center font-italic">
                         <p>
                             <b class="font-italic titulo ">Descriçao : </b>{{produto.DESC}}...
                         </p>
                     </v-col>
                 </v-row>
-                <v-row class="d-flex flex-column flex-md-row mt-n3">
-                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
+                <v-row class="d-flex flex-column flex-md-row mt-n3 justify-center">
+                    <v-col class="white--text text-subtitle-1 text-md-h6  font-italic mt-n5 d-flex justify-center">
                         <p>
-                            <b class="font-italic titulo pl-5">Valor do Produto : </b>R$ {{produto.VALOR.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
+                            <b class="font-italic titulo ">Valor do Produto : </b>R$ {{produto.VALOR.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
                         </p>
                     </v-col>
                 </v-row> 
-                <v-row class="d-flex flex-column flex-md-row mt-n3">
-                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
+                <v-row class="d-flex flex-column flex-md-row mt-n3 justify-center">
+                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5 d-flex justify-center">
                         <p>
-                            <b class="font-italic titulo pl-5">Quantidade em Estoque : </b> {{generico.QUANTIDADE}}
+                            <b class="font-italic titulo ">Quantidade em Estoque : </b> {{generico.QUANTIDADE}}
                         </p>
                     </v-col>
                 </v-row>   
-                <v-row class="d-flex flex-column flex-md-row mt-n3">
-                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
+                <v-row class="d-flex flex-column flex-md-row mt-n3 justify-center">
+                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5 d-flex justify-center">
                         <p>
-                            <b class="font-italic titulo pl-5">Categoria do Produto : </b>{{produto.category.NOME_C}} [{{produto.category.ID_CATEGORIA}}]
+                            <b class="font-italic titulo ">Categoria do Produto : </b>{{produto.category.NOME_C}} [{{produto.category.ID_CATEGORIA}}]
                         </p>
                     </v-col>
                 </v-row>  
-                <v-row class="d-flex flex-column flex-md-row mt-n3">
-                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
+                <v-row class="d-flex flex-column flex-md-row mt-n3 justify-center">
+                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5 d-flex justify-center">
                         <p>
-                            <b class="font-italic titulo pl-5">Unidade de Medida : </b>{{produto.medida.NOME}} [{{produto.medida.ID}}]
+                            <b class="font-italic titulo ">Unidade de Medida : </b>{{produto.medida.NOME}} [{{produto.medida.ID}}]
                         </p>
                     </v-col>
                 </v-row> 
-                <v-row class="d-flex flex-column flex-md-row mt-n3">
-                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
+                <v-row class="d-flex flex-column flex-md-row mt-n3 justify-center">
+                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5 d-flex justify-center">
                         <p>
                             <b class="font-italic titulo pl-4 pl-md-5">Margem de Lucro na venda : </b> {{lucro.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
-                            <span v-if="percent <= 20" class="green--text">({{percent.toFixed(3)}}%) de lucro</span><span class="red--text" v-else>({{percent.toFixed(3)}}%) de lucro</span>
+                            <span v-if="percent <= 20 && percent > 0" class="green--text">({{percent.toFixed(2)}}%) de lucro</span><span class="red--text" v-else>({{percent.toFixed(2)}}%) de lucro</span>
                         </p>
                     </v-col>
                 </v-row>
@@ -67,14 +73,14 @@
                         </div>
                     </v-col>
                 </v-row>
-                <v-row class="d-flex flex-column flex-md-row mt-n1">
-                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-md-0 mt-n2 ">
+                <v-row class="d-flex flex-column flex-md-row mt-n1 justify-center">
+                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-md-0 mt-n2 d-flex justify-center flex-column">
                         <p>
-                            <b class="font-italic titulo pl-5">Matérias Primas necessárias : </b>
+                            <b class="font-italic titulo d-flex justify-center">Matérias Primas...</b>
                         </p>
-                        <v-row class="flex-column ml-3 ml-md-10 mt-6"> 
-                            <v-col v-for="materia in produto.MATERIAS" :key="materia.ID"  class="white--text subtitle-1 font-italic">
-                                <p class="pl-0 pl-md-5 mt-n10"><b class="titulo">Nome :</b> {{materia.NOME}}   
+                        <v-row class="flex-column mt-6 justify-center"> 
+                            <v-col v-for="materia in produto.MATERIAS" :key="materia.ID"  class="white--text subtitle-1 font-italic d-flex justify-center">
+                                <p class="pl-0  mt-n10"><b class="titulo">Nome :</b> {{materia.NOME}}   
                                     <b class="titulo">/ Quantidade :</b> {{materia.QUANTIDADE}}   <b class="titulo">/ Custo :</b> {{materia.CUSTO.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>
                             </v-col>
                         </v-row>
@@ -117,7 +123,8 @@ export default {
             produto : null,
             lucro : 0,
             percent : null,
-            loading : true
+            loading : true,
+            url : null
         }
     },
     methods:{
@@ -127,6 +134,7 @@ export default {
             this.lucro = await this.getLucroByProd(this.generico.ID)
             this.percent = this.lucro.porcentagem
             this.lucro = this.lucro.lucro
+            this.url = "data:image/png;base64," + this.produto.IMAGE
             if(this.produto != null && this.produto != undefined){
                 this.produto.CREATED_AT = await this.formatDate(this.produto.CREATED_AT)
                 this.produto.UPDATED_AT = await this.formatDate(this.produto.UPDATED_AT)
