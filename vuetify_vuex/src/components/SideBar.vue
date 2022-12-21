@@ -12,7 +12,7 @@
           </v-list-item>
           <v-list-item class="px-2">
             <v-list-item-avatar>
-              <v-avatar>
+              <v-avatar @click="dialog = true">
                 <img
                   :src="url"
                   :alt="user"
@@ -85,6 +85,20 @@
             </v-list-item>
           </v-list-item-group>
       </v-list>
+        <v-dialog
+          v-model="dialog"
+          persistent
+          max-width="250"
+          @keydown.escape="dialog = false"
+        > 
+              <v-img 
+                :src="url"
+                :alt="user"
+                max-height="250"
+                max-width="250"
+              ></v-img>
+        </v-dialog>
+
     </div>
 </template>
 
@@ -99,6 +113,7 @@ export default {
             one: false,
             user: null,
             url : null,
+            dialog : false
         };
     },
     computed: {
