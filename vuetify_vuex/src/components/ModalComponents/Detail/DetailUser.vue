@@ -1,7 +1,8 @@
 <template>
     <div>
         <v-skeleton-loader
-            v-if="loading" class="black" fullscreen :loading="loading" transition="dialog-bottom-transition" type="card"
+            v-if="loading" class="black" fullscreen :loading="loading" 
+            transition="dialog-bottom-transition" type="card"
         >
         </v-skeleton-loader>
         <v-card class="cards-colors" :elevation="6" v-else>
@@ -25,7 +26,8 @@
             <v-card-text class="mt-n7">
                 <v-row class="d-flex flex-row mt-3 ">
                     <v-col class="d-flex justify-center">
-                        <div class="d-flex justify-center ml-2  flex-sm-row flex-column  white--text  text-body-2 text-sm-h6  font-italic">
+                        <div class="d-flex justify-center ml-2  flex-sm-row flex-column  
+                        white--text  text-body-2 text-sm-h6  font-italic">
                             <p class="pr-sm-5">
                                 <b class="font-italic titulo">Email : </b>{{usuario.EMAIL}}...
                             </p>
@@ -37,7 +39,8 @@
                 </v-row>
                 <v-row class="d-flex flex-row mt-n6">
                     <v-col class="d-flex justify-center">
-                        <div class="d-flex justify-center   flex-sm-row flex-column white--text  text-body-2 text-sm-h6  font-italic">
+                        <div class="d-flex justify-center   flex-sm-row flex-column white--text  
+                        text-body-2 text-sm-h6  font-italic">
                             <div class="d-flex flex-row ">
                                 <p class="pr-0">
                                     <b class="font-italic titulo pt-1">Penalidades Atuais : </b> 
@@ -67,7 +70,8 @@
                 </v-row>  
                 <v-row class="d-flex flex-row mt-n6">
                     <v-col class="d-flex justify-center">
-                        <div class="d-flex justify-center  flex-sm-row flex-column white--text  text-body-2 text-sm-h6  font-italic">
+                        <div class="d-flex justify-center  flex-sm-row flex-column white--text  
+                        text-body-2 text-sm-h6  font-italic">
                             <div class="d-flex flex-row"> 
                                 <p class="pr-sm-0 pr-8">
                                     <b class="font-italic titulo pt-1">Historico Salarial</b>
@@ -97,12 +101,14 @@
                 </v-row>
                 <v-row class="d-flex flex-row mt-n6">
                     <v-col class="d-flex justify-center">
-                        <div class="d-flex justify-center  flex-sm-row flex-column  white--text  text-body-2  text-sm-h6  font-italic">
+                        <div class="d-flex justify-center  flex-sm-row flex-column  white--text  
+                        text-body-2  text-sm-h6  font-italic">
                             <p class="pr-sm-5 pr-16">
                                 <b class="font-italic titulo ">Cargo : </b> {{cargo.NOME}}
                             </p>
                             <p class="pr-16 pr-sm-0">
-                                <b class="font-italic titulo ">Salário : R$</b> {{usuario.SALARIO.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
+                                <b class="font-italic titulo ">Salário : R$</b> {{usuario.SALARIO.
+                                    toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
                             </p>
                         </div>
                     </v-col>
@@ -110,9 +116,11 @@
                 
                 
                 <v-row class="d-flex flex-column flex-md-row mt-2">
-                    <v-col class="white--text text-subtitle-1 text-sm-h6 font-italic mt-n5 d-flex justify-center">
+                    <v-col class="white--text text-subtitle-1 text-sm-h6 
+                    font-italic mt-n5 d-flex justify-center">
                         <p class="pr-md-0 pr-6">
-                            <b class="font-italic titulo pt-1">Total Vendido : </b>{{totalVendido.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
+                            <b class="font-italic titulo pt-1">Total Vendido : </b>
+                            {{totalVendido.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
                         </p>
                     </v-col> 
                 </v-row> 
@@ -163,30 +171,40 @@
                         <p>Penalidades aplicadas</p>
                     </v-card-title>
                     <v-card-subtitle>
-                        <p class="font-italic titulo pt-1 white--text">Total de Desconto esse Mês : {{totalDescontoPenalidade.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>
+                        <p class="font-italic titulo pt-1 white--text">Total de Desconto esse Mês : 
+                            {{totalDescontoPenalidade.toLocaleString
+                                ('pt-br',{style: 'currency', currency: 'BRL'})}}
+                        </p>
                     </v-card-subtitle>
                     <v-card-text>
-                        <v-row class="d-flex flex-column white--text ml-0 ml-md-5" v-for="item in penalidades" :key="item.ID">
+                        <v-row class="d-flex flex-column white--text ml-0 ml-md-5" 
+                        v-for="item in penalidades" :key="item.ID">
                             <v-col cols="11" >
                                 <div class="d-flex justify-center mt-n2">
                                     <v-divider class="linha" ></v-divider>
-                                    <DeleteGeneric @atualizar="deletePenal" class="mt-n3" :id="item.ID" small :route="'penalidades'"></DeleteGeneric>  
+                                    <DeleteGeneric @atualizar="deletePenal" class="mt-n3" 
+                                    :id="item.ID" small :route="'penalidades'"></DeleteGeneric>  
                                 </div>
                             </v-col>
                             <v-col class="mt-n3">
-                                <p class="font-italic text-subtitle-1"><b>Codigo da Penalidade : #{{item.ID}} </b></p>
+                                <p class="font-italic text-subtitle-1"><b>Codigo da Penalidade : #{{item.ID}} 
+                                </b></p>
                             </v-col>
                             <v-col>
-                                <p class="font-italic text-subtitle-1"><b>Tipo da Penalidade : {{item.TIPO}}</b> </p>
+                                <p class="font-italic text-subtitle-1"><b>Tipo da Penalidade : {{item.TIPO}}   
+                                </b> </p>
                             </v-col>
                             <v-col>
-                                <p class="font-italic text-subtitle-1"><b>Descrição da Penalidade : {{item.DESC}}</b></p>
+                                <p class="font-italic text-subtitle-1"><b>Descrição da Penalidade : {{item.DESC}}
+                                </b></p>
                             </v-col>
                             <v-col>
-                                <p class="font-italic text-subtitle-1"><b>Desconto no salário : R$ {{parseFloat(item.DESCONTO)}}</b> </p>
+                                <p class="font-italic text-subtitle-1"><b>Desconto no salário : R$ 
+                                    {{parseFloat(item.DESCONTO)}}</b> </p>
                             </v-col>
                             <v-col>
-                                <p class="font-italic text-subtitle-1"><b>Data da Penalidade : {{formatDate(item.DATA)}}</b> </p>
+                                <p class="font-italic text-subtitle-1"><b>Data da Penalidade : 
+                                    {{formatDate(item.DATA)}}</b> </p>
                             </v-col>
                             
                         </v-row>
@@ -226,15 +244,22 @@
                        
                     </v-card-subtitle>
                     <v-card-text>
-                        <v-row class="d-flex flex-column white--text ml-0 ml-md-5" v-for="item in pedidos" :key="item.ID">
+                        <v-row class="d-flex flex-column white--text ml-0 ml-md-5" 
+                        v-for="item in pedidos" :key="item.ID">
                             <v-col>
-                                <p class="font-italic text-subtitle-1"><b>Codigo do Pedido : #{{item.ID}} </b></p>
+                                <p class="font-italic text-subtitle-1"><b>Codigo do Pedido : #{{item.ID}} 
+                                </b></p>
                             </v-col>
                             <v-col>
-                                <p class="font-italic text-subtitle-1"><b>Valor da Venda : R$ {{item.VALOR_TOTAL.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</b> </p>
+                                <p class="font-italic text-subtitle-1"><b>Valor da Venda : R$ 
+                                    {{item.VALOR_TOTAL.toLocaleString
+                                        ('pt-br',{style: 'currency', currency: 'BRL'})}}</b> 
+                                </p>
                             </v-col>
                             <v-col>
-                                <p class="font-italic text-subtitle-1"><b>Data do Pagamento : {{formatDate(item.DT_PAGAMENTO)}}</b> </p>
+                                <p class="font-italic text-subtitle-1"><b>Data do Pagamento : 
+                                    {{formatDate(item.DT_PAGAMENTO)}}</b> 
+                                </p>
                             </v-col>
                             <v-col cols="11" >
                                 <div class="d-flex justify-center mt-n2">
@@ -266,7 +291,8 @@
                     <v-card-subtitle>
                         <p>
                             <b class="font-italic titulo pt-1">Salario Atual : 
-                               R$ {{usuario.SALARIO.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
+                               R$ {{usuario.SALARIO.toLocaleString
+                                ('pt-br',{style: 'currency', currency: 'BRL'})}}
                             </b>
                         </p>
                     </v-card-subtitle>
@@ -314,16 +340,19 @@
                         </p>
                         <p>
                             <b class="font-italic titulo pt-1">Total Devido :  
-                            {{valorDevidoPenalidadeHistorico.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</b>
+                            {{valorDevidoPenalidadeHistorico.toLocaleString
+                                ('pt-br',{style: 'currency', currency: 'BRL'})}}</b>
                         </p>
                         <p>
                             <b class="font-italic titulo pt-1">Desconto total já aplicado :  
-                            {{valorPenalidadeHistorico.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</b>
+                            {{valorPenalidadeHistorico.toLocaleString
+                                ('pt-br',{style: 'currency', currency: 'BRL'})}}</b>
                         </p>
                     </v-card-subtitle>
 
                     <v-card-text>
-                        <v-row class="d-flex flex-column white--text ml-0 ml-md-5" v-for="item in historicoPenalidades" :key="item.ID">
+                        <v-row class="d-flex flex-column white--text ml-0 ml-md-5" 
+                        v-for="item in historicoPenalidades" :key="item.ID">
                             <v-col cols="11" >
                                 <div class="d-flex justify-center mt-n2">
                                     <v-divider class="linha" ></v-divider>
@@ -339,28 +368,40 @@
                             <v-col class="mt-n3">
                                 <p class="font-italic text-subtitle-1">
                                     <b>
-                                        <span  v-if="parseFloat(item.DESCONTO) <= 0" class="green--text">Pago</span>
+                                        <span  v-if="parseFloat(item.DESCONTO) <= 0" 
+                                        class="green--text">Pago</span>
                                         <span v-else class="red--text">Pendente</span>
                                     </b>
                                 </p>
                             </v-col>
                             <v-col class="mt-n3">
-                                <p class="font-italic text-subtitle-1"><b>Codigo da Penalidade : #{{item.ID}} </b></p>
+                                <p class="font-italic text-subtitle-1"><b>Codigo da Penalidade : #{{item.ID}} 
+                                </b></p>
                             </v-col>
                             <v-col>
-                                <p class="font-italic text-subtitle-1"><b>Tipo da Penalidade : {{item.TIPO}}</b> </p>
+                                <p class="font-italic text-subtitle-1"><b>Tipo da Penalidade : {{item.TIPO}}
+                                </b> </p>
                             </v-col>
                             <v-col>
-                                <p class="font-italic text-subtitle-1"><b>Descrição da Penalidade : {{item.DESC}}</b></p>
+                                <p class="font-italic text-subtitle-1"><b>Descrição da Penalidade : {{item.DESC}}
+                                </b></p>
                             </v-col>
                             <v-col>
-                                <p class="font-italic text-subtitle-1"><b>Desconto atual no salário : R$ {{item.DESCONTO.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</b> </p>
+                                <p class="font-italic text-subtitle-1"><b>Desconto atual no salário : R$ 
+                                    {{item.DESCONTO.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
+                                    </b> 
+                                </p>
                             </v-col>
                             <v-col>
-                                <p class="font-italic text-subtitle-1"><b>Desconto original no salário : R$ {{item.ORIGINAL.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</b> </p>
+                                <p class="font-italic text-subtitle-1"><b>Desconto original no salário : R$ 
+                                    {{item.ORIGINAL.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
+                                    </b>
+                                </p>
                             </v-col>
                             <v-col>
-                                <p class="font-italic text-subtitle-1"><b>Data da Penalidade : {{formatDate( item.DATA)}}</b> </p>
+                                <p class="font-italic text-subtitle-1"><b>Data da Penalidade : 
+                                    {{formatDate( item.DATA)}}</b> 
+                                </p>
                             </v-col>
                         </v-row>
                     </v-card-text>

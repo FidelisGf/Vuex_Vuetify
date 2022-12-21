@@ -18,7 +18,8 @@
             </template>
         </v-snackbar>
         <v-row class="d-flex mt-11 mt-lg-0 justify-center justify-lg-start  ">
-            <v-col cols="12" lg="4" md="4" class="d-flex justify-center" ><FuncionarioModal @Cadastrado="attLista" :mini="false"></FuncionarioModal></v-col>
+            <v-col cols="12" lg="4" md="4" class="d-flex justify-center" >
+                <FuncionarioModal @Cadastrado="attLista" :mini="false"></FuncionarioModal></v-col>
             <v-col cols="12" lg="4" md="4" class="d-flex justify-center" >
                <PenalidadeModal @Cadastrado="setMsg"></PenalidadeModal>
             </v-col>
@@ -37,8 +38,14 @@
                     width="200px"
                     class="exibeGasto ml-lg-10 ml-md-3  mt-n5 "
                 >
-                    <p style="font-size: 16px;" class="ml-5 mt-1 font-weight-medium"><v-icon small class="ml-n4 mt-n3" color="teal lighten-1">mdi-checkbox-marked-circle</v-icon>Funcionarios Ativos</p>
-                    <p style="font-size : 14px;" class="mt-n4 ml-7 font-weight-bold">Quantidade : {{count}}</p>
+                    <p style="font-size: 16px;" class="ml-5 mt-1 font-weight-medium">
+                        <v-icon small class="ml-n4 mt-n3" color="teal lighten-1">mdi-checkbox-marked-circle
+                        </v-icon>
+                        Funcionarios Ativos
+                    </p>
+                    <p style="font-size : 14px;" class="mt-n4 ml-7 font-weight-bold">
+                        Quantidade : {{count}}
+                    </p>
                 </v-sheet>
             </v-col>
         </v-row>
@@ -76,7 +83,9 @@
            >
                 <v-card dark>
                     <v-card-actions>
-                        <v-icon small  class="ml-n2 " color="red accent-2" @click="chooseModal = false">mdi-close</v-icon>
+                        <v-icon small  class="ml-n2 " color="red accent-2" @click="chooseModal = false">
+                            mdi-close
+                        </v-icon>
                     </v-card-actions>
                     <v-card-title class="mt-n5">
                         <span v-if="!folhabaixada">Escolha a Folha salarial... </span>
@@ -140,13 +149,15 @@
                         Lista de Pagamentos Realizados... 
                     </v-card-title>
                     <v-card-text>
-                        <ListaGenerica v-if="listPayments" @deletedPenalidade="setMsg" :key="renicializar" :route="'pagamentos'" :headers="headersPayment"></ListaGenerica>
+                        <ListaGenerica v-if="listPayments" @deletedPenalidade="setMsg" :key="renicializar" 
+                        :route="'pagamentos'" :headers="headersPayment"></ListaGenerica>
                     </v-card-text>
                 </v-card>
             </v-dialog>
         </v-row>
         <v-row class="d-flex justify-center mt-10">
-            <ListaGenerica @deletedPenalidade="setMsg" :key="renicializar" :route="'usuarios'" :headers="headers"></ListaGenerica>
+            <ListaGenerica @deletedPenalidade="setMsg" :key="renicializar" 
+            :route="'usuarios'" :headers="headers"></ListaGenerica>
         </v-row>
     </v-container>
 </template>

@@ -42,7 +42,10 @@
                         <v-row>
                             <v-col class="d-flex justify-center">
                                 <div class="grafico ">
-                                    <p class="text-subtitle-1 font-italic white--text titulo-grafico">Grafico vendas do dia (Miníma, Média, Máxima, Total Recebido) até as 23h:00min. Quantidade de vendas hoje : {{qntd}}</p>
+                                    <p class="text-subtitle-1 font-italic white--text titulo-grafico">
+                                        Grafico vendas do dia (Miníma, Média, Máxima, Total Recebido) 
+                                        até as 23h:00min. Quantidade de vendas hoje : {{qntd}}
+                                    </p>
                                     <v-sheet color="#1e1e1e">
                                         <v-sparkline
                                           :value="values"
@@ -56,7 +59,8 @@
                                         >
 
                                         <template v-slot:label="item">
-                                            {{parseFloat(item.value).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
+                                            {{parseFloat(item.value).
+                                                toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
                                         </template>
                                         </v-sparkline>
                                       
@@ -70,7 +74,10 @@
                         <v-row>
                             <v-col class="d-flex justify-center">
                                 <div class="grafico ">
-                                    <p class="text-subtitle-1 font-italic white--text titulo-grafico">Grafico do total de vendas dos ultimos três meses (inicio da esquerda para direita)</p>
+                                    <p class="text-subtitle-1 font-italic white--text titulo-grafico">
+                                        Grafico do total de vendas dos ultimos três meses 
+                                        (inicio da esquerda para direita)
+                                    </p>
                                     <v-sheet color="#1e1e1e" :key="renicializar">
                                         <v-sparkline
                                           :key="renicializar"
@@ -84,7 +91,8 @@
                                           :auto-draw-duration="4000"
                                         >
                                         <template v-slot:label="item">
-                                            {{parseFloat(item.value).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
+                                            {{parseFloat(item.value).
+                                                toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
                                         </template>
                                         </v-sparkline>
                                         

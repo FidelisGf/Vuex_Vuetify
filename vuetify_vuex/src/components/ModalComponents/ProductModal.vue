@@ -18,9 +18,11 @@
             </v-btn>
             </template>
         </v-snackbar>
-        <v-col cols="12" md="12" sm="12"  lg="6" class="d-flex flex-column-reverse flex-md-row justify-center justify-lg-start mt-0 mt-md-10 mt-lg-0">
+        <v-col cols="12" md="12" sm="12"  lg="6" 
+        class="d-flex flex-column-reverse flex-md-row justify-center justify-lg-start mt-0 mt-md-10 mt-lg-0">
             <div class="ml-0 ml-lg-n10 pl-0 d-flex justify-center">
-                <MaterialModal @messageSnackBar="getMessage" class="ml-sm-0  pl-sm-0 ml-lg-10  "></MaterialModal>
+                <MaterialModal @messageSnackBar="getMessage" 
+                class="ml-sm-0  pl-sm-0 ml-lg-10  "></MaterialModal>
             </div>
             <v-btn
                 color="teal accent-3"
@@ -79,9 +81,10 @@
                                     <v-stepper-content  step="1">
                                         <v-card class="cards-colors">
                                             <v-card-title class="white--text">
-                                                        <span class="text-h5 mt-n4">Informações do Produto</span>
+                                                <span class="text-h5 mt-n4">Informações do Produto</span>
                                             </v-card-title>
-                                            <form ref='myform' @submit.prevent="proximaEtapa" class="mt-n4" enctype="multipart/form-data">
+                                            <form ref='myform' @submit.prevent="proximaEtapa" 
+                                                class="mt-n4" enctype="multipart/form-data">
                                                 <v-card-text>
                                                     <v-row>
                                                         <v-col
@@ -149,7 +152,8 @@
                                                             transition="fab-transition"
                                                             required
                                                     ></v-select>
-                                                    <CategoryModal @insertCategory="listenMsg" :miniatura="true"  class="mt-4 ml-2 "></CategoryModal>
+                                                    <CategoryModal @insertCategory="listenMsg" 
+                                                    :miniatura="true"  class="mt-4 ml-2 "></CategoryModal>
                                                 </v-col>
                                                 <v-col
                                                     cols="12"
@@ -185,7 +189,9 @@
                                                         outlined
                                                     ></v-textarea>
                                                 </v-col>
-                                                <v-col cols="12" md="12" class="mt-n2 d-flex justify-space-between  flex-sm-row flex-column">
+                                                <v-col cols="12" md="12" 
+                                                class="mt-n2 d-flex justify-space-between  
+                                                flex-sm-row flex-column">
                                                     <label class="arqv" for="arqv">Anexar Foto</label>
                                                     <input
                                                         type="file"
@@ -206,7 +212,8 @@
                                                
                                             </v-row>
                                         </v-card-text>  
-                                        <small class="ml-3 mt-n6" >*Os produtos criados serão adicionados ao seu estoque.</small>  
+                                        <small class="ml-3 mt-n6" >*Os produtos criados serão 
+                                            adicionados ao seu estoque.</small>  
                                         <v-card-actions class="mt-0 mt-md-n6">
                                             <v-spacer></v-spacer>
                                             <v-btn
@@ -229,7 +236,8 @@
                             </v-stepper-content>
                             <v-stepper-content step="2">
                                 <ChoseMateriaisModal @voltar-etapa="voltarEtapa" 
-                                @fechar="closeByChildEvent" @finalizarCadastro="postProduto"></ChoseMateriaisModal>    
+                                    @fechar="closeByChildEvent" @finalizarCadastro="postProduto">
+                                </ChoseMateriaisModal>    
                             </v-stepper-content>
                         </v-stepper-items>                
                     </v-stepper>   
@@ -252,8 +260,13 @@
                 width="200px"
                 class=" exibeGasto ml-lg-10 ml-md-3  mt-n5 "
             >
-                <p style="font-size: 16px;" class="ml-3 mt-2 font-weight-medium"><v-icon class="ml-n2 mt-n3" color="teal lighten-1">mdi-checkbox-marked-circle</v-icon>Produtos Ativos</p>
-                <p style="font-size : 14px;" class="mt-n4 ml-8 font-weight-bold">Quantidade Atual : {{countProdutos}}</p>
+                <p style="font-size: 16px;" class="ml-3 mt-2 font-weight-medium">
+                    <v-icon class="ml-n2 mt-n3" color="teal lighten-1">mdi-checkbox-marked-circle
+                    </v-icon>
+                    Produtos Ativos
+                </p>
+                <p style="font-size : 14px;" class="mt-n4 ml-8 font-weight-bold">Quantidade Atual : 
+                    {{countProdutos}}</p>
             </v-sheet>
         </v-col>
     </v-row>
