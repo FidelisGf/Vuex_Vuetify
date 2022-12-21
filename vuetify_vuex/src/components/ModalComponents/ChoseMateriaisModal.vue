@@ -70,7 +70,8 @@
                                     type="submit"
                                     icon  
                                 >
-                                    <v-icon aria-label="Adicionar a lista" aria-hidden="false" dark color="teal accent-2">mdi-plus-circle-outline</v-icon>
+                                    <v-icon aria-label="Adicionar a lista" aria-hidden="false" 
+                                    dark color="teal accent-2">mdi-plus-circle-outline</v-icon>
                                 </v-btn>
                             </template>
                             <span>Adicionar a lista</span>

@@ -131,7 +131,8 @@ export default {
     methods:{
         ...mapActions('penalidadeMod', ['postPenalidade']),
         async post(){
-            let payload = {DATA : this.data, DESC : this.desc, TIPO : this.tipo, ID_USER : this.id_funcionário, DESCONTO : this.desconto_salario}
+            let payload = {DATA : this.data, DESC : this.desc, TIPO : this.tipo, ID_USER : 
+                this.id_funcionário, DESCONTO : this.desconto_salario}
             let text = await this.postPenalidade(payload)
             this.$emit('Cadastrado', text)
             this.clear()

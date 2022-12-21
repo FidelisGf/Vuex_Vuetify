@@ -192,7 +192,8 @@ export default {
                     let payload = {DESC : this.DESC, CUSTO : custo, DATA : this.DTFINAL, ID_TAG : this.TAG.ID}
                     let info = await this.save(payload)
                     if(info.Id != null){
-                        let payload2 = {ID : info.Id, DESC : this.DESC, CUSTO : custo, DATA : this.DTFINAL, tags : this.TAG}
+                        let payload2 = {ID : info.Id, DESC : this.DESC, CUSTO : custo, 
+                            DATA : this.DTFINAL, tags : this.TAG}
                         this.saveList(payload2)
                         this.active = false
                     } 

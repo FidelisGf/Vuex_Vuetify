@@ -194,11 +194,14 @@
                                                                     @click="listaRapida = false"
                                                                     class="ml-n3 mt-n2"
                                                                 >
-                                                                <v-icon color="red accent-1">mdi-close</v-icon>
+                                                                <v-icon color="red accent-1">
+                                                                    mdi-close
+                                                                </v-icon>
                                                                 </v-btn>
                                                             </v-card-actions>
                                                             <v-card-text>
-                                                                <ListaGenerica :route="'materiais'" :headers="headers"></ListaGenerica>
+                                                                <ListaGenerica :route="'materiais'" 
+                                                                :headers="headers"></ListaGenerica>
                                                             </v-card-text>
                                                         </v-card>
                                                     </v-dialog>

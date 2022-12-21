@@ -14,7 +14,11 @@
         <v-card-title  class="text-h6 white--text font-weight-bold mt-n5">
             Lista de Matérias-Primas do produto.
         </v-card-title>
-        <v-card-subtitle class="mt-1 ml-3 white--text"><p >Custo total para produção : <b class="lime--text"> {{total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</b> </p></v-card-subtitle>
+        <v-card-subtitle class="mt-1 ml-3 white--text">
+            <p>Custo total para produção : 
+                <b class="lime--text"> {{total.
+                    toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</b> 
+            </p></v-card-subtitle>
         <v-card-text>
             <v-list color="#303030">
                 <v-list-item color="#303030"  v-for="item in materias" :key="item.ID">
@@ -24,17 +28,23 @@
                                 <v-divider color="white"></v-divider>
                                 <v-card-title>
                                     <p class="white--text">
-                                        <b class="ml-n1 subtitle-2 text-md-subtitle-1">Nome do Item : <b class="subtitle-1 " style="color: #39FF14;">#{{ item.NOME}}</b></b>
-                                        <v-icon small color="blue lighten-1" class="ml-3 mt-n0" @click="activeManipula(item)">mdi-pencil</v-icon>
-                                        <v-icon small color="red lighten-1"  class="ml-3 mt-n0" @click="removeMateria(item)">mdi-close</v-icon>
+                                        <b class="ml-n1 subtitle-2 text-md-subtitle-1">Nome do Item :
+                                            <b class="subtitle-1 " style="color: #39FF14;">#{{ item.NOME}}</b>
+                                        </b>
+                                        <v-icon small color="blue lighten-1" class="ml-3 mt-n0" 
+                                        @click="activeManipula(item)">mdi-pencil</v-icon>
+                                        <v-icon small color="red lighten-1"  class="ml-3 mt-n0" 
+                                        @click="removeMateria(item)">mdi-close</v-icon>
                                     </p>      
                                 </v-card-title>
                                 <v-card-subtitle class="mt-n5 white--text"> 
-                                    <p>Custo do Item : {{ item.CUSTO.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>
+                                    <p>Custo do Item : {{ item.CUSTO.
+                                        toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>
                                     <p class="mt-n3">Quantidade : {{item.QUANTIDADE}} </p>
                                 </v-card-subtitle>
                                 <v-card-text class="mt-n7 white--text">
-                                    <p>Sub total desse Item : {{(item.CUSTO * item.QUANTIDADE).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>
+                                    <p>Sub total desse Item : {{(item.CUSTO * item.QUANTIDADE).
+                                        toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>
                                 </v-card-text>
                                 <v-divider class="mt-n3" color="white"></v-divider>
                             </v-card>
@@ -47,13 +57,17 @@
                         >
                             <v-card dark>
                                 <v-card-title>
-                                    <p v-if="!notification" class="white--text">Manipule a quantidade do Item #{{temp.NOME}}</p>
-                                    <v-alert v-if="notification && msg.type == 'success'" type="success" v-model="notification" 
+                                    <p v-if="!notification" class="white--text">
+                                        Manipule a quantidade do Item #{{temp.NOME}}
+                                    </p>
+                                    <v-alert v-if="notification && msg.type == 'success'" 
+                                    type="success" v-model="notification" 
                                     dismissible dense shaped
                                     outlined class="not" >
                                         {{msg.text }}  
                                     </v-alert>
-                                    <v-alert v-if="notification && msg.type == 'danger'" type="error" v-model="notification" 
+                                    <v-alert v-if="notification && msg.type == 'danger'" 
+                                    type="error" v-model="notification" 
                                     dismissible dense shaped
                                     outlined class="not" >
                                         {{msg.text }}  
@@ -62,7 +76,8 @@
                                 <v-card-text>
                                     <v-row>
                                         <v-col sm="10">
-                                            <label class="ml-3">Quantidade do Produto (Estoque atual do material : {{qntdDisponivel}})</label>
+                                            <label class="ml-3">Quantidade do Produto 
+                                                (Estoque atual do material : {{qntdDisponivel}})</label>
                                             <v-text-field
                                                 class="ml-3 w-25"
                                                 outlined

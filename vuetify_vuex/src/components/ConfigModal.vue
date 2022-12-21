@@ -30,7 +30,9 @@
                                 <p>Configurações Gerais do Sistema</p>
                             </v-card-title>
                             <v-card-subtitle class="mt-n8">
-                                <p class="ml-2">Tudo que for alterado aqui, afetará diretamente o sistema...</p>
+                                <p class="ml-2">
+                                    Tudo que for alterado aqui, afetará diretamente o sistema...
+                                </p>
                             </v-card-subtitle>
                 </v-sheet>
                 <v-card-text class="mt-2">

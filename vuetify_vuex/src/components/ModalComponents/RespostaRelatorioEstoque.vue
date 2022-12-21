@@ -13,7 +13,8 @@
             </v-card-actions>
             <v-card-text class="mt-5 white--text">
                 <v-row>
-                    <ListaGenerica :key="restart" :route="'estoques'" :headers="headers"  :opcao="filtro" ></ListaGenerica>
+                    <ListaGenerica :key="restart" :route="'estoques'" :headers="headers"  :opcao="filtro" >
+                    </ListaGenerica>
                 </v-row>
             </v-card-text>
         </v-card>

@@ -48,7 +48,13 @@
                 <v-card-title  class="text-h5 white--text mt-n5">
                     Lista de Produtos da Venda
                 </v-card-title>
-                <v-card-subtitle class="mt-1 font-italic ml-3 total" ><p>Valor total : <b>{{vlTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</b> </p></v-card-subtitle>
+                <v-card-subtitle class="mt-1 font-italic ml-3 total" >
+                    <p>
+                        Valor total : <b>{{vlTotal.
+                            toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
+                        </b>
+                    </p>
+                </v-card-subtitle>
                 <v-card-text>
             <v-list class="cards-colors">
                 <v-list-item  v-for="item in pedidos" :key="item.id">
@@ -60,19 +66,27 @@
                             <v-card-title class="white--text">
                                <p class="white--text">
                                 <b class="ml-n1 white--text text-h6">Nome do Produto : </b >{{ item.NOME}}
-                                <v-icon color="blue accent-3"  class="ml-1 mt-n1" @click="ativaManipulaQuantidade(item)">mdi-pencil</v-icon>
-                                <v-icon color="red accent-2"  class="ml-1 mt-n1" @click="removePedido(item)">mdi-close</v-icon>
+                                <v-icon color="blue accent-3"  class="ml-1 mt-n1"
+                                 @click="ativaManipulaQuantidade(item)">mdi-pencil</v-icon>
+                                <v-icon color="red accent-2"  class="ml-1 mt-n1" 
+                                @click="removePedido(item)">mdi-close</v-icon>
                                </p>      
                             </v-card-title>
                             <v-card-subtitle class="mt-n5 white--text">
                                 <p class="mt-n2 info_prod">
-                                    <b class="white--text font-weight-regular">Valor : </b>R$ {{item.VALOR.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}     
+                                    <b class="white--text font-weight-regular">Valor : </b>R$ 
+                                    {{item.VALOR.
+                                        toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}     
                                     
                                 </p>
                                 <p class="mt-n2 info_prod">
-                                    <b class="white--text font-weight-regular"> Quantidade :</b> {{item.QUANTIDADE}}  
+                                    <b class="white--text font-weight-regular"> Quantidade :</b> 
+                                    {{item.QUANTIDADE}}  
                                 </p>
-                                <p class="mt-n2 info_prod font-weight-regular"><b class="white--text">Sub total  : </b>{{(item.VALOR * item.QUANTIDADE).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>
+                                <p class="mt-n2 info_prod font-weight-regular"><b class="white--text">
+                                    Sub total  : </b>{{(item.VALOR * item.QUANTIDADE).
+                                        toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
+                                </p>
                             </v-card-subtitle>
                            
                             <v-divider class="mt-n3 " color="white"></v-divider>
@@ -92,7 +106,9 @@
                             <v-card-text class="white--text">
                                 <v-row>
                                     <v-col sm="10">
-                                        <label class="ml-3">Quantidade do Produto (Estoque atual do produto : {{parseFloat(qntdDisponivelProduto)}})</label>
+                                        <label class="ml-3">Quantidade do Produto 
+                                            (Estoque atual do produto : 
+                                            {{parseFloat(qntdDisponivelProduto)}})</label>
                                         <v-text-field
                                         class="ml-3 w-25"
                                         outlined

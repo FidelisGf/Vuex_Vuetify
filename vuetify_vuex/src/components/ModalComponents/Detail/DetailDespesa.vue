@@ -28,14 +28,16 @@
                 <v-row class="d-flex flex-column flex-md-row mt-n3 pl-6">
                     <v-col cols="11" class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
                         <p>
-                            <b class="font-italic titulo ">Valor do Produto : </b>R$ {{despesa.CUSTO.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
+                            <b class="font-italic titulo ">Valor do Produto : </b>R$ 
+                            {{despesa.CUSTO.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
                         </p>
                     </v-col>
                 </v-row> 
                 <v-row class="d-flex flex-column flex-md-row mt-n3 pl-6">
                     <v-col cols="11" class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
                         <p>
-                            <b class="font-italic titulo ">Data da Despesa : </b> {{formatDate(despesa.DATA)}}
+                            <b class="font-italic titulo ">Data da Despesa : </b> 
+                            {{formatDate(despesa.DATA)}}
                         </p>
                     </v-col>
                 </v-row>   

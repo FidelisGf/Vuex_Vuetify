@@ -16,11 +16,15 @@
                 </v-btn>
             </v-card-actions>
             <v-card-text class="mt-n2" v-if="!ntTable">
-                <ListaGenerica :key="restart"  v-if="!pedidos && !vendas && !despesas" :route="'products'" :opcao="filtro" :headers="headers"></ListaGenerica>
-                <ListaGenerica :key="restart"  v-if="pedidos == true || vendas == true || despesas == true" :route="route" :opcao="filtro" :headers="headers" :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
+                <ListaGenerica :key="restart"  v-if="!pedidos && !vendas && !despesas" 
+                :route="'products'" :opcao="filtro" :headers="headers"></ListaGenerica>
+                <ListaGenerica :key="restart"  v-if="pedidos == true || vendas == true || 
+                despesas == true" :route="route" :opcao="filtro" :headers="headers" 
+                :end-date="endDate" :starter-date="starterDate"></ListaGenerica>
             </v-card-text>
             <v-card-text v-if="ntTable">
-                <RelatorioEscrito v-if="notTable" :route="'vendas'" :opcao="filtro" :end-date="endDate" :starter-date="starterDate"></RelatorioEscrito>
+                <RelatorioEscrito v-if="notTable" :route="'vendas'" 
+                :opcao="filtro" :end-date="endDate" :starter-date="starterDate"></RelatorioEscrito>
             </v-card-text> 
         </v-card>
     </div>

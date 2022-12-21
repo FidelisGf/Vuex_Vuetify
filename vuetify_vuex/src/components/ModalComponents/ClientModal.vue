@@ -59,7 +59,9 @@
                             v-on="on"
                             @click="ativaCadastro"
                             >
-                                <v-icon aria-hidden="false" color="teal lighten-1" >mdi-plus-circle-outline</v-icon>
+                                <v-icon aria-hidden="false" color="teal lighten-1" >
+                                    mdi-plus-circle-outline
+                                </v-icon>
                             </v-btn>
                         </template>
                             <span>Cadastro rapido de cliente</span>
@@ -312,7 +314,8 @@ export default {
          },
     },
     methods: {
-        ...mapActions('clienteMod', ['activeModalCliente', 'saveCliente', 'disableModalCliente', 'getCliente', 'desvincularCliente']),
+        ...mapActions('clienteMod', ['activeModalCliente', 'saveCliente', 'disableModalCliente', 
+        'getCliente', 'desvincularCliente']),
         ativaCadastro() {
             if (this.cadastroRapido) {
                 this.cadastroRapido = false;
@@ -332,7 +335,8 @@ export default {
             }
         },
         async insert(){
-            let payload = {NOME : this.client.nome, CPF : this.client.cpf, ENDERECO: this.client.endereco, TELEFONE : this.client.telefone, EMAIL : this.client.email}
+            let payload = {NOME : this.client.nome, CPF : this.client.cpf, 
+                ENDERECO: this.client.endereco, TELEFONE : this.client.telefone, EMAIL : this.client.email}
             this.msg = await this.saveCliente(payload)
             this.cadastroRapido = false
             this.registro = true 
