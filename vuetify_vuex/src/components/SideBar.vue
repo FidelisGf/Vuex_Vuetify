@@ -86,13 +86,17 @@
           </v-list-item-group>
       </v-list>
         <v-dialog
+          v-if="dialog"
           v-model="dialog"
+          v-click-outside="close"
           persistent
           max-width="250"
+          
           @keydown.escape="dialog = false"
-        > 
+        >   
               <v-img 
                 :src="url"
+                
                 :alt="user"
                 max-height="250"
                 max-width="250"
@@ -138,6 +142,9 @@ export default {
             if(data.usuario.IMAGE == null || data.usuario.IMAGE == undefined){
                 this.url = "https://cdn.vuetifyjs.com/images/john.jpg"
             }
+        },
+        close(){
+          this.dialog = false
         }
     },
     created() {
