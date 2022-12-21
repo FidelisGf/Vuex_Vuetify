@@ -12,7 +12,12 @@
           </v-list-item>
           <v-list-item class="px-2">
             <v-list-item-avatar>
-              <v-icon>mdi-account</v-icon>
+              <v-avatar>
+                <img
+                  :src="url"
+                  :alt="user"
+                >
+              </v-avatar>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title class="text-h8">
@@ -84,7 +89,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import ConfigModal from './ConfigModal.vue'
 /* eslint-disable */
 export default {
@@ -93,11 +98,12 @@ export default {
             dialog: false,
             one: false,
             user: null,
+            url : null,
         };
     },
     computed: {
         ...mapGetters({ name: "userMod/getUser", userLevel: "userMod/getUserLevel", 
-        userCargo: "userMod/getUserCargo" }),
+        userCargo: "userMod/getUserCargo", userId: "userMod/getUserId" }),
         mini() {
             switch (this.$vuetify.breakpoint.name) {
                 case "xs": return true;
@@ -109,7 +115,18 @@ export default {
             return this.$vuetify.breakpoint.mdAndDown;
         }
     },
+    methods:{
+        ...mapActions("userMod", ['showUser']),
+        async getUser(){
+            let data = await this.showUser(this.userId)
+            this.url = "data:image/png;base64," + data.usuario.IMAGE
+            if(data.usuario.IMAGE == null || data.usuario.IMAGE == undefined){
+                this.url = "https://cdn.vuetifyjs.com/images/john.jpg"
+            }
+        }
+    },
     created() {
+        this.getUser()
         this.user = localStorage.getItem("user");
     },
     components: { ConfigModal }

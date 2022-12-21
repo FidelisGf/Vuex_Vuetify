@@ -8,6 +8,7 @@ export default{
         user : null,
         userLevel : 2,
         userCargo : null,
+        userId : null,
     },
     
     getters: {
@@ -16,10 +17,13 @@ export default{
             return parseInt(level)
        }, 
        getUserCargo(state){
-         return state.userCargo
+            return state.userCargo
        },
        getUser(state){
             return state.user
+       },
+       getUserId(state){
+            return state.userId
        },
        getEmpresa(state){
             return state.empresa
@@ -30,9 +34,12 @@ export default{
             state.user = payload
         },
         SET_USER_LEVEL(state, payload){
+            console.log(payload)
             var level  = CryptoJS.AES.encrypt(payload.level.toString(), 'chave').toString();
             state.userCargo = payload.cargo
+            state.userId = payload.id
             state.userLevel = level
+
         },
         SAVE_EMPRESA(state, payload){
             state.empresa = payload
@@ -93,8 +100,7 @@ export default{
         async login(context, payload){
             let check = {login : false, vinculado : false}
             const respo = userService.login(payload).then(async (res)=>{
-                let $token = CryptoJS.AES.encrypt(res.data.access_token, 'chave_token').toString();
-                localStorage.setItem('token', $token)
+                localStorage.setItem('token', res.data.access_token)
                 check.login = true
                 check.vinculado = await context.dispatch("checkEmpresa", res.data.access_token)
                 userService.profile().then(async (res) =>{

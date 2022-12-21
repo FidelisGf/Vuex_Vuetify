@@ -122,7 +122,7 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" class="d-flex justify-center" >
-                                    <v-btn text @click="chooseModal = false" color="red lighten-2">
+                                    <v-btn text @click="cancelaFolha" color="red lighten-2">
                                         Cancelar
                                     </v-btn>
                                 </v-col>
@@ -224,6 +224,10 @@ export default {
                 this.chooseModal = true 
                 this.downLoadFolhaSalario("Salario")
             }
+        },
+        async cancelaFolha(){
+            this.chooseModal = false
+            this.folhabaixada = false
         },
         async pagarFolha(){
             let flag = false
