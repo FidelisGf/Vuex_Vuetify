@@ -13,99 +13,110 @@
                     @click="close"
                 ><v-icon color="red accent-2 " >mdi-close</v-icon></v-btn>
             </v-card-actions>
-            <v-card-title class="white--text text-sm-h5 text-body-1  mt-n4">
+            <v-card-title class="white--text text-sm-h5 text-body-2 flex-column mt-n4 d-flex justify-center">
                 <p class="pl-0 pl-md-5">Detalhes do Usuario : # {{usuario.NAME}} [{{usuario.ID}}] </p>
+                <v-img   
+                    class="mt-2 mt-sm-0" 
+                    max-height="250"
+                    max-width="250"
+                    :src="IMAGE"
+                ></v-img>
             </v-card-title>
             <v-card-text class="mt-n7">
-                <v-row class="d-flex flex-column flex-md-row pl-5 pl-md-10">
-                    <v-col class="white--text  text-subtitle-1 text-md-h6  font-italic">
-                        <p>
-                            <b class="font-italic titulo  pt-1">Email : </b>{{usuario.EMAIL}}...
-                        </p>
-                      
+                <v-row class="d-flex flex-row mt-3 ">
+                    <v-col class="d-flex justify-center">
+                        <div class="d-flex justify-center ml-2  flex-sm-row flex-column  white--text  text-body-2 text-sm-h6  font-italic">
+                            <p class="pr-sm-5">
+                                <b class="font-italic titulo">Email : </b>{{usuario.EMAIL}}...
+                            </p>
+                            <p>
+                                <b class="font-italic titulo  "> Cpf : </b> {{usuario.CPF}}
+                            </p>
+                        </div>
                     </v-col>
                 </v-row>
-                <v-row class="d-flex flex-column flex-md-row mt-n5 pl-5 pl-md-10">
-                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
-                        <p>
-                            <b class="font-italic titulo  pt-1">Cpf : </b> {{usuario.CPF}}
-                        </p>
-                    </v-col>
-                </v-row> 
-                <v-row class="d-flex flex-column flex-md-row mt-n5 pl-5 pl-md-10">
-                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
-                        <p>
-                            <b class="font-italic titulo pt-1">Cargo : </b> {{cargo.NOME}}
-                        </p>
-                    </v-col>
-                </v-row>   
-                <v-row class="d-flex flex-column flex-md-row mt-n5 pl-5 pl-md-10">
-                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
-                        <p>
-                            <b class="font-italic titulo pt-1">Salário : R$</b> {{usuario.SALARIO.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
-                        </p>
-                    </v-col>
-                </v-row>   
-                <v-row class="d-flex flex-column flex-md-row mt-n5 pl-5 pl-md-10">
-                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5 d-flex flex-row">
-                        <p>
-                            <b class="font-italic titulo pt-1">Penalidades Atuais : </b> 
-                            {{qntdPenalidades}}
-                        </p> 
-                        <v-btn icon class="ml-2" @click="getPenalidades">
-                            <v-icon v-if="!$vuetify.breakpoint.smAndDown"  
-                            color="grey lighten-2">mdi-magnify-expand</v-icon>
-                            <v-icon v-else small class="ml-n2 mt-n2" 
-                            color="grey lighten-2">mdi-magnify-expand</v-icon>
-                        </v-btn>
+                <v-row class="d-flex flex-row mt-n6">
+                    <v-col class="d-flex justify-center">
+                        <div class="d-flex justify-center   flex-sm-row flex-column white--text  text-body-2 text-sm-h6  font-italic">
+                            <div class="d-flex flex-row ">
+                                <p class="pr-0">
+                                    <b class="font-italic titulo pt-1">Penalidades Atuais : </b> 
+                                    {{qntdPenalidades}}
+                                </p> 
+                                <v-btn icon class="ml-2" @click="getPenalidades">
+                                    <v-icon v-if="!$vuetify.breakpoint.smAndDown"  
+                                    color="grey lighten-2">mdi-magnify-expand</v-icon>
+                                    <v-icon v-else small class="mt-md-n4 mt-n4 mt-sm-0" 
+                                    color="grey lighten-2">mdi-magnify-expand</v-icon>
+                                </v-btn>
+                            </div>
+                            <div class="d-flex flex-row ml-md-3">
+                                <p class=" ml-md-0">
+                                    <b class="font-italic titulo  pt-1">Vendas Realizadas : </b>{{qntdVendas}}
+                                </p>
+                                <v-btn icon class="ml-2" @click="getVendasByUser">
+                                    <v-icon v-if="!$vuetify.breakpoint.smAndDown"  
+                                    color="grey lighten-2">mdi-magnify-expand</v-icon>
+                                    <v-icon v-else small class="mt-md-n4 mt-n4 mt-sm-0" 
+                                    color="grey lighten-2">mdi-magnify-expand</v-icon>
+                                </v-btn>
+                            </div>
+                        </div>
+                        
                     </v-col>
                 </v-row>  
-                <v-row class="d-flex flex-column flex-md-row mt-n5 pl-5 pl-md-10">
-                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5 d-flex flex-row">
-                        <p>
-                            <b class="font-italic titulo  pt-1">Vendas Realizadas : </b>{{qntdVendas}}
-                        </p>
-                        <v-btn icon class="ml-2" @click="getVendasByUser">
-                            <v-icon v-if="!$vuetify.breakpoint.smAndDown"  
-                            color="grey lighten-2">mdi-magnify-expand</v-icon>
-                            <v-icon v-else small class="ml-n2 mt-n2" 
-                            color="grey lighten-2">mdi-magnify-expand</v-icon>
-                        </v-btn>
+                <v-row class="d-flex flex-row mt-n6">
+                    <v-col class="d-flex justify-center">
+                        <div class="d-flex justify-center  flex-sm-row flex-column white--text  text-body-2 text-sm-h6  font-italic">
+                            <div class="d-flex flex-row"> 
+                                <p class="pr-sm-0 pr-8">
+                                    <b class="font-italic titulo pt-1">Historico Salarial</b>
+                                </p>
+                                <v-btn icon class="ml-2" @click="getHistorico">
+                                    <v-icon v-if="!$vuetify.breakpoint.smAndDown"  
+                                    color="grey lighten-2">mdi-magnify-expand</v-icon>
+                                    <v-icon v-else small class="ml-n16 ml-sm-n2 mt-n4 mt-md-n4 mt-n4 mt-sm-0" 
+                                    color="grey lighten-2">mdi-magnify-expand</v-icon>
+                                </v-btn>
+                            </div>
+                            <div class="d-flex flex-row ml-md-3">
+                                <p>
+                                    <b class="font-italic titulo pt-1">Historico Penal</b>
+                                </p>
+                                <v-btn icon class="ml-2" @click="getHistoricoPenal">
+                                    <v-icon v-if="!$vuetify.breakpoint.smAndDown"  
+                                    color="grey lighten-2">mdi-magnify-expand</v-icon>
+                                    <v-icon v-else small class="ml-n2 mt-n4 mt-md-n4 mt-n4 mt-sm-0" 
+                                    color="grey lighten-2">mdi-magnify-expand</v-icon>
+                                </v-btn>
+                            </div>
+                           
+                        </div>
+                       
+                    </v-col> 
+                </v-row>
+                <v-row class="d-flex flex-row mt-n6">
+                    <v-col class="d-flex justify-center">
+                        <div class="d-flex justify-center  flex-sm-row flex-column  white--text  text-body-2  text-sm-h6  font-italic">
+                            <p class="pr-sm-5 pr-16">
+                                <b class="font-italic titulo ">Cargo : </b> {{cargo.NOME}}
+                            </p>
+                            <p class="pr-16 pr-sm-0">
+                                <b class="font-italic titulo ">Salário : R$</b> {{usuario.SALARIO.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
+                            </p>
+                        </div>
                     </v-col>
-                </v-row> 
-                <v-row class="d-flex flex-column flex-md-row mt-n5 pl-5 pl-md-10">
-                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5">
-                        <p>
+                </v-row>     
+                
+                
+                <v-row class="d-flex flex-column flex-md-row mt-2">
+                    <v-col class="white--text text-subtitle-1 text-sm-h6 font-italic mt-n5 d-flex justify-center">
+                        <p class="pr-md-0 pr-6">
                             <b class="font-italic titulo pt-1">Total Vendido : </b>{{totalVendido.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
                         </p>
                     </v-col> 
                 </v-row> 
-                <v-row class="d-flex flex-column flex-md-row mt-n5 pl-5 pl-md-10">
-                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5 d-flex flex-row">
-                        <p>
-                            <b class="font-italic titulo pt-1">Historico Salarial</b>
-                        </p>
-                        <v-btn icon class="ml-2" @click="getHistorico">
-                            <v-icon v-if="!$vuetify.breakpoint.smAndDown"  
-                            color="grey lighten-2">mdi-magnify-expand</v-icon>
-                            <v-icon v-else small class="ml-n2 mt-n2" 
-                            color="grey lighten-2">mdi-magnify-expand</v-icon>
-                        </v-btn>
-                    </v-col> 
-                </v-row>
-                <v-row class="d-flex flex-column flex-md-row mt-n5 pl-5 pl-md-10">
-                    <v-col class="white--text text-subtitle-1 text-md-h6 font-italic mt-n5 d-flex flex-row">
-                        <p>
-                            <b class="font-italic titulo pt-1">Historico Penal</b>
-                        </p>
-                        <v-btn icon class="ml-2" @click="getHistoricoPenal">
-                            <v-icon v-if="!$vuetify.breakpoint.smAndDown"  
-                            color="grey lighten-2">mdi-magnify-expand</v-icon>
-                            <v-icon v-else small class="ml-n2 mt-n2" 
-                            color="grey lighten-2">mdi-magnify-expand</v-icon>
-                        </v-btn>
-                    </v-col> 
-                </v-row>
+                
                 <v-row class="mt-n3 ml-0 ml-md-8">
                     <v-col cols="11" >
                         <div class="d-flex justify-center mt-n2">
@@ -371,7 +382,8 @@ export default {
                 NOME : '',
                 CPF : '',
                 EMAIL : '',
-                SALARIO : '',
+                SALARIO : ''
+               
             },
             qntdVendas: 0,
             qntdPenalidades: 0,
@@ -392,6 +404,7 @@ export default {
             valorPenalidadeHistorico : 0,
             valorDevidoPenalidadeHistorico : 0,
             pedidos: [],
+            IMAGE : null,
             
         };
     },
@@ -405,8 +418,8 @@ export default {
             this.qntdVendas = data.qntdVendas;
             this.qntdPenalidades = data.qntdPenalidades;
             this.cargo = data.cargo;
+            this.IMAGE = "data:image/png;base64," + data.usuario.IMAGE
             this.totalVendido = data.totalVendido;
-            
             if (this.usuario != null || this.usuario != undefined) {
                 this.usuario.CREATED_AT = await this.formatDate(this.usuario.CREATED_AT);
                 this.usuario.UPDATED_AT = await this.formatDate(this.usuario.UPDATED_AT);

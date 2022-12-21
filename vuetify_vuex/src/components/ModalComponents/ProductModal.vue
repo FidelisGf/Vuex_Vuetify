@@ -421,6 +421,7 @@ export default {
             this.Categoria = null
             this.Medida = null
             this.quantidade_inicial = 0
+            this.image_url = null
         }, 
     },
    async created() {
@@ -459,7 +460,8 @@ export default {
         max-width: 160px;
         height: 60px;
         max-height: 60px;
-        background-color: rgb(59, 59, 59);
+        font-size: 16px;
+        background-color: rgb(27, 27, 27);
         color: #FFF;
         text-align: center;
         display: block;
