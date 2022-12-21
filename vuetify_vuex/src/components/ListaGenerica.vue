@@ -14,8 +14,12 @@
                     class="elevation-2 mt-n5"
                 >
                 <template v-slot:[`item.actions`]="{ item }" >
-                    <v-icon v-if="route != 'pagamentos' " small color="teal accent-3" class="mr-2 ml-2" @click="editItem(item)">mdi-pencil</v-icon>
-                    <DeleteGeneric @atualizar="emitDeletePenalidade" :id="item.ID" small :route="route"></DeleteGeneric>        
+                    <v-icon v-if="route != 'pagamentos' " 
+                    small color="teal accent-3" class="mr-2 ml-2" 
+                    @click="editItem(item)">mdi-pencil
+                    </v-icon>
+                    <DeleteGeneric @atualizar="emitDeletePenalidade" 
+                    :id="item.ID" small :route="route"></DeleteGeneric>        
                 </template>
                 <template v-slot:[`item.info`]="{ item }">
                     <v-icon color="blue accent-1"  @click="info(item)">mdi-alpha-i-circle</v-icon>
@@ -99,9 +103,12 @@
                 max-width="720px"
                 @keydown.escape="edit = false"
             >
-                <EditProduct @close-edit="closeEdits" v-if="route == 'products'"></EditProduct>
-                <EditDespesaVue @close-edit-despesa="closeEdits"  v-else-if="route == 'despesas'"></EditDespesaVue>
-                <EditUsuario @close-edit-usuario="closeEdits" v-else-if="route == 'usuarios'"></EditUsuario>   
+                <EditProduct @close-edit="closeEdits" v-if="route == 'products'">
+                </EditProduct>
+                <EditDespesaVue @close-edit-despesa="closeEdits"  v-else-if="route == 'despesas'">
+                </EditDespesaVue>
+                <EditUsuario @close-edit-usuario="closeEdits" v-else-if="route == 'usuarios'">
+                </EditUsuario>   
             </v-dialog>
             <v-dialog
                 v-model="detail"
@@ -111,7 +118,8 @@
                 transition="dialog-bottom-transition"
             >
                 <DetailProduct @close="closeDetail" v-if="route == 'products'"></DetailProduct>
-                <DetailUser @deleted="emitDeletePenalidade" @close="closeDetail" v-else-if="route == 'usuarios'"></DetailUser>
+                <DetailUser @deleted="emitDeletePenalidade" @close="closeDetail" 
+                v-else-if="route == 'usuarios'"></DetailUser>
                 <DetailDespesa @close="closeDetail" v-else-if="route == 'despesas'"></DetailDespesa>
             </v-dialog>
         </v-row>

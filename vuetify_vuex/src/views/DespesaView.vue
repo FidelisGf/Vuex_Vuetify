@@ -18,7 +18,8 @@
             </template>
         </v-snackbar>
         <v-row class="d-flex flex-md-row flex-lg-row justify-center mt-8 ml-md-10 ml-lg-0  mt-lg-0">
-            <v-col cols="9" lg="2" sm="5" md="2" ><DespesaModal @atualizar="atualizarTable" class="mt-0 mt-md-0"></DespesaModal></v-col>
+            <v-col cols="9" lg="2" sm="5" md="2" ><DespesaModal @atualizar="atualizarTable" 
+                class="mt-0 mt-md-0"></DespesaModal></v-col>
             <v-col cols="9" lg="3" sm="4" md="3" ><TagModal class="mt-0 mt-md-0" ></TagModal></v-col>
             <v-col cols="8" sm="5" lg="3" md="3" class="mt-0 mt-md-3" >
                 
@@ -54,8 +55,14 @@
                     class="mt-md-n3 mt-0   exibeGasto"
                 >
                     <div>
-                        <p style="font-size: 16px;" class="ml-2 mt-3 font-weight-bold"><v-icon class="ml-n1 mt-n1" color="teal lighten-1">mdi-currency-usd-off</v-icon>Despesas do Mês</p>
-                    <p class="mt-n4 ml-11 font-weight-bold">{{despesasValor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>
+                        <p style="font-size: 16px;" class="ml-2 mt-3 font-weight-bold">
+                            <v-icon class="ml-n1 mt-n1" color="teal lighten-1">
+                                mdi-currency-usd-off
+                            </v-icon>
+                            Despesas do Mês
+                        </p>
+                    <p class="mt-n4 ml-11 font-weight-bold">{{despesasValor.
+                        toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</p>
                     </div>
                     
                 </v-sheet>
@@ -156,7 +163,9 @@
 
         <v-row>
             <v-col>
-                <ListaGenerica :headers="headers"  :key="renicializar" :route="'despesas'" :starter-date="DTINICIAL" :end-date="DTFINAL" :opcao="filtro"></ListaGenerica>
+                <ListaGenerica :headers="headers"  :key="renicializar" 
+                :route="'despesas'" :starter-date="DTINICIAL" :end-date="DTFINAL" :opcao="filtro">
+                </ListaGenerica>
             </v-col>
         </v-row>
     </v-container>

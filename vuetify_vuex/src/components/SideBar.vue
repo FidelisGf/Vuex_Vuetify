@@ -96,7 +96,8 @@ export default {
         };
     },
     computed: {
-        ...mapGetters({ name: "userMod/getUser", userLevel: "userMod/getUserLevel", userCargo: "userMod/getUserCargo" }),
+        ...mapGetters({ name: "userMod/getUser", userLevel: "userMod/getUserLevel", 
+        userCargo: "userMod/getUserCargo" }),
         mini() {
             switch (this.$vuetify.breakpoint.name) {
                 case "xs": return true;

@@ -3,42 +3,55 @@
         <v-row>
             <v-col>
                 <v-skeleton-loader
-                    v-if="loading == true" class="black" :loading="loading" transition="fade-transition" type="card"
+                    v-if="loading == true" class="black" :loading="loading" 
+                    transition="fade-transition" type="card"
                 >
                 </v-skeleton-loader>
                     <v-list color="#1e1e1e" class="mt-n3 mt-md-0">
                         <v-list-item >
                             <v-list-item-content  >
                                 <v-list-item-title class="ml-0 ml-sm-2  mt-md-n3   teal--text">
-                                    <p><b class="text-caption text-sm-h6 text-body-1 ">Recebimento Total : {{total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}</b></p>
+                                    <p><b class="text-caption text-sm-h6 text-body-1 ">
+                                        Recebimento Total : {{total.
+                                            toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}}
+                                        </b>
+                                    </p>
                                 </v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                         <v-list-item >
                             <v-list-item-content>
                                 <v-list-item-title class="ml-0 white--text ml-sm-2">
-                                    <p><b class="text-caption text-sm-body-1 ">Pagamento Por PIX : {{pix}}</b></p>
+                                    <p><b class="text-caption text-sm-body-1 ">
+                                        Pagamento Por PIX : {{pix}}</b>
+                                    </p>
                                 </v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                         <v-list-item >
                             <v-list-item-content>
                                 <v-list-item-title class="ml-0 white--text ml-sm-2">
-                                    <p><b class="text-caption text-sm-body-1">Pagamento Por Cartao de Crédito : {{cartao}}</b></p>
+                                    <p><b class="text-caption text-sm-body-1">
+                                        Pagamento Por Cartao de Crédito : {{cartao}}</b>
+                                    </p>
                                 </v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                         <v-list-item >
                             <v-list-item-content>
                                 <v-list-item-title class="ml-0 white--text ml-sm-2">
-                                    <p><b class="text-caption text-sm-body-1">Pagamento Por Cartao de Débito : {{cartaoDebito}}</b></p>
+                                    <p><b class="text-caption text-sm-body-1">
+                                        Pagamento Por Cartao de Débito : {{cartaoDebito}}</b>
+                                    </p>
                                 </v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                         <v-list-item >
                             <v-list-item-content>
                                 <v-list-item-title class="ml-0 white--text ml-sm-2">
-                                    <p><b class="text-caption text-sm-body-1">Pagamento Por Dinheiro: {{dinheiro}}</b></p>
+                                    <p><b class="text-caption text-sm-body-1">Pagamento Por Dinheiro: 
+                                        {{dinheiro}}</b>
+                                    </p>
                                 </v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>

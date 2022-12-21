@@ -33,44 +33,48 @@
               <v-list-item-icon>
                 <v-icon color="white">mdi-cash-register</v-icon>
               </v-list-item-icon>
-              <v-list-item-title class="white--text" color="teal lighten-1">Registrar Venda</v-list-item-title>
-          </v-list-item>
-          <v-list-item @click="$router.push('/empresa')" v-if="userLevel > 2" @click.native="dialog = false" link >
-            <v-list-item-icon>
-              <v-icon color="white">mdi-domain</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title class="white--text">Minha Empresa</v-list-item-title>
-          </v-list-item>
-          <v-list-item link @click="$router.push('/estoque')" @click.native="dialog = false">
-            <v-list-item-icon>
-              <v-icon color="white">mdi-archive</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title class="white--text">Gestão do Estoque</v-list-item-title>
-          </v-list-item>
-          <v-list-item link @click="$router.push('/relatorio') " v-if="userLevel > 2" @click.native="dialog = false">
-            <v-list-item-icon>
-              <v-icon color="white">mdi-printer</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title class="white--text">Relatorios Diversos</v-list-item-title>
-          </v-list-item>
-          <v-list-item link @click="$router.push('/despesas')" @click.native="dialog = false">
-            <v-list-item-icon>
-              <v-icon color="white">mdi-currency-usd-off</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title class="white--text">Despesas</v-list-item-title>
-          </v-list-item>
-          <v-list-item link @click="$router.push('/funcionarios')" @click.native="dialog = false">
-            <v-list-item-icon>
-              <v-icon color="white">mdi-account</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title class="white--text">Funcionarios</v-list-item-title>
-          </v-list-item>
-          <v-list-item  @click="$router.push('/')" link>
-            <v-list-item-icon>
-              <v-icon color="white">mdi-arrow-left</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title class="white--text">Sair</v-list-item-title>
-          </v-list-item>
+              <v-list-item-title class="white--text" color="teal lighten-1">
+                Registrar Venda
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="$router.push('/empresa')" v-if="userLevel > 2" 
+            @click.native="dialog = false" link >
+              <v-list-item-icon>
+                <v-icon color="white">mdi-domain</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title class="white--text">Minha Empresa</v-list-item-title>
+            </v-list-item>
+            <v-list-item link @click="$router.push('/estoque')" @click.native="dialog = false">
+              <v-list-item-icon>
+                <v-icon color="white">mdi-archive</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title class="white--text">Gestão do Estoque</v-list-item-title>
+            </v-list-item>
+            <v-list-item link @click="$router.push('/relatorio') " v-if="userLevel > 2" 
+              @click.native="dialog = false">
+              <v-list-item-icon>
+                <v-icon color="white">mdi-printer</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title class="white--text">Relatorios Diversos</v-list-item-title>
+            </v-list-item>
+            <v-list-item link @click="$router.push('/despesas')" @click.native="dialog = false">
+              <v-list-item-icon>
+                <v-icon color="white">mdi-currency-usd-off</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title class="white--text">Despesas</v-list-item-title>
+            </v-list-item>
+            <v-list-item link @click="$router.push('/funcionarios')" @click.native="dialog = false">
+              <v-list-item-icon>
+                <v-icon color="white">mdi-account</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title class="white--text">Funcionarios</v-list-item-title>
+            </v-list-item>
+            <v-list-item  @click="$router.push('/')" link>
+              <v-list-item-icon>
+                <v-icon color="white">mdi-arrow-left</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title class="white--text">Sair</v-list-item-title>
+            </v-list-item>
         </v-list>
       </v-card>
     </v-dialog>

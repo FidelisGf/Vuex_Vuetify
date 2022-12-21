@@ -118,7 +118,8 @@
                            </v-col>
                         </v-row>  
                             <v-card-actions class="d-flex justify-center">
-                              <v-btn type="submit" class="acesso mt-4" color="green accent-3" value="log in">Vincular empresa</v-btn>
+                              <v-btn type="submit" class="acesso mt-4" 
+                              color="green accent-3" value="log in">Vincular empresa</v-btn>
                             </v-card-actions>
                         </form>
                        </v-card-text>

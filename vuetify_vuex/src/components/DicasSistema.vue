@@ -14,31 +14,47 @@
                 <p class="font-italic text-subtitle-1">Sumario : (clique no tema desejado)</p>
                 <p class="font-italic text-subtitle-1 pl-6">Ações Básicas :</p>
                 <div> 
-                  <p class="pl-12 mt-n2 font-italic "><a href="#Cadastro_Materia" class="sumario">Matéria Prima</a></p>
-                  <p class="pl-12 mt-n2 font-italic "><a href="#Cadastro_Produto" class="sumario">Cadastro Produto</a></p>
-                  <p class="pl-12 mt-n2 font-italic "><a href="#Estoque_Produto" class="sumario">Estoque Produto</a></p>
-                  <p class="pl-12 mt-n2 font-italic "><a href="#Estoque_Materia" class="sumario">Estoque Materia Prima</a></p>
-                  <p class="pl-12 mt-n2 font-italic "><a href="#Editar" class="sumario">Editar Item</a></p>
-                  <p class="pl-12 mt-n2 font-italic "><a href="#Excluir" class="sumario">Excluir Item</a></p>
-                  <p class="pl-12 mt-n2 font-italic "><a href="#Despesa" class="sumario">Cadastro de Despesa</a></p>
-                  <p class="pl-12 mt-n2 font-italic "><a href="#Tipo_Despesa" class="sumario">Cadastro Tipo de Despesa</a></p>
+                  <p class="pl-12 mt-n2 font-italic "><a href="#Cadastro_Materia" class="sumario">
+                    Matéria Prima</a></p>
+                  <p class="pl-12 mt-n2 font-italic "><a href="#Cadastro_Produto" class="sumario">
+                    Cadastro Produto</a></p>
+                  <p class="pl-12 mt-n2 font-italic "><a href="#Estoque_Produto" class="sumario">
+                    Estoque Produto</a></p>
+                  <p class="pl-12 mt-n2 font-italic "><a href="#Estoque_Materia" class="sumario">
+                    Estoque Materia Prima</a></p>
+                  <p class="pl-12 mt-n2 font-italic "><a href="#Editar" class="sumario">
+                    Editar Item</a></p>
+                  <p class="pl-12 mt-n2 font-italic "><a href="#Excluir" class="sumario">
+                    Excluir Item</a></p>
+                  <p class="pl-12 mt-n2 font-italic "><a href="#Despesa" class="sumario">
+                    Cadastro de Despesa</a></p>
+                  <p class="pl-12 mt-n2 font-italic "><a href="#Tipo_Despesa" class="sumario">
+                    Cadastro Tipo de Despesa</a></p>
                 </div>
                 <p class="font-italic text-subtitle-1 pl-6">Venda :</p>
                 <div>
-                  <p class="pl-12 mt-n2 font-italic "><a href="#Adicionar_Venda" class="sumario">Adicionar item a venda</a></p>
-                  <p class="pl-12 mt-n2 font-italic "><a href="#Lista_Venda" class="sumario">Manipular lista da venda</a></p>
-                  <p class="pl-12 mt-n2 font-italic "><a href="#Cliente_Venda" class="sumario">Vincular cliente na venda</a></p>
-                  <p class="pl-12 mt-n2 font-italic "><a href="#Gerar_Venda" class="sumario">Gerar a venda</a></p>
-                  <p class="pl-12 mt-n2 font-italic "><a href="#Alterar_Venda" class="sumario">Alterar venda</a></p>
+                  <p class="pl-12 mt-n2 font-italic "><a href="#Adicionar_Venda" class="sumario">
+                    Adicionar item a venda</a></p>
+                  <p class="pl-12 mt-n2 font-italic "><a href="#Lista_Venda" class="sumario">
+                    Manipular lista da venda</a></p>
+                  <p class="pl-12 mt-n2 font-italic "><a href="#Cliente_Venda" class="sumario">
+                    Vincular cliente na venda</a></p>
+                  <p class="pl-12 mt-n2 font-italic "><a href="#Gerar_Venda" class="sumario">
+                    Gerar a venda</a></p>
+                  <p class="pl-12 mt-n2 font-italic "><a href="#Alterar_Venda" class="sumario">
+                    Alterar venda</a></p>
                 </div>
                
           </div>
          
           <p class="text-justify pl-0 pl-md-5" id="Cadastro_Materia">
-              <b class="teal--text">(Cadastro de Matéria Prima)</b> : Na barra lateral, clique em Gestão de Estoque.
-              Após entrar em Gestão de Estoque clique no botão que está em destaque na imagem abaixo ("MATERIAS PRIMAS").
+              <b class="teal--text">(Cadastro de Matéria Prima)</b> : 
+              Na barra lateral, clique em Gestão de Estoque.
+              Após entrar em Gestão de Estoque clique no botão 
+              que está em destaque na imagem abaixo ("MATERIAS PRIMAS").
               Será exibido um menu relacionado a matéria prima, selecione "ADICIONAR NOVA MATERIA PRIMA" e 
-              insira os dados do seu material, depois clique em salvar. Pronto está feito o registro da matéria
+              insira os dados do seu material, depois clique em salvar. 
+              Pronto está feito o registro da matéria
               prima, agora é só repetir o processo para as próximas;
           </p>
           <div class="pl-0 pl-md-5">

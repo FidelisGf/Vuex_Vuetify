@@ -180,12 +180,16 @@
                                filled
                                rounded
                             ></v-text-field>
-                            <div class="d-flex justify-center"><a @click="dialog = true" class="white--text forgetPw">Esqueci minha senha</a></div>
+                            <div class="d-flex justify-center"><a @click="dialog = true" 
+                              class="white--text forgetPw">Esqueci minha senha</a></div>
 
                             <v-card-actions class="d-flex justify-center">
-                              <v-btn dense rounded type="submit" class="acesso mt-4" color="green accent-3" style="width: 100px;" value="log in">Login</v-btn>
-                              <v-btn @click="$router.push('/register')" rounded type="submit" class="acesso mt-4 ml-4" color="green accent-3" value="log in">Registrar-se</v-btn>
-                              
+                              <v-btn dense rounded type="submit" class="acesso mt-4" 
+                              color="green accent-3" style="width: 100px;" value="log in">Login</v-btn>
+                              <v-btn @click="$router.push('/register')" rounded type="submit" 
+                              class="acesso mt-4 ml-4" color="green accent-3" value="log in">
+                                Registrar-se
+                              </v-btn>
                             </v-card-actions>
                        </form>
                       

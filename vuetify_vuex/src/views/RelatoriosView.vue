@@ -128,7 +128,8 @@
                 max-width="750px"
                 @keydown.escape="relatorioE = false"
             >
-                    <RespostaRelatorioEstoque v-if="relatorioE" @closeModal="closeRelatorio" :filtro="filtro" ></RespostaRelatorioEstoque>
+                    <RespostaRelatorioEstoque v-if="relatorioE" @closeModal="closeRelatorio" 
+                    :filtro="filtro" ></RespostaRelatorioEstoque>
               
             </v-dialog>
             <RelatorioPDF :key="renicializarPdf" 
