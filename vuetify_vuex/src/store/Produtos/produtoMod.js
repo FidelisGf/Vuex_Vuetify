@@ -149,6 +149,14 @@ export default{
                 return error 
             })
             return lucro
+        },
+        getColors(){
+            const data = productService.getColors().then((res)=>{
+                return res.data
+            }).catch((error)=>{
+                return error
+            })
+            return data
         }
 
     }  

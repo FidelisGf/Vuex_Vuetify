@@ -30,5 +30,8 @@ export default{
     },
     Entersearch(payload){
         return axios.post("/search", payload)
+    },
+    getColors(){
+        return axios.get("/cores")
     }
 }

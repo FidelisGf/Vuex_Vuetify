@@ -189,6 +189,11 @@
                                                         outlined
                                                     ></v-textarea>
                                                 </v-col>
+                                                <v-col cols="12" >
+                                                    <div class="d-flex justify-center mt-n2">
+                                                        <v-divider class="linha" ></v-divider>
+                                                    </div>
+                                                </v-col>
                                                 <v-col cols="12" md="12" 
                                                 class="mt-n2 d-flex justify-space-between  
                                                 flex-sm-row flex-column">
@@ -204,12 +209,64 @@
                                                     
                                                     <v-img   
                                                         class="mt-2 mt-sm-0" 
-                                                        max-height="350"
-                                                        max-width="450"
+                                                        max-height="200"
+                                                        max-width="230"
                                                         :src="image_url"
                                                     ></v-img>
                                                 </v-col>
-                                               
+                                                <v-col cols="12" >
+                                                    <div class="d-flex justify-center mt-n2">
+                                                        <v-divider class="linha" ></v-divider>
+                                                    </div>
+                                                </v-col>
+                                                <v-col
+                                                    cols="12"
+                                                    sm="12"
+                                                    class="d-flex flex-row justify-space-between"
+                                                > 
+                                                    <div class="d-flex flex-row">
+                                                        <v-select
+                                                            :items="cores"
+                                                            label="Cores Disponiveis"
+                                                            v-model="cor"
+                                                            dark
+                                                            color="teal lighten-1"
+                                                            item-text="NOME" 
+                                                            return-object
+                                                            required
+                                                        ></v-select>
+                                                        <v-btn icon class="mt-4" @click="adicionarCor" >
+                                                            <v-icon color="yellow accent-2">mdi-arrow-right-circle-outline</v-icon>
+                                                        </v-btn>
+                                                    </div>
+                                                    <div class="d-flex flex-row">
+                                                        <v-sheet
+                                                            dense
+                                                            class="mx-auto"
+                                                            height="auto"
+                                                            width="230"
+                                                            color="transparent"
+                                                        >
+                                                           <div v-for="cor in coresEscolhidas" 
+                                                           :key="cor.ID">
+                                                                <v-sheet
+                                                                    dense
+                                                                    :color="cor.HASH"
+                                                                    class="mx-auto"
+                                                                    height="20"
+                                                                    width="230"
+                                                                ></v-sheet>
+                                                           </div>
+                                                          
+                                                              
+                                                    
+                                                    
+                                                        </v-sheet>
+                                                    </div>
+                                                   
+
+                                                   
+                                                </v-col>
                                             </v-row>
                                         </v-card-text>  
                                         <small class="ml-3 mt-n6" >*Os produtos criados serão 
@@ -304,6 +361,9 @@ export default {
     data() {
         return {
             Categoria: null,
+            cores : null ,
+            coresEscolhidas : [],
+            cor : null,
             Medida : null,
             NOME: "",
             dialog : false,
@@ -326,7 +386,6 @@ export default {
             image_product : null,
             image_url : null,
             image_file : null,
-            binary : Blob
            
         };
     },
@@ -357,7 +416,7 @@ export default {
         },
     },
     methods: {
-        ...mapActions('produtoMod', ['post', 'countProd', 'setQntdProd']),
+        ...mapActions('produtoMod', ['post', 'countProd', 'setQntdProd', 'getColors']),
         ...mapActions('estoqueMod', ['activeAdicionaEstoque']),
         ...mapActions('medidaMod', ['getAll']),
         ...mapActions('materiaMod', ['clearMateriais']),
@@ -382,6 +441,13 @@ export default {
         async voltarEtapa(e){
             await this.forceRerender()
             this.e1 = e
+        },
+        async getAllColors(){
+            this.cores = await this.getColors()
+        },
+        adicionarCor(){
+            this.coresEscolhidas.push(this.cor)
+            console.log(this.coresEscolhidas)
         },
         async getMessage(e){
             this.msg = e
@@ -438,6 +504,7 @@ export default {
         }, 
     },
    async created() {
+        this.getAllColors()
         await this.getAll()
         await this.countProd()
     },
@@ -472,6 +539,9 @@ export default {
         overflow: hidden;
         position: absolute;
         z-index: -1;
+    }
+    .linha{
+        background-color: #BDBDBD !important;
     }
     .arqv {
         font-size: 1.05em;
