@@ -16,6 +16,7 @@ import empresaMod from './Empresa/empresaMod'
 import vendaMod from './Venda/vendaMod'
 import createPersistedState from "vuex-persistedstate"
 import penalidadeMod from './Penalidade/penalidadeMod'
+import corMod from './Cor/corMod'
 
 Vue.use(Vuex)
 
@@ -35,7 +36,8 @@ export default new Vuex.Store({
     medidaMod,
     materiaMod,
     vendaMod,
-    penalidadeMod
+    penalidadeMod,
+    corMod
   },
   
   state: {

@@ -221,52 +221,58 @@
                                                 </v-col>
                                                 <v-col
                                                     cols="12"
-                                                    sm="12"
+                                                    sm="7"
                                                     class="d-flex flex-row justify-space-between"
                                                 > 
-                                                    <div class="d-flex flex-row">
-                                                        <v-select
-                                                            :items="cores"
-                                                            label="Cores Disponiveis"
-                                                            v-model="cor"
-                                                            dark
-                                                            color="teal lighten-1"
-                                                            item-text="NOME" 
-                                                            return-object
-                                                            required
-                                                        ></v-select>
-                                                        <v-btn icon class="mt-4" @click="adicionarCor" >
-                                                            <v-icon color="yellow accent-2">mdi-arrow-right-circle-outline</v-icon>
-                                                        </v-btn>
-                                                    </div>
-                                                    <div class="d-flex flex-row">
-                                                        <v-sheet
-                                                            dense
-                                                            class="mx-auto"
-                                                            height="auto"
-                                                            width="230"
-                                                            color="transparent"
-                                                        >
-                                                           <div v-for="cor in coresEscolhidas" 
-                                                           :key="cor.ID">
-                                                                <v-sheet
-                                                                    dense
-                                                                    :color="cor.HASH"
-                                                                    class="mx-auto"
-                                                                    height="20"
-                                                                    width="230"
-                                                                ></v-sheet>
-                                                           </div>
-                                                          
-                                                              
-                                                    
-                                                    
-                                                        </v-sheet>
-                                                    </div>
-                                                   
-
-                                                   
+                                                    <v-select 
+                                                        :key="reniCores"
+                                                        :items="cores"
+                                                        label="Cores Disponiveis"
+                                                        v-model="cor"
+                                                        dark
+                                                        color="teal lighten-1"
+                                                        item-text="NOME" 
+                                                        return-object
+                                                        required
+                                                    ></v-select>
+                                                    <v-btn icon class="mt-4" @click="adicionarCor" >
+                                                        <v-icon color="yellow accent-2">
+                                                            mdi-arrow-right-circle-outline
+                                                        </v-icon>
+                                                    </v-btn>
+                                                    <CorModal @cadastrado="listenMsg" class="mt-4" 
+                                                    :miniatura="true"></CorModal> 
                                                 </v-col>
+                                                <v-col cols="12" sm="5">
+                                                    <v-sheet
+                                                    
+                                                    dense
+                                                    class="mx-auto"
+                                                    height="auto"
+                                                    width="230"
+                                                    color="transparent"
+                                                >
+                                                   <div v-for="cor in coresEscolhidas" 
+                                                   :key="cor.ID">
+                                                        <div class="d-flex flex-row">
+                                                            <v-btn @click="removeCor(cor.ID)" 
+                                                            class="mt-n2" icon color="red accent-2">
+                                                                <v-icon small color="red accent-2">
+                                                                    mdi-delete
+                                                                </v-icon>
+                                                            </v-btn>
+                                                            <v-sheet
+                                                                dense
+                                                                :color="cor.HASH"
+                                                                class="mx-auto ml-0 ml-sm-2"
+                                                                height="20"
+                                                                width="230"
+                                                            ></v-sheet>
+                                                        </div>
+                                                   </div>
+                                                </v-sheet>
+                                                </v-col>
+
                                             </v-row>
                                         </v-card-text>  
                                         <small class="ml-3 mt-n6" >*Os produtos criados serão 
@@ -353,6 +359,7 @@ import { mapGetters,mapActions } from 'vuex';
 import MedidaModal from './MedidaModal.vue';
 import MaterialModal from './MaterialModal.vue';
 import ChoseMateriaisModal from './ChoseMateriaisModal.vue';
+import CorModal from './CorModal.vue';
 
 export default {
     props: {
@@ -378,6 +385,7 @@ export default {
             registro : false,
             fracasso : false,
             msg : '',
+            reniCores : 0,
             timeout : 4000,
             estoqueMod : false,
             e1 : 1,
@@ -420,9 +428,12 @@ export default {
         ...mapActions('estoqueMod', ['activeAdicionaEstoque']),
         ...mapActions('medidaMod', ['getAll']),
         ...mapActions('materiaMod', ['clearMateriais']),
-        listenMsg(e){
+        async listenMsg(e){
             this.msg = e
             this.registro = true
+            this.reniCores = this.reniCores + 1
+            console.log(this.reniCores)
+            this.cores = await this.getColors()
         },
         closeEstoqueMod(e){
             
@@ -446,8 +457,25 @@ export default {
             this.cores = await this.getColors()
         },
         adicionarCor(){
-            this.coresEscolhidas.push(this.cor)
-            console.log(this.coresEscolhidas)
+            let check = this.checkIfCorExistInList(this.cor.ID)
+            if(!check){
+                this.coresEscolhidas.push(this.cor)
+            }else{
+                this.msg = "Cor já está presente na lista de cores !"
+                this.registro = true
+            }
+        },
+        removeCor(id){
+            console.log(id)
+            this.coresEscolhidas = this.coresEscolhidas.filter(item => item.ID !== id)
+        },
+        checkIfCorExistInList(id){
+            const exist = this.coresEscolhidas.find(o => o.ID == id)
+            if(exist){
+                return true
+            }else{
+                return false
+            }
         },
         async getMessage(e){
             this.msg = e
@@ -456,17 +484,7 @@ export default {
         },  
         
        async postProduto() {
-            let fomr = new FormData()
-            fomr.append('NOME', this.NOME)
-            fomr.append('VALOR', this.VALOR)
-            fomr.append('DESC', this.DESC)
-            fomr.append('quantidade_inicial', this.quantidade_inicial)
-            fomr.append('ID_CATEGORIA', this.Categoria.ID_CATEGORIA)
-            fomr.append('NOME_C', this.Categoria.NOME_C)
-            fomr.append('ID_MEDIDA', this.Medida.ID)
-            let materias = JSON.stringify(this.materias)
-            fomr.append('MATERIAIS', materias)
-            fomr.append('IMAGE', this.image_file, this.image_file.name)
+            let fomr = this.makeForm()
             this.msg = await this.post(fomr)
             this.loading = true
             await this.forceRerender()      
@@ -489,6 +507,22 @@ export default {
             })
            
         },
+        makeForm(){
+            let fomr = new FormData()
+            fomr.append('NOME', this.NOME)
+            fomr.append('VALOR', this.VALOR)
+            fomr.append('DESC', this.DESC)
+            fomr.append('quantidade_inicial', this.quantidade_inicial)
+            fomr.append('ID_CATEGORIA', this.Categoria.ID_CATEGORIA)
+            fomr.append('NOME_C', this.Categoria.NOME_C)
+            fomr.append('ID_MEDIDA', this.Medida.ID)
+            let materias = JSON.stringify(this.materias)
+            fomr.append('MATERIAIS', materias)
+            let coresEscolhidas = JSON.stringify(this.coresEscolhidas)
+            fomr.append('CORES', coresEscolhidas)
+            fomr.append('IMAGE', this.image_file, this.image_file.name)
+            return fomr
+        },
         proximaEtapa(){
             this.e1 = 2
         },
@@ -508,7 +542,8 @@ export default {
         await this.getAll()
         await this.countProd()
     },
-    components: { CategoryModal, EstoqueModal, ListaGenerica, MedidaModal, MaterialModal, ChoseMateriaisModal }
+  
+    components: { CategoryModal, EstoqueModal, ListaGenerica, MedidaModal, MaterialModal, ChoseMateriaisModal, CorModal }
 }
 </script>
 
