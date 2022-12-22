@@ -1,5 +1,5 @@
 <template>
-    <v-card class="cards-colors">
+    <v-card class="cards-colors" >
         <form @submit.prevent="addToList">
             <v-card-title  class="white--text text-h8">
                 <p v-if="!notification">Escolha os Materiais do Produto...</p>

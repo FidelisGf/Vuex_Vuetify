@@ -35,6 +35,7 @@
                 Estoque
             </v-btn>
             <v-dialog
+                fullscreen
                 v-model="dialog"
                 persistent
                 max-width="720px"
@@ -194,8 +195,8 @@
                                                         <v-divider class="linha" ></v-divider>
                                                     </div>
                                                 </v-col>
-                                                <v-col cols="12" md="12" 
-                                                class="mt-n2 d-flex justify-space-between  
+                                                <v-col cols="12" sm="5" 
+                                                class="mt-n2 d-flex justify-start
                                                 flex-sm-row flex-column">
                                                     <label class="arqv" for="arqv">Anexar Foto</label>
                                                     <input
@@ -207,10 +208,13 @@
                                                         id="arqv"
                                                     >
                                                     
+                                                   
+                                                </v-col>
+                                                <v-col class="d-flex justify-end" cols="12" sm="7">
                                                     <v-img   
                                                         class="mt-2 mt-sm-0" 
-                                                        max-height="200"
-                                                        max-width="230"
+                                                        max-height="330"
+                                                        max-width="330"
                                                         :src="image_url"
                                                     ></v-img>
                                                 </v-col>
@@ -221,8 +225,8 @@
                                                 </v-col>
                                                 <v-col
                                                     cols="12"
-                                                    sm="7"
-                                                    class="d-flex flex-row justify-space-between"
+                                                    sm="5"
+                                                    class="d-flex flex-row justify-start"
                                                 > 
                                                     <v-select 
                                                         :key="reniCores"
@@ -243,13 +247,13 @@
                                                     <CorModal @cadastrado="listenMsg" class="mt-4" 
                                                     :miniatura="true"></CorModal> 
                                                 </v-col>
-                                                <v-col cols="12" sm="5">
+                                                <v-col cols="12" class="d-flex justify-end" sm="7">
                                                     <v-sheet
                                                     
                                                     dense
-                                                    class="mx-auto"
+                                                    
                                                     height="auto"
-                                                    width="230"
+                                                    width="330"
                                                     color="transparent"
                                                 >
                                                    <div v-for="cor in coresEscolhidas" 
@@ -265,7 +269,7 @@
                                                                 dense
                                                                 :color="cor.HASH"
                                                                 class="mx-auto ml-0 ml-sm-2"
-                                                                height="20"
+                                                                height="25"
                                                                 width="230"
                                                             ></v-sheet>
                                                         </div>
@@ -369,7 +373,7 @@ export default {
         return {
             Categoria: null,
             cores : null ,
-            coresEscolhidas : [],
+            coresEscolhidas : null,
             cor : null,
             Medida : null,
             NOME: "",
@@ -535,6 +539,8 @@ export default {
             this.Medida = null
             this.quantidade_inicial = 0
             this.image_url = null
+            this.cor = null,
+            this.coresEscolhidas = []
         }, 
     },
    async created() {

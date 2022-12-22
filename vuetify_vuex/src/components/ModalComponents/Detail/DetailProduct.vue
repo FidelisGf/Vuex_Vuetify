@@ -16,18 +16,38 @@
             <v-card-title class="white--text text-md-h5 text-subtitle-1  
             mt-n4 d-flex justify-center flex-column">
                 <p >Detalhes do Produto : # {{produto.NOME}} [{{produto.ID}}] </p>
-                <v-img   
-                    class="mt-2 mt-sm-0" 
-                    max-height="250"
-                    max-width="250"
-                    :src="url"
-                ></v-img>
+                <div class="d-flex flex-sm-row">
+                    <v-img   
+                        class="mt-2 mt-sm-0" 
+                        max-height="250"
+                        max-width="250"
+                        :src="url"
+                    ></v-img>
+                   
+                </div>
+                
             </v-card-title>
+            <v-card-subtitle class="d-flex flex-sm-row justify-center mt-2">
+                <div v-for="cor in cores" :key="cor.ID"  class="white--text subtitle-1 
+                font-italic d-flex justify-center">
+                    <div class="d-flex flex-sm-row ">
+                        <v-sheet
+                        
+                        dense
+                        :color="cor.HASH"
+                        class="ml-1"
+                        height="30"
+                        width="30"
+                    ></v-sheet>
+                    </div>
+                    
+                </div>
+            </v-card-subtitle>
             <v-card-text class="mt-n2 ml-0 ml-md-0">
                 <v-row class="d-flex flex-column flex-md-row justify-center">
                     <v-col class="white--text  text-subtitle-1 text-md-h6 d-flex justify-center font-italic">
                         <p>
-                            <b class="font-italic titulo ">Descriçao : </b>{{produto.DESC}}...
+                            <b class="font-italic titulo ">Descriçao : </b>{{produto.DESC}}
                         </p>
                     </v-col>
                 </v-row>
@@ -149,7 +169,8 @@ export default {
             lucro : 0,
             percent : null,
             loading : true,
-            url : null
+            url : null,
+            cores : []
         }
     },
     methods:{
@@ -160,6 +181,9 @@ export default {
             this.percent = this.lucro.porcentagem
             this.lucro = this.lucro.lucro
             this.url = "data:image/png;base64," + this.produto.IMAGE
+            this.cores = await this.produto.CORES
+            console.log(this.produto.MATERIAS)
+            console.log(this.cores)
             if(this.produto != null && this.produto != undefined){
                 this.produto.CREATED_AT = await this.formatDate(this.produto.CREATED_AT)
                 this.produto.UPDATED_AT = await this.formatDate(this.produto.UPDATED_AT)

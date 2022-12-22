@@ -182,6 +182,7 @@ export default {
             start : this.dtStart, end : this.dtFinal, search : this.search}
             this.reniciar += 1
             let response = await this.getList(payload)
+            
             if(response){
                 this.per_page = response.per_page
                 this.loading = false;

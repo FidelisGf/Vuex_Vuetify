@@ -3,6 +3,7 @@
         <v-dialog
             v-model="dialog"
             persistent
+            fullscreen
             max-width="421px"
             @keydown.escape="dialog = false"
             >
