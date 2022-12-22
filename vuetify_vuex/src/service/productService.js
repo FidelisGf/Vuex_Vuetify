@@ -27,5 +27,8 @@ export default{
     },
     getLucroByProduct($id){
         return axios.get("/findLucroByProduto/" + $id)
+    },
+    Entersearch(payload){
+        return axios.post("/search", payload)
     }
 }

@@ -47,6 +47,11 @@ export default{
        async getList(context , payload){
             let resposta = {current_page : null, totalPage : null, perPage : null}
             const resp = Service.getPaginado(payload).then(async (res)=>{
+                if(res.data.data == undefined || res.data.data == null){
+                    let arrayLista = null
+                    arrayLista.push(res.data)
+                    res.data.data = arrayLista
+                }
                 await context.dispatch("produtoMod/beginListProduct", res.data.data , { root: true })
                 resposta.current_page = res.data.current_page
                 resposta.totalPage = res.data.last_page

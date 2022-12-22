@@ -86,6 +86,16 @@ export default{
         saveList(context, payload){
             context.commit('SAVE_IN_LIST_PRODUCTS', payload)
         },
+        async Entersearch(context, payload){
+            const data = productService.Entersearch(payload).then((res)=>{
+                return res.data
+            }).catch((error)=>{
+                return error
+            })
+            context.dispatch('clearListProduct')
+            await context.commit('BEGIN_LIST_PRODUCTS', data)
+        },
+
         deleteInList(context, payload){
             context.commit('DELETE_IN_LIST_PRODUCTS', payload)
         },

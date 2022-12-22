@@ -47,6 +47,7 @@
                         <v-row >
                             <v-col cols="12" class="d-flex justify-center">
                                 <v-text-field 
+                                    @keydown.enter="MakeSearch"
                                     v-model="search"
                                     color="teal lighten-1"
                                     label="Pesquise"
@@ -165,12 +166,12 @@ export default {
             tempTag: '',
             filtroTag : false,
             edit : false,
-            reniciar : '',
         };
     },
    
     methods: {
-        ...mapActions('produtoMod', ['saveProduct', 'beginListProduct', 'findByAllCategory', 'activeEdit']),
+        ...mapActions('produtoMod', ['saveProduct', 'beginListProduct', 'findByAllCategory', 
+        'activeEdit', 'Entersearch']),
         ...mapActions('despesaMod', ['activeEditDespesa', 'allByTag']),
         ...mapActions('utilMod' , ['saveGenerico', 'setLoad', 'getList']),
         async getLista(route) {
@@ -178,7 +179,7 @@ export default {
             this.dtFinal = this.endDate
             this.loading = true;
             let payload = {current_page : this.current_page, route: route, opcao: this.opcao, 
-            start : this.dtStart, end : this.dtFinal}
+            start : this.dtStart, end : this.dtFinal, search : this.search}
             this.reniciar += 1
             let response = await this.getList(payload)
             if(response){
@@ -238,7 +239,7 @@ export default {
             return value != null &&
                 search != null &&
                 typeof value === "string" &&
-                value.toString().toLocaleLowerCase().indexOf(search) !== -1;
+                value.toString().toLocaleLowerCase().indexOf(search.toLocaleLowerCase()) !== -1;
         },  
         async findAllByTags(){
             if(this.tempCurrent != 1){
@@ -287,6 +288,14 @@ export default {
             this.Categoria = ""
             this.filtroTag = false
             this.tag = ""
+            this.search = null
+            this.getLista(this.route)
+            
+        },
+       async MakeSearch(){
+            this.getLista(this.route)
+        },
+        clearSearch(){
             this.getLista(this.route)
         }
     },

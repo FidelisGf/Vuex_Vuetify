@@ -466,19 +466,23 @@ export default {
         box-shadow: 2px 2px 25px 2px #09d163 !important;
     }
     input[type="file"] {
-        display: none;
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
     }
     .arqv {
-        padding: 20px 10px;
-        max-width: 160px;
-        height: 60px;
-        max-height: 60px;
-        font-size: 16px;
-        background-color: rgb(27, 27, 27);
-        color: #FFF;
-        text-align: center;
-        display: block;
-        margin-top: 5px;
-        cursor: pointer;
+        font-size: 1.05em;
+        font-weight: 500;
+        color: white;
+        
+        display: inline-block;
+        
+    }
+    input[type="file"]:focus + .arqv,
+    input[type="file"] +  .arqv:hover{
+        background-color: rgb(194, 52, 52);
     }
 </style>
