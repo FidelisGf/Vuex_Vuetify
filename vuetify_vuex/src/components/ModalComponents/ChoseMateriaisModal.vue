@@ -107,7 +107,6 @@
                                 @keydown.escape="materiaisMod = false"
                             
                             >
-                                
                                 <ListMateriaisModal @fechar-Lista="fecharLista"></ListMateriaisModal>
                             </v-dialog>
                         </v-tooltip>

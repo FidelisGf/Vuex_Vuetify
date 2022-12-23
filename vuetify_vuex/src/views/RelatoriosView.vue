@@ -379,12 +379,15 @@ export default {
                             break 
                         case 'Relatorios de Lucros' :
                             this.route = 'vendas'
+                            console.log(this.route)
+                            console.log(this.filtro)
                             break           
                         default:
                             console.log('Vazio.'); 
                             break   
                     }
                     this.pdf = true
+                    this.pdfColumn = null
                     this.renicializarPdf += 1
                 }else{
                    
