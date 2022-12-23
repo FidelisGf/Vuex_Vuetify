@@ -35,7 +35,7 @@
                 Estoque
             </v-btn>
             <v-dialog
-                fullscreen
+                
                 v-model="dialog"
                 persistent
                 max-width="720px"

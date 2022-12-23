@@ -11,14 +11,24 @@
             </v-list-item-content>
           </v-list-item>
           <v-list-item class="px-2">
-            <v-list-item-avatar>
-              <v-avatar @click="dialog = true">
-                <img
-                  :src="url"
-                  :alt="user"
-                >
-              </v-avatar>
-            </v-list-item-avatar>
+            <v-hover
+              close-delay="0"
+              open-delay="0"
+              v-slot="{ hover }"
+            >
+              <v-list-item-avatar
+                class="avatar-user"
+              >
+                  <v-avatar @click="dialog = true" >
+                    <img
+                      :src="url"
+                      :alt="user"
+                      :elevation="hover ? 16 : 2"
+                      :class="{ 'on-hover': hover }"
+                    >
+                  </v-avatar>
+              </v-list-item-avatar>
+          </v-hover>
             <v-list-item-content>
               <v-list-item-title class="text-h8">
                 {{user}}
@@ -165,5 +175,10 @@ export default {
 }
 .relatorios{
   background-color: rgb(30, 30, 30) !important;
+}
+.avatar-user:hover{
+  transform: translate(2px, -2.10px);
+  transition: 1.5s;
+  box-shadow: 0px 2px 5px 2px #e0dcdc !important;
 }
 </style>
